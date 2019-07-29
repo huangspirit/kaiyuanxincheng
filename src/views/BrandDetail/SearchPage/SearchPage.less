@@ -1,0 +1,165 @@
+.SearchPage {
+    width: 100%;
+    overflow: hidden;
+
+    .hot-search {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    // 筛选条件列表
+    .screen-list {
+        width: 100%;
+        overflow: hidden;
+        background: #fff;
+        padding-top: 1px;
+
+        .screen-class-tit {
+            width: 240px;
+            font-size: 20px;
+            color: #fff;
+            background: #A6B4C1;
+            text-align: center;
+            border-top: 1px solid #fff;
+            font-weight: bold;
+        }
+
+        .screen-class-list {
+            width: 1660px;
+            overflow: hidden;
+            border-bottom: 1px dashed #ddd;
+            padding-left: 20px;
+            .el-radio-button__inner{
+                border: none;
+                color: #4A5A6A;
+                font-size: 20px;
+                padding: 12px 73px !important;
+                margin:2px 30px;
+                border: 2px solid #fff;
+                &:hover{
+                    color: peru
+                }
+            }
+            .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+                background: #fff;
+                border: 3px solid rgba(0, 104, 183, 1);
+            }
+            // ul {
+            //     width: 100%;
+            //     overflow: hidden;
+
+            //     li {
+            //         width: 185px;
+            //         height: 44px;
+            //         line-height: 44px;
+            //         float: left;
+            //         text-align: center;
+            //         color: #4A5A6A;
+            //         font-size: 20px;
+            //         border: 2px solid rgba(0, 104, 183, 1);
+            //         margin: 8px 0;
+            //         margin-right: 80px;
+            //         cursor: pointer;
+
+            //         &:hover {
+            //             color: rgb(240, 147, 9);
+            //         }
+            //     }
+            // }
+
+        }
+    }
+
+    // 筛选数量
+    .screen-number {
+        width: 100%;
+        height: 100px;
+        line-height: 100px;
+
+        background: #fff;
+        position: relative;
+        margin-bottom: 20px;
+
+        .number {
+            margin-left: 60px;
+            color: #4A5A6A;
+            font-size: 28px;
+
+            span {
+                color: #E84F47;
+            }
+        }
+
+        .reset {
+            width: 195px;
+            height: 53px;
+            line-height: 53px;
+            text-align: center;
+            color: #fff;
+            background: #0068D7;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -98px;
+            margin-top: -26px;
+            cursor: pointer;
+
+            &:hover {
+                color: rgb(240, 147, 9);
+            }
+        }
+    }
+
+    // 筛选结果商品列表
+    .screen-result {
+        width: 100%;
+        overflow: hidden;
+
+        .result-tit {
+            width: 100%;
+            height: 52px;
+            padding-top: 40px;
+            background: #fff;
+
+            .tabList {
+                width: 773px;
+                height: 52px;
+                float: left;
+                border-right: 1px solid #000;
+
+                &>li {
+                    float: left;
+                    width: 192px;
+                    height: 50px;
+                    border: 1px solid #000;
+                    border-right: none;
+                    font-size: 20px;
+                    color: #4A5A6A;
+                    text-align: center;
+                    line-height: 50px;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #0068D7;
+                    }
+
+                }
+
+                &>.active {
+                    background: #0068D7;
+                    color: #fff;
+                }
+            }
+
+            .SearchInput {
+                float: right;
+            }
+        }
+        // 筛选商品结果
+        .result-con {
+            width: 100%;
+            overflow: hidden;
+        }
+    }
+}

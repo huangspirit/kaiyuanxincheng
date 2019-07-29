@@ -1,0 +1,338 @@
+// 全部品牌
+.Direct {
+  width: 100%;
+  overflow: hidden;
+
+  // 经营品类
+  .management-class {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+
+    &>.tit {
+      height: 34px;
+      padding: 18px 0;
+      background: #4A5A6A;
+      line-height: 34px;
+      color: #fff;
+      font-size: 28px;
+
+      span {
+        float: left;
+        margin-right: 20px;
+        cursor: pointer;
+
+        &:hover {
+          color: #0D98FF;
+        }
+      }
+
+      img {
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        position: relative;
+        top: 3px;
+      }
+    }
+
+    &>.list {
+      width: 1800px;
+      overflow: hidden;
+      background: #fff;
+      padding: 30px 60px;
+      display: flex;
+      flex-wrap: wrap;
+
+      .avtive {
+        border: 1px solid #4A5A6A;
+      }
+
+      li {
+        width: 189px;
+        height: 133px;
+        padding: 10px 0;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        background: rgb(242, 244, 247);
+        color: #4A5A6A;
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        cursor: pointer;
+
+        img {
+          width: 60px;
+          height: 60px;
+        }
+
+        &>.num {
+          font-size: 20px;
+        }
+
+        &:hover {
+          box-shadow: 2px -2px 2px 2px rgba(0, 0, 0, 0.2)
+        }
+      }
+
+    }
+  }
+
+  .SearchInput {
+    float: left;
+    margin: 20px 0;
+  }
+
+  // 筛选条件列表
+  .screen-list {
+    width: 100%;
+    overflow: hidden;
+    // height: 100px;
+    background: #fff;
+    padding-top: 1px;
+
+    .screen-class-tit {
+      width: 240px;
+      font-size: 20px;
+      color: #fff;
+      background: #A6B4C1;
+      text-align: center;
+      border-top: 1px solid #fff;
+      font-weight: bold;
+    }
+
+    .screen-class-list {
+      width: 1660px;
+      overflow: hidden;
+      border-bottom: 1px dashed rgb(44, 43, 43);
+      padding-left: 20px;
+    }
+  }
+  .screen-bar{
+    width: 100%;
+    background: #fff;
+    height: 40px;
+    float: left;
+    margin-bottom: 10px;
+    position: relative;
+    img{
+      width: 50px;
+      height: 20px;
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      margin-left: -25px;
+      cursor: pointer;
+    }
+  }
+  // 筛选数量
+  .screen-number {
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    float: left;
+    background: #fff;
+    position: relative;
+    margin-bottom: 20px;
+
+    .number {
+      margin-left: 60px;
+      color: #4A5A6A;
+      font-size: 28px;
+
+      span {
+        color: #E84F47;
+      }
+    }
+
+    .reset {
+      width: 195px;
+      height: 53px;
+      line-height: 53px;
+      text-align: center;
+      color: #fff;
+      background: #0068D7;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -98px;
+      margin-top: -26px;
+      cursor: pointer;
+
+      &:hover {
+        color: rgb(240, 147, 9);
+      }
+    }
+    .search {
+      width: 195px;
+      height: 53px;
+      line-height: 53px;
+      text-align: center;
+      color: #fff;
+      background: #0068D7;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -396px;
+      margin-top: -26px;
+      cursor: pointer;
+
+      &:hover {
+        color: rgb(240, 147, 9);
+      }
+    }
+  }
+
+  // 筛选结果商品列表
+  .screen-result {
+    width: 100%;
+    overflow: hidden;
+
+    .result-tit {
+      width: 100%;
+      height: 52px;
+      padding-top: 40px;
+      background: #fff;
+
+      .tabList {
+        width: 773px;
+        height: 52px;
+        float: left;
+        border-right: 1px solid #000;
+
+        &>li {
+          float: left;
+          width: 192px;
+          height: 50px;
+          border: 1px solid #000;
+          border-right: none;
+          font-size: 20px;
+          color: #4A5A6A;
+          text-align: center;
+          line-height: 50px;
+          cursor: pointer;
+
+          &:hover {
+            color: #0068D7;
+          }
+
+        }
+
+        &>.active {
+          background: #0068D7;
+          color: #fff;
+        }
+      }
+
+      .SearchInput {
+        float: right;
+      }
+    }
+
+    // 筛选商品结果
+    .result-con {
+      width: 100%;
+      overflow: hidden;
+    }
+  }
+
+  // 品牌热卖
+  .brand-hot {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #ddd;
+
+    .SubstituModelList {
+      float: left;
+    }
+
+    .Pagination {
+      float: left;
+    }
+
+    // 排序
+    .sort-type {
+      width: 100%;
+      overflow: hidden;
+      margin: 20px 0;
+
+      .active {
+        background: #0068B7;
+        color: #fff;
+      }
+
+      li {
+        width: 195px;
+        height: 52px;
+        line-height: 52px;
+        text-align: center;
+        font-size: 20px;
+        color: #4A5A6A;
+        float: left;
+        cursor: pointer;
+        position: relative;
+
+        &>span {
+          height: 52px;
+          line-height: 52px;
+          float: left;
+        }
+
+        .caret-wrapper {
+          position: absolute;
+          top: 0;
+          right: 20px;
+          width: 20px;
+          padding: 10px 0;
+          height: 32px;
+
+          &>span {
+            width: 20px;
+            height: 15px;
+            line-height: 15px;
+            color: #4a5a6a;
+            font-size: 20px;
+            float: left;
+            cursor: pointer;
+          }
+
+        }
+      }
+    }
+
+    &>.tit {
+      height: 34px;
+      padding: 18px 0;
+      background: #4A5A6A;
+      line-height: 34px;
+      color: #fff;
+      font-size: 28px;
+
+      span {
+        float: left;
+        margin-right: 20px;
+        cursor: pointer;
+
+        &:hover {
+          color: #0D98FF;
+        }
+      }
+
+      img {
+        float: left;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        position: relative;
+        top: 3px;
+      }
+    }
+
+  }
+
+}

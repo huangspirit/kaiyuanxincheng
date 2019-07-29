@@ -1,0 +1,103 @@
+body {
+    background: #F7F7F7;
+}
+
+.BrandDetail {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 101px;
+    //banner
+    .banner {
+        width: 100%;
+        height: 273px;
+        position: relative;
+
+        img {
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .text {
+            width: 1800px;
+            z-index: 10;
+            color: #fff;
+            font-size: 36px;
+            position: absolute;
+            top: 50px;
+            left: 108px;
+
+            &>div {
+                width: 644px;
+                overflow: hidden;
+                float: left;
+
+                p {
+                    font-size: 48px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+
+                .time {
+                    font-size: 36px;
+                }
+            }
+
+            &>span {
+                width: 390px;
+                height: 87px;
+                line-height: 87px;
+                text-align: center;
+                border: 2px solid #fff;
+                float: left;
+                margin: 80px;
+                cursor: pointer;
+            }
+        }
+
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 8;
+        }
+    }
+
+    // 商品详情标题
+    .BrandDetail-tit {
+        height: 120px;
+        display: flex;
+        align-items: center;
+        // padding: 42px 0;
+        background: #fff;
+        margin: 20px 0;
+
+        .el-breadcrumb__inner a,
+        .el-breadcrumb__inner.is-link {
+            font-weight: normal;
+        }
+
+        .el-breadcrumb {
+
+            border-left: 4px solid #174EBD;
+            padding-left: 5px;
+            font-size: 28px;
+            color: #333;
+
+            // span {
+            //     color: #0D98FF;
+            // }
+        }
+
+        .el-breadcrumb__item:last-child .el-breadcrumb__inner,
+        .el-breadcrumb__item:last-child .el-breadcrumb__inner a,
+        .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover,
+        .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+            color: #0d98ff;
+        }
+    }
+
+}

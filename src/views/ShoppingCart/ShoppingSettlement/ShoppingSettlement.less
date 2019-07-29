@@ -1,0 +1,703 @@
+body {
+  background: #f2f2f2;
+}
+
+.ShoppingSettlement {
+  width: 100%;
+  overflow: hidden;
+  .Order-information {
+    .Order-title {
+      width: 100%;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #4a5a6a;
+      font-size: 28px;
+      color: #4a5a6a;
+      margin-bottom: 20px;
+
+      img {
+        width: 32px;
+        vertical-align: middle;
+        margin-right:10px;
+        margin-bottom:2px;
+
+      }
+    }
+
+    // 配送地址
+    .delivery-address {
+      width: 100%;
+      overflow: hidden;
+      float: left;
+      margin-bottom: 20px;
+      .desc{
+        font-size:14px;
+        color:#FF9900;
+      }
+      .address-title {
+        width: 100%;
+        margin-bottom: 10px;
+        line-height: 35px;
+
+        span {
+
+          margin-right: 30px;
+          color: #0068d7;
+          font-size: 16px;
+          cursor: pointer;
+
+          &:hover {
+            color: #ff6600;
+          }
+
+          &:first-child {
+            font-size: 28px;
+            color: #4a5a6a;
+            font-weight:bolder;
+          }
+        }
+      }
+
+      .addressList {
+        width: 100%;
+        overflow: hidden;
+
+        .active {
+          background: #f2f2f2;
+
+        }
+        li {
+          width: 100%;
+          border: 1px solid #fff;
+          font-size: 20px;
+          padding: 10px 20px;
+          color: #4a5a6a;
+          margin-bottom: 10px;
+          cursor: pointer;
+          box-sizing: border-box;
+          .label{
+            width:100%;
+            display:block;
+            position: relative;
+            font-weight:normal!important;
+            font-size:16px;
+            .defaultAddress{
+              background: #ff6600;
+              color:#fff;
+              margin-right:3px;
+              font-size:12px;
+              line-height: 1;
+              padding:2px;
+              border-radius: 3px;
+
+            }
+            &>input{
+              width:30px;
+              vertical-align: middle;
+              opacity: 0;
+            }
+            &>.imgwrap{
+              display: inline-block;
+              width:27px;
+              position:absolute;
+              left:-5px;
+              top:-3px;
+              border:1px solid #e3e3e3;
+              height:27px;
+              text-align: center;
+              img{
+                width:22px;
+                vertical-align: middle;
+              }
+            }
+          }
+          &:hover {
+            border: 1px solid #ddd;
+          }
+
+          &:hover .edit {
+            display: block;
+          }
+
+          .hook {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            border: 1px solid #4a5a6a;
+            background: #fff;
+          }
+
+          span {
+            // float: left;
+            margin-right: 20px;
+          }
+
+          .edit {
+            float: right;
+            font-size: 16px;
+            color: #0068d7;
+            cursor: pointer;
+            display: none;
+          }
+        }
+      }
+    }
+
+    // 订单商品
+    .order-product {
+      width: 100%;
+      overflow: hidden;
+
+      .product-total {
+        width: 100%;
+        font-size: 28px;
+        color: #4a5a6a;
+
+        .num {
+          margin-left:10px;
+          color: #cc0000;
+          font-size:20px;
+        }
+      }
+
+      &>ul {
+        width: 100%;
+        overflow: hidden;
+        float: left;
+        margin-top: 30px;
+
+
+      }
+
+      // <!-- 开具发票 -->
+      .Invoice {
+        width: 100%;
+        float: left;
+        padding-top: 20px;
+        font-size: 20px;
+        color: #4a5a6a;
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-right: 20px;
+
+          &:first-child {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4a5a6a;
+          }
+        }
+
+        .hook {
+          width: 30px;
+          height: 30px;
+          position: relative;
+          border: 1px solid #4a5a6a;
+          background: #fff;
+
+          img {
+            // width: 30px;
+            // height: 30px;
+            position: absolute;
+            top: 7px;
+            left: 1px;
+          }
+        }
+
+        .select-invoice {
+          font-size: 16px;
+          color: #0068d7;
+          cursor: pointer;
+
+          &:hover {
+            color: #ff6600;
+          }
+        }
+      }
+
+      // 选择发票的内容
+      .Invoice-content {
+        width: 100%;
+        overflow: hidden;
+
+        p {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 16px;
+          color: #4a5a6a;
+          margin-top:10px;
+        }
+      }
+
+      // 结算金额明细
+      .place-order {
+        width: 100%;
+        overflow: hidden;
+        margin: 30px 0;
+        border: 1px solid #cc0000;
+        box-sizing: border-box;
+        display:flex;
+        padding: 50px;
+        label{
+          margin-right:10px;
+          color:#333;
+        }
+        p{
+          margin-bottom:20px;
+          color:#cc0000;
+        }
+        .detail{
+          flex:1;
+          float:left;
+          .payWayList{
+            .el-radio.is-bordered{
+              padding:3px 17px 3px 10px;
+              height:auto;
+            }
+          }
+        }
+        .information {
+          flex:1;
+          white-space: nowrap;
+          overflow: hidden;
+          float: right;
+
+
+          .Payment-amount {
+            span {
+              font-weight: bold;
+              font-size: 20px;
+              color: #4a5a6a;
+            }
+
+            .num {
+              color: #cc0000;
+            }
+          }
+        }
+      }
+      .submit {
+        width: 200px;
+        border-radius: 5px;
+        line-height: 50px;
+        text-align: center;
+        color: #fff;
+        font-size: 18px;
+        background: #cc0000;
+        float: right;
+        cursor: pointer;
+        font-weight: bolder;
+        &:hover{
+          font-size:20px;
+          transition: all 0.2s;
+        }
+      }
+    }
+  }
+}
+
+// 查看详情
+.total-detail {
+  overflow: hidden;
+
+  div {
+    width: 100%;
+    overflow: hidden;
+
+    &>ul {
+      width: 100%;
+      overflow: hidden;
+
+      li {
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 30px;
+
+        p {
+          color: #4a5a6a;
+          font-size: 18px;
+
+          &:first-child {
+            color: #cc0000;
+          }
+
+          &:last-child {
+            span {
+              float: left;
+
+              &:last-child {
+                float: right;
+              }
+
+              span {
+                color: #cc0000;
+              }
+            }
+
+          }
+        }
+      }
+    }
+
+    &>p {
+      width: 100%;
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+
+      span {
+        float: right;
+        color: #cc0000;
+        font-weight: bold;
+      }
+    }
+  }
+
+}
+
+// 配送地址的模态框
+.dialog-ruleForm-address {
+  .dialo-footer{
+    width: 100%;
+    span{
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left:20px;
+        border-radius: 5px;
+        padding:6px 20px;
+        color:#0068d7;
+        border:1px solid #0068d7;
+        &:hover{
+          color:#0068d7;
+          border-color:#0068d7;
+          font-weight: bolder;
+        }
+    }
+    .canlebtn{
+        color: #aeaeae;
+        margin-top: 20px;
+        border-color:#aeaeae;
+    }
+}
+  // .el-dialog__body {
+  //   padding-bottom: 0px !important;
+  // }
+
+  // .el-dialog__headerbtn .el-dialog__close {
+  //   font-size: 28px;
+  // }
+
+  .title {
+    font-size: 22px;
+    color: #4a5a6a;
+    // font-weight: bold;
+  }
+
+  .demo-ruleForm-address {
+
+    // overflow: hidden;
+
+    // select {
+    //   width: 100%;
+    //   height: 60px;
+    //   line-height: 60px;
+    // }
+
+    .form-item {
+      width: 100%;
+      min-height: 60px;
+      line-height: 60px;
+      margin-bottom: 25px;
+      font-size:14px;
+      .area{
+        font-size:14px;
+        span{
+          color:#F56C6C;
+        }
+      }
+      &>label {
+        width: 190px;
+        font-size: 28px;
+        height: 60px;
+        line-height: 60px;
+        color: #6b6b6b;
+        float: left;
+        text-align: right;
+        padding-right: 10px;
+      }
+      .address-distpicker {
+        .distpicker-address-wrapper{
+          font-size:14px;
+        }
+
+      }
+
+    }
+  }
+
+  // .dialog-footer {
+  //   width: 100%;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+
+  //   span {
+  //     width: 40%;
+  //     margin-bottom: 0px;
+  //   }
+  // }
+}
+
+// 选择发票的模态框
+.dialog-ruleForm-Invoice {
+  // overflow: hidden;
+
+  // .dialog-invoice-footer {
+  //   width: 100%;
+  //   overflow: hidden;
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  //   justify-content: space-around;
+
+  //   span {
+  //     width: 300px;
+  //     height: 40px;
+  //     line-height: 40px;
+  //     background: #0068d7;
+  //     color: #fff;
+  //     font-size: 20px;
+  //     margin-top: 10px;
+
+  //     cursor: pointer;
+
+  //     &:hover {
+  //       color: #ff6600;
+  //     }
+
+  //     &:nth-child(2) {
+  //       background: #4a5a6a
+  //     }
+
+  //     &:nth-child(3) {
+  //       background: #aeaeae
+  //    }
+  //  }
+  // }
+  .dialog-invoice-footer{
+    width:50%;
+    margin:0 auto;
+    p{
+      height:40px;
+      line-height: 40px;
+      border:1px solid #4a5a6a;
+      margin-bottom:10px;
+      cursor: pointer;
+      &:hover{
+        color:peru!important;
+        font-weight:bolder;
+        font-size: 18px;
+        transition: all  0.2s;
+      }
+      &.addInvoiceInforma{
+        color:#4a5a6a;
+      }
+      &.InvoiceSubmit{
+        color:#fff;
+        background:#4a5a6a;
+      }
+      &.cancle{
+        background:#e3e3e3;
+        border-color:#999;
+      }
+    }
+    ///deep/ .addInvoiceInforma{
+    //  height:30px;
+    //  line-height:30px;
+    //  padding:0 30px;
+    //  border:1px solid #4A5A6A;
+    //  color:#4a5a6a;
+    //  margin-bottom:15px;
+    //}
+    ///deep/ .InvoiceSubmit{
+    //  background: #4a5a6a;
+    //  color:#fff;
+    //  height:30px;
+    //  line-height:30px;
+    //}
+  }
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  // 信息的列表
+  .list {
+    .InvoiceInforma-list {
+
+      .Invoiceitem {
+        width: 945px;
+        height: 202px;
+        border: 1px dashed #aeaeae;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        .defaultInvoiceMark{
+          position: absolute;
+          white-space: nowrap;
+          top:0;
+          .cont{
+            color:#fff;
+            position: absolute;
+            z-index:1;
+            font-size:12px;
+            top:5px;
+            transform: rotate(-45deg);
+          }
+          &:after{
+            content:"";
+            display: block;
+            position: absolute;
+            width:0;
+            height:0;
+            border:40px solid transparent;
+            border-top-color:green;
+            top:0;
+            left:-40px;
+          }
+        }
+        &>div {
+          width: 50%;
+          height: 100%;
+          display: flex;
+          // justify-content: space-between;
+          align-items: center;
+        }
+
+        .item-l {
+          margin-left: 30px;
+
+          // .item-l-text {
+          //     width: 92px;
+          //     border: 1px dashed #4a5a6a;
+          //     margin-right: 30px;
+          //     padding: 10px;
+          //     text-align: center;
+          //     background: rgb(174, 211, 245);
+          //     color: #4a5a6a;
+          //     font-size: 20px;
+          //     font-weight: bold;
+          // }
+
+          .item-l-name {
+            font-size: 20px;
+            color: #4a5a6a;
+            p {
+              margin-bottom: 10px;
+
+              &>span {
+                font-weight: bold;
+                height: 32px;
+                line-height: 32px;
+              }
+            }
+          }
+        }
+
+        .item-r {
+          flex-direction: column;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .item-r-t {
+            width: 100%;
+            float: left;
+
+            p {
+              font-size: 20px;
+              color: #4a5a6a;
+              margin-bottom: 10px;
+            }
+
+            span {
+              width: 116px;
+              height: 32px;
+              line-height: 32px;
+              text-align: center;
+              background: #4a5a6a;
+              color: #fff;
+              font-size: 18px;
+              float: right;
+              cursor: pointer;
+
+              &:hover {
+                color: peru;
+              }
+            }
+
+            .del {
+              background: #aeaeae;
+              margin: 0 20px;
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+}
+// 添加发票
+.Add-Invoice-shpoing{
+  overflow: hidden;
+  .title{
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      font-size: 30px;
+      text-align: center;
+  }
+  // .dialo-body{
+  //     overflow: hidden;
+  //     padding: 0 40px;
+  // }
+  // .el-dialog__body{
+  //     padding: 0;
+  // }
+  .dialo-footer{
+      width: 100%;
+      // display: flex;
+      // flex-direction: column;
+      // align-items: center;
+
+      span{
+          // width:500px ;
+          // height:50px ;
+          text-align: center;
+          font-size: 14px;
+          cursor: pointer;
+          margin-left:20px;
+          border-radius: 5px;
+          padding:6px 10px;
+          color:#0068d7;
+          border:1px solid #0068d7;
+          &:hover{
+            color:#0068d7;
+            border-color:#0068d7;
+            font-weight: bolder;
+          }
+      }
+      .cancel{
+          color: #aeaeae;
+          margin-top: 20px;
+          border-color:#aeaeae;
+      }
+  }
+}

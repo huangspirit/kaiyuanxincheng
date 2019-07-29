@@ -1,0 +1,30 @@
+ // 轮播图片
+ .TabImage {
+    //  overflow: hidden;
+     float: left;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     &>img {
+         width: 100%;
+         float: left;
+         margin-bottom:3%;
+     }
+     .shadow{
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+     }
+     &>.list {
+         width: 100%;
+         float: left;
+         display: flex;
+         justify-content: space-between;
+         img {
+             cursor: pointer;
+             border: 0 none;
+             &:hover {
+                 box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1)
+             }
+         }
+
+     }
+ }

@@ -1,0 +1,106 @@
+.SellerInvoiceManagement {
+  .OrderManagement{
+    //max-width:1350px;
+    width:100%;
+    background:#fff;
+    margin:30px auto;
+    padding:20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+.tab-list-t{
+  margin-bottom:2px;
+  ul{
+    float: left;
+   li{
+     float: left;
+     background:#e3e3e3;
+     padding:0 15px;
+     margin-right:1px;
+     line-height: 40px;
+     cursor: pointer;
+     &:hover{
+       background:#0d94fb;
+       color:#fff;
+     }
+     &.active{
+       background:#0d94fb;
+       color:#fff;
+     }
+   }
+  }
+}
+  .tab-list-con{
+    .tab-list-con-tit{
+      background:#e4e4e4;
+      line-height: 40px;
+      text-align: center;
+    }
+    .list-item{
+
+      .list-item-tit{
+        margin-top:15px;
+        height:50px;
+        line-height:50px;
+        background:#f2f2f2;
+        padding:0 15px;
+        .inform{
+          img{
+            height:35px;
+            vertical-align: middle;
+          }
+        }
+
+      span{
+          margin-right:15px;
+          &.time{
+            color:#999;
+          }
+
+        }
+      }
+      table{
+        tr{
+          border:1px solid #e3e3e3;
+          border-right:none;
+          td{
+            border-right:1px solid #e3e3e3;
+            text-align: center;
+            font-size:13px;
+          }
+          .goodsInfo{
+              &>div{
+                padding:10px;
+                display:flex;
+                justify-items: center;
+                img{
+                  height:45px;
+                  margin-right:10px;
+                  vertical-align: middle;
+                  border:1px solid #f3f3f3;
+                }
+                &>div{
+                  flex:1;
+                  display:flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+                  p{
+                    margin-bottom:10px;
+                    text-align:left;
+                    .num{
+                      color:#f40;
+                    }
+                  }
+                }
+              }
+          }
+          .invoceInfo{
+            text-align: left;
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
+}

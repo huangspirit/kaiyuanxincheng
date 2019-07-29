@@ -1,0 +1,156 @@
+.SubstituModelList {
+    width: 100%;
+    overflow: hidden;
+  
+    .substitu-model-list {
+        width: 100%;
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        &>li {
+            width: 100%;
+            // overflow: hidden;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            background: #fff;
+        
+            &>.product{
+                width: 100%;
+                overflow: hidden;
+                float: left;
+            }
+            .model-list-t {
+                width: 50%;
+                overflow: hidden;
+                float: left;
+                position: relative;
+
+                .TabImage {
+                  
+                    float: left;
+                    margin-right: 40px;
+                    margin-left: 40px
+                }
+
+                &>.text {
+                    width: 450px;
+                    overflow: hidden;
+                    float: left;
+                    margin-top: 5px;
+                    .query{
+                      margin: 10px 0;
+                      
+                    }
+                    .view-document{
+                      margin-left: 20px;
+                      cursor: pointer;
+                      &:hover{
+                        color: #0D98FF;
+                      }
+                    }
+                    .review{
+                        width: 100%;
+                        height: 500px;
+                    }
+                    &>.name {
+                        width:100%;
+                        overflow: hidden;
+                        white-space: nowrap;
+                      
+                        color: #CC0000;
+                        font-size: 28px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+
+                    &>.brand {
+                        margin-top: 10px;
+                        margin-bottom: 15px;
+                        cursor: pointer;
+                    }
+
+                    p {
+                        font-size: 20px;
+                        color: #4A5A6A;
+                        line-height: 30px;
+
+                        span {
+                            font-weight: bold;
+
+                        }
+
+                        span{
+                            &>.num {
+                            color: #CC0000
+                            }
+                        }
+
+                        &>.detail {
+                            float: right;
+                            font-size: 20px;
+                            color: #0D98FF;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: peru;
+                            }
+                        }
+                    }
+                }
+
+                .quote {
+                    min-width: 100px;
+                    position: absolute;
+                    top: 0;
+                    right: 0px;
+
+                    span {
+                        width: 100%;
+                        float: left;
+                        font-size: 36px;
+                        color: #CC0000;
+                        margin-bottom: 10px;
+                        font-weight: bold;
+                        text-align: right;
+                    }
+
+                    &>:last-child {
+                        font-size: 20px;
+                        color: #4A5A6A;
+
+                    }
+
+                }
+            }
+
+            .model-list-b {
+                width: 35%;
+                overflow: hidden;
+                padding-top: 75px;
+                float: right;
+                &>.ButtonIcon {
+                    float: left;
+                    margin-right: 10px;
+
+                    img {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                &>span {
+                    img {
+                        width: 41px;
+                        height: 41px;
+                        margin: 0 12px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

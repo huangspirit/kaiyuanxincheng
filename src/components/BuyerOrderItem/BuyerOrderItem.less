@@ -1,0 +1,383 @@
+.BuyerOrderItem{
+  .dialog-body{
+    margin-bottom:30px;
+    p{
+      width:70%;
+      white-space: nowrap;
+      margin:0 auto;
+      font-size:15px;
+      margin-bottom:15px;
+    }
+  }
+  .dialog-footer{
+    text-align: center;
+    button{
+      margin:10px auto!important;
+      /deep/ span{
+        width:100%!important;
+        line-height:30px;
+      }
+    }
+  }
+    .list-item {
+        // width: 1180px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        position: relative;
+
+        .list-item-tit {
+          // width: 1150px;
+
+          line-height: 45px;
+          padding: 0 20px;
+
+          background: #f2feff;
+          border-bottom: 1px solid #ddd;
+          .isMonth-con {
+            float: right;
+            span {
+              float: right;
+              color: #cc0000;
+            }
+            strong {
+              float: left;
+            }
+          }
+          span {
+
+            font-size:14px;
+            margin-right: 20px;
+            color: #a1a1a1;
+            strong {
+              color: #4a5a6a;
+            }
+          }
+
+          .phon {
+            color: #333;
+          }
+
+          .inform {
+            float: right;
+            color: #000;
+            font-weight: bold;
+
+            img {
+              width: 50px;
+              height: 50px;
+              border-radius: 25px;
+              vertical-align: middle;
+            }
+          }
+        }
+
+        table {
+          width: 100%;
+          background: #f2f2f2;
+          tr {
+            td {
+              font-size: 16px;
+              color: #4a5a6a;
+              border-right: 1px solid #ddd;
+              .upload-demo-uploadContract {
+                &>div {
+                  width: 100% !important;
+                }
+              }
+              padding-top: 5px;
+              padding-bottom: 5px;
+
+              span {
+                color: #a1a1a1;
+              }
+
+              font-size: 16px;
+
+              .num {
+                color: #cc0000;
+                font-weight: bold;
+              }
+              &:nth-child(1) {
+                .ImgE {
+                  float: left;
+                  width: 50px;
+                  height: 50px;
+                  img {
+                    width: 50px;
+                    height: 50px;
+                    float: left;
+                    margin-top: 20px;
+                    margin-right: 2px;
+                  }
+                }
+
+              }
+            }
+          }
+        }
+        .list-detail-bar {
+            width: 100%;
+            background: #f2f2f2;
+            height: 40px;
+            line-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            // color: #cc0000;
+            cursor: pointer;
+            border-top: 1px solid #ddd;
+
+            &:hover {
+              color: #0d98ff;
+            }
+          }
+
+      }
+    .payTypeMark{
+        height:15px;
+        vertical-align: middle;
+    }
+    .table{
+        text-align: center;
+        .operation{
+            .counttimewrap{
+                .counttime{
+                    margin-top:20px;
+                    font-size:13px;
+                    .timeStr{
+                        padding: 0 3px;
+                        margin:0 3px;
+                        color:#fff;
+                    }
+
+                }
+            }
+            .box-con{
+                display: flex;
+                margin:0 auto;
+                max-width:200px;
+                //justify-content: space-around;
+                 justify-content: space-between;
+                width:100%;
+                flex-wrap: wrap;
+                position: relative;
+                padding-top:5px;
+                .wrapbtn{
+                     margin-left:10px;
+                     margin-bottom: 15px;
+                    // margin-top:10px;
+                    // width:50%;
+                    text-align:center;
+                    white-space: nowrap;
+                    span{
+                        border:1px solid rgb(13, 148, 251);
+                        color:rgb(13, 152, 255);
+                        border-radius:3px;
+                        padding:2px 5px;
+                        font-size:14px;
+                        cursor: pointer;
+                        &:hover{
+                            color: #ff6600;
+                            font-size:15px;
+                            font-weight: bold;
+                            transition:all 0.2;
+                        }
+                        a{
+                            text-decoration: none;
+                            color:rgb(13, 152, 255);
+                            &:hover{
+                                color: #ff6600;
+                                font-size:15px;
+                                font-weight: bold;
+                                transition:all 0.2;
+                            }
+                        }
+                    }
+                }
+                    .wrapbtn.cancleBtn{
+                        width:50%;
+                        white-space: nowrap;
+                        span{
+                            border:1px solid #b3b3b3!important;
+                            color:#b3b3b3!important;
+
+                        }
+                    }
+                    &:after{
+                        content:"";
+                        display:block;
+                        flex:1;
+
+                    }
+                }
+
+        }
+        .receiverInfo{
+            &>div{
+                width:100%;
+                display: flex;
+                padding:2px 10px;
+                box-sizing: border-box;
+                p{
+                    flex:1;
+                    margin:0;
+                    text-align: left;
+                    word-break: break-all;
+                    overflow: hidden;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .list-detail{
+        padding:20px;
+        .secondTable{
+            background: #e0e0e0;
+            text-align: center;
+            border:1px solid #999;
+            thead{
+                th{
+                    line-height: 50px;
+                    font-size:14px;
+                    border-bottom:1px solid #999;
+                }
+            }
+            tbody{
+                td{
+                    border-bottom:1px solid #999;
+                    border-color:#999;
+                    // padding:10px;
+                    font-size:14px;
+                    height:100%;
+                    &.sellerInfo{
+                        background: #f2faff;
+                        .sellerInfowrap{
+                            position: relative;
+                            &:hover{
+                                .hisinfo{
+                                    display:block;
+                                }
+                            }
+
+                            .sellerImg{
+                                width:40px;
+                                border-radius: 100%;
+                                margin-right:10px;
+                                vertical-align: middle;
+                            }
+                            .hisinfo{
+                                border-radius: 5px;
+                                white-space: nowrap;
+                                text-align: left;
+                                display:none;
+                                position:absolute;
+                                background:rgb(74, 90, 106);
+                                color:#fff;
+                                padding:15px;
+                                right:100%;
+                                top:80%;
+
+                                &>p{
+                                    margin-bottom:10px;
+                                    &>span{
+                                        color:peru;
+                                        font-weight:bolder;
+                                        font-size:16px;
+                                    }
+                                }
+                                .sellername{
+                                    color:#fff;
+                                    font-size:16px;
+                                    font-weight: bolder;
+                                }
+                                .type {
+                                    font-size: 12px;
+                                    background: #aeaeae;
+                                    padding:0px 5px 2px;
+                                    vertical-align: top;
+                                    border-radius: 3px;
+                                    color:#fff;
+                                    margin-left:10px;
+                                    background: #ff6600;
+                                }
+                                // .type1{
+                                //     background: #0068db;
+                                // }
+                                // .type2{
+                                //     background: #ff6600;
+                                // }
+                                // .type3{
+                                //     background: #aeaeae;
+                                // }
+                            }
+                        }
+                    }
+
+                    .counttimewrap{
+                        .counttime{
+                            margin-top:20px;
+                            font-size:13px;
+                            .timeStr{
+                                padding: 0 3px;
+                                margin:0 3px;
+                                color:#fff;
+                            }
+
+                        }
+                    }
+
+                }
+              .goodsDetail{
+                  display:flex;
+                  text-align: left;
+                    img{
+                        display:block;
+                        width:30px;
+                        margin-right:10px;
+                    }
+              }
+              .operaBtn{
+                  display: flex;
+                  justify-content: space-between;
+                  .cancleReason{
+                        text-align: center;
+                        width:100%;
+                    }
+                  .wrapbtn{
+                    flex: 1;
+                    width: 50%;
+                    text-align: center;
+                    white-space: nowrap;
+                      .btn{
+                        border: 1px solid #0d94fb;
+                        color: #0d98ff;
+                        border-radius: 3px;
+                        padding: 2px 5px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        &:hover{
+                            font-size:15px;
+                            font-weight: bolder;
+                            transition: all 0.2s;
+                        }
+                      }
+                      .cancleBtn{
+                          border-color:#b3b3b3;
+                          color:#b3b3b3;
+                      }
+                    }
+                }
+            }
+        }
+    }
+    .cancleOrderReason{
+        .desc{
+            margin-top:10px;
+            font-size:14px;
+            color:peru;
+        }
+    }
+}

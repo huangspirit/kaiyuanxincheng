@@ -1,0 +1,60 @@
+body {
+    background: #f2f2f2;
+}
+
+.News {
+    width: 100%;
+    background: #fff;
+    margin-top: 90px;
+    &:after{
+        display:block;
+        content:"";
+        clear:both;
+    }
+    .sideMenu {
+        width: 336px;
+        float: left;
+        height: 1000px;
+        background: #4a5a6a;
+        font-size: 20px;
+        color: #fff;
+        padding-top: 40px;
+
+        .menu-tab {
+            width: 250px;
+            overflow: hidden;
+            padding: 0 43px;
+
+            li {
+                width: 100%;
+                float: left;
+                cursor: pointer;
+                margin-bottom: 70px;
+                &:hover{
+                    color: #4db4ff;
+                }
+                img {
+                    width: 47px;
+                    height: 47px;
+                    margin-right: 20px;
+                    vertical-align: middle;
+                }
+
+                span {
+                    width: 150px;
+                    font-weight: bold;
+                }
+                .news-num{
+                    float: right;
+                    width: 28px;
+                    height: 28px;
+                    line-height: 28px;
+                    text-align: center;
+                    border-radius: 14px;
+                    background: red;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

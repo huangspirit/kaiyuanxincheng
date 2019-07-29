@@ -1,0 +1,59 @@
+.Pagination {
+
+  // 分页
+  &>.el-pagination {
+
+    // height: 60px;
+    margin: 0 auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+
+    .btn-prev,
+    li,
+    .btn-next {
+      // width: 60px;
+      // height: 60px;
+      // line-height: 60px;
+      text-align: center;
+      border: 1px solid #4A5A6A;
+      font-size:14px;
+      background: #fff;
+      border-radius: 5px;
+    }
+
+    .el-pagination__jump {
+      // width: 60px;
+      // height: 60px;
+      // line-height: 60px;
+      font-size: 14px;
+    }
+
+    .el-pager .more::before {
+      // line-height: 60px;
+    }
+
+    .el-pager li.active+li {
+      border-left: 1px solid #4A5A6A;
+    }
+
+    .el-pagination__editor.el-input .el-input__inner {
+      height: 26px;
+      // width: 80px;
+      font-size: 14px;
+     
+      // line-height: 60px;
+      border: 1px solid #4A5A6A;
+    }
+  }
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #4A5A6A !important;
+
+}
+
+.el-step__title.is-wait,.el-step__description.is-process{
+  color: #4A5A6A !important;
+  font-weight: bold;
+}

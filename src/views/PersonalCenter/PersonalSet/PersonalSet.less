@@ -1,0 +1,81 @@
+// 个人设置
+.PersonalSet {
+  width: 100%;
+  overflow: hidden;
+  max-width:1350px;
+  margin:0 auto;
+
+  // 用户名和头像
+  .user {
+    padding:30px;
+    background: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .username {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .head-portrait {
+        width: 100px;
+      }
+      .info{
+        display: flex;
+        height: 80px;
+        justify-content: space-between;
+        flex-direction: column;
+        font-size: 20px;
+        margin-left:40px;
+        .name{
+          font-weight: bolder;
+        }
+        .type{
+          color:#fff;
+          background:#f60;
+          padding:3px 10px;
+          border-radius: 4px;
+          font-size:14px;
+
+        }
+      }
+    }
+  }
+
+  // 个人信息设置
+  .informa-set {
+    padding: 40px 30px;
+    background: #fff;
+    li {
+      margin-bottom:30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      color: #4A5A6A;
+      .red{
+        color: #cc0000;
+        margin-right: 15px;
+      }
+      img{
+        width: 30px;
+        vertical-align: middle;
+        margin-right:10px;
+      }
+      .detailAddress{
+        span{
+          margin-right:20px;
+        }
+      }
+      &>span{
+        cursor: pointer;
+        color: #0068B7;
+        &:hover{
+          font-size:17px;
+          font-weight: bold;
+          transition: all 0.2s;
+        }
+      }
+    }
+  }
+}

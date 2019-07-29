@@ -1,0 +1,146 @@
+.SellerIssuesProduct {
+  background:#fff;
+  padding: 20px;
+  margin:20px auto;
+  position: relative;
+  
+  .el-form{
+    padding: 40px;
+    max-width:1000px;
+    margin:20px auto;
+    width:80%;
+    box-shadow: 0 0 10px 10px #e3e3e3;
+    // background:#f7f7f7;
+    .setitem{
+        display: flex;
+        .label{
+          font-size: 14px;
+          color: #606266;
+          width:180px;
+          text-align:right;
+          padding-right:15px;
+          box-sizing:border-box;
+          .desc{
+            color: #ff6600;
+            font-size:12px;
+          }
+          .requireMark{
+            color: #F56C6C;
+            margin-right: 4px;
+          }
+        }
+        .el-form-item{
+          flex:1;
+          position: relative;
+          
+          // .el-form-item__content{
+          //   margin:0;
+          // }
+        }
+    }
+    .el-form-item{
+      position: relative;
+      font-size:16px;
+      .select-product-list{
+        position: absolute;
+        top:0;
+        right:-20px;
+        box-shadow: 0 0 5px 5px #4a5a6a;
+        background:#fff;
+        z-index:1;
+        padding:15px;
+        .detail{
+          display:flex;
+          .ImgE{
+            border:1px solid #e3e3e3;
+            margin-right:10px;
+            img{
+              vertical-align: middle;
+            }
+          }
+          .num{
+            color: #cc0000;
+          }
+        }
+        
+      }
+      .symbol{
+        position: relative;
+        height:148px;
+        width:148px;
+        overflow: hidden;
+        margin-left:10px;
+        border-radius: 5px;
+        img{
+          width:100%;
+          height:100%;
+        }
+        &:after{
+          content:"样张";
+          position: absolute;
+          width:100%;
+          height:100%;
+          background:rgba(0,0,0,0.5);
+          color:#fff;
+          text-align: center;
+          line-height: 148px;
+          top:0;
+          left: 0;
+        }
+      }
+      .desc{
+        position: absolute;
+        top:40px;
+        color:#ff6600;
+        font-size:12px;
+        line-height:1;
+      }
+    }
+    .form-item{
+      margin-top:30px;
+      .stepped-price{
+        display:flex;
+        margin-bottom:10px;
+        // justify-content: space-between;
+        .steppedItem{
+            white-space: nowrap;
+            margin-right: 20px;
+            display: flex;
+        }
+      }
+      .add-stepped-price{
+        padding-left:40px;
+        .add,.reset{
+          padding:1px 10px;
+          background:#4a5a6a;
+          margin:20px;
+          margin-left:0px;
+          color:#fff;
+          cursor: pointer;
+        }
+        .reset{
+          background:#aeaeae;
+        }
+      }
+    }
+  }
+.form-item-footer{
+  text-align: center;
+  .submit{
+      background: #4a5a6a;
+      color: #FFF;
+      width: 60%;
+      text-align: center;
+     
+      height: 60px;
+      line-height:62px ;
+      margin:0 auto;
+      &:hover{
+        color:peru;
+        font-weight: bolder;
+        font-size:18px;
+        transition: all 0.2s;
+      }
+      }
+    }
+}

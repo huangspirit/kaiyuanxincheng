@@ -1,0 +1,112 @@
+.OrderManagement {
+  background: #fff;
+  padding: 20px;
+  min-height: 800px;
+  margin-top:20px;
+  .tankuang{
+    /deep/ .el-dialog{
+      min-width:900px;
+    }
+  }
+  .tab-list {
+    // 一级分类
+    .tab-list-t {
+      &>ul {
+        float: left;
+        li {
+          line-height:40px;
+          padding:0 10px;
+          text-align: center;
+          background: #f2f2f2;
+          font-size: 16px;
+          color: #4a5a6a;
+          margin-right: 1px;
+          float: left;
+          cursor: pointer;
+          &:hover {
+            color: #ff6600;
+          }
+        }
+
+        .active {
+          background: #0068B7;
+          color: #fff;
+        }
+
+      }
+
+      &>.all-time {
+        float: left;
+        margin-left: 20px;
+        font-size: 16px;
+        color: #4a5a6a;
+        cursor: pointer;
+        height: 40px;
+        line-height: 40px;
+
+        .el-dropdown-menu__item {
+          background: red !important;
+        }
+
+        .el-dropdown-item {
+          font-size: 20px;
+          color: #4a5a6a;
+        }
+      }
+    }
+
+    // 二级分类
+    .tab-list-b {
+      width: 100%;
+
+      ul {
+        li {
+          width: 100%;
+          line-height: 27px;
+          padding: 10px 0;
+          span {
+            height: 27px;
+            text-align: center;
+            border-right: 1px solid #4a5a6a;
+            font-size: 14px;
+            color: #4a5a6a;
+            padding:0 25px;
+            &:last-child {
+              border-right: 0;
+            }
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    // 列表的内容
+    .tab-list-con {
+      width: 100%;
+      overflow: hidden;
+
+      .tab-list-con-tit {
+        width: 100%;
+        background: #e4e4e4;
+        height: 50px;
+        margin-bottom: 10px;
+
+        &>span {
+          float: left;
+          height: 50px;
+          line-height: 50px;
+          font-size: 16px;
+          color: #4a5a6a;
+          text-align: center;
+          font-weight: bold;
+        }
+      }
+
+
+    }}
+}
+.settankuang{
+  /deep/.el-form-item{
+    margin-bottom:0;
+  }
+}

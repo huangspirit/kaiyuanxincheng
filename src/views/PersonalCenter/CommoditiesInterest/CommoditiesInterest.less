@@ -1,0 +1,152 @@
+.CommoditiesInterest {
+    margin-top:20px;
+    background: #fff;
+    padding: 20px;
+    // 切换
+    .tab-list {
+        height: 36px;
+        margin-bottom: 30px;
+
+        .active {
+
+            border: 3px solid #0068B7;
+
+            .select {
+                display: block;
+                height: 38px;
+                width: 38px;
+                background: #0068B7;
+                position: relative;
+                float: right;
+                top: -1px;
+                right: -1px;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -10px;
+                    margin-left: -10px;
+                    display: block;
+                    float: left;
+                }
+            }
+        }
+
+        &>li {
+            width: 200px;
+            height: 36px;
+            line-height: 36px;
+            font-size: 18px;
+            color: #4A5A6A;
+            float: left;
+            cursor: pointer;
+
+            &:hover {
+                color: #0068B7
+            }
+
+            .img-1 {
+
+                height: 20px;
+                margin-left: 36px;
+                margin-right: 6px;
+                vertical-align: middle
+            }
+
+            .text {
+                display: inline-block;
+                height: 36px;
+                line-height: 36px;
+            }
+
+            .select {
+                display: none
+            }
+        }
+    }
+
+    // 商品列表
+    .interes-list {
+        li {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 20px;
+            display:flex;
+            .TabImage {
+                float: left;
+                margin-right: 20px;
+            }
+
+            &>.text {
+                &>.name {
+                    color: #CC0000;
+                    cursor: pointer;
+                }
+
+                &>.brand {
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                    cursor: pointer;
+                }
+
+                p {
+                    font-size: 20px;
+                    color: #4A5A6A;
+                    line-height: 30px;
+
+                    &>.num {
+                        color: #CC0000
+                    }
+                }
+
+                .xh {
+                    height: 60px;
+                    overflow: hidden;
+                }
+            }
+
+            // 收藏关注
+            .operation {
+                width: 400px;
+                float: right;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                &>div {
+                    width: 175px;
+                    height: 130px;
+                    padding: 30px 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-direction: column;
+
+                }
+
+                .ButtonIcon {
+                    img {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                .focus-collection {
+                    width: 115px;
+                    flex-direction: row;
+                    padding: 30px;
+                    img {
+                        width: 41px;
+                        height: 41px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+
+}

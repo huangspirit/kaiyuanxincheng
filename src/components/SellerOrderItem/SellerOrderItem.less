@@ -1,0 +1,100 @@
+// 列表的内容
+        .list-item {
+          margin-bottom: 20px;
+          border: 1px solid #ddd;
+          position: relative;
+  
+          .list-item-tit {
+            line-height: 50px;
+            padding: 0 20px;
+            background: #f2faff;
+            border-bottom: 1px solid #ddd;
+            &>span{
+                margin-right:10px;
+            }
+  
+          }
+          table {
+            tr {
+              td {
+                font-size: 16px;
+                color: #4a5a6a;
+                border-right: 1px solid #ddd;
+                // border-bottom: 1px solid #ddd;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                text-align: center;
+                background:#f2f2f2;
+                .price{
+                    color:#f40;
+                }
+                .countTime{
+                    margin-top:5px;
+                    font-size:14px;
+                    &/deep/.timeStr{
+                        color:#F40;
+                        background:#fff;
+                    }
+                }
+                .orderStatus{
+                    color:#f40;
+                }
+                
+              }
+              .wrapbtn{
+                    &>div{
+                        display:flex;
+                        flex-wrap: wrap;
+                        max-width:180px;
+                        margin:0 auto;
+                        margin-bottom:10px;
+                    }
+                }
+              .goodsInfo{
+                display:flex;
+                .detail{
+                    margin-left:5px;
+                    flex: 1;
+                    text-align: left;
+                    label{
+                        font-weight: bolder;
+                    }
+                    .goodsname{
+                        color:#f40
+                    }
+                }
+              }
+            }
+          }
+        }
+      
+  // 发货PI的模态框
+  .logistics-PI {
+    .avatar-uploader .el-upload {
+      border: 1px dashed #4a5a6a;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: #efefef;
+    }
+  
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+  
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 102px;
+      height: 102px;
+      line-height: 102px;
+      text-align: center;
+    }
+  
+    .avatar {
+      width: 102px;
+      height: 102px;
+      display: block;
+    }
+  }

@@ -1,0 +1,312 @@
+// .header{
+//     display: none
+// }
+// #container{
+//     margin-top: 0 !important;
+// }
+.Login {
+    width: 100%;
+    height: 800px;
+    z-index: 200;
+    .form {
+        width: 529px;
+        overflow: hidden;
+        padding: 30px 60px;
+        position: absolute;
+        top: 200px;
+        left: 50%;
+        margin-left: -325px;
+        background: #fff;
+        border-radius: 10px;
+
+        .title {
+            width: 100%;
+            color: #0068Db;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            float: left;
+        }
+
+        .type {
+            width: 100%;
+            height: 27px;
+            float: left;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0068Db;
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            color: #4a5a6a;
+
+            span {
+                cursor: pointer;
+
+                &:hover {
+                    color: #0068Db;
+                }
+            }
+
+            .active {
+                color: #0068Db;
+                font-weight: bold
+            }
+        }
+
+        .form-con {
+            width: 100%;
+            float: left;
+            overflow: hidden;
+            font-size: 20px;
+            color: #4a5a6a;
+
+            &>.code {
+                width: 100%;
+                overflow: hidden;
+                display: flex;
+                justify-content: space-around;
+
+                .pho {
+                    position: relative;
+                    top: 200px;
+
+                }
+
+                .cod {
+                    position: relative;
+                    left: 140px;
+                }
+
+                &:hover .pho {
+                    animation: codefirst 0.5s;
+                    animation-fill-mode: forwards;
+                }
+
+                &:hover .cod {
+                    animation: codefirst2 0.5s;
+                    animation-fill-mode: forwards;
+                }
+
+                @keyframes codefirst {
+                    from {
+                        top: 200px;
+                    }
+
+                    to {
+                        top: 0px;
+                    }
+                }
+
+                @keyframes codefirst2 {
+                    from {
+                        left: 200px;
+                    }
+
+                    to {
+                        left: 0px;
+                    }
+                }
+            }
+
+
+        }
+
+        .qq-wx {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            span {
+                cursor: pointer;
+
+                img {
+                    width: 138px;
+                    height: 69px;
+                }
+            }
+
+        }
+
+    }
+    .bind-phone{
+        position: relative;
+        .close-span{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            img{
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+    .form-con-list {
+        width: 100%;
+        overflow: hidden;
+        font-size: 20px;
+
+        &>div {
+            width: 100%;
+            margin-bottom: 12px;
+            overflow: hidden;
+
+            label {
+                height: 47px;
+                line-height: 47px;
+                float: left;
+            }
+        }
+
+        .tel {
+            input {
+                width: 407px;
+                height: 35px;
+                padding: 5px 0;
+                line-height: 35px;
+                padding-left: 15px;
+                font-size: 20px;
+                float: left;
+                margin-left: 40px;
+            }
+        }
+
+        .code {
+            margin-bottom: 20px;
+
+            input {
+                width: 277px;
+                height: 35px;
+                padding: 5px 0;
+                line-height: 35px;
+                padding-left: 15px;
+                float: left;
+                margin-left: 40px;
+                font-size: 20px;
+            }
+
+            span {
+                width: 130px;
+                height: 49px;
+                float: left;
+                text-align: center;
+                line-height: 49px; 
+                color: #fff;
+                cursor: pointer;
+                &:hover {
+                    color: peru
+                }
+            }
+            .spa{
+                background: #0068Db;
+            }
+            .spb{
+                background: #4a5a6a;
+                cursor: not-allowed;
+            }
+        }
+
+        .submit-login {
+            height: 52px;
+            line-height: 52px;
+            background: #4a5a6a;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 28px;
+
+            cursor: pointer;
+
+            &:hover {
+                color: peru
+            }
+        }
+    }
+    .timer{
+        margin-bottom:20px;
+        margin-left:15px;
+        span{
+            font-weight: bolder;
+            color:peru;
+            font-size:20px;
+            padding:0 5px;
+        }
+    }
+    .iframe {
+        .el-dialog {
+            height: 500px;
+            margin-top: 210px !important;
+            overflow-y: hidden
+        }
+
+        .el-dialog__body {
+            height: 400px;
+            padding: 0;
+
+            body {
+                overflow-y: hidden
+            }
+        }
+    }
+    .bindPHoneDialog{
+        .el-dialog {
+            height:350px;
+            width: 400px;
+            overflow-y: hidden;
+            padding: 20px 50px;
+        }
+        .el-dialog__body {
+            height: 67px;
+            font-size: 20px;
+            color: #4a5a6a
+        }
+        .title{
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 24px;
+            color: #4a5a6a;
+        }
+        .el-dialog__header{
+            padding: 0;
+        }
+        .el-dialog__headerbtn .el-dialog__close{
+            font-size: 25px;
+            color: #4a5a6a;
+        }
+        .dialog-footer{
+            width: 100%;
+        }
+        .close{
+            width: 100%;
+            height:50px ;
+            line-height: 50px;
+            text-align: center;
+            background: #f2f2f2;
+            color: #4a5a6a;
+            font-size: 20px;
+            cursor: pointer;
+            &:hover{
+                color: peru;
+            }
+        }
+        .sure{
+            width: 100%;
+            height:50px ;
+            line-height: 50px;
+            text-align: center;
+            background: #4a5a6a;
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            &:hover{
+                color: peru;
+            }
+        }
+    }
+}

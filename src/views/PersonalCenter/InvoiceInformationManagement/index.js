@@ -1,0 +1,2 @@
+import InvoiceInformationManagement from './InvoiceInformationManagement.vue'
+export default InvoiceInformationManagement

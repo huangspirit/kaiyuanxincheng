@@ -1,0 +1,31 @@
+.ShoppingCart {
+    width: 95%;
+    max-width:1350px;
+    min-width:1080px;
+    
+    box-sizing: border-box;
+    margin:90px auto;
+    background: #fff;
+    padding-top: 30px;
+
+    // 步骤
+    .ShoppingCart-steps {
+        width: 100%;
+        overflow: hidden;
+
+        .el-steps {
+            width: 70%;
+            float: right;
+            margin-right:-5%;
+
+            .is-horizontal .el-step__line {
+                height: 10px;
+                top: 8px;
+            }
+        }
+        .el-step__line-inner{
+            border-width: 5px !important
+        }
+    }
+
+}

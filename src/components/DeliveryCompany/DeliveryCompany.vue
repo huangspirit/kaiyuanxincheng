@@ -1,0 +1,88 @@
+<template>
+    <div class="DeliveryCompany">
+        <div class="alphabet clear">
+            <p v-for="item in alphabet" :key="item" :class="{'active':currentAlphabet==item}" @click="currentAlphabet=item">{{item}}</p>
+        </div>
+        <ul class="list">
+            <template v-if="currentList.length">
+                <li v-for="item in currentList" :key="item">{{item.name}}</li>
+            </template>
+
+        </ul>
+    </div>
+</template>
+<style scoped lang="less">
+    .DeliveryCompany{
+        .alphabet{
+            display: flex;
+            width:100%;
+            margin-top:10px;
+            p{
+                flex:1;
+                background:#4a5a6a;
+                color:#fff;
+                text-align: center;
+                margin-right:5px;
+                line-height:28px;
+                cursor: pointer;
+                font-size:12px;
+                &:hover{
+                    color:peru;
+                    font-weight:bolder;
+                }
+                &.active{
+                    background: #0d94fb;
+                    color:#fff;
+                }
+            }
+
+        }
+        .list{
+            display:flex;
+            margin-top:15px;
+            li{
+                padding:3px 10px;
+                border:1px solid #e3e3e3;
+                line-height:1;
+                margin-right:8px;
+                border-radius: 3px;
+            }
+        }
+    }
+</style>
+<script>
+    import {mapActions} from 'vuex';
+    export default {
+        data(){
+            return{
+                alphabet:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+                currentAlphabet:"",
+                currentList:[]
+            }
+        },
+        computed:{
+
+        },
+        watch:{
+            currentAlphabet(val){
+                this.getDeliveryCompany()
+            }
+        },
+        mounted(){
+            this.currentAlphabet="A";
+        },
+        methods:{
+            ...mapActions("Common",[
+                "GetDeliveryCompany"
+            ]),
+            getDeliveryCompany(){
+                    //未请求过则不再请求
+                    this.GetDeliveryCompany({"pfrixName":this.currentAlphabet.toLowerCase()}).then(res=>{
+                        console.log(res)
+                        this.currentList=res;
+                    })
+
+            }
+        }
+    }
+</script>

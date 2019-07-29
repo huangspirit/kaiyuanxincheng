@@ -1,0 +1,329 @@
+// 卖家账单中心
+.SellerBillCenter {
+  padding: 20px;
+  background: #fff;
+  min-height: 500px;
+  .SellerBillCenter-total {
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed #4a5a6a;
+
+    .SellerBillCenter-total-l {
+      width: 665px;
+      float: left;
+
+      p {
+        margin-bottom: 10px;
+
+        &:first-child {
+          span {
+            font-size: 28px;
+            font-weight: bold;
+
+            &:first-child {
+              color: #4a5a6a;
+            }
+
+            &:first-child {
+              color: #e84f47;
+            }
+          }
+        }
+
+        &:last-child {
+          span {
+            font-size: 20px;
+            color: #4a5a6a;
+            float: left;
+          }
+        }
+      }
+    }
+
+    .SellerBillCenter-total-r {
+      float: right;
+      width: 500px;
+
+      p {
+        float: right;
+        margin-bottom: 10px;
+
+        &:first-child {
+          span {
+            font-size: 20px;
+            color: #4a5a6a;
+            float: right;
+
+            &:first-child {
+              width: 145px;
+              height: 36px;
+              line-height: 36px;
+              text-align: center;
+              background: #0068db;
+              color: #fff;
+              margin-left: 40px;
+            }
+          }
+        }
+
+        &:last-child {
+          color: #409eff;
+          font-size: 20px;
+          float: right;
+
+          span {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+
+        }
+      }
+    }
+  }
+
+  .SellerBillCenter-detail {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 40px;
+
+    .detail-tit {
+      width: 100%;
+
+      span {
+        float: left;
+        font-size: 20px;
+        color: #4a5a6a;
+
+        &:nth-child(2) {
+          color: #868686;
+        }
+      }
+    }
+
+    &>table {
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+
+      .num {
+        color: #e84f47
+      }
+
+      thead {
+        border-right: 1px solid #ddd;
+      }
+
+      p {
+        text-align: center;
+      }
+
+      th {
+        height: 60px;
+        font-size: 20px;
+        background: #f2f2f2;
+        color: #4a5a6a;
+        border-bottom: 1px solid #ddd;
+      }
+
+      td {
+        font-size: 20px;
+        color: #4a5a6a;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+
+        &>p {
+          color: #4a5a6a;
+          font-weight: bold;
+          width: 100%;
+          text-align: center;
+
+        }
+
+        &>span {
+         color: #a1a1a1;
+         font-size: 16px;
+         width: 100%;
+         text-align: center
+
+        }
+
+        &:nth-child(1) {
+          font-size: 16px;
+
+          p {
+            text-align: left;
+          }
+
+          img {
+            width: 60px;
+            height: 60px;
+            float: left;
+          }
+        }
+      }
+    }
+
+    .total-num {
+      width: 1158px;
+      height: 66px;
+      float: left;
+      border: 1px solid #ddd;
+      border-top: none;
+      line-height: 66px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        color: #363636;
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 20px;
+
+        .num {
+          color: #e84f47;
+        }
+
+        .num2 {
+          color: #009900
+        }
+      }
+    }
+  }
+
+
+}
+
+// 打款明细
+.Details-payment {
+  width: 300px;
+  color: #4a5a6a;
+  font-size: 14px;
+  border: 1px solid #000;
+  max-height: 250px;
+  overflow-y: auto;
+
+  ul {
+    width: 100%;
+    overflow: hidden;
+
+    li {
+      width: 100%;
+      overflow: hidden;
+      border-bottom: 1px dashed #4a5a6a;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      div {
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .num {
+        color: #e84f47 !important;
+      }
+    }
+  }
+
+}
+
+// 账单说明
+.Statement-accounts {
+  width: 300px;
+  height: 200px;
+
+  div {
+    color: #ff6b00;
+    font-size: 18px;
+
+    h4 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold
+    }
+
+    p {
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+}
+
+// 编号详情
+.Order-details {
+  width: 320px;
+  overflow-y: scroll;
+  max-height: 500px;
+  border: 1px solid #000;
+
+  div {
+    p {
+      color: #4a5a6a;
+      margin-bottom: 30px;
+      font-size: 14px;
+
+      .num {
+        color: #e84f47;
+        font-weight: bold;
+      }
+    }
+
+    ul {
+      width: 100%;
+      overflow: hidden;
+
+      li {
+        width: 100%;
+        overflow: hidden;
+        padding-top: 20px;
+        border-top: 1px dashed #4a5a6a;
+
+        img {
+          width: 100px;
+          height: 100px;
+          float: left;
+        }
+
+        &>div {
+          width: 150px;
+          overflow: hidden;
+          float: left;
+
+          p {
+            float: left;
+            margin-bottom: 20px;
+            color: #aeaeae;
+            ;
+          }
+
+          .num {
+            color: #e84f47;
+          }
+        }
+
+        &>p {
+          width: 100%;
+          float: left;
+
+          span {
+            float: left;
+            margin-left: 10px;
+            font-size: 14px;
+
+            span {
+              float: left;
+            }
+          }
+
+          .num {
+            color: #e84f47
+          }
+        }
+      }
+    }
+  }
+}

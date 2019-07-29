@@ -1,0 +1,171 @@
+.ShoppingCartSelect {
+
+    // 购物车的内容
+    .ShoppingCart-con {
+        width: 1350px;
+        margin: 0 auto;
+
+        // 购物车搜索
+        .ShoppingCart-title {
+            width: 100%;
+            height: 90px;
+            line-height: 90px;
+
+            .total {
+                float: left;
+                font-size: 36px;
+                color: #4a5a6a;
+
+                span {
+                    float: left;
+                }
+
+                .num {
+                    color: #cc0000;
+                    font-size: 28px;
+                }
+
+                img {
+                    float: left;
+                    width: 57px;
+                    height: 48px;
+                    margin-right: 10px;
+                    position: relative;
+                    top: 20px;
+                }
+            }
+
+            .SearchInput {
+                float: right;
+                margin-top: 20px;
+            }
+        }
+
+        // 购物车列表
+        .ShoppingCart-list {
+            width: 100%;
+            overflow: hidden;
+            padding-top: 40px;
+
+            .ShoppingCart-list-tit {
+                float: left;
+                width: 1380px;
+                height: 70px;
+                line-height: 70px;
+                background: #f2f2f2;
+                font-size: 28px;
+                color: #4a5a6a;
+                padding: 0 20px;
+
+                span {
+                    float: left;
+                    text-align: center
+                }
+
+                &>.allcheckbox {
+                    text-align: left
+                }
+
+            }
+
+            .ShoppingCart-list-con {
+                width: 100%;
+                overflow: hidden;
+                float: left;
+
+
+            }
+        }
+
+    }
+
+    // 多选框的样式
+    input[type='checkbox'] {
+        width: 30px;
+        height: 30px;
+        background-color: #fff;
+        -webkit-appearance: none;
+        border: 1px solid #4a5a6a;
+        border-radius: 2px;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        top: 4px;
+        margin-right: 20px;
+    }
+
+    .checkBox input[type=checkbox]:checked {
+        background: url("../../../assets/image/ShoppingCart/_u25422.png") no-repeat center;
+    }
+}
+
+
+// 底部固定多选
+.fixed-all {
+    width: 100%;
+    height: 104px;
+    background: #333;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+
+    .fixed-l {
+        width: 567px;
+        height: 40px;
+        padding: 32px 0;
+        padding-left: 30px;
+        float: left;
+
+        span {
+            float: left;
+            margin-right: 40px;
+            font-size: 28px;
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+
+    .fixed-r {
+        width: 600px;
+        height: 104px;
+        float: right;
+
+        &>div {
+            width: 400px;
+            height: 80px;
+            padding: 12px 0;
+            float: left;
+
+            &>.num {
+                font-size: 20px;
+                color: #fff;
+
+                span {
+                    color: #cc0000;
+                    cursor: pointer;
+                }
+            }
+
+            &>.price {
+                font-size: 28px;
+                color: #fff;
+
+                span {
+                    color: #cc0000;
+                }
+            }
+        }
+
+        &>span {
+            width: 200px;
+            height: 104px;
+            background: #cc0000;
+            font-size: 36px;
+            color: #fff;
+            text-align: center;
+            line-height: 104px;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,163 @@
+.SellerIssuesSyndication {
+
+    width: 1182px;
+    overflow: hidden;
+    background: #fff;
+    padding: 20px;
+
+}
+
+.title {
+    font-size: 28px;
+    color: #4A5A6A;
+    margin-bottom: 100px;
+}
+
+.form-list {
+    width: 820px;
+    overflow: hidden;
+    margin: 0 auto;
+
+    &>div {
+        width: 100%;
+        float: left;
+        margin-bottom: 60px;
+        font-size: 28px;
+        color: #4A5A6A;
+        overflow: hidden;
+
+
+        label {
+            width: 112px;
+            height: 60px;
+            line-height: 60px;
+            text-align: right;
+            float: left;
+        }
+
+        input,
+        select {
+            font-size: 28px;
+            width: 660px;
+            height: 46px;
+
+            line-height: 50px;
+            padding: 5px 15px;
+
+            border-radius: 3px;
+            float: right;
+        }
+
+        input {
+            border: 2px solid #4A5A6A;
+        }
+
+        select {
+            width: 690px;
+            height: 60px;
+            line-height: 60px;
+        }
+    }
+
+    // 预计交期
+    .date {
+        &>div {
+            width: 690px;
+            float: right;
+
+            select {
+                width: 194px;
+                margin-right: 11px;
+                float: left;
+
+            }
+
+            &>:nth-child(1) {
+                width: 280px;
+            }
+
+            &>:nth-child(3) {
+                margin-right: 0;
+            }
+        }
+
+
+    }
+
+    // 发布商品
+    .release {
+        width: 100%;
+        overflow: hidden;
+        margin-top: 100px;
+        margin-bottom: 10px;
+
+        span {
+            width: 700px;
+            height: 92px;
+            line-height: 92px;
+            text-align: center;
+            font-size: 28px;
+            color: #fff;
+            background: #0068b7;
+            float: right;
+        }
+    }
+
+    // 预览
+    .preview {
+        width: 100%;
+        overflow: hidden;
+
+        span {
+            width: 700px;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            font-size: 28px;
+            color: #0068b7;
+            float: right;
+
+            img {
+                width: 42px;
+                height: 42px;
+                vertical-align: middle
+            }
+        }
+    }
+
+    .small {
+        font-size: 20px;
+        color: #AEAEAE;
+        float: left;
+        padding-left: 10px;
+        margin-top: 10px;
+    }
+
+    // 结束时间
+    .end-time {
+        &>div {
+
+            float: right;
+
+            select {
+                width: 109px;
+                font-size: 20px;
+                float: left;
+                margin-right: 12px;
+
+            }
+
+            &>:nth-child(1) {
+                width: 180px;
+            }
+
+            span {
+                float: left;
+                height: 100%;
+                line-height: 60px;
+                text-align: center;
+                margin-right: 11px
+            }
+        }
+    }
+}

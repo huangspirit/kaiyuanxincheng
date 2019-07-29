@@ -1,0 +1,256 @@
+// 卖家中心
+.SellerCenter {
+  width: 1143px;
+  overflow: hidden;
+  background: #fff;
+  padding: 20px;
+  //个人信息
+  .personal-information {
+    width: 100%;
+    height: 168px;
+    float: left;
+
+    .personal-information-l {
+      width: 260px;
+      height: 128px;
+      padding: 20px;
+      border-radius: 4px;
+      border: 3px solid #4a5a6a;
+      color: #4a5a6a;
+      float: left;
+      display: flex;
+      justify-content: space-between;
+
+      &>.img {
+        width: 100px;
+        height: 128px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        &>span {
+          width: 96px;
+          height: 25px;
+          line-height: 25px;
+          text-align: center;
+          font-size: 12px;
+          color: #fff;
+          background: #4a5a6a;
+        }
+      }
+
+      &>.text {
+        width: 140px;
+        height: 128px;
+
+        &>span {
+          font-size: 18px;
+          color: #4a5a6a;
+          float: left;
+        }
+
+        .name {
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .rz {
+          width: 75px;
+          height: 16px;
+          line-height: 16px;
+          text-align: center;
+          font-size: 12px;
+          background: rgb(97, 94, 94);
+          margin-bottom: 10px;
+          color: #fff;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .personal-information-r {
+      width: 822px;
+      height: 168px;
+      float: left;
+      padding-left: 15px;
+      border-bottom: 3px solid #4a5a6a;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+
+      &>.tit {
+        width: 100%;
+        font-size: 28px;
+        font-weight: bold;
+        color: #4a5a6a;
+      }
+
+      .certifica-lines {
+        width: 100%;
+        height: 40px;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        img {
+          width: 25px;
+          height: 25px;
+          margin-right: 5px;
+          vertical-align: middle;
+        }
+
+        span {
+          font-size: 20px;
+          color: #4a5a6a;
+          cursor: pointer;
+        }
+
+        .certifica {
+          width: 250px;
+          height: 40px;
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+
+          .no-rz {
+            color: #AEAEAE;
+          }
+
+          .go-rz {
+            color: #3da8f5;
+            font-size: 18px;
+          }
+
+        }
+
+        .lines {
+          width: 350px;
+          height: 40px;
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+
+          .num {
+            color: #cc0000;
+            font-weight: bold;
+          }
+
+          .about {
+            color: #3da8f5;
+          }
+        }
+      }
+    }
+  }
+
+  // 商品状态
+  .goods-state {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 70px;
+    padding-bottom: 40px;
+
+    float: left;
+
+    li {
+      width: 270px;
+      height: 340px;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 20px;
+      color: #4a5a6a;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        box-shadow: 2px 2px 2px 2px rgba(148, 143, 143, 0.5)
+      }
+
+      &>.img {
+        width: 180px;
+        height: 180px;
+        border-radius: 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        border: 3px solid #686868;
+      }
+
+      .num {
+        color: #cc0000;
+        font-size: 24px;
+      }
+    }
+  }
+
+  // 商家数据
+  .business-data {
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 150px;
+    &>.tit {
+      font-size: 28px;
+      color: #4a5a6a;
+      font-weight: bold;
+      margin-block-end: 20px;
+    }
+
+    .business-data-tab {
+      width: 100%;
+      overflow: hidden;
+      float: left;
+
+      ul {
+        width: 770px;
+        height: 52px;
+        border-left: 1px solid #ddd;
+        li {
+          width: 181px;
+          height: 52px;
+          line-height: 52px;
+          text-align: center;
+          font-size: 20px;
+          color: #4a5a6a;
+          float: left;
+          border-top: 1px solid #ddd;
+          border-right: 1px solid #ddd;
+          cursor: pointer;
+        }
+
+        .active {
+          background: #f2f2f2;
+          color: #3da8f5;
+        }
+      }
+    }
+
+    .business-data-con {
+      width: 100%;
+      overflow: hidden;
+      float: left;
+      border-left: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+
+      li {
+        width: 379px;
+        height: 135px;
+        float: left;
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        font-size: 28px;
+        color: #4a5a6a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around
+      }
+    }
+  }
+}
