@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     send(item) {
+      console.log(item)
       if (item.diabled) {
         // if (item.title == "卖家中心") {
         //   this.dialogVisible = true;

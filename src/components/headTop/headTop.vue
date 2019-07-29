@@ -116,19 +116,19 @@ export default {
         {
           router: "/PersonalCenter/PersonalSet",
           name: "个人中心"
-        },
-        {
-          router: "/PersonalCenter/PersonalSet",
-          name: "帮助中心"
-        },
-        {
-          router: "/PersonalCenter/PersonalSet",
-          name: "成为商家"
-        },
-        {
-          router: "/PersonalCenter/PersonalSet",
-          name: "品牌入驻"
         }
+        // {
+        //   router: "/PersonalCenter/PersonalSet",
+        //   name: "帮助中心"
+        // },
+        // {
+        //   router: "/PersonalCenter/PersonalSet",
+        //   name: "成为商家"
+        // },
+        // {
+        //   router: "/PersonalCenter/PersonalSet",
+        //   name: "品牌入驻"
+        // }
       ]
     };
   },
@@ -152,7 +152,7 @@ export default {
     // 跳到个人中中心
     PersonalCenter() {
       this.$router.push({
-        path: "/PersonalCenter"
+        path: "/PersonalCenter/SellerCenter"
       });
     },
     // 退出登录

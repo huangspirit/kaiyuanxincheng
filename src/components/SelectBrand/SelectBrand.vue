@@ -4,14 +4,16 @@
     <div class="selectBrand-tit">
       <div class="selectBrand-tit-l clear">
         <div class="fr searchInput">
-          <el-input  @input="brandInputChange"
-            v-model="searchBrandValue" placeholder="请输入搜索品牌名称">
-            </el-input>
-          
+          <el-input
+            @input="brandInputChange(searchBrandValue)"
+            v-model="searchBrandValue"
+            placeholder="请输入搜索品牌名称"
+          ></el-input>
+
           <div class="sure" @click="SureSelectBrand">确定</div>
           <div class="cancel" @click="CancelSelectBrand">取消</div>
         </div>
-         <span class="text">请选择您是哪个品牌的原厂</span>
+        <span class="text">请选择您是哪个品牌的原厂</span>
       </div>
       <div class="selectBrand-tit-r">
         <span class="text">当前选择：</span>
@@ -21,16 +23,15 @@
           style="color:#cc0000"
         >{{maxBrandNum === 3 ? '一个代理商' : '原厂'}}最多选择{{maxBrandNum}}个品牌</span>
         <span v-if="RepeatedAddFlag" style="color:#cc0000">请勿重复添加</span>
-       
       </div>
     </div>
     <!-- 当前已经选择的 -->
     <p v-if="EndselectBrandList.length">
       <template v-for="(item , k ) in EndselectBrandList">
-        <span class="select"  :key="k" v-if="item.brand">
-                {{item.brand}}
-                <span @click="delBrandSelect(item)" class="close">&times;</span>
-              </span>
+        <span class="select" :key="k" v-if="item.brand">
+          {{item.brand}}
+          <span @click="delBrandSelect(item)" class="close">&times;</span>
+        </span>
       </template>
     </p>
     <div class="selectBrand-list">
@@ -55,12 +56,9 @@
         ></li>
       </ul>
       <p v-else class="zw">
-        <span>
-          暂无数据,你可以添加新品牌
-        </span>
+        <span>暂无数据,你可以添加新品牌</span>
         <span class="add-brand" @click="addNewBrand">添加新品牌</span>
       </p>
-
     </div>
   </div>
 </template>
@@ -85,7 +83,7 @@ export default {
       default: 3
     },
     // 入驻的类型
-    residencetype:Number
+    residencetype: Number
   },
   data() {
     return {
@@ -141,9 +139,15 @@ export default {
     // 点击要选择的品牌
     selectBrandTitle(item) {
       this.selectBrandSearchTitle = item;
-      console.log(item)
-      this.$store.dispatch("home/GetfindBrandList", {
-        type: item
+      console.log(item);
+      this.GetFindBrand({
+        start: 0,
+        length: 1000,
+        type: "1",
+        name: item
+      }).then(res => {
+        this.FindBrandList;
+        this.FindBrandList = res;
       });
     },
     // 点击当前要选择的品牌
@@ -171,20 +175,19 @@ export default {
       }
     },
     // 品牌搜索输入框
-    brandInputChange(x) {
+    brandInputChange(val) {
       this.selectBrandSearchTitle = this.searchBrandValue;
       this.GetFindBrand({
         start: 0,
         length: 10,
-        name: this.searchBrandValue
-        // type:this.searchBrandValue
+        name: val
       }).then(res => {
         this.FindBrandList = res;
       });
     },
     // 确定选择的品牌
     SureSelectBrand() {
-      //console.log("EndselectBrandList:",this.EndselectBrandList)
+      console.log("EndselectBrandList:", this.EndselectBrandList);
       this.$emit("select", this.EndselectBrandList);
     },
     // 取消选择的品牌
@@ -196,14 +199,14 @@ export default {
       if (this.EndselectBrandList.length <= this.maxBrandNum) {
         this.$router.push({
           path: this.addBrandUrl,
-          query:{
-            residencetype:this.residencetype
+          query: {
+            residencetype: this.residencetype
           }
         });
       }
     }
   },
-   
+
   computed: {
     ...mapState({
       findBrandList: state => state.home.findBrandList
@@ -212,14 +215,12 @@ export default {
       return sessionStorage.getItem("access_token");
     }
   },
-  watch:{
-    findBrandList(newval,oldval){
-      this.FindBrandList=newval
+  watch: {
+    findBrandList(newval, oldval) {
+      this.FindBrandList = newval;
     }
   },
-  mounted(){
-   
-  }
+  mounted() {}
 };
 </script>
 

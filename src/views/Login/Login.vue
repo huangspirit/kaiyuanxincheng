@@ -10,33 +10,33 @@
           <div class="form-con-list" v-if="flag === 1">
             <div class="tel">
               <label for>手机号</label>
-              <input type="number" v-model="phoneLoginValue">
+              <input type="number" v-model="phoneLoginValue" />
             </div>
             <div class="code">
               <label for>验证码</label>
-              <input type="text" v-model="phoneCode">
+              <input type="text" v-model="phoneCode" />
               <span v-if="sendPhoneCodeFlag" class="spa" @click="sendPhoneCode">发送验证码</span>
               <span v-else class="spb">{{sentPhoneCodeTime}}s后重新发送</span>
             </div>
             <div class="submit-login" @click="LoginPhone">登陆</div>
           </div>
           <div class="code" v-if="flag === 2">
-            <img src="@/assets/image/Login/code_u36512.png" alt class="cod" v-if="codeFlag">
-            <img src="@/assets/image/Login/_u36514.png" alt class="pho" v-if="codeFlag">
+            <img src="@/assets/image/Login/code_u36512.png" alt class="cod" v-if="codeFlag" />
+            <img src="@/assets/image/Login/_u36514.png" alt class="pho" v-if="codeFlag" />
           </div>
         </div>
         <p class="qq-wx">
           <span>
-            <img src="@/assets/image/Login/u36508.png" alt @click="qqLogin">
+            <img src="@/assets/image/Login/u36508.png" alt @click="qqLogin" />
           </span>
           <span>
-            <img src="@/assets/image/Login/u36510.png" alt @click="wxLogin">
+            <img src="@/assets/image/Login/u36510.png" alt @click="wxLogin" />
           </span>
         </p>
       </div>
       <div class="bind-phone form" v-else>
         <span class="close-span" @click="loginFlagClose">
-          <img src="@/assets/image/home/u172.png" alt>
+          <img src="@/assets/image/home/u172.png" alt />
         </span>
         <p class="title">绑定手机号</p>
         <p class="type">
@@ -46,11 +46,11 @@
           <div class="form-con-list">
             <div class="tel">
               <label for>手机号</label>
-              <input type="number" v-model="qqPhoneValue">
+              <input type="number" v-model="qqPhoneValue" />
             </div>
             <div class="code">
               <label for>验证码</label>
-              <input type="text" v-model="qqCode">
+              <input type="text" v-model="qqCode" />
               <span @click="sendCode" v-if="sendCodeFlag" class="spa">发送验证码</span>
               <span v-else class="spb">{{sentCodeTime}}s后重新发送</span>
             </div>
@@ -59,8 +59,11 @@
         </div>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogVisible" width="45%" class="iframe" :before-close="handleClose" >
-      <div class="timer">扫码倒计时<span>{{count}}</span>s</div>
+    <el-dialog :visible.sync="dialogVisible" width="45%" class="iframe" :before-close="handleClose">
+      <div class="timer">
+        扫码倒计时
+        <span>{{count}}</span>s
+      </div>
       <iframe :src="qqSrc" frameborder="0" scrolling="no" width="100%" height="100%" v-if="!code"></iframe>
       <iframe
         :src="wxSrc"
@@ -83,7 +86,6 @@
   </div>
 </template>
 <script>
-
 import { mapState, mapActions, mapMutations } from "vuex";
 import { setToken } from "@/lib/utils";
 import { clearInterval, setInterval } from "timers";
@@ -92,8 +94,8 @@ export default {
   data() {
     return {
       //扫码登陆倒计时
-      timer:null,
-      count:60,
+      timer: null,
+      count: 60,
       bgUrl: require("@/assets/image/Login/u36495.png"),
       // 手机登录和微信登陆flag
       flag: 1,
@@ -139,9 +141,7 @@ export default {
       "GetWxSuccess",
       "GetWxBack"
     ]),
-    ...mapMutations([
-      'setloginState'
-    ]),
+    ...mapMutations(["setloginState"]),
     bindPHoneDialogClose() {
       this.bindPHoneDialog = false;
       this.$router.push({
@@ -164,13 +164,13 @@ export default {
             openid: this.openid,
             state: this.qqState
           }).then(res => {
-            sessionStorage.access_token = res.access_token;
-            sessionStorage.refresh_token = res.refresh_token;
+            sessionStorage.setItem("access_token", res.access_token);
+            sessionStorage.setItem("refresh_token", res.refresh_token);
             this.$router.push({
               path: "/"
             });
-            this.setloginState(true)
-           // this.$store.state.loginState = true;
+            this.setloginState(true);
+            // this.$store.state.loginState = true;
           });
         } else if (res.resultCode === "5001") {
           this.bindPHoneDialog = true;
@@ -188,12 +188,12 @@ export default {
       this.$router.push({
         path: "/"
       });
-       this.setloginState(false)
+      this.setloginState(false);
       //this.$store.state.loginState = false;
     },
     handleClose() {
       this.dialogVisible = false;
-      clearInterval(this.timer)
+      clearInterval(this.timer);
       this.code = false;
       if (this.qqSrc) {
         clearInterval(this.qqTime);
@@ -219,13 +219,13 @@ export default {
             openid: this.openid,
             state: this.qqState
           }).then(res => {
-            sessionStorage.access_token = res.access_token;
-            sessionStorage.refresh_token = res.refresh_token;
+            sessionStorage.setItem("access_token", res.access_token);
+            sessionStorage.setItem("refresh_token", res.refresh_token);
             this.$router.push({
               path: "/"
             });
-             this.setloginState(true)
-           // this.$store.state.loginState = true;
+            this.setloginState(true);
+            // this.$store.state.loginState = true;
           });
         } else if (res.resultCode === "5001") {
           this.bindPHoneDialog = true;
@@ -237,60 +237,60 @@ export default {
     },
     // qq登录
     qqLogin() {
-
-       var _this = this;
+      var _this = this;
       this.GetQqLogin()
         .then(res0 => {
           // 返回state
 
           this.qqSrc = res0.url;
           this.dialogVisible = true;
-          this.count=60;
-          this.timer=setInterval(function(){
-              if(_this.count==0){
-                  clearInterval(_this.timer)
-              }else{
-                  _this.count--;
-              }
-          },1000)
+          this.count = 60;
+          this.timer = setInterval(function() {
+            if (_this.count == 0) {
+              clearInterval(_this.timer);
+            } else {
+              _this.count--;
+            }
+          }, 1000);
           this.qqState = res0.state;
           var cont = 0;
 
-          this.qqTime = setInterval(function(){
+          this.qqTime = setInterval(function() {
             cont++;
 
             _this.GetQqSuccess(res0.state).then(res => {
-
               _this.openid = res.openid;
               // tyep 为1的时候
               if (res.type === 1) {
                 _this.loginFlag = false;
                 _this.dialogVisible = false;
-                clearInterval(_this.timer)
+                clearInterval(_this.timer);
                 clearInterval(_this.qqTime);
                 _this.qqTime = null;
                 // tyep 为2的时候
               } else if (res.type === 2) {
                 clearInterval(_this.qqTime);
                 _this.qqTime = null;
-                _this.GetQqSignIn({
-                  wxSrc: _this.code,
-                  openid: _this.openid,
-                  state: _this.qqState
-                }).then(res => {
-                  sessionStorage.setItem('access_token',res.access_token)
-                  sessionStorage.setItem('refresh_token',res.refresh_token)
-                  _this.$router.push({
-                    path: "/"
+                _this
+                  .GetQqSignIn({
+                    wxSrc: _this.code,
+                    openid: _this.openid,
+                    state: _this.qqState
+                  })
+                  .then(res => {
+                    sessionStorage.setItem("access_token", res.access_token);
+                    sessionStorage.setItem("refresh_token", res.refresh_token);
+                    _this.$router.push({
+                      path: "/"
+                    });
+                    _this.setloginState(true);
+                    //this.$store.state.loginState = true;
                   });
-                   _this.setloginState(true)
-                  //this.$store.state.loginState = true;
-                });
               } else if (res.type === 3) {
-                if (cont>19) {
-                    // this.$message.error("登录失败!");
+                if (cont > 19) {
+                  // this.$message.error("登录失败!");
                   _this.dialogVisible = false;
-                  clearInterval(_this.timer)
+                  clearInterval(_this.timer);
                   clearInterval(_this.qqTime);
                   _this.qqTime = null;
                 }
@@ -352,35 +352,36 @@ export default {
             key: this.phoneKey,
             code: this.phoneCode
           }).then(res => {
-            sessionStorage.access_token = res.access_token;
-            sessionStorage.refresh_token = res.refresh_token;
+            console.log(res)
+            sessionStorage.setItem("access_token", res.access_token);
+            sessionStorage.setItem("refresh_token", res.refresh_token);
             this.$router.push({
               path: "/"
             });
-             this.setloginState(true)
+            this.setloginState(true);
             //this.$store.state.loginState = true;
           });
         } else {
-         // this.$message.error("登录失败!");
+          // this.$message.error("登录失败!");
         }
       });
     },
     // 微信登陆
     wxLogin() {
-      var _this=this;
+      var _this = this;
       this.code = true;
       this.codeFlag = true;
       this.GetWxLogin().then(res => {
         this.wxSrc = res.url;
         this.dialogVisible = true;
-        this.count=60
-        this.timer=setInterval(function(){
-          if(_this.count==0){
-            clearInterval(_this.timer)
-          }else{
-              _this.count--;
+        this.count = 60;
+        this.timer = setInterval(function() {
+          if (_this.count == 0) {
+            clearInterval(_this.timer);
+          } else {
+            _this.count--;
           }
-        },1000)
+        }, 1000);
         this.qqState = res.state;
       });
     }
@@ -405,7 +406,7 @@ export default {
               if (res.type === 1) {
                 this.loginFlag = false;
                 this.dialogVisible = false;
-                 clearInterval(this.timer)
+                clearInterval(this.timer);
                 clearInterval(this.wxTime);
                 this.wxTime = null;
                 // tyep 为2的时候
@@ -417,19 +418,19 @@ export default {
                   openid: this.openid,
                   state: this.qqState
                 }).then(res => {
-                  sessionStorage.access_token = res.access_token;
-                  sessionStorage.refresh_token = res.refresh_token;
+                  sessionStorage.setItem("access_token", res.access_token);
+                  sessionStorage.setItem("refresh_token", res.refresh_token);
                   this.$router.push({
                     path: "/"
                   });
-                   this.setloginState(true)
+                  this.setloginState(true);
                   //this.$store.state.loginState = true;
                 });
               } else if (res.type === 3) {
-                if (cont2 >11) {
-                 // this.$message.error("二维码失效，请重新扫码!");
+                if (cont2 > 11) {
+                  // this.$message.error("二维码失效，请重新扫码!");
                   this.dialogVisible = false;
-                   clearInterval(this.timer)
+                  clearInterval(this.timer);
                   clearInterval(this.wxTime);
                   this.wxTime = null;
                 }
@@ -445,7 +446,7 @@ export default {
   },
   mounted() {
     this.qqState = this.$route.query.state;
- this.setloginState(false)
+    this.setloginState(false);
     //this.$store.state.loginState = false;
   },
   beforeDestroy() {

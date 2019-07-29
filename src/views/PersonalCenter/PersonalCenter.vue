@@ -11,21 +11,20 @@
   </div>
 </template>
 <style lang="less" scoped>
-@import  "./PersonalCenter.less";
+@import "./PersonalCenter.less";
 </style>
 
 <script>
-
 import SideMenu from "_c/SideMenu";
 import { mapState } from "vuex";
-import { stat } from 'fs';
+import { stat } from "fs";
 export default {
   name: "PersonalCenter",
   data() {
     return {
       list: [
         {
-         isShow:false,
+          isShow: false,
           title: "卖家中心",
           index: "1",
           path: "/PersonalCenter/SellerCenter",
@@ -77,7 +76,7 @@ export default {
           ]
         },
         {
-         isShow:true,
+          isShow: true,
           title: "买家中心",
           index: "2",
           path: "/PersonalCenter/BuyerCenter",
@@ -140,7 +139,7 @@ export default {
           ]
         },
         {
-          isShow:true,
+          isShow: true,
           title: "个人中心",
           index: "3",
           path: "/PersonalCenter/PersonalSet",
@@ -169,7 +168,7 @@ export default {
               index: "3-4",
               path: "/PersonalCenter/ShippingAddress",
               icon: require("@/assets/image/PersonalCenter/u37960.png")
-            },
+            }
             // {
             //   title: "个人发票",
             //   index: "3-5",
@@ -200,28 +199,25 @@ export default {
       ]
     };
   },
-  created(){
-    
-  },
+  created() {},
   components: {
     SideMenu
   },
-  computed:{
-    ...mapState({
-      UserInforma:state => state.Login.UserInforma
-    })
-  },
+  computed: {},
   mounted() {
-    console.log("this.$store.state.Login",this.$store.state.Login)
-    this.list=this.list.map(item=>{
-      if(item.index==1){
-        if(this.UserInforma.userTagMap){
-          item.isShow=this.UserInforma.userTagMap.seller
-          item.diabled=!this.UserInforma.userTagMap.seller
+    var UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
+    this.list = this.list.map(item => {
+      if (item.index == 1) {
+        if (UserInforma.userTagMap) {
+          item.isShow = UserInforma.userTagMap.seller;
+          item.diabled = !UserInforma.userTagMap.seller;
+        } else {
+          item.isShow = !UserInforma.userTagMap.seller;
+          item.diabled = tUserInforma.userTagMap.seller;
         }
       }
       return item;
-    })
+    });
   }
 };
 </script>

@@ -54,7 +54,7 @@
 
 <script>
 import SideMenu from "./SideMenu";
-import SideMenuItem from "_c/SideMenuItem";
+import SideMenuItem from "../SideMenuItem/SideMenuItem";
 // import '@/assets/css/dialog-delect.less'
 export default {
   name: "SideMenu",
