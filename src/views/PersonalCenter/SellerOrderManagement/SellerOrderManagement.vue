@@ -75,13 +75,14 @@
         <div class="tab-list-con">
           <p class="tab-list-con-tit">
             <span style="width:20%">商品信息</span>
-            <span style="width:10%">单价x数量</span>
-            <span style="width:20%">交期</span>
+            <span style="width:10%">单价</span>
+              <span style="width:10%">总金额/总数量</span>
+            <span style="width:15%">交期</span>
             <span style="width:5%">交货地</span>
-            <span style="width:15%">收货仓库地址</span>
+            <span style="width:13%">收货仓库地址</span>
             <span style="width:10%">当前状态</span>
-            <!-- <span style="width:5%">发货数量</span> -->
-            <span style="width:20%">操作</span>
+
+            <span style="width:17%">操作</span>
           </p>
           <SellerOrderItem
             v-for="item in SellerOrderManagementList"
@@ -89,7 +90,7 @@
             :item="item"
             @DeliverGoods="DeliverGoods(item)"
             @DeliverGoodsChangeDue="DeliverGoodsChangeDue"
-            @DeliverGoodsInvoice="DeliverGoodsInvoice"
+            @DeliverGoodsInvoice="DeliverGoodsInvoice(item)"
             @reload="all"
           >
               <el-button slot="detail" class="default" @click="storageItem(item)">
@@ -103,33 +104,31 @@
       <SetTankuang :title="'填写物流信息'" v-if="centerDialogVisible" @closeDialogCallBack="centerDialogVisible = false" :width="55" :minWidth="800" class="tankuang">
       <div class="dialog-body" slot="dialog-body">
          <el-form
-            :model="ruleForm"
+            :model="deliveryInfo"
             :rules="rules"
-            ref="ruleForm"
+            ref="deliveryInfoRuleForm"
             label-width="150px"
             class="demo-ruleForm"
           >
            <el-form-item label="选择收货地点：">
-              <el-select v-model="deliveryInfo.area" placeholder="请选择">
-                <el-option label="北京XX有限公司" value="shanghai">北京XX有限公司</el-option>
-                <el-option label="北京XX有限公司" value="shanghai">北京XX有限公司</el-option>
-                <el-option label="北京XX有限公司" value="shanghai">北京XX有限公司</el-option>
+              <el-select v-model="storehouse_order" placeholder="请选择" @change="handleChangestorehouse">
+                  <template v-for="(item,k) in storehouseList">
+                      <el-option :label="item.warehouse_name" :value="k" :key="item.id"></el-option>
+                  </template>
               </el-select>
             </el-form-item>
              <el-form-item label="收货详情">
                <div>
-
-                 <p><label>收货人：</label>北京xxxx有限公司</p>
-                 <p><label>电话：</label>1345***2235</p>
-                 <p><label>地址：</label> 北京市朝阳区天居园8号楼2402室</p>
-                 <p><label>邮编：</label>1000001</p>
+                 <p><label>收货人：</label>{{currentStorehouse.warehouse_recipient}}</p>
+                 <p><label>电话：</label>{{currentStorehouse.warehouse_phone}}</p>
+                 <p><label>地址：</label> {{currentStorehouse.warehouse_addr}}</p>
               </div>
              </el-form-item>
              <el-form-item label="选择物流公司：">
-                <DeliveryCompany></DeliveryCompany>
+                <DeliveryCompany v-if="centerDialogVisible" @handleCallBack="getCode"></DeliveryCompany>
             </el-form-item>
-            <el-form-item label="填写物流单号：" prop="name">
-              <el-input v-model="deliveryInfo.name"></el-input>
+            <el-form-item label="填写物流单号：" prop="trans_no">
+              <el-input v-model="deliveryInfo.trans_no"></el-input>
             </el-form-item>
             <el-form-item label="温馨提示：" >
                <p style="color:#ff6600">请您务必按照选择的收货点详细地址发货，确认发货之后再点击我已发货按钮</p>
@@ -138,23 +137,23 @@
       </div>
       <div slot="footer" class="dialog-footer fr" style="display:flex;">
         <el-button class="cancle" @click="centerDialogVisible = false">取消</el-button>
-        <el-button class="default" @click="submitForm('ruleForm')" style="width:auto;margin-left:10px;">我已按照上述信息发货</el-button>
+        <el-button class="default" @click="submitForm('deliveryInfoRuleForm')" style="width:auto;margin-left:10px;">发货</el-button>
       </div>
     </SetTankuang>
       <!--香港发货的模态框  -->
       <SetTankuang :title="'填写PI单信息'" v-if="centerDialogVisiblePI" @closeDialogCallBack="centerDialogVisiblePI = false" :width="55" :minWidth="800" class="tankuang">
       <div class="dialog-body" slot="dialog-body">
          <el-form
-            :model="ruleForm"
+            :model="ruleFormPI"
             :rules="rules"
-            ref="ruleForm"
+            ref="ruleFormPI"
             label-width="150px"
             class="demo-ruleForm"
           >
            <el-form-item label="PI单号" prop="namePI">
-              <el-input v-model="ruleFormPI.namePI"></el-input>
+              <el-input v-model="ruleFormPI.bi_no"></el-input>
             </el-form-item>
-            <el-form-item label="上传PI单号">
+            <el-form-item label="上传PI单号" >
               <el-upload
                 class="avatar-uploader"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -210,7 +209,7 @@
       </div>
       <div slot="footer" class="dialog-footer fr" style="display:flex;">
         <el-button class="cancle" @click="centerDialogVisibleChangeDue = false">取消</el-button>
-        <el-button class="default" @click="submitFormChangeDue('ruleFormChangeDue')" style="width:auto;margin-left:10px;">我已知晓更改规则，确认更改交期</el-button>
+        <el-button class="default" @click="submitFormChangeDue('ruleFormChangeDue')" style="width:auto;margin-left:10px;">确认更改</el-button>
       </div>
     </SetTankuang>
       <!-- 确认开票 -->
@@ -221,38 +220,36 @@
             label-width="150px"
             class="demo-ruleForm"
           >
-           <el-form-item label="发票类型:">
-            <p class="text">专用发票</p>
+<!--           <el-form-item label="发票类型:">-->
+<!--            <p class="text">专用发票</p>-->
+<!--          </el-form-item>-->
+            <el-form-item label="发票抬头:">
+                <p class="text">{{sysBillDefault.corporatename}}</p>
+            </el-form-item>
+            <el-form-item label="开户银行:">
+                <p class="text">{{sysBillDefault.openingbank}}</p>
+            </el-form-item>
+
+          <el-form-item label="发票代码:">
+            <p class="text">{{sysBillDefault.billno}}</p>
           </el-form-item>
-          <el-form-item label="发票抬头:">
-            <p class="text">北京芯手网科技有限公司</p>
-          </el-form-item>
-          <el-form-item label="发票金额:">
-            <p class="text">35000元</p>
-          </el-form-item>
-          <el-form-item label="收票人:">
-            <p class="text">王翠芬</p>
+          <el-form-item label="地  址:">
+            <p class="text">{{sysBillDefault.registeredaddress}}</p>
           </el-form-item>
           <el-form-item label="电话:">
-            <p class="text">177106***223</p>
-          </el-form-item>
-          <el-form-item label="收件地址:">
-            <p class="text">北京市xxxxxxxx</p>
-          </el-form-item>
-          <el-form-item label="邮箱:">
-            <p class="text">9779****@163.com</p>
+            <p class="text">{{sysBillDefault.registeredphone}}</p>
           </el-form-item>
           <el-form-item label="发票邮寄:">
-             <el-radio-group v-model="deliveryInvoice_type" class="defaultradioSquare">
-                <el-radio label="随货物发出"></el-radio>
-                <el-radio label="单独邮寄"></el-radio>
+             <el-radio-group v-model="bill_tran_type" class="defaultradioSquare">
+                <el-radio :label="0" :value="0">随货物发出</el-radio>
+                <el-radio :label="1" :value="1">单独邮寄</el-radio>
               </el-radio-group>
           </el-form-item>
           </el-form>
       </div>
       <div slot="footer" class="dialog-footer fr" style="display:flex;">
         <el-button class="cancle" @click="centerDialogVisibleInvoice = false">取消</el-button>
-        <el-button class="default" @click="submitFormInvoice()" style="width:auto;margin-left:10px;">我已阅读上述信息</el-button>
+        <el-button class="default" @click="submitFormInvoice" style="width:auto;margin-left:10px;">确认</el-button>
       </div>
     </SetTankuang>
 
@@ -270,11 +267,18 @@ import DeliveryCompany from "_c/DeliveryCompany";
 import SellerOrderItem from "_c/SellerOrderItem";
 import { mapState, mapActions } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
+import {axios,common,sellerOrderCenter} from '@/api/apiObj'
+
 export default {
   name: "OrderManagement",
   data() {
 
     return{
+        //中央收货地址
+        storehouseList:[],
+        currentStorehouse:{},
+        storehouse_order:0,
+        currentOrder_item:{},
       //订单列表
         SellerOrderManagementList:[],
         pageSize:10,
@@ -288,7 +292,7 @@ export default {
       // 确认开票
       centerDialogVisibleInvoice: false,
       //邮寄发票的形式，默认不是单独邮寄，是随货物发出
-      deliveryInvoice_type:false,
+        bill_tran_type:0,
       // 更改交期的模态框
       centerDialogVisibleChangeDue: false,
       // PI模态框
@@ -311,37 +315,15 @@ export default {
             id:3,
               name:"已逾期"
           }
-        // {
-        //   id: 0,
-        //   name: "待操作"
-        // },
-        // {
-        //   id: 1,
-        //   name: "待付款"
-        // },
-        // {
-        //   id: 2,
-        //   name: "待系统确认"
-        // },
-        // {
-        //   id: 3,
-        //   name: "待收货"
-        // },
-        // {
-        //   id: 4,
-        //   name: "已完成"
-        // },
-        // {
-        //   id: 5,
-        //   name: "违规/异常"
-        // }
       ],
       tabFirstFlag: "",
       commandValue: "全部状态",
       centerDialogVisible: false,
       // PI单发货
       ruleFormPI: {
-        namePI: ""
+          bi_no: "",
+          bi_url:"",
+          id:""
       },
       rulesPI: {
         namePI: [
@@ -368,13 +350,9 @@ export default {
           }
         ]
       },
-      // 发货
-      ruleForm: {
-        name: ""
-      },
       // 发货的规则
       rules: {
-        name: [
+        trans_no: [
           { required: true, message: "请输入物流单号", trigger: "blur" },
           {
             min: 10,
@@ -384,6 +362,8 @@ export default {
           }
         ]
       },
+        //开发票
+        sysBillDefault:{}
     };
   },
   methods: {
@@ -394,8 +374,35 @@ export default {
       ...mapActions("Common", [
           "GetCenterChangeAddress"
       ]),
+      //开票
+      submitFormInvoice(){
+        let obj={
+            bill_tran_type:this.bill_tran_type,
+            bill_id:this.sysBillDefault.id,
+            goods_seller_no:this.currentItem.goods_seller_no
+        }
+            axios.request({...sellerOrderCenter.openBill,params:obj}).then(res=>{
+                this.centerDialogVisibleInvoice=false;
+                this.all()
+            })
+        },
+      GetCenterChangeAddress(){
+          axios.request({...common.GetCenterChangeAddress,params:{start:0,length:50}}).then(res=>{
+              console.log(res)
+              this.storehouseList=res.data
+              this.currentStorehouse=this.storehouseList[0]
+              this.deliveryInfo.storehouse_id=this.currentStorehouse.id;
+          })
+      },
+      handleChangestorehouse(val){
+          this.currentStorehouse=this.storehouseList[val]
+          this.deliveryInfo.storehouse_id=this.currentStorehouse.id
+      },
+      getCode(val){
+          this.deliveryInfo.trans_code=val.code
+          this.deliveryInfo.transName=val.name
+      },
       handleCurrentPage(x){
-        console.log("x",x)
         this.currentPage=x;
         this.all()
       },
@@ -412,10 +419,12 @@ export default {
 
     },
     DeliverGoods(item) {
+        this.currentOrder_item=item;
       if(item.diliver_place=="香港"){
         this.centerDialogVisiblePI = true;
       }else{
           this.centerDialogVisible = true;
+          this.GetCenterChangeAddress()
       }
     },
     DeliverGoodsChangeDue(item) {
@@ -423,11 +432,18 @@ export default {
       console.log("更改交期：",item)
       this.currentItem = item;
     },
-    DeliverGoodsInvoice() {
+    DeliverGoodsInvoice(item) {
+        this.currentItem = item;
       this.centerDialogVisibleInvoice = true;
+      axios.request(sellerOrderCenter.querySysBill).then(res=>{
+          console.log(res)
+          this.sysBillDefault=res.data
+      })
     },
     // 上传PI单成功的回调
     handleAvatarSuccess(res, file) {
+        console.log(res)
+        this.ruleFormPI.bi_url=res.name;
       this.imageUrlPI = URL.createObjectURL(file.raw);
     },
     //上传之前的回调
@@ -448,20 +464,16 @@ export default {
       this.commandValue = x;
     },
     submitForm(formName) {
+        this.deliveryInfo.goodsName=this.currentOrder_item.goods_name
+        this.deliveryInfo.id=this.currentOrder_item.id
+        console.log(this.deliveryInfo)
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$confirm('物流信息已填写正确, 提交发货?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.centerDialogVisible = false;
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消'
-            });
-          });
+            axios.request({...sellerOrderCenter.diliverGoods,params:this.deliveryInfo}).then(res =>{
+                console.log(res)
+                this.centerDialogVisible = false
+                this.all();
+            })
           } else {
           this.$message.error("请完善信息!");
           return false;
@@ -470,9 +482,15 @@ export default {
     },
     // 确认上传PI单
     submitFormPI(formName) {
+        this.ruleFormPI.id=this.currentOrder_item.id;
+        console.log(this.ruleFormPI)
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.centerDialogVisiblePI = false;
+            axios.request({...sellerOrderCenter.diliverHKGoods,params:this.ruleFormPI}).then(res =>{
+                console.log(res)
+                this.centerDialogVisible = false
+                this.all();
+            })
         } else {
           this.$message.error("请完善信息!");
           return false;
@@ -523,9 +541,6 @@ export default {
     DeliveryCompany
   },
   watch: {
-    currentPage() {
-    //  this.all();
-    }
   },
   filters: {
     formatDate(value) {

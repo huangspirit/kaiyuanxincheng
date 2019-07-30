@@ -29,19 +29,18 @@
             </div>
           </td>
           <td style="width:10%">
-            <p>
-              <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price}}</strong> x
-              <strong class="price">{{item.totalPayCount}}</strong>
-              </p>
-              <p>
-总额：<strong class="price">{{item.priceunit ? '$' : '￥'}}{{(item.seckil_price*parseInt(item.totalPayCount)) | toFixed(2)}}</strong>
-              <!-- {{item.stock_count}} -->
-              </p>
-            <!-- <span>
-              剩余：({{item.stock_count}})
-            </span> -->
+              <div v-if="item.price_type" class="jieti">
+                    <p v-for="item0 in priceList"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price}}</strong> </p>
+              </div>
+              <div v-else>
+                  <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price}}</strong>
+              </div>
           </td>
-          <td style="width:20%">
+            <td style="width:10%;" >
+                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay}}</strong>/
+                <strong class="price">{{item.totalPayCount | toFixed(0)}}</strong>
+            </td>
+          <td style="width:15%">
            <p>交期：{{item.expireTime | formatDate}}</p>
             <CountTime
             class="countTime"
@@ -71,7 +70,7 @@
           <td style="width:5%">
             <p>{{item.diliver_place}}</p>
           </td>
-          <td style="width:15%">
+          <td style="width:13%">
             <div v-if="item.status==1">
               <p>收货人：{{item.warehouseRecipient}}</p>
               <p>电话：{{item.warehousePhone}}</p>
@@ -110,12 +109,13 @@
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">订单进程</span>
             </el-popover>
           </td>
-          <td style="width:20%" class="wrapbtn">
+
+          <td style="width:17%" class="wrapbtn">
             <!-- <div v-if="item.diliver_place === '香港' ">
               <el-button class="default" v-if="item.diliverButon" @click="DeliverGoodsPI">发货</el-button>
             </div> -->
             <div>
-              <el-button class="default" @click="DeliverGoods(item)" v-if="item.diliverButon">发货</el-button>
+              <el-button class="default" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
               <!-- <p v-if="!item.diliverBuuton" class="no-change">已发货</p> -->
               <el-button class="default" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
               <!-- <p v-if="!item.diliverBuuton" class="no-change">已更改交期</p> -->
@@ -127,71 +127,6 @@
           </td>
         </tr>
       </table>
-      <!-- list的详细 -->
-      <!-- <div class="list-detail" v-if="flag">
-        <p class="tab-list-con-tit" v-if="SellerOrderDetailList.length">
-          <span style="width:380px">单价/数量</span>
-          <span style="width:380px">订单金额</span>
-          <span style="width:380px">订单状态</span>
-        </p>
-        <div
-          class="list-item"
-          v-for="value in SellerOrderDetailList"
-          :key="value.id"
-          v-if="SellerOrderDetailList.length"
-        >
-          <div class="list-item-tit">
-            <span v-if="value.create_time">
-              <strong>下单时间：</strong>
-              {{value.create_time | formatDate}}
-            </span>
-            <span v-if="value.pay_date">
-              <strong>支付时间：</strong>
-              {{value.pay_date | formatDate}}
-            </span>
-            <span v-if="value.payno">
-              <strong>付款编号：</strong>
-              {{value.payno}}
-            </span>
-            <span v-if="value.order_no">
-              <strong>支付编号：</strong>
-              {{value.order_no}}
-            </span>
-            <span v-if="value.order_no">
-              <strong>订单编号：</strong>
-              {{value.order_no}}
-            </span> -->
-            <!-- <span class="inform">
-              {{value.username}}
-              <img :src="value.headImgUrl" alt />
-            </span>-->
-          <!-- </div>
-          <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed">
-            <tr>
-              <td>
-                <p
-                  class="num"
-                >{{value.priceunit ? '$' : '￥'}}{{value.good_price}}x{{value.goods_count}}</p>
-              </td>
-              <td>
-                <p
-                  class="num"
-                >{{value.priceunit ? '$' : '￥'}}{{value.total_price}}（{{value.clude_bill ? '含税' : '不含税' }}）</p>
-              </td>
-              <td>
-                <p>{{value.order_status | status}}</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="zanwu" v-if="!SellerOrderDetailList.length">暂无数据</div>
-      <Pagination :currentPage.sync="currentPage" :total="total"></Pagination>
-      </div> -->
-      <!-- <div class="list-detail-bar" @click="DetailList(item)">
-        {{flag ? '收起订单商品详细' : '查看订单商品详细'}}
-        <i class="el-icon-caret-bottom" v-if="!flag"></i>
-        <i class="el-icon-caret-top" v-else></i>
-      </div> -->
     </div>
   </div>
 </template>
@@ -199,6 +134,8 @@
 import { mapActions, mapState } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
 import Countdown from "_c/Countdown";
+
+
 export default {
   name: "SellerOrderItem",
   data() {
@@ -206,7 +143,8 @@ export default {
       SellerOrderDetailList: [],
       flag: false,
       goods_seller_id: "",
-      OrderProcessList: []
+      OrderProcessList: [],
+        priceList:[]
     };
   },
   props: {
@@ -215,6 +153,24 @@ export default {
       default: () => ({})
     }
   },
+    created(){
+
+      if(this.item.price_type){
+          //标识阶梯价
+          let arr=this.item.price_level.split("@")
+          arr.forEach(item=>{
+              let arr1=item.split("-")
+
+              this.priceList.push({
+                  num:arr1[0],
+                  price:arr1[1]
+              })
+
+          })
+
+
+      }
+    },
   methods: {
     ...mapActions("SellerOrderManagement", [
       "GetSellerOrderDetaileList",
@@ -223,6 +179,7 @@ export default {
       countDownE_cb: function(item) {
           this.$emit("reload")
       },
+
     all() {
       this.$loading(this.$store.state.loading);
       this.GetSellerOrderDetaileList({

@@ -3,7 +3,7 @@
           margin-bottom: 20px;
           border: 1px solid #ddd;
           position: relative;
-  
+
           .list-item-tit {
             line-height: 50px;
             padding: 0 20px;
@@ -12,7 +12,7 @@
             &>span{
                 margin-right:10px;
             }
-  
+
           }
           table {
             tr {
@@ -39,7 +39,16 @@
                 .orderStatus{
                     color:#f40;
                 }
-                
+                &.active{
+                  color:#ff4400;
+                }
+                .jieti{
+                  padding:8px;
+                  &>p{
+                    line-height:30px;
+                    border-bottom:1px dashed #999;
+                  }
+                }
               }
               .wrapbtn{
                     &>div{
@@ -67,7 +76,7 @@
             }
           }
         }
-      
+
   // 发货PI的模态框
   .logistics-PI {
     .avatar-uploader .el-upload {
@@ -78,11 +87,11 @@
       overflow: hidden;
       background: #efefef;
     }
-  
+
     .avatar-uploader .el-upload:hover {
       border-color: #409EFF;
     }
-  
+
     .avatar-uploader-icon {
       font-size: 28px;
       color: #8c939d;
@@ -91,7 +100,7 @@
       line-height: 102px;
       text-align: center;
     }
-  
+
     .avatar {
       width: 102px;
       height: 102px;

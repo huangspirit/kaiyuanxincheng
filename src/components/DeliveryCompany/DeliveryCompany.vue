@@ -1,13 +1,12 @@
 <template>
     <div class="DeliveryCompany">
         <div class="alphabet clear">
-            <p v-for="item in alphabet" :key="item" :class="{'active':currentAlphabet==item}" @click="currentAlphabet=item">{{item}}</p>
+            <p v-for="(item,k) in alphabet" :key="k" :class="{'active':currentAlphabet==item}" @click="currentAlphabet=item">{{item}}</p>
         </div>
         <ul class="list">
-            <template v-if="currentList.length">
-                <li v-for="item in currentList" :key="item">{{item.name}}</li>
-            </template>
-
+                <template v-for="(item,k) in currentList"v-if="currentList.length" >
+                    <li :class="currentCode==item.code?'active':''" :key="k" @click="setItem(item)">{{item.name}}</li>
+                </template>
         </ul>
     </div>
 </template>
@@ -46,6 +45,16 @@
                 line-height:1;
                 margin-right:8px;
                 border-radius: 3px;
+                cursor: pointer;
+                &:hover{
+                    color:#fff;
+                    font-weight: bolder;
+                    background: #0d94fb;
+                }
+                &.active{
+                    color:#fff;
+                    background:#0d94fb;
+                }
             }
         }
     }
@@ -57,7 +66,8 @@
             return{
                 alphabet:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
                 currentAlphabet:"",
-                currentList:[]
+                currentList:[],
+                currentCode:""
             }
         },
         computed:{
@@ -75,6 +85,11 @@
             ...mapActions("Common",[
                 "GetDeliveryCompany"
             ]),
+            setItem(item){
+                console.log(item)
+                this.currentCode=item.code
+                this.$emit("handleCallBack",item)
+            },
             getDeliveryCompany(){
                     //未请求过则不再请求
                     this.GetDeliveryCompany({"pfrixName":this.currentAlphabet.toLowerCase()}).then(res=>{
