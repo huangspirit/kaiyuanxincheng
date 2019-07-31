@@ -8,6 +8,7 @@
         <p class="h3">促销专场</p>
       </div>
     </div>
+    <Inquiry />
     <!-- 询价篮 -->
     <div class="inquiry-basket">
       <router-view/>
@@ -18,11 +19,11 @@
 </template>
 
 <script>
-import Page from "_c/Page";
+import Inquiry from "./Inquiry";
 export default {
   name: "InquiryBasket",
   components: {
-    Page
+    Inquiry
   }
 };
 </script>

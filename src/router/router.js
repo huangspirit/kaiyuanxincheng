@@ -21,7 +21,7 @@ export default [
   },
   // 询价篮
   {
-    path: '/InquiryBasket/',
+    path: '/InquiryBasket',
     // name: 'InquiryBasket',
     component: () => import('@/views/InquiryBasket'),
     meta: {
@@ -31,18 +31,9 @@ export default [
     children: [
       // 待询价
       {
-        path: '/',
-        // name: 'WaitInquiry',
-        component: () => import('@/views/InquiryBasket/WaitInquiry'),
-        meta: {
-          requireAuth: true,
-          title: '待询价'
-        }
-      },
-      {
-        path: 'WaitInquiry',
-        name: 'WaitInquiry',
-        component: () => import('@/views/InquiryBasket/WaitInquiry')
+        path: 'Inquiry',
+        name: 'Inquiry',
+        component: () => import('@/views/InquiryBasket/waitInquiry/waitInquiry.vue')
       },
       // 已询价
       {
