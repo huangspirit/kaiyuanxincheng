@@ -245,7 +245,6 @@
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">{{value.trans_no}}</span>
             </el-popover>
                 </div>
-
                 <p v-else>暂无物流编号</p>
               </td>
               <td>
@@ -264,9 +263,9 @@
                     <CountTime
                       class="CountTime"
                       v-on:end_callback="countDownE_cb()"
-                      :currentTime="item.currentTime"
-                      :startTime="item.currentTime"
-                      :endTime="item.expireTime"
+                      :currentTime="value.currentTime"
+                      :startTime="value.currentTime"
+                      :endTime="value.expireTime"
                       :tipText="'距离开始文字1'"
                       :tipTextEnd="''"
                       :endText="'订单已失效'"

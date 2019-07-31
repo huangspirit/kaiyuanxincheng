@@ -17,8 +17,15 @@ const home={
      diliverGoods:{url:"/api-order/sellerCenter/diliverGoods"},
      diliverHKGoods:{url:"/api-order/sellerCenter/diliverHKGoods"},
      querySysBill:{url:"/api-u/userBill/querySysBill"},
-     openBill:{url:"/api-order/sellerCenter/openBill"}
-
+     openBill:{url:"/api-order/sellerCenter/openBill"},
+     queryExpress:{url:"/api-order/selllerCenter/queryExpress"},
+     queryBillListBySeller:{url:"/api-order/sellerCenter/queryBillListBySeller"}
  }
+ const message={
+    queryMessageCatergory:{url:"/api-n/notification/queryMessageCatergory"},
+    queryUserMessageList:{url:"/api-n/notification/queryUserMessageList"},
+    updateUserMessageByTag:{url:"/api-n/notification/updateUserMessageByTag"},
+     deleteMessage:{url:"/api-n/notification/deleteMessage"}
+}
 
-export {axios,common,home,buyerOrderCenter,sellerOrderCenter}
+export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message}

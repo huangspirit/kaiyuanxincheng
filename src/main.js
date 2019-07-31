@@ -13,7 +13,9 @@ import uploadImg from '_c/uploadImg'
 import HeaderSearch from '_c/HeaderSearch'
 import CountTime from "_c/countTime";
 import SetTankuang from "_c/SetTankuang"
+import IndexPagination from "_c/IndexPagination"
 import './plugins/element.js'
+
 Vue.config.productionTip = false
 Vue.component('SearchInput', SearchInput)
 Vue.component('ButtonIcon', ButtonIcon)
@@ -26,6 +28,9 @@ Vue.component('uploadImg', uploadImg)
 Vue.component('HeaderSearch', HeaderSearch)
 Vue.component('CountTime', CountTime)
 Vue.component('SetTankuang', SetTankuang)
+Vue.component('IndexPagination',IndexPagination)
+import filters  from "./lib/filters";
+Object.keys(filters).forEach((key) => { Vue.filter(key, filters[key][key]) })
 new Vue({
   router,
   store,

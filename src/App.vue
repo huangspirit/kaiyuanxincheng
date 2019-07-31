@@ -65,6 +65,9 @@ export default {
     strong{
         color:#f40;
     }
+    img{
+        vertical-align: middle;
+    }
 #app {
 
 .defaultradioSquare .el-radio__inner{
