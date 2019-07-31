@@ -394,48 +394,6 @@
             <p style>图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
           </div>
         </el-form-item>
-        <!-- <el-form-item label="源头公司名称:" prop="SourceCompany">
-          <el-input v-model="ruleForm.SourceCompany"></el-input>
-        </el-form-item>-->
-        <!-- <el-form-item label="上次购买时间：" prop="LastPurchaseTime">
-          <el-date-picker
-            style="width:560px"
-            v-model="ruleForm.LastPurchaseTime"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy/MM/dd"
-            format="yyyy/MM/dd"
-          ></el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="商品源头证明：" prop="SourceImg">
-          <el-upload
-            :action="url"
-            :before-upload="beforeAvatarUpload"
-            class="upload-demo"
-            ref="upload"
-            :auto-upload="true"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :limit="1"
-            :on-success="handleAvatarSuccess2"
-          >
-            <i class="el-icon-plus avatar-uploader-icon"></i>
-            <div slot="tip" class="el-upload__tip">实物照片</div>
-          </el-upload>
-          <span style="width:100px;">
-            <img
-              src="@/assets/image/PersonalCenter/_u24718.png"
-              alt
-              style="width:100px;height:100px;float:left"
-            >
-            <span style="width:100px;float:left;text-align:center">样张</span>
-          </span>
-          <div style="width:100%;margin-top:40px">
-            <p style="color:#ff6600">来源合同、PI、发票三者其中一种或多种</p>
-            <p style>图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
-          </div>
-        </el-form-item>-->
         <div class="form-item form-item-footer">
           <label for></label>
           <div class="submit" @click="submitForm('ruleForm')">

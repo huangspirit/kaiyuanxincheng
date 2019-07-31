@@ -156,7 +156,8 @@
             <el-form-item label="上传PI单号" >
               <el-upload
                 class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                :action="url"
+                :auto-upload="true"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -179,39 +180,7 @@
         <el-button class="default" @click="submitFormPI('ruleFormPI')" style="width:auto;margin-left:10px;">确定</el-button>
       </div>
     </SetTankuang>
-      <!-- 更改交期 -->
-     <SetTankuang :title="'更改交期'" v-if="centerDialogVisibleChangeDue" @closeDialogCallBack="centerDialogVisibleChangeDue = false">
-      <div class="dialog-body" slot="dialog-body">
-        <el-form
-            :model="ruleFormChangeDue"
-            :rules="rulesChangeDue"
-            ref="ruleFormChangeDue"
-            label-width="150px"
-            class="demo-ruleForm"
-          >
-           <el-form-item label="当前交期:">
-            <p class="text">{{currentItem.expireTime | formatDate}}</p>
-          </el-form-item>
-            <el-form-item label="交期延期:" prop="nameChangeDue">
-              <el-date-picker
-                v-model="ruleFormChangeDue.nameChangeDue"
-                type="datetime"
-                placeholder="新交期时间"
-                style="margin-right:100px"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd HH:mm:ss"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="温馨提示:">
-              <p style="color:#ff6600">更改交期超过7天，买家可在24小时之内撤销订单；每个商品订单交期只能更改一次；在老交期前7天之后无法更改新交期；</p>
-          </el-form-item>
-          </el-form>
-      </div>
-      <div slot="footer" class="dialog-footer fr" style="display:flex;">
-        <el-button class="cancle" @click="centerDialogVisibleChangeDue = false">取消</el-button>
-        <el-button class="default" @click="submitFormChangeDue('ruleFormChangeDue')" style="width:auto;margin-left:10px;">确认更改</el-button>
-      </div>
-    </SetTankuang>
+
       <!-- 确认开票 -->
       <SetTankuang class="settankuang" :title="'确认开具发票'" v-if="centerDialogVisibleInvoice" @closeDialogCallBack="centerDialogVisibleInvoice = false">
       <div class="dialog-body" slot="dialog-body">
@@ -220,9 +189,9 @@
             label-width="150px"
             class="demo-ruleForm"
           >
-<!--           <el-form-item label="发票类型:">-->
-<!--            <p class="text">专用发票</p>-->
-<!--          </el-form-item>-->
+           <el-form-item label="发票类型:">
+            <p class="text">增值税发票</p>
+          </el-form-item>
             <el-form-item label="发票抬头:">
                 <p class="text">{{sysBillDefault.corporatename}}</p>
             </el-form-item>
@@ -252,7 +221,39 @@
         <el-button class="default" @click="submitFormInvoice" style="width:auto;margin-left:10px;">确认</el-button>
       </div>
     </SetTankuang>
-
+        <!-- 更改交期 -->
+        <SetTankuang :title="'更改交期'" v-if="centerDialogVisibleChangeDue" @closeDialogCallBack="centerDialogVisibleChangeDue = false">
+            <div class="dialog-body" slot="dialog-body">
+                <el-form
+                    :model="ruleFormChangeDue"
+                    :rules="rulesChangeDue"
+                    ref="ruleFormChangeDue"
+                    label-width="150px"
+                    class="demo-ruleForm"
+                >
+                    <el-form-item label="当前交期:">
+                        <p class="text">{{currentItem.expireTime | formatDate}}</p>
+                    </el-form-item>
+                    <el-form-item label="交期延期:" prop="nameChangeDue">
+                        <el-date-picker
+                            v-model="ruleFormChangeDue.nameChangeDue"
+                            type="datetime"
+                            placeholder="新交期时间"
+                            style="margin-right:100px"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            format="yyyy-MM-dd HH:mm:ss"
+                        ></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="温馨提示:">
+                        <p style="color:#ff6600">更改交期超过7天，买家可在24小时之内撤销订单；每个商品订单交期只能更改一次；在老交期前7天之后无法更改新交期；</p>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer fr" style="display:flex;">
+                <el-button class="cancle" @click="centerDialogVisibleChangeDue = false">取消</el-button>
+                <el-button class="default" @click="submitFormChangeDue('ruleFormChangeDue')" style="width:auto;margin-left:10px;">确认更改</el-button>
+            </div>
+        </SetTankuang>
     </div>
       <router-view></router-view>
   </div>
@@ -268,6 +269,7 @@ import SellerOrderItem from "_c/SellerOrderItem";
 import { mapState, mapActions } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
 import {axios,common,sellerOrderCenter} from '@/api/apiObj'
+import { baseURL } from "@/config";
 
 export default {
   name: "OrderManagement",
@@ -374,6 +376,7 @@ export default {
       ...mapActions("Common", [
           "GetCenterChangeAddress"
       ]),
+
       //开票
       submitFormInvoice(){
         let obj={
@@ -420,6 +423,7 @@ export default {
     },
     DeliverGoods(item) {
         this.currentOrder_item=item;
+        this.currentItem=item;
       if(item.diliver_place=="香港"){
         this.centerDialogVisiblePI = true;
       }else{
@@ -443,7 +447,7 @@ export default {
     // 上传PI单成功的回调
     handleAvatarSuccess(res, file) {
         console.log(res)
-        this.ruleFormPI.bi_url=res.name;
+        this.ruleFormPI.bi_url=res.data;
       this.imageUrlPI = URL.createObjectURL(file.raw);
     },
     //上传之前的回调
@@ -482,13 +486,14 @@ export default {
     },
     // 确认上传PI单
     submitFormPI(formName) {
-        this.ruleFormPI.id=this.currentOrder_item.id;
+        this.ruleFormPI.id=this.currentItem.id;
+        this.ruleFormPI.goodsName=this.currentItem.goods_name
         console.log(this.ruleFormPI)
       this.$refs[formName].validate(valid => {
         if (valid) {
             axios.request({...sellerOrderCenter.diliverHKGoods,params:this.ruleFormPI}).then(res =>{
                 console.log(res)
-                this.centerDialogVisible = false
+                this.centerDialogVisiblePI = false
                 this.all();
             })
         } else {
@@ -550,6 +555,13 @@ export default {
   computed: {
       start() {
           return (this.currentPage - 1) * this.pageSize;
+      },
+      url() {
+          let access_token=sessionStorage.getItem("access_token")
+          return (
+              baseURL +
+              `api-order/sellerCenter/uploadOrderBi?access_token=${access_token}&seller_no=${this.currentItem.goods_seller_no}`
+          );
       },
     ...mapState({
         CenterChangeAddress: state => state.Common.CenterChangeAddress,

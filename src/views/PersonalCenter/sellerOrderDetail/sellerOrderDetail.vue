@@ -23,7 +23,7 @@
             </p>
             <p :class="{'active':state==3}">
                 <label>
-                    <input type="radio" value="2" name="status" v-model="state">
+                    <input type="radio" value="3" name="status" v-model="state">
                     已取消
                 </label>
             </p>
@@ -157,12 +157,17 @@
                 this.$router.go(-1)
             },
             init(){
-                this.GetSellerOrderDetailList({
+                let obj={
                     goods_seller_id:this.goods_seller_id,
-                    states:this.state,
                     start:this.startNum,
                     length:this.pageSize
-                }).then(res=>{
+                }
+                if(this.state==1){
+                    obj.type=1
+                }else{
+                    obj.states=this.state
+                }
+                this.GetSellerOrderDetailList(obj).then(res=>{
                     this.tableData=res.data
                     this.total=res.total
                 })

@@ -42,7 +42,7 @@
       <div class="order-product">
         <p class="product-total">
           <span>订单商品</span>
-          <span class="num">x 6</span>
+          <span class="num">x {{goodsCount}}</span>
         </p>
         <ul>
           <ShoppingSettlementOItem v-for="(item,k) in DetaileData" :key="k" :item="item"></ShoppingSettlementOItem>
@@ -393,6 +393,8 @@ export default {
   name: "ShoppingSettlement",
   data() {
     return {
+        //购买商品总数
+        goodsCount:0,
       //月结用户提交订单成功后需要跳转
       count:60,
       showGoIndex:false,
@@ -962,10 +964,16 @@ export default {
     this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
     this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
     for (var key in DetailData) {
+        DetailData[key].forEach(item=>{
+            console.log(item)
+            this.goodsCount=this.goodsCount+Number(item.goods_count)
+        })
       this.DetaileData.push({
         name: key,
         list: DetailData[key]
       });
+
+
     }
   }
 };

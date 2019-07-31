@@ -173,13 +173,61 @@ export default [
   },
   // 消息
   {
-    path: '/News',
+    path: '/News/',
     name: 'News',
     component: () => import('@/views/News'),
     meta: {
       requireAuth: true,
       title: '消息'
-    }
+    },
+      children: [
+          //发货通知
+          {
+              path: '/',
+             name: 'start',
+              component: () => import('@/views/News/start/start'),
+              meta: {
+                  requireAuth: true,
+                  title: '消息通知'
+              }
+          },
+          {
+              path: 'dg',
+              name: 'dg',
+              component: () => import('@/views/News/dg/dg'),
+              meta: {
+                  requireAuth: true,
+                  title: '发货通知'
+              }
+          },
+          {
+              path: 'sys',
+              name: 'sys',
+              component: () => import('@/views/News/sys/sys'),
+              meta: {
+                  requireAuth: true,
+                  title: '系统通知'
+              }
+          },
+          {
+              path: 'zfs',
+              name: 'zfs',
+              component: () => import('@/views/News/zfs/zfs'),
+              meta: {
+                  requireAuth: true,
+                  title: '支付通知'
+              }
+          },
+          {
+              path: 'auth',
+              name: 'auth',
+              component: () => import('@/views/News/auth/auth'),
+              meta: {
+                  requireAuth: true,
+                  title: '支付通知'
+              }
+          },
+      ]
   },
   // 登录
   {

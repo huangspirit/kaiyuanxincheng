@@ -6,9 +6,34 @@
           <strong>批次号：</strong>
           {{item.goods_seller_no}}
         </span>
-        <span>
+        <span v-if="item.trans_no">
           <strong>物流单号：</strong>
-          {{item.trans_no ? item.trans_no : '暂无物流'}}
+              <el-popover
+                  placement="top-start"
+                  width="500"
+                  trigger="hover"
+                  @show="getDiliverInfo(item.goods_seller_no)"
+              >
+                     <div class="orderpress">
+                         <p style="margin-bottom:15px;font-size:20px">物流单号：{{item.trans_no}}</p>
+                         <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
+                         <el-timeline>
+                             <el-timeline-item
+                                 :timestamp="val.datetime"
+                                 placement="top"
+                                 v-for="(val, k) in expressList"
+                                 :key="k"
+                                 type="success"
+                                 :class="k === val.length - 1 ? 'lastfood' : '' "
+                             >
+                                 <el-card>
+                                     <h4>{{val.remark}}</h4>
+                                 </el-card>
+                             </el-timeline-item>
+                         </el-timeline>
+                     </div>
+                     <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">{{item.trans_no}}</span>
+                 </el-popover>
         </span>
       </div>
       <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed">
@@ -57,7 +82,7 @@
               :minutesTxt="'钟'"
               :secondsTxt="'秒'"
             ></CountTime>
-             <div v-else>
+             <div v-if="item.status==3">
                <p>已逾期: <span style="color:#f40;">{{item.violate_count}}天</span></p>
                <p>滞纳金：<span style="color:#f40;">¥ {{item.violate_monney}}</span></p>
                </div>
@@ -71,11 +96,13 @@
             <p>{{item.diliver_place}}</p>
           </td>
           <td style="width:13%">
-            <div v-if="item.status==1">
-              <p>收货人：{{item.warehouseRecipient}}</p>
-              <p>电话：{{item.warehousePhone}}</p>
-              <p>地址：{{item.warehouseAddr}}</p>
-            </div>
+              <template v-if="item.status==1">
+                  <div v-if="item.diliver_place!='香港'" style="text-align: left;padding:0 5px;">
+                      <p><strong>收货人</strong>：{{item.warehouseRecipient}}</p>
+                      <p><strong>电话</strong>：{{item.warehousePhone}}</p>
+                      <p><strong>地址</strong>：{{item.warehouseAddr}}</p>
+                  </div>
+              </template>
             <div v-else>暂未发货</div>
           </td>
           <td style="width:10%">
@@ -120,7 +147,6 @@
               <el-button class="default" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
               <!-- <p v-if="!item.diliverBuuton" class="no-change">已更改交期</p> -->
               <el-button class="default" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
-             <el-button class="default" v-if="item.expressButton">物流信息</el-button>
                 <slot name="detail"></slot>
 <!--             <el-button class="default" >订单明细</el-button>-->
             </div>
@@ -134,6 +160,7 @@
 import { mapActions, mapState } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
 import Countdown from "_c/Countdown";
+import {axios,sellerOrderCenter} from "../../api/apiObj";
 
 
 export default {
@@ -144,7 +171,8 @@ export default {
       flag: false,
       goods_seller_id: "",
       OrderProcessList: [],
-        priceList:[]
+      priceList:[],
+      expressList:[]
     };
   },
   props: {
@@ -176,6 +204,13 @@ export default {
       "GetSellerOrderDetaileList",
       "GetQueryGoodsOperationLog"
     ]),
+      getDiliverInfo(seller_no ){
+        axios.request({...sellerOrderCenter.queryExpress,params:{seller_no:seller_no }}).then(res=>{
+            this.expressList=res.data
+        })
+
+
+      },
       countDownE_cb: function(item) {
           this.$emit("reload")
       },
