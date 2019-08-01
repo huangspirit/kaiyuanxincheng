@@ -133,5 +133,4 @@ export function ladderPrice(value) {
         })
     }
     return array
-
 }
