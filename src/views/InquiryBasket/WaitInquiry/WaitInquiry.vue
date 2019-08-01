@@ -2,10 +2,8 @@
   <div>
     <div class="checkAll">
       <div class="allBtn">
-        <span>
-          <img src="@/assets/image/inquirybasket/checked.png" alt />
-        </span>
-        <span>全选</span>
+        <span></span>
+        全选
       </div>
       <div class="allNum">
         <span>
@@ -17,16 +15,11 @@
       </div>
     </div>
     <div class="inquiryList">
-      <ul class="listCheck" v-for="(item,index) in waitInquiryList" :key="index">
+      <ul class="listCheck">
         <div class="checkAll">
           <div class="allBtn">
-            <span @click="allCheck(item)">
-              <img v-if="item.allCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
-            </span>
-            <span>{{item.sellerName}}</span>
-            <span>
-              <img :src="item.sellerUrl + '?imageView2/2/w/80/h/80'" alt />
-            </span>
+            <span></span>
+            罗期斯特电子（RE）
           </div>
           <div class="allNum">
             <span>
@@ -38,44 +31,50 @@
           </div>
         </div>
 
-        <li class="listContent" v-for="(listItem,index) in item.baseList" :key="index">
+        <li class="listContent" v-for="(item,index) in 6" :key="index">
+          <div class="itemCheck">
+
+          </div>
           <div class="goodsImg">
-            <div @click="listItemCheck(listItem)" class="itemCheck">
-              <img
-                v-if="listItem.itemCheck == true"
-                src="@/assets/image/inquirybasket/checked.png"
-                alt
-              />
-            </div>
+            <div></div>
             <div>
-              <img :src="listItem.imageUrl " alt />
+              <li></li>
+              <li></li>
+              <li></li>
             </div>
           </div>
           <div class="goodsDetail">
             <div class="googsDesc">
-              <h3>{{listItem.productno}}</h3>
-              <h4>品牌：{{listItem.brand}}</h4>
-              <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
-              <p>型号描述：{{listItem.productdesc}}</p>
+              <h3>CDHDFJHKS-234J</h3>
+              <h4>品牌：罗琦斯特电子22</h4>
+              <p>基本参数：DIP 盒子 1/8W 100-15</p>
               <p>
-                <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
-                <span
-                  v-if="listItem.map.totalSeller != 0"
-                >￥{{listItem.map.minPrice | pointTwo(listItem.map.minPrice)}} ------ ￥{{listItem.map.maxPrice | pointTwo(listItem.map.maxPrice)}}</span>
+                型号描述：The 77219-7PPSG is an Iusdjying should
+                washer made of 40% glass filled podjskdjene sulfid
+                e（PPS）body. Its recommended。
+              </p>
+              <p>
+                <span>共有3个供应商报价</span>
+                <span>￥25 ------ ￥25</span>
               </p>
             </div>
             <div class="goodPrice">
               <h3>原厂报价</h3>
-              <li
-                v-if="listItem.factorySellerInfo.price_level != undefined"
-                v-for="(subitem,index) in listItem.ladderPrice"
-                :key="index"
-              >
-                <span>{{subitem.num}}+</span> -------
-                <span>￥{{subitem.price}}</span>
+              <li>
+                <span>1000+</span> -------
+                <span>￥3.5</span>
               </li>
-              <li v-if="listItem.factorySellerInfo.price_level == undefined">
-                <p style="text-align: center">暂无原厂报价</p>
+              <li>
+                <span>1000+</span> -------
+                <span>￥3.5</span>
+              </li>
+              <li>
+                <span>1000+</span> -------
+                <span>￥3.5</span>
+              </li>
+              <li>
+                <span>1000+</span> -------
+                <span>￥3.5</span>
               </li>
             </div>
             <div class="goodEdit">
@@ -93,16 +92,10 @@
 <script>
 import "./waitInquiry.less";
 import { axios, shoppingCar } from "@/api/apiObj";
-import { ladderPrice } from "@/lib/utils";
 export default {
   data() {
-    return {
-      waitInquiryList: [],
-      factorySale: [],
-      baseListData: []
-    };
+    return {};
   },
-  inject: ["reload"],
   mounted() {
     this.getInquiry();
   },
@@ -116,40 +109,8 @@ export default {
       axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
         console.log(res);
         if (res.resultCode == "200") {
-          this.waitInquiryList = res.data.data;
-          this.factorySale = [];
-          for (var i = 0; i < this.waitInquiryList.length; i++) {
-            this.waitInquiryList[i]["allCheck"] = false;
-            this.waitInquiryList[i]["subCheck"] = false;
-            for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
-              this.waitInquiryList[i].baseList[j]["itemCheck"] = false;
-              if (
-                this.waitInquiryList[i].baseList[j].factorySellerInfo
-                  .price_level != undefined
-              ) {
-                this.factorySale = ladderPrice(
-                  this.waitInquiryList[i].baseList[j].factorySellerInfo
-                    .price_level
-                );
-                this.waitInquiryList[i].baseList[j][
-                  "ladderPrice"
-                ] = this.factorySale;
-              }
-            }
-          }
-          console.log(res);
         }
       });
-    },
-    listItemCheck(val) {
-      this.$nextTick(() => {
-        val.itemCheck = !val.itemCheck;
-      });
-      console.log(val);
-    },
-    allCheck(val) {
-      console.log(val);
-      val.subCheck = !val.subCheck
     }
   }
 };
@@ -159,34 +120,17 @@ export default {
 .checkAll {
   width: 100%;
   margin-bottom: 48px;
-  margin-top: 60px;
   display: flex;
   justify-content: space-between;
   .allBtn {
+    font-size: 20px;
+    color: rgba(51, 51, 51, 1);
     > span {
       width: 18px;
       height: 18px;
       border: 1px solid rgba(102, 102, 102, 1);
+      vertical-align: middle;
       margin-right: 12px;
-      > img {
-        vertical-align: top;
-      }
-      &:nth-of-type(2) {
-        width: auto;
-        border: none;
-        font-size: 20px;
-        line-height: 25px;
-        height: 25px;
-        color: rgba(51, 51, 51, 1);
-        margin-left: 12px;
-      }
-      &:nth-of-type(3) {
-        vertical-align: top;
-        width: auto;
-        border: none;
-        height: 25px;
-        margin-left: 12px;
-      }
     }
   }
   .allNum {
@@ -215,30 +159,24 @@ export default {
     height: auto;
     .listContent {
       display: flex;
+      .itemCheck {
+        width: 18px;
+        height: 18px;
+        border: 1px solid rgba(201, 201, 201, 1);
+      }
       .goodsImg {
-        width: 240px;
+        min-width: 166px;
         margin-right: 34px;
-        .itemCheck {
-          width: 18px;
-          height: 18px;
-          margin-right: 48px;
-          margin-top: 80px;
-          border: 1px solid rgba(201, 201, 201, 1);
-        }
         > div {
-          float: left;
-          &:nth-of-type(2) {
+          &:nth-of-type(1) {
             width: 166px;
             height: 152px;
             background: rgba(232, 232, 232, 1);
-            > img {
-              width: 100%;
-            }
           }
-          &:nth-of-type(3) {
+          &:nth-of-type(2) {
             width: 166px;
             height: 38px;
-            margin: 6px 0 6px 68px;
+            margin: 6px 0;
             display: flex;
             justify-content: space-between;
             > li {
@@ -253,9 +191,8 @@ export default {
         display: flex;
         border-bottom: 1px solid rgba(232, 232, 232, 1);
         margin-bottom: 52px;
-        min-height: 210px;
         .googsDesc {
-          width: 50%;
+          width: 40%;
           > h3 {
             font-size: 20px;
             font-family: PingFangSC-Semibold;
@@ -270,10 +207,14 @@ export default {
           > p {
             &:nth-of-type(1) {
               font-size: 16px;
+              color: rgba(102, 102, 102, 1);
+            }
+            &:nth-of-type(2) {
+              font-size: 16px;
               color: rgba(153, 153, 153, 1);
               margin: 16px 0;
             }
-            &:nth-of-type(2) {
+            &:nth-of-type(3) {
               > span {
                 &:nth-of-type(1) {
                   font-size: 16px;
@@ -289,10 +230,7 @@ export default {
           }
         }
         .goodPrice {
-          padding: 0 76px 0 50px;
-          box-sizing: border-box;
-          width: 26%;
-          min-width: 333px;
+          margin: 0 76px 0 50px;
           > h3 {
             width: 100%;
             text-align: center;
