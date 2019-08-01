@@ -13,7 +13,7 @@
     <div class="inquiry-basket">
       <router-view/>
       <!-- 大家都在询价 -->
-      <TabImageFoot>大家都在询价</TabImageFoot>
+      <!-- <TabImageFoot>大家都在询价</TabImageFoot> -->
     </div>
   </div>
 </template>

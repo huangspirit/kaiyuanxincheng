@@ -3,7 +3,7 @@
     <div id="container" class="clear">
       <headTop id="HeaderBar" ></headTop>
       <div id="content" class="clear">
-        <router-view/>
+        <router-view v-if="isRouterAlive"/>
       </div>
       <Footer></Footer>
       <Sidebar></Sidebar>
@@ -20,7 +20,13 @@ export default {
   data() {
     return {
       // UserInforma: ""
+       isRouterAlive: true
     };
+  },
+  provide () {
+    return {
+      reload: this.reload
+    }
   },
   components: {
     Footer,
@@ -29,7 +35,13 @@ export default {
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
-    ...mapMutations(['setloginState'])
+    ...mapMutations(['setloginState']),
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      })
+    }
   },
   computed:{
     ...mapState({

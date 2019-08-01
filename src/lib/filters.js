@@ -1,3 +1,12 @@
+import Vue from 'vue'
+Vue.filter('pointTwo',(value)=>{
+    
+    if(typeof(value)=='string') {
+
+    } else {
+        return value.toFixed(4)
+    }
+})
 
 // 毫秒转化正常日期格式
 const formatDate =function(date, fmt) {

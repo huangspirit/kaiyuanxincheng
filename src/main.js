@@ -28,11 +28,13 @@ Vue.component('uploadImg', uploadImg)
 Vue.component('HeaderSearch', HeaderSearch)
 Vue.component('CountTime', CountTime)
 Vue.component('SetTankuang', SetTankuang)
-Vue.component('IndexPagination',IndexPagination)
-import filters  from "./lib/filters";
-Object.keys(filters).forEach((key) => { Vue.filter(key, filters[key][key]) })
+Vue.component('IndexPagination', IndexPagination)
+import filters from "./lib/filters";
+Object.keys(filters).forEach((key) => {
+    Vue.filter(key, filters[key][key])
+})
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app')
