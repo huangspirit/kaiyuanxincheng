@@ -96,7 +96,6 @@ export const TimeForma2 = (value) => {
 function formatTen (num) {
   return num > 9 ? (num + '') : ('0' + num)
 }
-
 export function formatDateTime (date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1

@@ -33,7 +33,7 @@ export default [
       {
         path: 'Inquiry',
         name: 'Inquiry',
-        component: () => import('@/views/InquiryBasket/waitInquiry/waitInquiry.vue')
+        component: () => import('@/views/InquiryBasket/waitInquiry/waitInquiry')
       },
       // 已询价
       {
