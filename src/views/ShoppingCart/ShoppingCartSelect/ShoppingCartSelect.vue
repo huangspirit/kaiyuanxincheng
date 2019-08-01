@@ -188,7 +188,7 @@
 import {mapActions } from "vuex";
 import shoppingCarProductItem from "_c/shoppingCarProductItem";
 import {axios,shoppingCar} from "../../../api/apiObj";
-import {TimeForma2} from "@/lib/utils"
+import {TimeForma2,ladderPrice} from "@/lib/utils"
 
 export default {
   name: "ShoppingCartSelect",
@@ -274,6 +274,7 @@ export default {
               this.goodsList=res.data.data.map(item=>{
                   item.list.map(item0=>{
                       item0.count=item0.moq;
+                     // item.priceList=ladderPrice(item0.)
                       return item0;
                   })
                   return item;
