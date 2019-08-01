@@ -8,7 +8,6 @@
         <p class="h3">促销专场</p>
       </div>
     </div>
-    <Inquiry />
     <!-- 询价篮 -->
     <div class="inquiry-basket">
       <router-view/>

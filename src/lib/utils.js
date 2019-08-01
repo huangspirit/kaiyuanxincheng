@@ -121,7 +121,6 @@ export const checkAge = (rule, value, callback) => {
     }
 };
 export function ladderPrice(value) {
-    console.log('777777777', value.split('@'))
     var arr = value.split('@')
     var array = []
     for (var i = 0; i < arr.length; i++) {

@@ -10,7 +10,7 @@
       <div class="allNum">
         <span>
           总计已选
-          <strong>0</strong> 件商品   
+          <strong>0</strong> 件商品
         </span>
         <span class="batchBtn">批量申请</span>
         <img src="@/assets/image/inquirybasket/delete.png" alt />
@@ -80,7 +80,7 @@
             </div>
             <div class="goodEdit">
               <el-button class="attention">+ 关注</el-button>
-              <el-button class="special">申请特价</el-button>
+              <el-button class="special" @click="applySpecial(listItem)">申请特价</el-button>
             </div>
           </div>
         </li>
@@ -106,6 +106,9 @@ export default {
   mounted() {
     this.getInquiry();
   },
+  beforeDestroy() {
+    eventBus.$off("proInformation");
+  },
   methods: {
     getInquiry() {
       var obj = {
@@ -114,7 +117,6 @@ export default {
         source: "2"
       };
       axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
-        console.log(res);
         if (res.resultCode == "200") {
           this.waitInquiryList = res.data.data;
           this.factorySale = [];
@@ -137,7 +139,6 @@ export default {
               }
             }
           }
-          console.log(res);
         }
       });
     },
@@ -149,7 +150,12 @@ export default {
     },
     allCheck(val) {
       console.log(val);
-      val.subCheck = !val.subCheck
+      val.subCheck = !val.subCheck;
+    },
+    applySpecial(val) {
+      console.log(val);
+     this.$store.dispatch('promation',val)
+      this.$router.push("/InquiryBasket/ApplySpecialPrice");
     }
   }
 };

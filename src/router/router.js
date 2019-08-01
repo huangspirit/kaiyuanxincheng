@@ -23,6 +23,7 @@ export default [
   {
     path: '/InquiryBasket',
     // name: 'InquiryBasket',
+    redirect:'/InquiryBasket/Inquiry',
     component: () => import('@/views/InquiryBasket'),
     meta: {
       requireAuth: true,
@@ -33,18 +34,18 @@ export default [
       {
         path: 'Inquiry',
         name: 'Inquiry',
-        component: () => import('@/views/InquiryBasket/waitInquiry')
+        component: () => import('@/views/InquiryBasket/Inquiry')
       },
-      // 已询价
-      {
-        path: 'AlreadyInquiry',
-        name: 'AlreadyInquiry',
-        component: () => import('@/views/InquiryBasket/AlreadyInquiry'),
-        meta: {
-          requireAuth: true,
-          title: '已询价'
-        }
-      },
+      // // 已询价
+      // {
+      //   path: 'AlreadyInquiry',
+      //   name: 'AlreadyInquiry',
+      //   component: () => import('@/views/InquiryBasket/AlreadyInquiry'),
+      //   meta: {
+      //     requireAuth: true,
+      //     title: '已询价'
+      //   }
+      // },
       // 申请特价
       {
         path: 'ApplySpecialPrice',

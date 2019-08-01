@@ -8,11 +8,17 @@
     <div class="waitContent">
       <div class="inquiryTab">
         <li>
-          <span @click="tabShow = true" :class="tabShow? 'active':''">待询价</span>
-          <span @click="tabShow = false" :class="!tabShow? 'active':''">已询价</span>
+          <span
+            @click="tabShow = true;"
+            :class="tabShow? 'active':'' "
+          >待询价</span>
+          <span
+            @click="tabShow = false;"
+            :class="!tabShow? 'active':''"
+          >已询价</span>
         </li>
         <li class="search">
-          <img src="@/assets/image/inquirybasket/u26.png" alt="">
+          <img src="@/assets/image/inquirybasket/u26.png" alt />
           <el-input placeholder="搜索询价蓝" v-model="seachText"></el-input>
         </li>
       </div>
@@ -25,7 +31,7 @@
 <script>
 import WaitInquiry from "../waitInquiry";
 import AleadyInquiry from "../AlreadyInquiry";
-import "./Inquiry.less"
+import "./Inquiry.less";
 export default {
   name: "Inquiry",
   data() {
@@ -41,7 +47,8 @@ export default {
     AleadyInquiry
   },
   methods: {
-    change() {}
+    change() {},
+    waitMoney() {}
   }
 };
 </script>
@@ -73,6 +80,7 @@ export default {
   }
   .waitContent {
     padding: 62px 42px;
+
     .inquiryTab {
       display: flex;
       justify-content: space-between;
@@ -97,7 +105,7 @@ export default {
         background: rgba(242, 242, 242, 1);
         border-radius: 10px;
         padding-left: 20px;
-        >img {
+        > img {
           width: 16px;
           height: 18px;
           float: left;

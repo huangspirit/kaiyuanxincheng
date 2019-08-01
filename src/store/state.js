@@ -9,6 +9,7 @@ const state = {
   // 登录的状态
   loginState: (sessionStorage.getItem("loginState")=='false' || sessionStorage.getItem("loginState")=='true')?Boolean(sessionStorage.getItem("loginState")):false,
   // 滚动
-  headerFxed: true
+  headerFxed: true,
+  proInformation:{}
 }
 export default state
