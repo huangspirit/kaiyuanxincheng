@@ -25,7 +25,7 @@
 <script>
 import WaitInquiry from "../waitInquiry";
 import AleadyInquiry from "../AlreadyInquiry";
-import "./WaitInquiry.less"
+import "./Inquiry.less"
 export default {
   name: "Inquiry",
   data() {

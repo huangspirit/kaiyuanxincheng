@@ -10,7 +10,7 @@
       <div class="allNum">
         <span>
           总计已选
-          <strong>0</strong> 件商品
+          <strong>0</strong> 件商品   
         </span>
         <span class="batchBtn">批量申请</span>
         <img src="@/assets/image/inquirybasket/delete.png" alt />
