@@ -33,7 +33,7 @@
 
         <li class="listContent" v-for="(item,index) in 6" :key="index">
           <div class="itemCheck">
-             
+
           </div>
           <div class="goodsImg">
             <div></div>
@@ -46,7 +46,7 @@
           <div class="goodsDetail">
             <div class="googsDesc">
               <h3>CDHDFJHKS-234J</h3>
-              <h4>品牌：罗琦斯特电子</h4>
+              <h4>品牌：罗琦斯特电子22</h4>
               <p>基本参数：DIP 盒子 1/8W 100-15</p>
               <p>
                 型号描述：The 77219-7PPSG is an Iusdjying should
