@@ -4,16 +4,18 @@
       <!-- 搜索 -->
       <div class="ShoppingCart-title">
         <span class="total">
-          <img src="@/assets/image/ShoppingCart/u25552.png" alt>
           <span>购物车</span>
-          <span class="num">（32）</span>
+          <span class="num">(32)</span>
         </span>
-        <SearchInput :width="530" :height="56" :placeholder="'搜索购物车'"></SearchInput>
+        <div class="searchInput">
+            <i class="el-icon-search"></i>
+            <input type="text" placeholder="搜索商品">
+        </div>
       </div>
       <!-- 列表 -->
       <div class="ShoppingCart-list">
         <div class="ShoppingCart-list-tit">
-          <span style="width:200px" class="allcheckbox">
+          <span style="width:20%" class="allcheckbox">
             <label class="checkBox">
               <input
                 type="checkbox"
@@ -22,21 +24,101 @@
               >全选
             </label>
           </span>
-          <span style="width:300px">商品</span>
-          <span style="width:200px">交期/交地</span>
-          <span style="width:200px">单价/库存</span>
-          <span style="width:200px">数量</span>
-          <span style="width:150px">总计</span>
-          <span style="width:130px">操作</span>
+          <span style="width:20%">商品</span>
+          <span style="width:15%">交期/交地</span>
+          <span style="width:10%">单价/库存</span>
+          <span style="width:15%">数量</span>
+          <span style="width:10%">总计</span>
+          <span style="width:10%">操作</span>
         </div>
         <div class="ShoppingCart-list-con">
           <template v-for="(item,k) in ShoppingCartList">
-            <shoppingCarProductItem
-              :key="`item.allcheckbox_${k}`"
-              :ShoppingCartObject.sync="item"
-              :ShoppingCartList.sync="ShoppingCartList"
-              :ShoppingCartAllCheckbox.sync="ShoppingCartAllCheckbox"
-            ></shoppingCarProductItem>
+<!--            <shoppingCarProductItem-->
+<!--              :key="`item.allcheckbox_${k}`"-->
+<!--              :ShoppingCartObject.sync="item"-->
+<!--              :ShoppingCartList.sync="ShoppingCartList"-->
+<!--              :ShoppingCartAllCheckbox.sync="ShoppingCartAllCheckbox"-->
+<!--            ></shoppingCarProductItem>-->
+            <div class="item" :key="k">
+                <div class="title">
+                    <label class="checkBox">
+                        <input
+                            type="checkbox"
+                            :checked="ShoppingCartAllCheckbox"
+                            @change="ShoppingCartAllCheck"
+                        >
+                    </label>
+                    <span>罗彻斯特电子 (原厂)</span>
+                </div>
+                <ul class="listDetail">
+                    <li class="imgWrap" style="width:20%;">
+                        <label class="checkBox">
+                            <input
+                                type="checkbox"
+                                :checked="ShoppingCartAllCheckbox"
+                                @change="ShoppingCartAllCheck"
+                            >
+                        </label>
+                        <div>
+                            <img src="" alt="">
+                        </div>
+
+                    </li>
+                    <li style="width:20%;" class="info">
+                            <p class="name">
+                                EDHDFJHKS-234J
+                            </p>
+                            <p class="intDesc">基本参数：DIP   盒子  1/8W </p>
+                            <p class="desc">型号描述：The current in the input circuit isdetermined ...</p>
+                    </li>
+                    <li style="width:15%" class="place">
+                        <p>内地</p>
+                        <p>2019-6-30</p>
+                        <p>期货</p>
+                    </li>
+                    <li style="width:10%" class="price">
+                        <p><span class="num">1000+ </span>--- <strong>¥3.5</strong></p>
+                        <p><span class="num">3000+ </span>--- <strong>¥3.0</strong></p>
+                        <p><span class="num">5000+ </span>--- <strong>¥2.0</strong></p>
+                        <p><span class="num">10000+ </span>--- <strong>¥1.5</strong></p>
+                    </li>
+                    <li style="width:15%" class="count">
+                        <el-input-number v-model="num" size="mini" @change="handleChange" :min="1"></el-input-number>
+                        <p>Moq:1000</p>
+                        <p>Mpq:1000</p>
+                    </li>
+                    <li style="width:20%" class="all">
+                        <div class="top">
+                            <div class="count">
+                                <strong>¥35000</strong>
+                            </div>
+                            <div>
+                                <p class="add" @click="add">添加询价篮</p>
+                                <p class="del" @click="del">删除该商品</p>
+                            </div>
+                        </div>
+                        <div class="countTime">
+<!--                            <div>-->
+<!--&lt;!&ndash;                                <CountTime&ndash;&gt;-->
+<!--&lt;!&ndash;                                    class="countTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    v-on:end_callback="countDownE_cb(item)"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :currentTime="item.currentTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :startTime="item.currentTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :endTime="item.expireTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :tipText="'距离售卖开始:'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :tipTextEnd="'特价剩余时间'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :endText="'活动已结束'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :dayTxt="'天'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :hourTxt="'小时'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :minutesTxt="'分钟'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :secondsTxt="'秒'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                ></CountTime>&ndash;&gt;-->
+<!--                            </div>-->
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
           </template>
         </div>
       </div>
@@ -156,7 +238,7 @@ export default {
   watch: {
     ShoppingCartList: {
       handler() {
-        
+
       },
       deep: true
     }

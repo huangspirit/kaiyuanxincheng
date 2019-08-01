@@ -13,7 +13,6 @@
           </label>
         </span>
         <div class="brand-img">
-          <img src="@/assets/image/ShoppingCart/u25416.png" alt>
           <span>罗彻斯特电子（原厂</span>
         </div>
       </div>
