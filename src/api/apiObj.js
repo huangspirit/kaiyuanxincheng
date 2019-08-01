@@ -27,5 +27,7 @@ const home={
     updateUserMessageByTag:{url:"/api-n/notification/updateUserMessageByTag"},
      deleteMessage:{url:"/api-n/notification/deleteMessage"}
 }
-
-export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message}
+const shoppingCar={
+    insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"}
+}
+export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message,shoppingCar}

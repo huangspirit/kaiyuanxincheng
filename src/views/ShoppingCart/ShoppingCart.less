@@ -1,31 +1,64 @@
 .ShoppingCart {
-    width: 95%;
-    max-width:1350px;
+    width:100%;
+    max-width:1200px;
     min-width:1080px;
-    
     box-sizing: border-box;
-    margin:90px auto;
+   padding-top:60px;
     background: #fff;
-    padding-top: 30px;
-
+    margin:0 auto;
     // 步骤
     .ShoppingCart-steps {
-        width: 100%;
-        overflow: hidden;
-
-        .el-steps {
-            width: 70%;
-            float: right;
-            margin-right:-5%;
-
-            .is-horizontal .el-step__line {
+        display: flex;
+        width:70%;
+        margin:60px auto;
+        .item{
+            width:25%;
+            position:relative;
+            text-align: center;
+            font-size:18px;
+            .dot{
                 height: 10px;
-                top: 8px;
+                width:10px;
+                border-radius: 100%;
+                background:#999;
+                position:absolute;
+                left:50%;
+                transform: translateX(-50%);
+                z-index:2;
+            }
+            .line{
+                height:2px;
+                position:absolute;
+                top:4.5px;
+                left:50%;
+                right:-50%;
+                background:#999999;
+                z-index:1;
+            }
+            .txt{
+                margin-top:20px;
+                color:#999;
+            }
+            &.active{
+                .dot{
+                    background: #333;
+                }
+                .txt{
+                    color:#333;
+                }
             }
         }
-        .el-step__line-inner{
-            border-width: 5px !important
-        }
+        //.el-steps {
+        //    width: 70%;
+        //    margin:60px auto;
+        //    .is-horizontal .el-step__line {
+        //        height: 10px;
+        //        top: 8px;
+        //    }
+        //}
+        //.el-step__line-inner{
+        //    border-width: 5px !important
+        //}
     }
 
 }

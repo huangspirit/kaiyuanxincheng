@@ -69,7 +69,7 @@ export default {
         vertical-align: middle;
     }
 #app {
-
+background:#f4f4f4;
 .defaultradioSquare .el-radio__inner{
   border-radius: 0;
   width:20px;

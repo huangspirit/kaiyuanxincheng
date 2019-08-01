@@ -1,101 +1,193 @@
 .ShoppingCartSelect {
-
     // 购物车的内容
     .ShoppingCart-con {
-        width: 1350px;
-        margin: 0 auto;
-
         // 购物车搜索
         .ShoppingCart-title {
-            width: 100%;
-            height: 90px;
-            line-height: 90px;
-
             .total {
-                float: left;
-                font-size: 36px;
-                color: #4a5a6a;
-
-                span {
-                    float: left;
-                }
-
+                font-size: 28px;
+                color: #4D9AF3;
+                font-weight:bolder;
+                border-left:4px solid #4D9AF3;
+                padding-left:20px;
                 .num {
-                    color: #cc0000;
-                    font-size: 28px;
-                }
-
-                img {
-                    float: left;
-                    width: 57px;
-                    height: 48px;
-                    margin-right: 10px;
-                    position: relative;
-                    top: 20px;
+                    font-size: 22px;
+                    margin-left:10px;
                 }
             }
-
-            .SearchInput {
-                float: right;
-                margin-top: 20px;
+            .searchInput {
+                float:right;
+                height: 38px;
+                border-radius: 38px;
+                position:relative;
+                overflow: hidden;
+                margin-right:24px;
+                .el-icon-search{
+                    position:absolute;
+                    left:20px;
+                    top:10px;
+                    font-size:18px;
+                }
+                input{
+                    background:#E8E8E8;
+                    border:none;
+                    outline: none;
+                    padding-left:60px;
+                    height:100%;
+                }
             }
         }
-
         // 购物车列表
         .ShoppingCart-list {
-            width: 100%;
-            overflow: hidden;
-            padding-top: 40px;
-
-            .ShoppingCart-list-tit {
-                float: left;
-                width: 1380px;
-                height: 70px;
-                line-height: 70px;
-                background: #f2f2f2;
-                font-size: 28px;
-                color: #4a5a6a;
-                padding: 0 20px;
-
-                span {
-                    float: left;
-                    text-align: center
-                }
-
-                &>.allcheckbox {
-                    text-align: left
-                }
-
+            padding-top:55px;
+            padding-left:46px;
+            input[type='checkbox'] {
+                width: 18px;
+                height: 18px;
+                background-color: #fff;
+                -webkit-appearance: none;
+                border: 1px solid #666;
+                outline: none;
+                cursor: pointer;
+                margin-right: 12px;
+                vertical-align: middle;
             }
+            .checkBox input[type=checkbox]:checked {
+                background: url("../../../assets/image/public/lduihao.png") no-repeat center;
+            }
+            .ShoppingCart-list-tit {
+                font-size: 20px;
+                color: #333;
+                padding-bottom:18px;
+                border-bottom:1px solid #e8e8e8;
+                &>.allcheckbox {
+                    text-align: left;
+                    // 多选框的样式
+                }
+                &>span{
+                    text-align:center;
+                    font-weight: bolder;
+                }
+            }
+            .ShoppingCart-list-con{
+                input[type='checkbox'] {
+                  border-color:#c9c9c9;
+                }
+                .item{
+                    color:#333;
+                    .title{
+                        font-size:18px;
+                        margin:21px 0;
+                    }
+                    .listDetail{
+                        padding-left:20px;
+                        display:flex;
+                        li{
+                            box-sizing: border-box;
+                            padding:24px 0;
+                            border-bottom:1px solid #e8e8e8;
+                        }
+                        .imgWrap{
+                            padding-left:10px;
+                            display: flex;
+                            div{
+                                flex:1;
+                                background:#e8e8e8;
+                                img{
+                                    width:100%;
+                                    height:115px;
+                                    background:#e8e8e8;
+                                }
+                            };
 
-            .ShoppingCart-list-con {
-                width: 100%;
-                overflow: hidden;
-                float: left;
-
-
+                        }
+                        .info{
+                            .name{
+                                color: #F45618;
+                                margin-bottom:20px;
+                                font-size:16px;
+                            }
+                            .intDesc{
+                                font-size:12px;
+                                color:#666;
+                                margin-bottom:20px;
+                            }
+                            .desc{
+                                color:#999;
+                                font-size:12px;
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 3;
+                                overflow: hidden;
+                            }
+                        }
+                        .place{
+                            display: flex;
+                            flex-direction: column;
+                            p{
+                                flex:1;
+                                text-align: center;
+                            }
+                        }
+                        .price{
+                            display: flex;
+                            flex-direction: column;
+                            p{
+                                flex: 1;
+                                white-space: nowrap;
+                                color:#e8e8e8;
+                                .num{
+                                    min-width:60px;
+                                    display:inline-block;
+                                    color:#666666;
+                                }
+                                strong{
+                                    color:#F22E2E;
+                                    padding-left:5px;
+                                }
+                            }
+                        }
+                        .count{
+                            display: flex;
+                            text-align: center;
+                            flex-direction: column;
+                            &>div{
+                                flex: 1;
+                                display: block;
+                                margin: auto;
+                                width:100px;
+                            }
+                            p{
+                                flex:1;
+                            }
+                        }
+                        .all{
+                            display:flex;
+                            flex-direction: column;
+                            justify-content:space-around;
+                            .top{
+                                display: flex;
+                                &>div{
+                                    flex:1;
+                                    .add{
+                                        color:#F22E2E;
+                                    }
+                                    .del{
+                                        color:#999999;
+                                    }
+                                }
+                            }
+                            .countTime{
+                                font-size:14px;
+                                color:#999;
+                                .timeStr{
+                                    color:#FF8635;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-
-    }
-
-    // 多选框的样式
-    input[type='checkbox'] {
-        width: 30px;
-        height: 30px;
-        background-color: #fff;
-        -webkit-appearance: none;
-        border: 1px solid #4a5a6a;
-        border-radius: 2px;
-        outline: none;
-        cursor: pointer;
-        position: relative;
-        top: 4px;
-        margin-right: 20px;
-    }
-
-    .checkBox input[type=checkbox]:checked {
-        background: url("../../../assets/image/ShoppingCart/_u25422.png") no-repeat center;
     }
 }
 
