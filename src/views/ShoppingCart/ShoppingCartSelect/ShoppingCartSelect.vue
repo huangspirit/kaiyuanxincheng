@@ -15,7 +15,7 @@
       <!-- 列表 -->
       <div class="ShoppingCart-list">
         <div class="ShoppingCart-list-tit">
-          <span style="width:20%" class="allcheckbox">
+          <span style="width:15%" class="allcheckbox">
             <label class="checkBox">
               <input
                 type="checkbox"
@@ -25,14 +25,14 @@
             </label>
           </span>
           <span style="width:20%">商品</span>
-          <span style="width:15%">交期/交地</span>
+          <span style="width:17%">交期/交地</span>
           <span style="width:10%">单价/库存</span>
           <span style="width:15%">数量</span>
           <span style="width:10%">总计</span>
-          <span style="width:10%">操作</span>
+          <span style="width:13%">操作</span>
         </div>
         <div class="ShoppingCart-list-con">
-          <template v-for="(item,k) in ShoppingCartList">
+          <template v-for="(item,k) in goodsList">
 <!--            <shoppingCarProductItem-->
 <!--              :key="`item.allcheckbox_${k}`"-->
 <!--              :ShoppingCartObject.sync="item"-->
@@ -48,112 +48,135 @@
                             @change="ShoppingCartAllCheck"
                         >
                     </label>
-                    <span>罗彻斯特电子 (原厂)</span>
+                    <span>{{item.sellerName}} ({{item.sellerTag | tagFilter}})</span>
                 </div>
-                <ul class="listDetail">
-                    <li class="imgWrap" style="width:20%;">
-                        <label class="checkBox">
-                            <input
-                                type="checkbox"
-                                :checked="ShoppingCartAllCheckbox"
-                                @change="ShoppingCartAllCheck"
-                            >
-                        </label>
-                        <div>
-                            <img src="" alt="">
-                        </div>
-
-                    </li>
-                    <li style="width:20%;" class="info">
-                            <p class="name">
-                                EDHDFJHKS-234J
-                            </p>
-                            <p class="intDesc">基本参数：DIP   盒子  1/8W </p>
-                            <p class="desc">型号描述：The current in the input circuit isdetermined ...</p>
-                    </li>
-                    <li style="width:15%" class="place">
-                        <p>内地</p>
-                        <p>2019-6-30</p>
-                        <p>期货</p>
-                    </li>
-                    <li style="width:10%" class="price">
-                        <p><span class="num">1000+ </span>--- <strong>¥3.5</strong></p>
-                        <p><span class="num">3000+ </span>--- <strong>¥3.0</strong></p>
-                        <p><span class="num">5000+ </span>--- <strong>¥2.0</strong></p>
-                        <p><span class="num">10000+ </span>--- <strong>¥1.5</strong></p>
-                    </li>
-                    <li style="width:15%" class="count">
-                        <el-input-number v-model="num" size="mini" @change="handleChange" :min="1"></el-input-number>
-                        <p>Moq:1000</p>
-                        <p>Mpq:1000</p>
-                    </li>
-                    <li style="width:20%" class="all">
-                        <div class="top">
-                            <div class="count">
-                                <strong>¥35000</strong>
-                            </div>
+                <template v-for="(item1,index) in item.list">
+                    <ul class="listDetail">
+                        <li class="imgWrap" style="width:15%;">
+                            <label class="checkBox">
+                                <input
+                                    type="checkbox"
+                                    :checked="ShoppingCartAllCheckbox"
+                                    @change="ShoppingCartAllCheck"
+                                >
+                            </label>
                             <div>
-                                <p class="add" @click="add">添加询价篮</p>
-                                <p class="del" @click="del">删除该商品</p>
+                                <ImgE :src="item1.goodsImageUrl" :W="86" :H="86"></ImgE>
                             </div>
-                        </div>
-                        <div class="countTime">
-<!--                            <div>-->
-<!--&lt;!&ndash;                                <CountTime&ndash;&gt;-->
-<!--&lt;!&ndash;                                    class="countTime"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    v-on:end_callback="countDownE_cb(item)"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :currentTime="item.currentTime"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :startTime="item.currentTime"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :endTime="item.expireTime"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :tipText="'距离售卖开始:'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :tipTextEnd="'特价剩余时间'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :endText="'活动已结束'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :dayTxt="'天'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :hourTxt="'小时'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :minutesTxt="'分钟'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                    :secondsTxt="'秒'"&ndash;&gt;-->
-<!--&lt;!&ndash;                                ></CountTime>&ndash;&gt;-->
-<!--                            </div>-->
-
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                        <li style="width:20%;" class="info">
+                            <p class="name">
+                                {{item1.goods_name}}
+                            </p>
+                            <p class="desc">型号描述：{{item1.goodsDesc}}</p>
+                        </li>
+                        <li style="width:17%" class="place">
+                            <p>{{item1.diliverPlace}}</p>
+                            <template>
+                                <p  v-if="item1.seller_always">{{item1.day_interval}}天内交货</p>
+                                <p v-else>{{item1.expireTime | formatDate}}</p>
+                            </template>
+                            <template>
+                                <p v-if="item1.goods_type">现货(长期卖)</p>
+                                <p v-else>期货</p>
+                            </template>
+                        </li>
+                        <template >
+                            <li style="width:10%" class="price" v-if="item1.priceType">
+                                <p><span class="num">1000+ </span>--- <strong>¥3.5</strong></p>
+                                <p><span class="num">3000+ </span>--- <strong>¥3.0</strong></p>
+                                <p><span class="num">5000+ </span>--- <strong>¥2.0</strong></p>
+                                <p><span class="num">10000+ </span>--- <strong>¥1.5</strong></p>
+                            </li>
+                            <li style="width:10%" class="price" v-else>
+                                <p><strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong></p>
+                            </li>
+                        </template>
+                        <li style="width:15%" class="count">
+                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event)" :min="1" :step="item1.mpq" step-strictly></el-input-number>
+                            <p>Moq:{{item1.moq}}</p>
+                            <p>Mpq:{{item1.mpq}}</p>
+                        </li>
+                        <li style="width:23%" class="all">
+                            <div class="top">
+                                <div class="count">
+                                    <strong>{{item.priceunit?"$":"¥"}}{{item1.countMoney?item1.countMoney:0}}</strong>
+                                </div>
+                                <div>
+                                    <p class="add" @click="add(k,index)">添加询价篮</p>
+                                    <p class="del" @click="del(k,index)">删除该商品</p>
+                                </div>
+                            </div>
+                            <div class="countTime">
+                                <div>
+                                    <CountTime
+                                        class="countTime"
+                                        v-on:end_callback="countDownE_cb(item)"
+                                        :currentTime="item1.currentTime"
+                                        :startTime="item1.currentTime"
+                                        :endTime="item1.expireTime"
+                                        :tipText="'距离售卖开始:'"
+                                        :tipTextEnd="'特价剩余时间:'"
+                                        :endText="'活动已结束'"
+                                        :dayTxt="'天'"
+                                        :hourTxt="'时'"
+                                        :minutesTxt="'分'"
+                                        :secondsTxt="'秒'"
+                                    ></CountTime>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </template>
             </div>
           </template>
         </div>
+          <IndexPagination
+              v-if="total"
+              class="page"
+              @changecallback="handleCurrentChange"
+              :pageIndex.sync="currentPage"
+              :pageSize="pageSize"
+              :total="total">
+          </IndexPagination>
       </div>
     </div>
     <!-- 底部全选 -->
-    <div class="fixed-all">
-      <div class="fixed-l">
-        <span class="allcheckbox">
-          <label class="checkBox">
-            <input
-              type="checkbox"
-              :checked="ShoppingCartAllCheckbox"
-              @change="ShoppingCartAllCheck"
-            >全选
-          </label>
-        </span>
-        <span>删除已选商品</span>
-        <span>添加至询价篮</span>
+      <div class="footerFixed">
+          <div class="fixed-all clear">
+              <div class="fixed_right fr">
+                  <div>
+                      <p class="num">
+                          已选
+                          <span>5</span>
+                          件商品
+                      </p>
+                      <p class="price">
+                          总价：
+                          <span>￥50000</span>+
+                          <span>$60000</span>
+                      </p>
+                  </div>
+                  <router-link to="/ShoppingCart/ShoppingSettlement" tag="span">去结算</router-link>
+              </div>
+              <div class="fixed_left fl">
+                    <span class="allcheckbox">
+                      <label class="checkBox">
+                        <input
+                            type="checkbox"
+                            :checked="ShoppingCartAllCheckbox"
+                            @change="ShoppingCartAllCheck"
+                        >全选
+                      </label>
+                    </span>
+                  <span>删除已选商品</span>
+                   <span>|</span>
+                  <span>添加至询价篮</span>
+              </div>
+
+          </div>
       </div>
-      <div class="fixed-r">
-        <div>
-          <p class="num">
-            已选
-            <span>5</span>
-            件商品
-          </p>
-          <p class="price">
-            总价：
-            <span>￥50000</span>+
-            <span>$60000</span>
-          </p>
-        </div>
-        <router-link to="/ShoppingCart/ShoppingSettlement" tag="span">去结算</router-link>
-      </div>
-    </div>
+
   </div>
 </template>
 <style lang="less" scoped>
@@ -162,41 +185,48 @@
 
 <script>
 
-import { mapState, mapActions } from "vuex";
+import {mapActions } from "vuex";
 import shoppingCarProductItem from "_c/shoppingCarProductItem";
+import {axios,shoppingCar} from "../../../api/apiObj";
+import {TimeForma2} from "@/lib/utils"
+
 export default {
   name: "ShoppingCartSelect",
   data() {
     return {
       ShoppingCartAllCheckbox: false,
-      ShoppingCartList: [
-        {
-          allcheckbox: false,
-          productList: [
-            {
-              name: "产品一",
-              checked: false
-            },
-            {
-              name: "产品二",
-              checked: false
-            }
-          ]
-        },
-        {
-          allcheckbox: false,
-          productList: [
-            {
-              name: "产品一",
-              checked: false
-            },
-            {
-              name: "产品二",
-              checked: false
-            }
-          ]
-        }
-      ]
+      // ShoppingCartList: [
+      //   {
+      //     allcheckbox: false,
+      //     productList: [
+      //       {
+      //         name: "产品一",
+      //         checked: false
+      //       },
+      //       {
+      //         name: "产品二",
+      //         checked: false
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     allcheckbox: false,
+      //     productList: [
+      //       {
+      //         name: "产品一",
+      //         checked: false
+      //       },
+      //       {
+      //         name: "产品二",
+      //         checked: false
+      //       }
+      //     ]
+      //   }
+      // ],
+        pageSize:10,
+        currentPage:1,
+        total:0,
+        goodsList:[]
     };
   },
   methods: {
@@ -233,8 +263,71 @@ export default {
           }
         }
       });
-    }
+    },
+      init(){
+        let obj={
+            source:1,
+            start:this.start,
+            length:this.pageSize
+        };
+          axios.request({...shoppingCar.inquiryList,params:obj}).then(res=>{
+              this.goodsList=res.data.data.map(item=>{
+                  item.list.map(item0=>{
+                      item0.count=item0.moq;
+                      return item0;
+                  })
+                  return item;
+              });
+              this.total=res.data.total;
+          })
+      },
+      handleCurrentChange(x){
+        this.currentPage=x;
+        this.init()
+      },
+      //加入询价蓝
+      add(k,index){
+        let item = this.goodsList[k][index]
+          let obj={
+              sellerId:item.sellerId,
+              sellerGoodsId:item.id,
+              goodsSource:1
+          }
+        axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
+            console.log("成功加入询价蓝")
+            this.$message.success("已加入询价蓝")
+        })
+      },
+      //从购物车删除商品
+      del(k,index){
+          let item = this.goodsList[k][index]
+          let obj={
+              sellerId:item.sellerId,
+              sellerGoodsId:item.id,
+              goodsSource:1
+          };
+          axios.request({...shoppingCar.deleteShoppingCarGoods,params:obj}).then(res=>{
+              this.$message.success("成功移除")
+              this.init()
+          })
+      },
+      handleChange(){}
   },
+    filters:{
+        tagFilter(val){
+            switch (Number(val)) {
+                case 1:
+                    return "原厂";
+                case 2:
+                    return "代理商";
+                case 3:
+                    return "普通商户"
+            }
+        },
+        formatDate(val){
+            return TimeForma2(val)
+        }
+    },
   watch: {
     ShoppingCartList: {
       handler() {
@@ -247,18 +340,13 @@ export default {
     shoppingCarProductItem
   },
   computed: {
-    accessToken() {
-      return localStorage.getItem("access_token");
+    start(){
+        return (this.pageSize*(this.currentPage-1))
     }
   },
   mounted() {
     this.$store.state.shoppingCart.active = 1
-    // this.GetAllShoppingCartList({
-    //   goods_source:1,
-    //   start:10,
-    //   length:10,
-    //   access_token:this.accessToken
-    // })
+    this.init();
   }
 };
 </script>

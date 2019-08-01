@@ -96,15 +96,14 @@ export const TimeForma2 = (value) => {
 function formatTen(num) {
     return num > 9 ? (num + '') : ('0' + num)
 }
-
-export function formatDateTime(date) {
-    var year = date.getFullYear()
-    var month = date.getMonth() + 1
-    var day = date.getDate()
-    // var hour = date.getHours()
-    // var minute = date.getMinutes()
-    // var second = date.getSeconds()
-    return year + '-' + formatTen(month) + '-' + formatTen(day)
+export function formatDateTime (date) {
+  var year = date.getFullYear()
+  var month = date.getMonth() + 1
+  var day = date.getDate()
+  // var hour = date.getHours()
+  // var minute = date.getMinutes()
+  // var second = date.getSeconds()
+  return year + '-' + formatTen(month) + '-' + formatTen(day)
 }
 
 // element 数字输入框的验证的验证

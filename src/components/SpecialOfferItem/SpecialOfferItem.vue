@@ -146,15 +146,15 @@
           :currentTime="item.currentTime"
           :startTime="item.currentTime"
           :endTime="item.expireTime"
-          :tipText="'距离开始文字1'" 
-          :tipTextEnd="'距离此特价结束:'" 
-          :endText="'结束自定义文字2'" 
-          :dayTxt="'天'" 
-          :hourTxt="'小时'" 
-          :minutesTxt="'分钟'" 
+          :tipText="'距离开始文字1'"
+          :tipTextEnd="'距离此特价结束:'"
+          :endText="'结束自定义文字2'"
+          :dayTxt="'天'"
+          :hourTxt="'小时'"
+          :minutesTxt="'分钟'"
           :secondsTxt="'秒'"
         ></CountTime>
-      
+
       </div>
       <div class="documentary" >
         <span @click="documentary">立刻跟单</span>
@@ -182,7 +182,7 @@
         <div class="submit-settlement-b">
           <div :class="{sub:true,noSubmit:numberFlag}" @click="goodsSubmit">提交结算</div>
           <router-link to="/InquiryBasket/ApplySpecialPrice" tag="div" class="sq">申请特价</router-link>
-          <div class="add-car">+加购物车</div>
+          <div class="add-car" @click="addCar">+加购物车</div>
         </div>
         <span class="close" @click="colse">
           <img src="@/assets/image/home/u172.png" alt>
@@ -193,6 +193,7 @@
 <script>
 import "./SpecialOfferItem.less";
 import { formatDate } from "@/lib/utils";
+import {axios,shoppingCar} from "../../api/apiObj";
 
 import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
@@ -246,6 +247,17 @@ export default {
   methods: {
     ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
     ...mapActions([]),
+      //加入购物车
+      addCar(){
+        let obj={
+            sellerId:this.item.sellerId,
+            sellerGoodsId:this.item.id,
+            goodsSource:1
+        }
+        axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
+            console.log(res)
+        })
+      },
     // 提交结算
     goodsSubmit() {
       if (!this.numberFlag) {
@@ -288,6 +300,7 @@ export default {
           type: 0,
           orderSource: 1
         };
+        console.log("提交结算bill：",obj2)
         this.$store
           .dispatch("MerchantList/GetOrder", obj2)
           .then(res => {
@@ -362,6 +375,7 @@ export default {
     }
   },
   mounted() {
+
     if (this.item.priceType) {
       let ret = this.item.priceLevel.split("@");
       ret.forEach((item, index) => {
