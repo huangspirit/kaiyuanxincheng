@@ -64,6 +64,7 @@ const message = {
 }
 const shoppingCar={
     insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"},
-    inquiryList:{url:"/api-g/sc/queryShoppingCarList"}
+    inquiryList:{url:"/api-g/sc/queryShoppingCarList"},
+    deleteShoppingCarGoods:{url:""}
 }
 export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message,shoppingCar}

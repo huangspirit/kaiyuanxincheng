@@ -32,8 +32,11 @@
         </div>
 
         <li class="listContent" v-for="(item,index) in 6" :key="index">
+          <div class="itemCheck">
+             
+          </div>
           <div class="goodsImg">
-            <div>    </div>
+            <div></div>
             <div>
               <li></li>
               <li></li>
@@ -87,8 +90,30 @@
 </template>
 
 <script>
-import './waitInquiry.less'
-export default {};
+import "./waitInquiry.less";
+import { axios, shoppingCar } from "@/api/apiObj";
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    this.getInquiry();
+  },
+  methods: {
+    getInquiry() {
+      var obj = {
+        start: 0,
+        length: 10,
+        source: "2"
+      };
+      axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
+        console.log(res);
+        if (res.resultCode == "200") {
+        }
+      });
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -134,6 +159,11 @@ export default {};
     height: auto;
     .listContent {
       display: flex;
+      .itemCheck {
+        width: 18px;
+        height: 18px;
+        border: 1px solid rgba(201, 201, 201, 1);
+      }
       .goodsImg {
         min-width: 166px;
         margin-right: 34px;
@@ -159,10 +189,10 @@ export default {};
       }
       .goodsDetail {
         display: flex;
-        border-bottom: 1px solid rgba(232,232,232,1);
+        border-bottom: 1px solid rgba(232, 232, 232, 1);
         margin-bottom: 52px;
         .googsDesc {
-          width: 50%;
+          width: 40%;
           > h3 {
             font-size: 20px;
             font-family: PingFangSC-Semibold;
@@ -212,7 +242,7 @@ export default {};
           }
           > li {
             margin-bottom: 20px;
-            color: rgba(232,232,232,1);
+            color: rgba(232, 232, 232, 1);
             span {
               &:nth-of-type(1) {
                 font-size: 18px;
@@ -230,7 +260,6 @@ export default {};
           }
         }
         .goodEdit {
-
         }
       }
     }

@@ -73,8 +73,15 @@
                         </li>
                         <li style="width:17%" class="place">
                             <p>{{item1.diliverPlace}}</p>
-                            <p>{{item1.expireTime | formatDate}}</p>
-                            <p>{{item1.goods_type | goodsTypeFilter}}</p>
+                            <template>
+                                <p  v-if="item1.seller_always">{{item1.day_interval}}天内交货</p>
+                                <p v-else>{{item1.expireTime | formatDate}}</p>
+                            </template>
+                            <template>
+                                <p v-if="item1.goods_type">现货(长期卖)</p>
+                                <p v-else>期货</p>
+                            </template>
+
                         </li>
                         <template >
                             <li style="width:10%" class="price" v-if="item1.priceType">
@@ -87,9 +94,8 @@
                                 <p><strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong></p>
                             </li>
                         </template>
-
                         <li style="width:15%" class="count">
-                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange" :min="1" :step="item1.moq" step-strictly></el-input-number>
+                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event)" :min="1" :step="item1.moq" step-strictly></el-input-number>
                             <p>Moq:{{item1.moq}}</p>
                             <p>Mpq:{{item1.mpq}}</p>
                         </li>
@@ -191,34 +197,34 @@ export default {
   data() {
     return {
       ShoppingCartAllCheckbox: false,
-      ShoppingCartList: [
-        {
-          allcheckbox: false,
-          productList: [
-            {
-              name: "产品一",
-              checked: false
-            },
-            {
-              name: "产品二",
-              checked: false
-            }
-          ]
-        },
-        {
-          allcheckbox: false,
-          productList: [
-            {
-              name: "产品一",
-              checked: false
-            },
-            {
-              name: "产品二",
-              checked: false
-            }
-          ]
-        }
-      ],
+      // ShoppingCartList: [
+      //   {
+      //     allcheckbox: false,
+      //     productList: [
+      //       {
+      //         name: "产品一",
+      //         checked: false
+      //       },
+      //       {
+      //         name: "产品二",
+      //         checked: false
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     allcheckbox: false,
+      //     productList: [
+      //       {
+      //         name: "产品一",
+      //         checked: false
+      //       },
+      //       {
+      //         name: "产品二",
+      //         checked: false
+      //       }
+      //     ]
+      //   }
+      // ],
         pageSize:10,
         currentPage:1,
         total:0,
@@ -277,12 +283,30 @@ export default {
         this.init()
       },
       //加入询价蓝
-      add(){
-
+      add(k,index){
+        let item = this.goodsList[k][index]
+          let obj={
+              sellerId:item.sellerId,
+              sellerGoodsId:item.id,
+              goodsSource:1
+          }
+        axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
+            console.log("成功加入询价蓝")
+            this.$message.success("已加入询价蓝")
+        })
       },
       //从购物车删除商品
-      del(){
-
+      del(k,index){
+          let item = this.goodsList[k][index]
+          let obj={
+              sellerId:item.sellerId,
+              sellerGoodsId:item.id,
+              goodsSource:1
+          };
+          axios.request({...shoppingCar.deleteShoppingCarGoods,params:obj}).then(res=>{
+              this.$message.success("成功移除")
+              this.init()
+          })
       },
       handleChange(){}
   },

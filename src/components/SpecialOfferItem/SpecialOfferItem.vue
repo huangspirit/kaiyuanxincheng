@@ -249,7 +249,6 @@ export default {
     ...mapActions([]),
       //加入购物车
       addCar(){
-        console.log(this.item)
         let obj={
             sellerId:this.item.sellerId,
             sellerGoodsId:this.item.id,
@@ -301,6 +300,7 @@ export default {
           type: 0,
           orderSource: 1
         };
+        console.log("提交结算bill：",obj2)
         this.$store
           .dispatch("MerchantList/GetOrder", obj2)
           .then(res => {
