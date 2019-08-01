@@ -33,7 +33,7 @@
 
         <li class="listContent" v-for="(item,index) in 6" :key="index">
           <div class="goodsImg">
-            <div></div>
+            <div>    </div>
             <div>
               <li></li>
               <li></li>
