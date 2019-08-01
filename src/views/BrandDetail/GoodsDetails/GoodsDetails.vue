@@ -44,7 +44,7 @@
                 +关注
               </span>
               <span>
-                <img src="@/assets/image/brandDetail/_u4518.png" alt>
+                <img  @click="addInquiry(goodsinfo)" src="@/assets/image/brandDetail/_u4518.png" alt>
                 +询价篮
               </span>
               <span>
@@ -232,6 +232,7 @@ import SubstituModelList from "_c/SubstituModelList";
 import { mapGetters, mapActions } from "vuex";
 import { baseURL, baseURL2 } from "@/config";
 import { setTimeout } from "timers";
+import { axios, shoppingCar } from "@/api/apiObj";
 export default {
   name: "GoodsDetails",
   data() {
@@ -268,6 +269,21 @@ export default {
       // setTimeout(() => {
       //   this.loading = false;
       // }, 3000);
+    },
+    addInquiry(val) {
+       var obj = {
+        sellerGoodsId: val.id,
+        sellerId: val.brandId,
+        goodsSource: "2"
+      };
+      axios
+        .request({ ...shoppingCar.insertShoppingCar, params: obj })
+        .then(res => {
+          console.log(res);
+          if(res.resultCode == "200"){
+            this.$message.success("添加成功")
+          }
+        });
     }
   },
   mounted() {

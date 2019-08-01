@@ -63,6 +63,7 @@ const message = {
     }
 }
 const shoppingCar={
-    insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"}
+    insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"},
+    inquiryList:{url:"/api-g/sc/queryShoppingCarList"}
 }
 export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message,shoppingCar}
