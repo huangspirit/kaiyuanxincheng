@@ -98,22 +98,22 @@
                             </div>
                         </div>
                         <div class="countTime">
-                            <div>
-<!--                                <CountTime-->
-<!--                                    class="countTime"-->
-<!--                                    v-on:end_callback="countDownE_cb(item)"-->
-<!--                                    :currentTime="item.currentTime"-->
-<!--                                    :startTime="item.currentTime"-->
-<!--                                    :endTime="item.expireTime"-->
-<!--                                    :tipText="'距离售卖开始:'"-->
-<!--                                    :tipTextEnd="'特价剩余时间'"-->
-<!--                                    :endText="'活动已结束'"-->
-<!--                                    :dayTxt="'天'"-->
-<!--                                    :hourTxt="'小时'"-->
-<!--                                    :minutesTxt="'分钟'"-->
-<!--                                    :secondsTxt="'秒'"-->
-<!--                                ></CountTime>-->
-                            </div>
+<!--                            <div>-->
+<!--&lt;!&ndash;                                <CountTime&ndash;&gt;-->
+<!--&lt;!&ndash;                                    class="countTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    v-on:end_callback="countDownE_cb(item)"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :currentTime="item.currentTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :startTime="item.currentTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :endTime="item.expireTime"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :tipText="'距离售卖开始:'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :tipTextEnd="'特价剩余时间'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :endText="'活动已结束'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :dayTxt="'天'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :hourTxt="'小时'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :minutesTxt="'分钟'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                    :secondsTxt="'秒'"&ndash;&gt;-->
+<!--&lt;!&ndash;                                ></CountTime>&ndash;&gt;-->
+<!--                            </div>-->
 
                         </div>
                     </li>
