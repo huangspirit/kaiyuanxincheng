@@ -7,7 +7,7 @@
         询价篮
       </span>
       <div class="inquiry">
-        <router-link to="/InquiryBasket/WaitInquiry" tag="span" class="inquiry-n">
+        <router-link to="/InquiryBasket/Inquiry" tag="span" class="inquiry-n">
           <img src="@/assets/image/inquirybasket/u12008.png" alt>待询价
         </router-link>
         <span>|</span>

@@ -68,7 +68,6 @@
                             <p class="name">
                                 {{item1.goods_name}}
                             </p>
-<!--                            <p class="intDesc">基本参数：DIP   盒子  1/8W </p>-->
                             <p class="desc">型号描述：{{item1.goodsDesc}}</p>
                         </li>
                         <li style="width:17%" class="place">
@@ -81,7 +80,6 @@
                                 <p v-if="item1.goods_type">现货(长期卖)</p>
                                 <p v-else>期货</p>
                             </template>
-
                         </li>
                         <template >
                             <li style="width:10%" class="price" v-if="item1.priceType">
@@ -95,7 +93,7 @@
                             </li>
                         </template>
                         <li style="width:15%" class="count">
-                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event)" :min="1" :step="item1.moq" step-strictly></el-input-number>
+                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event)" :min="1" :step="item1.mpq" step-strictly></el-input-number>
                             <p>Moq:{{item1.moq}}</p>
                             <p>Mpq:{{item1.mpq}}</p>
                         </li>
@@ -273,8 +271,13 @@ export default {
             length:this.pageSize
         };
           axios.request({...shoppingCar.inquiryList,params:obj}).then(res=>{
-              console.log(res)
-              this.goodsList=res.data.data;
+              this.goodsList=res.data.data.map(item=>{
+                  item.list.map(item0=>{
+                      item0.count=item0.moq;
+                      return item0;
+                  })
+                  return item;
+              });
               this.total=res.data.total;
           })
       },
@@ -319,14 +322,6 @@ export default {
                     return "代理商";
                 case 3:
                     return "普通商户"
-            }
-        },
-        goodsTypeFilter(val){
-            switch (val) {
-                case true:
-                    return "现货";
-                case false:
-                    return "期货";
             }
         },
         formatDate(val){
