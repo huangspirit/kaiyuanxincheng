@@ -105,7 +105,6 @@ export function formatDateTime (date) {
   // var second = date.getSeconds()
   return year + '-' + formatTen(month) + '-' + formatTen(day)
 }
-
 // element 数字输入框的验证的验证
 export const checkAge = (rule, value, callback) => {
     if (!value) {
