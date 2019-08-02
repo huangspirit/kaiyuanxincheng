@@ -242,37 +242,41 @@ export default {
         position: ""
       },
       rules: {
-         companyName: [
-            { required: true, message: '公司名称不能为空', trigger: 'blur' }
-          ],
-           companyHttp: [
-            { required: true, message: '网址不能为空', trigger: 'blur' }
-          ],
-           projectName: [
-            { required: true, message: '项目名称不能为空', trigger: 'blur' }
-          ],
-           productPhase: [
-            { required: true, message: '产品不能为空', trigger: 'blur' }
-          ],
-           user: [
-            { required: true, message: '联系人不能为空', trigger: 'blur' }
-          ],
-           telephone: [
-            { required: true, message: '手机号不能为空', trigger: 'blur' }
-          ],
-           price: [
-            { required: true, message: '接受价格不能为空', trigger: 'blur' }
-          ],
-           projectBeginTime: [
-            { required: true, message: '预计量产时间不能为空', trigger: 'blur' }
-          ],
-           amountPurchased: [
-            { required: true, message: '年采购量不能为空', trigger: 'blur' }
-          ],
-          position: [
-            { required: true, message: '职位不能不能为空', trigger: 'blur' }
-          ],
-          
+        companyName: [
+          { required: true, message: "公司名称不能为空", trigger: "blur" }
+        ],
+        companyHttp: [
+          { required: true, message: "网址不能为空", trigger: "blur" }
+        ],
+        projectName: [
+          { required: true, message: "项目名称不能为空", trigger: "blur" }
+        ],
+        productPhase: [
+          { required: true, message: "产品不能为空", trigger: "blur" }
+        ],
+        user: [{ required: true, message: "联系人不能为空", trigger: "blur" }],
+        telephone: [
+          { required: true, message: "手机号不能为空", trigger: "blur" },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+
+            message: "格式不正确",
+
+            trigger: "blur"
+          }
+        ],
+        price: [
+          { required: true, message: "接受价格不能为空", trigger: "blur" }
+        ],
+        projectBeginTime: [
+          { required: true, message: "预计量产时间不能为空", trigger: "blur" }
+        ],
+        amountPurchased: [
+          { required: true, message: "年采购量不能为空", trigger: "blur" }
+        ],
+        position: [
+          { required: true, message: "职位不能不能为空", trigger: "blur" }
+        ]
       },
       editPriceRules: {},
       topShow: false,
@@ -337,7 +341,7 @@ export default {
                 projectEau: element.amountPurchased,
                 insteadNo: element.insteadNo,
                 goodsName: element.productno,
-                brandId:element.brandId
+                brandId: element.brandId
               });
             });
             var orderData = JSON.stringify(infoData);
