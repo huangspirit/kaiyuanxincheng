@@ -3,7 +3,6 @@
     overflow: hidden;
     padding-top: 20px;
 
-    //    background: red;
     .wrapper {
         width: 100%;
 
@@ -158,28 +157,6 @@
                     margin-bottom: 10px;
                     text-align: center;
                 }
-
-                .tag {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    span {
-                        width: 144px;
-                        height: 30px;
-                        line-height: 30px;
-                        font-size: 12px;
-                        color: #fff;
-                        background: #0068B7;
-                        text-align: center;
-                        border-radius: 4px;
-
-                        img {
-                            height: 15px;
-                            vertical-align: middle;
-                        }
-                    }
-                }
             }
         }
 
@@ -193,7 +170,7 @@
             border-top: none;
             box-sizing: border-box;
 
-            &>.tit {
+            .tit {
                 line-height: 40px;
                 text-align: center;
                 font-size: 28px;
@@ -202,196 +179,24 @@
                 font-weight: bold;
             }
 
-            .form {
-                width: 65%;
-                overflow: hidden;
+            .el-form {
+                width: 60%;
                 margin: 0 auto;
+            }
+        }
 
-                &>div {
-                    width: 100%;
-                    overflow: hidden;
-                    float: left;
-                    margin-bottom: 20px;
-                    font-size: 20px;
-                    display: flex;
+        .submit {
+            width: 100%;
 
-                    label {
-                        width: 165px;
-                        float: left;
-                        text-align: right;
-                        color: #999;
-                        margin-right: 15px;
-                        line-height: 50px;
-                    }
-
-                    &>div {
-                        flex: 1;
-                        float: left;
-
-                        input {
-                            width: 100%;
-                            height: 30px;
-                            float: left;
-                            border: none;
-                            background: none;
-                            outline: none;
-                            font-size: 28px;
-                            color: #999;
-
-                        }
-                    }
-
-                    // 预产量时间
-                    .product-time {
-                        border: none;
-                        padding: 0;
-                        flex: 1;
-                        display: flex;
-
-                        select {
-                            display: block;
-                            flex: 1;
-                            line-height: 50px;
-                            border: 1px solid #999;
-                            float: left;
-                            font-size: 20px;
-                            color: #999;
-                        }
-
-                        span {
-                            width: 30px;
-                            line-height: 50px;
-                            float: left;
-                            margin: 0 20px;
-                        }
-                    }
-
-                    // 接受价格
-                    .accept-price {
-                        flex: 1;
-
-                        span {
-                            float: left;
-                            line-height: 50px;
-                            margin-right: 20px;
-                            font-weight: normal;
-                            white-space: nowrap;
-                        }
-
-                        input {
-
-                            margin-right: 10px;
-                        }
-
-                        select {
-                            width: 110px;
-                            border: 1px solid #999;
-                            height: 50px;
-                            font-size: 28px;
-                            color: #999;
-                            float: left;
-                            outline: none;
-                            cursor: pointer;
-                        }
-                    }
-
-                    // 采购量
-                    .purchase-quantity {
-                        input {
-                            width: 800px;
-                            margin-right: 30px;
-                        }
-
-                        span {
-                            height: 50px;
-                            line-height: 50px;
-                            float: left;
-                            font-weight: normal
-                        }
-                    }
-
-                    // 联系人
-                    .contact {
-
-                        width: 336px;
-
-
-                    }
-
-                    // 备注说明
-                    .note {
-                        width: 940px;
-                        height: 100px;
-                        padding: 20px;
-
-                        textarea {
-                            width: 100%;
-                            height: 100px;
-                            border: none;
-                            outline: none;
-                            background: #F4F5F6;
-                            font-size: 28px;
-                        }
-                    }
-
-                }
-
-                .instructions {
-                    height: 28px;
-                    margin-bottom: 40px;
-
-                    label {
-                        height: 28px;
-                    }
-
-                    div {
-                        border: none;
-                        padding: 0;
-                        font-size: 28px;
-                        height: 30px;
-                        line-height: 30px;
-                        font-weight: normal;
-
-                        p {
-                            border: none;
-                            padding: 0;
-                            font-size: 20px;
-                        }
-
-                    }
-
-                }
-
-
+            .el-button {
+                width: 80%;
+                margin: 15px 10%;
             }
 
-            .submit {
-                width: 65%;
-                margin: 0 auto;
-                padding-left: 175px;
-                box-sizing: border-box;
-
-                p {
-                    color: #FF9900;
-                    font-size: 16px;
-                    margin: 10px 0;
-                }
-
-                .submitBtn {
-                    width: 100%;
-                    border-radius: 5px;
-                    line-height: 60px;
-                    text-align: center;
-                    font-size: 20px;
-                    color: #fff;
-                    background: #0068B7;
-                    cursor: pointer;
-
-                    &:hover {
-                        font-size: 23px;
-                        transition: all 0.2s;
-                    }
-                }
+            >p {
+                width: 100%;
+                text-align: center;
+                color: #FF9900;
             }
         }
     }

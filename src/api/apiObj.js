@@ -62,9 +62,31 @@ const message = {
         url: "/api-n/notification/deleteMessage"
     }
 }
-const shoppingCar={
-    insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"},
-    inquiryList:{url:"/api-g/sc/queryShoppingCarList"},
-    deleteShoppingCarGoods:{url:""}
+const shoppingCar = {
+    insertShoppingCar: {
+        url: "/api-g/sc/insertShoppingCar"
+    },
+    inquiryList: {
+        url: "/api-g/sc/queryShoppingCarList"
+    },
+    deleteShoppingCarGoods: {
+        url: ""
+    },
+    saveInquiry: {
+        url: "/api-g/ic/saveInquirySheet"
+    },
+    saveBatchInquiry:{
+        url:"/api-g/ic/saveBatchInquirySheet",
+        method:'post'
+    }
+    
 }
-export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message,shoppingCar}
+export {
+    axios,
+    common,
+    home,
+    buyerOrderCenter,
+    sellerOrderCenter,
+    message,
+    shoppingCar
+}

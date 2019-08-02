@@ -2,26 +2,30 @@
   <div>
     <div class="checkAll">
       <div class="allBtn">
-        <span>
-          <img src="@/assets/image/inquirybasket/checked.png" alt />
+        <span @click="allCheck">
+          <img
+            v-if="waitInquiryList.allCheck == true"
+            src="@/assets/image/inquirybasket/checked.png"
+            alt
+          />
         </span>
         <span>全选</span>
       </div>
       <div class="allNum">
         <span>
           总计已选
-          <strong>0</strong> 件商品
+          <strong>{{allNum}}</strong> 件商品
         </span>
-        <span class="batchBtn">批量申请</span>
+        <span class="batchBtn" @click="batchApplication">批量申请</span>
         <img src="@/assets/image/inquirybasket/delete.png" alt />
       </div>
     </div>
     <div class="inquiryList">
-      <ul class="listCheck" v-for="(item,index) in waitInquiryList" :key="index">
+      <ul class="listCheck" v-for="(item,k) in waitInquiryList" :key="k">
         <div class="checkAll">
           <div class="allBtn">
-            <span @click="allCheck(item)">
-              <img v-if="item.allCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
+            <span @click="subCheck(k,item)">
+              <img v-if="item.subCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
             </span>
             <span>{{item.sellerName}}</span>
             <span>
@@ -31,7 +35,7 @@
           <div class="allNum">
             <span>
               已选该商品
-              <strong>0</strong> 件商品
+              <strong>{{item.subNum}}</strong> 件商品
             </span>
             <span class="batchBtn">申请特价</span>
             <img src="@/assets/image/inquirybasket/delete.png" alt />
@@ -40,7 +44,7 @@
 
         <li class="listContent" v-for="(listItem,index) in item.baseList" :key="index">
           <div class="goodsImg">
-            <div @click="listItemCheck(listItem)" class="itemCheck">
+            <div @click="listItemCheck($event,k,index,listItem)" class="itemCheck">
               <img
                 v-if="listItem.itemCheck == true"
                 src="@/assets/image/inquirybasket/checked.png"
@@ -86,7 +90,6 @@
         </li>
       </ul>
     </div>
-    <IndexPagination />
   </div>
 </template>
 
@@ -94,12 +97,15 @@
 import "./waitInquiry.less";
 import { axios, shoppingCar } from "@/api/apiObj";
 import { ladderPrice } from "@/lib/utils";
+import { debuglog } from "util";
+import { constants } from 'crypto';
 export default {
   data() {
     return {
       waitInquiryList: [],
       factorySale: [],
-      baseListData: []
+      baseListData: [],
+      allNum: 0,
     };
   },
   inject: ["reload"],
@@ -120,9 +126,10 @@ export default {
         if (res.resultCode == "200") {
           this.waitInquiryList = res.data.data;
           this.factorySale = [];
+          this.waitInquiryList["allCheck"] = false;
           for (var i = 0; i < this.waitInquiryList.length; i++) {
-            this.waitInquiryList[i]["allCheck"] = false;
             this.waitInquiryList[i]["subCheck"] = false;
+            this.waitInquiryList[i]["subNum"] = 0;
             for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
               this.waitInquiryList[i].baseList[j]["itemCheck"] = false;
               if (
@@ -142,19 +149,100 @@ export default {
         }
       });
     },
-    listItemCheck(val) {
-      this.$nextTick(() => {
-        val.itemCheck = !val.itemCheck;
-      });
-      console.log(val);
+    listItemCheck(e, k, index) {
+      this.waitInquiryList[k].baseList[index].itemCheck = !this.waitInquiryList[
+        k
+      ].baseList[index].itemCheck;
+      if (this.waitInquiryList[k].baseList[index].itemCheck == true) {
+        this.allNum++;
+        this.waitInquiryList[k].subNum++;
+        this.baseListData.push(this.waitInquiryList[k].baseList[index])
+      } else {
+        this.allNum--;
+        this.waitInquiryList[k].subNum--;
+        this.baseListData.splice(k,1)
+      }
+      console.log(this.baseListData)
+      this.waitInquiryList = Object.assign([], this.waitInquiryList);
+      this.allShow();
     },
-    allCheck(val) {
-      console.log(val);
-      val.subCheck = !val.subCheck;
+    subCheck(k, val) {
+      if (this.waitInquiryList[k].subCheck == true) {
+        this.waitInquiryList[k].subNum = 0;
+        for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
+          this.waitInquiryList[k].baseList[j].itemCheck = false;
+          this.allNum--;
+          this.baseListData.splice(k,1)
+         
+        }
+      } else {
+        this.waitInquiryList[k].subNum = 0
+        for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
+          this.waitInquiryList[k].baseList[j].itemCheck = true;
+          this.waitInquiryList[k].subNum++;
+          this.allNum++;
+          this.baseListData.push(this.waitInquiryList[k].baseList[j])
+         
+        }
+      }
+      console.log(this.baseListData)
+      this.waitInquiryList[k].subCheck = !this.waitInquiryList[k].subCheck;
+      this.waitInquiryList = Object.assign([], this.waitInquiryList);
+      this.allShow();
+    },
+    allCheck() {
+      this.allNum = 0;
+      if (this.waitInquiryList.allCheck == true) {
+        this.allNum = 0;
+        for (var i = 0; i < this.waitInquiryList.length; i++) {
+          this.waitInquiryList[i].subCheck = false;
+          this.waitInquiryList[i].subNum = 0;
+          for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
+            this.waitInquiryList[i].baseList[j].itemCheck = false;
+          }
+        }
+      } else {
+        this.baseListData = []
+        for (var i = 0; i < this.waitInquiryList.length; i++) {
+          this.waitInquiryList[i].subCheck = true;
+           this.waitInquiryList[i].subNum = 0
+          for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
+            this.waitInquiryList[i].subNum++;
+            this.waitInquiryList[i].baseList[j].itemCheck = true;
+            this.allNum++;
+            this.baseListData.push(this.waitInquiryList[i].baseList[j])
+          }
+        }
+      }
+      console.log(this.baseListData)
+      this.waitInquiryList.allCheck = !this.waitInquiryList.allCheck;
+      this.waitInquiryList = Object.assign([], this.waitInquiryList);
+    },
+    allShow() {
+      let checkedShow = true;
+      for (var i = 0; i < this.waitInquiryList.length; i++) {
+        for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
+          if (this.waitInquiryList[i].subCheck == false) {
+            checkedShow = false;
+
+            this.waitInquiryList[i].subCheck = true;
+          }
+          if (this.waitInquiryList[i].baseList[j].itemCheck == false) {
+            checkedShow = false;
+            this.waitInquiryList[i].subCheck = false;
+          }
+        }
+      }
+      this.waitInquiryList.allCheck = checkedShow;
+      this.waitInquiryList = Object.assign([], this.waitInquiryList);
     },
     applySpecial(val) {
       console.log(val);
-     this.$store.dispatch('promation',val)
+      this.$store.dispatch("promation", val);
+      this.$router.push("/InquiryBasket/ApplySpecialPrice");
+    },
+    batchApplication() {
+      this.$store.dispatch("promation", this.baseListData);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     }
   }
@@ -230,6 +318,9 @@ export default {
           margin-right: 48px;
           margin-top: 80px;
           border: 1px solid rgba(201, 201, 201, 1);
+          > img {
+            vertical-align: top;
+          }
         }
         > div {
           float: left;

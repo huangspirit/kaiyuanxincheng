@@ -150,7 +150,8 @@ export default {
       var obj = {
         sellerGoodsId: val.id,
         sellerId: val.brandId,
-        goodsSource: "2"
+        goodsSource: "2",
+        goodsName:val.productno
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
