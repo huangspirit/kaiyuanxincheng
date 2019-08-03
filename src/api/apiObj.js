@@ -25,10 +25,13 @@ const home = {
 const buyerOrderCenter = {
     //确认更改交期
     confirmChangeDiliverTime: {
-        url: "/api-order/customerCenter/confirmChangeDiliverTime", method: "post"
+        url: "/api-order/customerCenter/confirmChangeDiliverTime",
+        method: "post"
     },
     //查询收藏的商品和商家
-    queryGoodsFavouriteList:{url:"/api-g/gf/queryGoodsFavouriteList"}
+    queryGoodsFavouriteList: {
+        url: "/api-g/gf/queryGoodsFavouriteList"
+    }
 
 }
 const sellerOrderCenter = {
@@ -72,22 +75,33 @@ const shoppingCar = {
     inquiryList: {
         url: "/api-g/sc/queryShoppingCarList"
     },
-    deleteSigletonShoppingCar:{url:"/api-g/sc/deleteSigletonShoppingCar"},
+    deleteSigletonShoppingCar: {
+        url: "/api-g/sc/deleteSigletonShoppingCar"
+    },
     //批量删除购物车商品
-    deleteBatchShoppingCar:{url:"/api-g/sc/deleteBatchShoppingCar"},
+    deleteBatchShoppingCar: {
+        url: "/api-g/sc/deleteBatchShoppingCar"
+    },
     //收藏关注商家和产品
-    insertGoodsFavourite:{url:"/api-g/gf/insertGoodsFavourite"},
+    insertGoodsFavourite: {
+        url: "/api-g/gf/insertGoodsFavourite"
+    },
     deleteShoppingCarGoods: {
         url: ""
     },
     saveInquiry: {
         url: "/api-g/ic/saveInquirySheet"
     },
-    saveBatchInquiry:{
-        url:"/api-g/ic/saveBatchInquirySheet",
-        method:'post'
+    saveBatchInquiry: {
+        url: "/api-g/ic/saveBatchInquirySheet",
+        method: 'post'
     }
 
+}
+const siderInquiryList = {
+    allReply: {
+        url: "/api-g/ic/queryInquirySheetList"
+    }
 }
 export {
     axios,
@@ -96,5 +110,6 @@ export {
     buyerOrderCenter,
     sellerOrderCenter,
     message,
-    shoppingCar
+    shoppingCar,
+    siderInquiryList
 }
