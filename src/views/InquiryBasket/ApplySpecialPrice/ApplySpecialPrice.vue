@@ -330,6 +330,14 @@ export default {
               defaultConfig: this.formAlign.checked,
               brandId: this.proInformation.brandId
             };
+            axios
+              .request({ ...shoppingCar.saveInquiry, data: obj })
+              .then(res => {
+                console.log(res);
+                if (res.resultCode == "200") {
+                  this.$message.success("提交成功");
+                }
+              });
           } else {
             console.log(this.proInformation);
             var infoData = [];
@@ -358,15 +366,15 @@ export default {
               defaultConfig: this.formAlign.checked,
               order: orderData
             };
+            axios
+              .request({ ...shoppingCar.saveBatchInquiry, data: obj })
+              .then(res => {
+                console.log(res);
+                if (res.resultCode == "200") {
+                  this.$message.success("提交成功");
+                }
+              });
           }
-          axios
-            .request({ ...shoppingCar.saveBatchInquiry, data: obj })
-            .then(res => {
-              console.log(res);
-              if (res.resultCode == "200") {
-                this.$message.success("提交成功");
-              }
-            });
         }
       });
     },

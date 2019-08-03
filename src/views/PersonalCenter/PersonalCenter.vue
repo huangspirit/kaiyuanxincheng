@@ -49,12 +49,12 @@ export default {
               path: "/PersonalCenter/SellerIssuesProduct",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
-            // {
-            //   title: "发布拼团",
-            //   index: "1-4",
-            //   path: "/PersonalCenter/SellerIssuesSyndication",
-            //   icon: require("@/assets/image/PersonalCenter/u4832.png")
-            // },
+            {
+              title: "询价单列表",
+              index: "1-4",
+              path: "/allApply",
+              icon: require("@/assets/image/PersonalCenter/u28037.png")
+            },
             {
               title: "发票管理",
               index: "1-5",
