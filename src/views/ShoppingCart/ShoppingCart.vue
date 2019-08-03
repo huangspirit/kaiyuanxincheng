@@ -35,7 +35,6 @@
 </style>
 
 <script>
-
 export default {
   name: "ShoppingCart",
   mounted(){

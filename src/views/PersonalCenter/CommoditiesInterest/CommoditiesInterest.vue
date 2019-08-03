@@ -20,6 +20,7 @@
           </div>
         </li>
       </ul>
+        <p v-if="goodsList.length==0" class="nocontent">您还没有关注的商品</p>
       <ul class="interes-list">
         <li v-for="(item,index) in goodsList" class="clear">
 <!--          <TabImage :width="146"></TabImage>-->
@@ -46,13 +47,20 @@
 <!--                    </ButtonIcon>-->
                 </div>
             </div>
-          <div class="imgwrap fl"><img :src="item.goodsBase.imageUrl" alt=""></div>
+          <div class="imgwrap fl">
+              <ImgE :src="item.goodsBase.imageUrl" :W="100" :H="100"></ImgE>
+<!--              <img :src="item.goodsBase.imageUrl" alt="">-->
+          </div>
           <div class="text fl">
-            <router-link to="/BrandDetail/GoodsDetails" class="name" tag="p">{{item.goodsBase.productno}}</router-link>
-            <router-link to="/BrandDetail" class="brand" tag="p">
-              <span>品牌：</span>
-              {{item.goodsBase.brand}}
-            </router-link>
+              <p class="name">{{item.goodsBase.productno}}</p>
+              <p class="brand">
+                  <span>品牌</span>{{item.goodsBase.brand}}
+              </p>
+<!--            <router-link to="/BrandDetail/GoodsDetails" class="name" tag="p">{{item.goodsBase.productno}}</router-link>-->
+<!--            <router-link to="/BrandDetail" class="brand" tag="p">-->
+<!--              <span>品牌：</span>-->
+<!--              {{item.goodsBase.brand}}-->
+<!--            </router-link>-->
             <P class="xh">
               <span>型号描述：</span>
             {{item.goodsBase.productdesc}}
@@ -152,6 +160,11 @@ export default {
           axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
                 this.$message.success("已加入询价篮")
           })
+      },
+      canclePub(index){
+        axios.request({...shoppingCar.deleteGoodsFavourite,params:{id:this.goodsList[index].id}}).then(res=>{
+            this.init()
+        })
       }
   },
     filters:{

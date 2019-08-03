@@ -77,9 +77,8 @@ const shoppingCar = {
     deleteBatchShoppingCar:{url:"/api-g/sc/deleteBatchShoppingCar"},
     //收藏关注商家和产品
     insertGoodsFavourite:{url:"/api-g/gf/insertGoodsFavourite"},
-    deleteShoppingCarGoods: {
-        url: ""
-    },
+    //取消关注商家和产品，删除收藏
+    deleteGoodsFavourite:{url:"/api-g/gf/deleteGoodsFavourite"},
     saveInquiry: {
         url: "/api-g/ic/saveInquirySheet"
     },

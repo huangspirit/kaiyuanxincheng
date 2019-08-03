@@ -5,7 +5,7 @@
       <div class="ShoppingCart-title">
         <span class="total">
           <span>购物车</span>
-          <span class="num">(32)</span>
+<!--          <span class="num">()</span>-->
         </span>
 <!--        <div class="searchInput">-->
 <!--            <i class="el-icon-search"></i>-->
@@ -32,6 +32,7 @@
           <span style="width:13%">操作</span>
         </div>
         <div class="ShoppingCart-list-con">
+          <p v-if="goodsList.length==0" class="nocontent">购物车空空如也,&nbsp;&nbsp;去<router-link to="/" tag="a">首页</router-link>添加商品</p>
           <template v-for="(item,k) in goodsList">
 <!--            <shoppingCarProductItem-->
 <!--              :key="`item.allcheckbox_${k}`"-->
@@ -183,7 +184,7 @@
       </div>
     </div>
     <!-- 底部全选 -->
-      <div class="footerFixed">
+      <div class="footerFixed"  v-if="goodsList.length">
           <div class="fixed-all clear">
               <div class="fixed_right fr">
                   <div>
@@ -307,6 +308,7 @@ export default {
       },
       handleCurrentChange(x){
         this.currentPage=x;
+        this.ShoppingCartAllCheckbox=false;
         this.init()
       },
       //关注

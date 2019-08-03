@@ -59,7 +59,7 @@ class HttpRequest {
     })
   }
   request (options) {
-      console.log("options:",options)
+   //   console.log("options:",options)
     let access_token=sessionStorage.getItem("access_token")
     const instance = axios.create()
     if(access_token){
