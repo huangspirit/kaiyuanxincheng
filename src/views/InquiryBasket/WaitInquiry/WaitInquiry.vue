@@ -32,9 +32,6 @@
         </div>
 
         <li class="listContent" v-for="(item,index) in 6" :key="index">
-          <div class="itemCheck">
-
-          </div>
           <div class="goodsImg">
             <div></div>
             <div>
@@ -46,7 +43,7 @@
           <div class="goodsDetail">
             <div class="googsDesc">
               <h3>CDHDFJHKS-234J</h3>
-              <h4>品牌：罗琦斯特电子22</h4>
+              <h4>品牌：罗琦斯特电子</h4>
               <p>基本参数：DIP 盒子 1/8W 100-15</p>
               <p>
                 型号描述：The 77219-7PPSG is an Iusdjying should
@@ -90,30 +87,8 @@
 </template>
 
 <script>
-import "./waitInquiry.less";
-import { axios, shoppingCar } from "@/api/apiObj";
-export default {
-  data() {
-    return {};
-  },
-  mounted() {
-    this.getInquiry();
-  },
-  methods: {
-    getInquiry() {
-      var obj = {
-        start: 0,
-        length: 10,
-        source: "2"
-      };
-      axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
-        console.log(res);
-        if (res.resultCode == "200") {
-        }
-      });
-    }
-  }
-};
+import './WaitInquiry.less'
+export default {};
 </script>
 
 <style lang="less" scoped>
@@ -159,11 +134,6 @@ export default {
     height: auto;
     .listContent {
       display: flex;
-      .itemCheck {
-        width: 18px;
-        height: 18px;
-        border: 1px solid rgba(201, 201, 201, 1);
-      }
       .goodsImg {
         min-width: 166px;
         margin-right: 34px;
@@ -189,10 +159,10 @@ export default {
       }
       .goodsDetail {
         display: flex;
-        border-bottom: 1px solid rgba(232, 232, 232, 1);
+        border-bottom: 1px solid rgba(232,232,232,1);
         margin-bottom: 52px;
         .googsDesc {
-          width: 40%;
+          width: 50%;
           > h3 {
             font-size: 20px;
             font-family: PingFangSC-Semibold;
@@ -242,7 +212,7 @@ export default {
           }
           > li {
             margin-bottom: 20px;
-            color: rgba(232, 232, 232, 1);
+            color: rgba(232,232,232,1);
             span {
               &:nth-of-type(1) {
                 font-size: 18px;
@@ -260,6 +230,7 @@ export default {
           }
         }
         .goodEdit {
+
         }
       }
     }
