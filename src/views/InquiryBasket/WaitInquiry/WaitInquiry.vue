@@ -93,6 +93,12 @@
               </li>
             </div>
             <div class="goodEdit">
+              <img
+                @click="inquiryDelete(listItem)"
+                style="float:right"
+                src="@/assets/image/inquirybasket/delete.png"
+                alt
+              />
               <el-button class="special" @click="applySpecial(listItem)">申请特价</el-button>
             </div>
           </div>
@@ -266,6 +272,21 @@ export default {
             this.getInquiry();
           }
         });
+    },
+    inquiryDelete(val) {
+      var obj = {
+        id: val.bucketId
+      };
+      axios
+        .request({ ...shoppingCar.deleteSigletonShoppingCar, params: obj })
+        .then(res => {
+          console.log(res);
+          if(res.resultCode == 200) {
+            this.$message.success('删除成功')
+            this.getInquiry()
+          }
+        });
+      deleteSigletonShoppingCar;
     },
     applySpecial(val) {
       console.log(val);
