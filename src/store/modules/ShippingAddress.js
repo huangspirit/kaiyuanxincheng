@@ -88,7 +88,8 @@ const actions = {
 
 const mutations = {
   GetAllReceivingAddress(state, data) {
-    state.AddressList = data.data
+    console.log(data)
+    state.AddressList = data.children
   }
 }
 export default {
