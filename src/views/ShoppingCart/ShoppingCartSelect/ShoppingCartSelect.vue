@@ -7,10 +7,10 @@
           <span>购物车</span>
           <span class="num">(32)</span>
         </span>
-        <div class="searchInput">
-            <i class="el-icon-search"></i>
-            <input type="text" placeholder="搜索商品">
-        </div>
+<!--        <div class="searchInput">-->
+<!--            <i class="el-icon-search"></i>-->
+<!--            <input type="text" placeholder="搜索商品">-->
+<!--        </div>-->
       </div>
       <!-- 列表 -->
       <div class="ShoppingCart-list">
@@ -44,11 +44,25 @@
                     <label class="checkBox">
                         <input
                             type="checkbox"
-                            :checked="ShoppingCartAllCheckbox"
-                            @change="ShoppingCartAllCheck"
+                            :checked="item.checked"
+                            @change="ShoppingCartCateCheck($event,k)"
                         >
                     </label>
-                    <span>{{item.sellerName}} ({{item.sellerTag | tagFilter}})</span>
+<!--                    <span>{{item.sellerName}} <span style="font-size:12px">({{item.sellerTag | tagFilter}})</span></span>-->
+                    <div class="ImgE">
+                        <img :src="item.sellerUrl" alt="">
+                        <div class="content">
+                            <div class="top">
+                                <img :src="item.sellerUrl" alt="">
+                                <div>
+                                    <p class="name">{{item.sellerName}}</p>
+                                    <p class="tag">{{item.sellerTag | tagFilter}}</p>
+                                </div>
+                            </div>
+                            <div class="btn unactive" v-if="item.focus">已关注</div>
+                            <div class="btn" @click="guanzhu(2,k)" v-else>关注</div>
+                        </div>
+                    </div>
                 </div>
                 <template v-for="(item1,index) in item.list">
                     <ul class="listDetail">
@@ -56,8 +70,8 @@
                             <label class="checkBox">
                                 <input
                                     type="checkbox"
-                                    :checked="ShoppingCartAllCheckbox"
-                                    @change="ShoppingCartAllCheck"
+                                    :checked="item1.checked && item1.isenable"
+                                    @change="ShoppingCartoneCheck($event,k,index)"
                                 >
                             </label>
                             <div>
@@ -68,6 +82,10 @@
                             <p class="name">
                                 {{item1.goods_name}}
                             </p>
+                            <template>
+                                <p v-if="item1.focus" class="guanzhu unguanzhu"><span>已关注</span></p>
+                                <p v-else @click="guanzhu(1,k,index)" class="guanzhu"><span>关注</span></p>
+                            </template>
                             <p class="desc">型号描述：{{item1.goodsDesc}}</p>
                         </li>
                         <li style="width:17%" class="place">
@@ -77,34 +95,33 @@
                                 <p v-else>{{item1.expireTime | formatDate}}</p>
                             </template>
                             <template>
-                                <p v-if="item1.goods_type">现货(长期卖)</p>
+                                <p v-if="item1.goods_type">现货<span style="font-size:12px;color:#F22E2E;">(长期卖)</span></p>
                                 <p v-else>期货</p>
                             </template>
                         </li>
                         <template >
                             <li style="width:10%" class="price" v-if="item1.priceType">
-                                <p><span class="num">1000+ </span>--- <strong>¥3.5</strong></p>
-                                <p><span class="num">3000+ </span>--- <strong>¥3.0</strong></p>
-                                <p><span class="num">5000+ </span>--- <strong>¥2.0</strong></p>
-                                <p><span class="num">10000+ </span>--- <strong>¥1.5</strong></p>
+                                <p v-for="val in item1.priceList">
+                                    <span class="num">{{val.num}}+ </span>--- <strong>{{item1.priceUnit?"$":"¥"}} {{val.price}}</strong>
+                                </p>
                             </li>
-                            <li style="width:10%" class="price" v-else>
-                                <p><strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong></p>
+                            <li style="width:10%;" class="price" v-else >
+                                <p style="text-align: center;"><strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong></p>
                             </li>
                         </template>
                         <li style="width:15%" class="count">
-                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event)" :min="1" :step="item1.mpq" step-strictly></el-input-number>
+                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event,k,index)" :min="item1.moq" :step="item1.mpq" step-strictly></el-input-number>
                             <p>Moq:{{item1.moq}}</p>
                             <p>Mpq:{{item1.mpq}}</p>
                         </li>
                         <li style="width:23%" class="all">
-                            <div class="top">
+                            <div class="top" :class="item1.currentTime?' ':'act'">
                                 <div class="count">
-                                    <strong>{{item.priceunit?"$":"¥"}}{{item1.countMoney?item1.countMoney:0}}</strong>
+                                    <strong>{{item1.priceUnit?"$":"¥"}}{{item1.money?item1.money:0 | toFixed(4)}}</strong>
                                 </div>
-                                <div>
-                                    <p class="add" @click="add(k,index)">添加询价篮</p>
-                                    <p class="del" @click="del(k,index)">删除该商品</p>
+                                <div class="count">
+<!--                                    <p class="add" @click="add(k,index)">添加询价篮</p>-->
+                                    <span class="del"><i class="el-icon-delete" size="medium" @click="del(k,index)"></i></span>
                                 </div>
                             </div>
                             <div class="countTime">
@@ -131,14 +148,14 @@
             </div>
           </template>
         </div>
-          <IndexPagination
+          <Pagination
               v-if="total"
               class="page"
-              @changecallback="handleCurrentChange"
-              :pageIndex.sync="currentPage"
+              @current-change="handleCurrentChange"
+              :currentPage.sync="currentPage"
               :pageSize="pageSize"
               :total="total">
-          </IndexPagination>
+          </Pagination>
       </div>
     </div>
     <!-- 底部全选 -->
@@ -148,16 +165,17 @@
                   <div>
                       <p class="num">
                           已选
-                          <span>5</span>
+                          <span>{{count}}</span>
                           件商品
                       </p>
                       <p class="price">
                           总价：
-                          <span>￥50000</span>+
-                          <span>$60000</span>
+                          <span>￥{{unMoney  | toFixed(4)}}</span>+
+                          <span>${{unitMoney | toFixed(4)}}</span>
                       </p>
                   </div>
-                  <router-link to="/ShoppingCart/ShoppingSettlement" tag="span">去结算</router-link>
+                  <span @click="submit">去结算</span>
+<!--                  <router-link to="/ShoppingCart/ShoppingSettlement" tag="span" @click="submit">去结算</router-link>-->
               </div>
               <div class="fixed_left fl">
                     <span class="allcheckbox">
@@ -169,23 +187,19 @@
                         >全选
                       </label>
                     </span>
-                  <span>删除已选商品</span>
-                   <span>|</span>
-                  <span>添加至询价篮</span>
+<!--                  <span>删除已选商品</span>-->
+<!--                   <span>|</span>-->
+<!--                  <span>添加至询价篮</span>-->
               </div>
-
           </div>
       </div>
-
   </div>
 </template>
 <style lang="less" scoped>
 @import "./ShoppingCartSelect.less";
 </style>
-
 <script>
-
-import {mapActions } from "vuex";
+import {mapMutations } from "vuex";
 import shoppingCarProductItem from "_c/shoppingCarProductItem";
 import {axios,shoppingCar} from "../../../api/apiObj";
 import {TimeForma2,ladderPrice} from "@/lib/utils"
@@ -195,75 +209,41 @@ export default {
   data() {
     return {
       ShoppingCartAllCheckbox: false,
-      // ShoppingCartList: [
-      //   {
-      //     allcheckbox: false,
-      //     productList: [
-      //       {
-      //         name: "产品一",
-      //         checked: false
-      //       },
-      //       {
-      //         name: "产品二",
-      //         checked: false
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     allcheckbox: false,
-      //     productList: [
-      //       {
-      //         name: "产品一",
-      //         checked: false
-      //       },
-      //       {
-      //         name: "产品二",
-      //         checked: false
-      //       }
-      //     ]
-      //   }
-      // ],
-        pageSize:10,
+        pageSize:1,
         currentPage:1,
         total:0,
-        goodsList:[]
+        goodsList:[],
     };
   },
   methods: {
-    ...mapActions("shoppingCart", ["GetAllShoppingCartList"]),
+      ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+   // ...mapActions("shoppingCart", ["GetAllShoppingCartList"]),
     ShoppingCartAllCheck(e) {
-      this.ShoppingCartAllCheckbox = e.target.checked;
-      if (!this.ShoppingCartAllCheckbox) {
-        this.ShoppingCartList.map(item => {
-          item.allcheckbox = false;
-        });
-      } else {
-        this.ShoppingCartList.map(item => {
-          item.allcheckbox = true;
-        });
-      }
-      this.ShoppingCartList.forEach(items => {
-        if (!items.allcheckbox) {
-          items.productList.map(item => {
-            item.checked = false;
-          });
-          this.$emit("update:ShoppingCartAllCheckbox", false);
-        } else {
-          // 品牌选中，判断其他品牌是否选中
-          items.productList.map(item => {
-            item.checked = true;
-          });
-          let flag = this.ShoppingCartList.every(item => {
-            return item.allcheckbox;
-          });
-          if (flag) {
-            this.$emit("update:ShoppingCartAllCheckbox", true);
-          } else {
-            this.$emit("update:ShoppingCartAllCheckbox", false);
-          }
-        }
-      });
+        this.ShoppingCartAllCheckbox = e.target.checked;
+        this.goodsList=this.goodsList.map(item=>{
+            item.checked=e.target.checked;
+            item.list=item.list.map(item0=>{
+                item0.checked=e.target.checked;
+                return item0;
+            })
+            return item;
+        })
     },
+      ShoppingCartCateCheck(e,k){
+          this.goodsList[k]['checked']=e.target.checked;
+          this.goodsList[k].list=this.goodsList[k].list.map(item=>{
+            item.checked=e.target.checked;
+            return item;
+        })
+      },
+      ShoppingCartoneCheck(e,k,index){
+          this.goodsList[k].list=this.goodsList[k].list.map((item,index0)=>{
+              if(index0==index){
+                  item.checked=e.target.checked
+              }
+              return item;
+          })
+      },
       init(){
         let obj={
             source:1,
@@ -274,7 +254,12 @@ export default {
               this.goodsList=res.data.data.map(item=>{
                   item.list.map(item0=>{
                       item0.count=item0.moq;
-                     // item.priceList=ladderPrice(item0.)
+                      if(item0.priceLevel){
+                          item0.priceList=ladderPrice(item0.priceLevel)
+                          item0.money=item0.moq*item0.priceList[0].price;
+                      }else{
+                          item0.money=item0.moq*item0.goodsPrice
+                      }
                       return item0;
                   })
                   return item;
@@ -286,35 +271,171 @@ export default {
         this.currentPage=x;
         this.init()
       },
+      //关注
+      guanzhu(favour_type,k,index){
+        console.log(this.goodsList[k])
+          let obj={
+              favour_type:favour_type
+          }
+          if(favour_type==1){
+              obj={...obj,
+                  goods_id:this.goodsList[k].list[index].goods_id,
+                  catergory_id:this.goodsList[k].list[index].catergoryId
+              }
+          }else if(favour_type==2){
+              obj={...obj,
+                  user_tag:this.goodsList[k].sellerTag,
+                  seller_id:this.goodsList[k].sellerId
+              }
+          }
+        axios.request({...shoppingCar.insertGoodsFavourite,params:obj}).then(res=>{
+            this.$message.success(res.message)
+            if(favour_type==1){
+                this.$set(this.goodsList[k].list[index],'focus',true)
+            }else if(favour_type==2){
+                this.$set(this.goodsList[k],'focus',true)
+            }
+
+          //  this.goodsList[k].foucs=true
+        })
+      },
       //加入询价蓝
       add(k,index){
-        let item = this.goodsList[k][index]
+        let item = this.goodsList[k].list[index]
           let obj={
               sellerId:item.sellerId,
               sellerGoodsId:item.id,
-              goodsSource:1
+              goodsSource:2
           }
         axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
-            console.log("成功加入询价蓝")
             this.$message.success("已加入询价蓝")
         })
       },
       //从购物车删除商品
       del(k,index){
-          let item = this.goodsList[k][index]
+          let item = this.goodsList[k].list[index]
           let obj={
-              sellerId:item.sellerId,
-              sellerGoodsId:item.id,
-              goodsSource:1
+              id:item.id,
           };
-          axios.request({...shoppingCar.deleteShoppingCarGoods,params:obj}).then(res=>{
+          axios.request({...shoppingCar.deleteSigletonShoppingCar,params:obj}).then(res=>{
               this.$message.success("成功移除")
               this.init()
           })
       },
-      handleChange(){}
+      handleChange(e,k,index){
+          let obj=this.goodsList[k].list[index]
+          let currentPrice=0;
+        if(obj.priceList){
+            if(obj.priceList.length==1){
+                currentPrice=parseFloat(obj.priceList[0].price);
+
+            }else if(obj.priceList.length==2){
+                if(e<=Number(obj.priceList[1].num)){
+                    currentPrice=parseFloat(obj.priceList[0].price);
+
+                }else{
+                    currentPrice=parseFloat(obj.priceList[1].price);
+
+                }
+
+            }else if(obj.priceList.length==3){
+                if(e<=Number(obj.priceList[1].num)){
+                    currentPrice=parseFloat(obj.priceList[0].price);
+
+                }else if(e<=Number(obj.priceList[2].num)){
+                    currentPrice=parseFloat(obj.priceList[1].price);
+
+                }else{
+                    currentPrice=parseFloat(obj.priceList[2].price);
+
+                }
+            }
+        }else{
+            currentPrice=obj.goodsPrice
+
+        }
+          this.goodsList[k].list=this.goodsList[k].list.map((item,index0)=>{
+              if(index0==index){
+                  item.money=e*currentPrice;
+                  item.currentPrice=currentPrice
+              }
+              return item;
+          })
+      },
+      submit(){
+        //去结算
+          let orderJson = [];
+          this.goodsList.forEach(item0=>{
+                item0.list.forEach(item=>{
+                    if(item.checked && item.isenable){
+                        let obj={
+                            seckill_goods_id: item.seller_goods_id,
+                            goods_id: item.goods_id,
+                            goods_name: item.goods_name,
+                            goods_count: item.count,
+                            goods_price: item.currentPrice,
+                            order_channe: 1,
+                            clude_bill: item.includBill,
+                            pay_channe: 1,
+                            price_unit: item.priceUnit,
+                            goods_type:item.goods_type,
+                            sellerName: item0.sellerName,
+                            sellerHeader: item0.sellerUrl,
+                            seller_id: item0.sellerId,
+                            tag: item0.sellerTag,
+                            goodsDesc: item.goodsDesc,
+                            goodsImage: item.goodsImageUrl,
+                            diliver_place: item.diliverPlace,
+                        }
+                        if(!item.goods_type){
+                            //标识期货
+                            obj={...obj,
+                                complete_date: item.deliverTime,
+                                diliver_date: item.deliverTime,
+                                end_date: item.endTime
+                            }
+                        }
+                        orderJson.push(obj)
+                    }
+                })
+          })
+          let billObj = {
+              billtype: "1",
+              content_id: "1"
+          };
+          // 生成bill对象
+          let obj2 = {
+              bill: JSON.stringify(billObj),
+              dilivertype: "1",
+              order: JSON.stringify(orderJson),
+              add_id: 1,
+              type: 0,
+              orderSource: 1
+          };
+          this.$store
+              .dispatch("MerchantList/GetOrder", obj2)
+              .then(res => {
+                  localStorage.setItem("buyOneGoodsDetail",JSON.stringify({
+                      data: JSON.stringify(res),
+                      obj2: JSON.stringify(obj2)
+                  }))
+                  this.setBuyOneGoodsDetail(JSON.stringify({
+                      data: JSON.stringify(res),
+                      obj2: JSON.stringify(obj2)
+                  }));
+                  this.$router.push({
+                      path: "/ShoppingCart/ShoppingSettlement",
+                  });
+              })
+              .catch(err => {
+                  this.$message.error(err);
+              });
+      }
   },
     filters:{
+        toFixed(val,length){
+            return val.toFixed(length)
+        },
         tagFilter(val){
             switch (Number(val)) {
                 case 1:
@@ -343,7 +464,44 @@ export default {
   computed: {
     start(){
         return (this.pageSize*(this.currentPage-1))
-    }
+    },
+      unitMoney(){
+        let money=0;
+        this.goodsList.forEach(item0=>{
+            item0.list.forEach(item1=>{
+                if(item1.checked && item1.priceUnit){
+                    //表示美元
+                    money+=item1.money
+                }
+            })
+        })
+
+          return money;
+      },
+      unMoney(){
+          let money=0;
+          this.goodsList.forEach(item0=>{
+              item0.list.forEach(item1=>{
+                  if(item1.checked && !item1.priceUnit){
+                      //表示美元
+                      money+=item1.money
+                  }
+              })
+          })
+
+          return money;
+      },
+      count(){
+        let count=0;
+          this.goodsList.forEach(item0=>{
+              item0.list.forEach(item1=>{
+                  if(item1.checked){
+                      count++
+                  }
+              })
+          })
+          return count;
+      }
   },
   mounted() {
     this.$store.state.shoppingCart.active = 1

@@ -211,10 +211,6 @@ background:#f4f4f4;
         }
 
     }
-  width: 100%;
-  // max-width: 1350px;
-  // min-width: 1080px;
-  margin: 0 auto;
   .fr{
     float: right;
   }
@@ -240,6 +236,9 @@ background:#f4f4f4;
     width:100%;
     margin: 0 auto;
   }
+    #content{
+        margin-top:60px;
+    }
   .router-link-exact-active {
     color: #3da8f5;
     font-weight:bold;
