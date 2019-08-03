@@ -25,10 +25,7 @@ const home = {
 const buyerOrderCenter = {
     //确认更改交期
     confirmChangeDiliverTime: {
-        url: "/api-order/customerCenter/confirmChangeDiliverTime",
-
-        
-        method: "post"
+        url: "/api-order/customerCenter/confirmChangeDiliverTime", method: "post"
     },
     //查询收藏的商品和商家
     queryGoodsFavouriteList:{url:"/api-g/gf/queryGoodsFavouriteList"}
