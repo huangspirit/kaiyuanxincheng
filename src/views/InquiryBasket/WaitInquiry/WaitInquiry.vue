@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="checkAll">
+    <p class="noData" v-if="waitInquiryList.length<=0">暂无数据</p>
+    <div class="checkAll" v-if="waitInquiryList.length>0">
       <div class="allBtn">
         <span @click="allCheck">
           <img
@@ -22,7 +23,7 @@
     </div>
     <div class="inquiryList">
       <ul class="listCheck" v-for="(item,k) in waitInquiryList" :key="k">
-        <div class="checkAll">
+        <div class="checkSub">
           <div class="allBtn">
             <span @click="subCheck(k,item)">
               <img v-if="item.subCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
@@ -95,7 +96,7 @@
             <div class="goodEdit">
               <img
                 @click="inquiryDelete(listItem)"
-                style="float:right"
+                style="float:right;cursor: pointer;"
                 src="@/assets/image/inquirybasket/delete.png"
                 alt
               />
@@ -104,6 +105,17 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="Pagination">
+      <!-- 分页 -->
+      <el-pagination
+        layout="prev, pager, next, jumper"
+        :page-size="1"
+        :total="total"
+        background
+        @current-page="currentPage"
+        @current-change="change"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -121,7 +133,9 @@ export default {
       factorySale: [],
       baseListData: [],
       allNum: 0,
-      disabled: true
+      disabled: true,
+      total:0,
+      start:0
     };
   },
   inject: ["reload"],
@@ -134,13 +148,14 @@ export default {
   methods: {
     getInquiry() {
       var obj = {
-        start: 0,
-        length: 10,
+        start: this.start,
+        length: 1,
         source: "2"
       };
       axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
         if (res.resultCode == "200") {
           this.waitInquiryList = res.data.data;
+          this.total = res.data.total
           this.factorySale = [];
           this.waitInquiryList["allCheck"] = false;
           for (var i = 0; i < this.waitInquiryList.length; i++) {
@@ -281,12 +296,20 @@ export default {
         .request({ ...shoppingCar.deleteSigletonShoppingCar, params: obj })
         .then(res => {
           console.log(res);
-          if(res.resultCode == 200) {
-            this.$message.success('删除成功')
-            this.getInquiry()
+          if (res.resultCode == 200) {
+            this.$message.success("删除成功");
+            this.getInquiry();
           }
         });
       deleteSigletonShoppingCar;
+    },
+    currentPage(val) {
+      console.log(val);
+    },
+    change(val) {
+      console.log(val);
+      this.start = val -1
+      this.getInquiry()
     },
     applySpecial(val) {
       console.log(val);
@@ -306,10 +329,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.noData {
+  width: 100%;
+  height: 500px;
+  text-align: center;
+  line-height: 500px;
+}
 .checkAll {
   width: 100%;
-  margin-bottom: 48px;
-  margin-top: 60px;
+  padding: 20px 42px;
+  box-sizing: border-box;
+  margin: 20px 0;
   display: flex;
   justify-content: space-between;
   .allBtn {
@@ -360,32 +390,105 @@ export default {
   }
 }
 .inquiryList {
+  background: #eee;
   .listCheck {
     width: 100%;
-    height: auto;
+    background-color: #eee;
+    min-height: 100%;
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    .checkSub {
+      width: 100%;
+      padding: 30px 42px;
+      box-sizing: border-box;
+      display: flex;
+      background-color: #fff;
+      margin-top: 20px;
+      justify-content: space-between;
+      .allBtn {
+        > span {
+          width: 18px;
+          height: 18px;
+          border: 1px solid rgba(102, 102, 102, 1);
+          margin-right: 12px;
+          > img {
+            vertical-align: top;
+          }
+          &:nth-of-type(2) {
+            width: auto;
+            border: none;
+            font-size: 20px;
+            line-height: 25px;
+            height: 25px;
+            color: rgba(51, 51, 51, 1);
+            margin-left: 12px;
+          }
+          &:nth-of-type(3) {
+            vertical-align: top;
+            width: auto;
+            border: none;
+            height: 25px;
+            margin-left: 12px;
+          }
+        }
+      }
+      .allNum {
+        span {
+          font-size: 18px;
+          color: #333333;
+          > strong {
+            font-size: 24px;
+            color: #f22e2e;
+          }
+        }
+        .batchBtn {
+          margin: 0 42px 0 86px;
+          font-size: 18px;
+          color: rgba(102, 102, 102, 1);
+          cursor: pointer;
+          &:hover {
+            color: rgba(77, 154, 243, 1);
+          }
+        }
+      }
+    }
     .listContent {
       display: flex;
+      padding: 20px 42px;
+      width: 95%;
+      margin: 0 auto 20px;
+      box-sizing: border-box;
+      background-color: #fff;
+      &:hover {
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+      }
       .goodsImg {
-        width: 240px;
+        width: 265px;
         margin-right: 34px;
+        line-height: 158px;
         .itemCheck {
           width: 18px;
           height: 18px;
-          margin-right: 48px;
-          margin-top: 80px;
+          margin-right: 25px;
+          margin-top: 125px;
           border: 1px solid rgba(201, 201, 201, 1);
           > img {
-            vertical-align: top;
+            vertical-align: middle;
           }
         }
         > div {
           float: left;
+          height: 100%;
+
           &:nth-of-type(2) {
             width: 166px;
-            height: 152px;
-            background: rgba(232, 232, 232, 1);
+            height: 100%;
+            padding: 50px 0;
+            box-sizing: border-box;
             > img {
               width: 100%;
+              vertical-align: middle;
             }
           }
           &:nth-of-type(3) {
@@ -405,7 +508,7 @@ export default {
       .goodsDetail {
         display: flex;
         border-bottom: 1px solid rgba(232, 232, 232, 1);
-        margin-bottom: 52px;
+        margin-bottom: 10px;
         min-height: 210px;
         .googsDesc {
           width: 50%;

@@ -323,7 +323,8 @@ export default {
               defaultConfig: this.checked,
               brandId: this.proInformation.brandId,
               goodsName: this.proInformation.productno,
-              requestId: this.proInformation.id
+              requestId: this.proInformation.id,
+              bucketId: this.proInformation.bucketId
             };
             axios
               .request({ ...shoppingCar.saveInquiry, params: obj })
@@ -331,7 +332,7 @@ export default {
                 console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
-                  this.$roter.push("/InquiryBasket/Inquiry");
+                  this.$router.push("/InquiryBasket/Inquiry");
                 }
               });
           } else {
@@ -349,7 +350,8 @@ export default {
                 projectEau: element.amountPurchased,
                 insteadNo: element.insteadNo,
                 goodsName: element.productno,
-                brandId: element.brandId
+                brandId: element.brandId,
+                bucketId: element.bucketId
               });
             });
             var orderData = JSON.stringify(infoData);
@@ -372,7 +374,7 @@ export default {
                 console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
-                  this.$roter.push("/InquiryBasket/Inquiry");
+                  this.$router.push("/InquiryBasket/Inquiry");
                 }
               });
           }

@@ -8,14 +8,8 @@
     <div class="waitContent">
       <div class="inquiryTab">
         <li>
-          <span
-            @click="tabShow = true;"
-            :class="tabShow? 'active':'' "
-          >待询价</span>
-          <span
-            @click="tabShow = false;"
-            :class="!tabShow? 'active':''"
-          >已询价</span>
+          <span @click="tabShow = true;" :class="tabShow? 'active':'' ">待询价</span>
+          <span @click="tabShow = false;" :class="!tabShow? 'active':''">已询价</span>
         </li>
         <li class="search">
           <img src="@/assets/image/inquirybasket/u26.png" alt />
@@ -79,10 +73,13 @@ export default {
     }
   }
   .waitContent {
-    padding: 62px 42px;
-
+    padding-top: 60px;
+    min-height: 100%;
+    overflow: hidden;
+     box-sizing: border-box;
     .inquiryTab {
       display: flex;
+      padding: 0 42px;
       justify-content: space-between;
       padding-bottom: 22px;
       border-bottom: 1px solid #e8e8e8;
