@@ -61,7 +61,7 @@
               共有
               <span class="num">{{item.goodsBase.map.totalSeller}}</span>
               个供应商报价
-              <span class="num">{{item.goodsBase.priceunit?"$":"¥"}}{{item.goodsBase.map.minPrice | tofixed(4)}}——{{item.goodsBase.priceunit?"$":"¥"}}{{item.goodsBase.map.maxPrice | tofixed(4)}}</span>
+              <span class="num">{{item.goodsBase.map.minPrice }}——{{item.goodsBase.map.maxPrice}}</span>
             </p>
           </div>
 

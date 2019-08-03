@@ -67,11 +67,18 @@
                 <template v-for="(item1,index) in item.list">
                     <ul class="listDetail">
                         <li class="imgWrap" style="width:15%;">
-                            <label class="checkBox">
+                            <label class="checkBox" v-if="item1.isenable">
                                 <input
                                     type="checkbox"
-                                    :checked="item1.checked && item1.isenable"
+                                    :checked="item1.checked"
                                     @change="ShoppingCartoneCheck($event,k,index)"
+                                >
+                            </label>
+                            <label class="checkBox" v-if="!item1.isenable">
+                                <input
+                                    type="checkbox"
+                                    readonly
+                                    style="background:#e4e4e4"
                                 >
                             </label>
                             <div>
@@ -95,8 +102,17 @@
                                 <p v-else>{{item1.expireTime | formatDate}}</p>
                             </template>
                             <template>
-                                <p v-if="item1.goods_type">现货<span style="font-size:12px;color:#F22E2E;">(长期卖)</span></p>
-                                <p v-else>期货</p>
+                                <p v-if="item1.goods_type">
+                                    现货
+                                    <span style="font-size:12px;color:#F22E2E;" v-if="item1.seller_always">(长期卖)</span>
+                                    <span style="font-size:12px;color:#F22E2E;" v-if="!item1.seller_always">(限时卖)</span>
+                                </p>
+                                <p v-else>
+                                    期货
+                                    <span style="font-size:12px;color:#F22E2E;" v-if="item1.seller_always">(长期卖)</span>
+                                    <span style="font-size:12px;color:#F22E2E;" v-if="!item1.seller_always">(限时卖)</span>
+                                </p>
+
                             </template>
                         </li>
                         <template >
@@ -104,9 +120,15 @@
                                 <p v-for="val in item1.priceList">
                                     <span class="num">{{val.num}}+ </span>--- <strong>{{item1.priceUnit?"$":"¥"}} {{val.price}}</strong>
                                 </p>
+                                <p class="goodsStockCount">
+                                    库存：<strong>{{item1.goodsStockCount}}</strong>
+                                </p>
                             </li>
                             <li style="width:10%;" class="price" v-else >
                                 <p style="text-align: center;"><strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong></p>
+                                <p class="goodsStockCount">
+                                    库存：<strong>{{item1.goodsStockCount}}</strong>
+                                </p>
                             </li>
                         </template>
                         <li style="width:15%" class="count">
@@ -127,6 +149,7 @@
                             <div class="countTime">
                                 <div>
                                     <CountTime
+                                        v-if="!item1.seller_always && item1.expireTime"
                                         class="countTime"
                                         v-on:end_callback="countDownE_cb(item)"
                                         :currentTime="item1.currentTime"
@@ -140,6 +163,7 @@
                                         :minutesTxt="'分'"
                                         :secondsTxt="'秒'"
                                     ></CountTime>
+                                    <p   style="text-align: center;" v-if="!item1.seller_always && !item1.expireTime">活动已结束</p>
                                 </div>
                             </div>
                         </li>
@@ -223,7 +247,12 @@ export default {
         this.goodsList=this.goodsList.map(item=>{
             item.checked=e.target.checked;
             item.list=item.list.map(item0=>{
-                item0.checked=e.target.checked;
+                if(item0.isenable){
+                    item0.checked=e.target.checked;
+                }else{
+                    item0.checked=false;
+                }
+
                 return item0;
             })
             return item;
@@ -231,17 +260,26 @@ export default {
     },
       ShoppingCartCateCheck(e,k){
           this.goodsList[k]['checked']=e.target.checked;
-          this.goodsList[k].list=this.goodsList[k].list.map(item=>{
-            item.checked=e.target.checked;
-            return item;
+          this.goodsList[k].list=this.goodsList[k].list.map(item0=>{
+         0
+              if(item0.isenable){
+                  item0.checked=e.target.checked;
+              }else{
+                  item0.checked=false;
+              }
+            return item0;
         })
       },
       ShoppingCartoneCheck(e,k,index){
-          this.goodsList[k].list=this.goodsList[k].list.map((item,index0)=>{
+          this.goodsList[k].list=this.goodsList[k].list.map((item0,index0)=>{
               if(index0==index){
-                  item.checked=e.target.checked
+                  if(item0.isenable){
+                      item0.checked=e.target.checked;
+                  }else{
+                      item0.checked=false;
+                  }
               }
-              return item;
+              return item0;
           })
       },
       init(){

@@ -140,7 +140,7 @@
         <img src="@/assets/image/home/u93.png" alt class="naoz" v-if="item.sellStatus == 1">
          <CountTime
          class="CountTime"
-         v-if="!item.seller_always"
+         v-if="!item.seller_always && item.expireTime"
           v-on:start_callback="countDownS_cb(item)"
           v-on:end_callback="countDownE_cb(item)"
           :currentTime="item.currentTime"
