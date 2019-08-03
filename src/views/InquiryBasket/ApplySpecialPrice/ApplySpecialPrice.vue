@@ -99,9 +99,7 @@
               placeholder="请输入采购量"
               v-model="formAlign.amountPurchased"
               class="input-with-select unit"
-            >
-              <span slot="append">K</span>
-            </el-input>
+            ></el-input>
           </el-form-item>
           <el-form-item label="联系人" class="contact" prop="user">
             <el-input v-model="formAlign.user" placeholder="姓名"></el-input>
@@ -189,9 +187,7 @@
                         @input="listChange"
                         v-model="listItem.amountPurchased"
                         class="input-with-select unit"
-                      >
-                        <span slot="append">K</span>
-                      </el-input>
+                      ></el-input>
                     </el-form-item>
                     <el-form-item label="竞争型号" class="contact" prop="insteadNo">
                       <el-input
@@ -213,7 +209,7 @@
 
       <div class="submit">
         <el-button class="submitBtn" type="primary" @click="commitSprice">提交特价申请信息</el-button>
-        <p>特价申请有效期将为6个月，您可以在询价篮产看状态</p>
+        <p style="margin-bottom:20px">特价申请有效期将为6个月，您可以在询价篮产看状态</p>
       </div>
     </div>
   </div>
@@ -306,39 +302,43 @@ export default {
     commitSprice() {
       this.$refs.formAlign.validate(valid => {
         if (valid) {
-          var projectBeginTime = formatAllDate(
-            this.formAlign.projectBeginTime,
-            "-"
-          )[1];
-          var projectBeginTime = formatAllDate(
-            this.formAlign.projectBeginTime,
-            "-"
-          )[1];
+          console.log(projectBeginTime);
           if (this.topShow) {
+            var projectBeginTime = formatAllDate(
+              this.formAlign.projectBeginTime,
+              "/"
+            )[1];
             var obj = {
               projectName: this.formAlign.projectName,
               projectProcess: this.formAlign.productPhase,
               projectBeginTime: projectBeginTime,
               projectEau: this.formAlign.amountPurchased,
-              acceptPrice: this.formAlign.pric,
+              acceptPrice: this.formAlign.price,
               companyName: this.formAlign.companyName,
               website: this.formAlign.companyHttp,
               contactName: this.formAlign.user,
               position: this.formAlign.position,
               telphone: this.formAlign.telephone,
               remark: this.formAlign.remark,
-              defaultConfig: this.formAlign.checked,
-              brandId: this.proInformation.brandId
+              defaultConfig: this.checked,
+              brandId: this.proInformation.brandId,
+              goodsName: this.proInformation.productno,
+              requestId: this.proInformation.id
             };
             axios
-              .request({ ...shoppingCar.saveInquiry, data: obj })
+              .request({ ...shoppingCar.saveInquiry, params: obj })
               .then(res => {
                 console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
+                  this.$roter.push("/InquiryBasket/Inquiry");
                 }
               });
           } else {
+            var projectBeginTime = formatAllDate(
+              this.formAlign.projectBeginTime,
+              "-"
+            )[1];
             console.log(this.proInformation);
             var infoData = [];
             this.proInformation.forEach(element => {
@@ -363,7 +363,7 @@ export default {
               position: this.formAlign.position,
               telphone: this.formAlign.telephone,
               remark: this.formAlign.remark,
-              defaultConfig: this.formAlign.checked,
+              defaultConfig: this.checked,
               order: orderData
             };
             axios
@@ -372,6 +372,7 @@ export default {
                 console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
+                  this.$roter.push("/InquiryBasket/Inquiry");
                 }
               });
           }

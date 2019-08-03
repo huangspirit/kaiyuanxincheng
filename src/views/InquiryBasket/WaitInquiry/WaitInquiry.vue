@@ -17,7 +17,7 @@
           <strong>{{allNum}}</strong> 件商品
         </span>
         <span class="batchBtn" @click="batchApplication">批量申请</span>
-        <img src="@/assets/image/inquirybasket/delete.png" alt />
+        <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
       </div>
     </div>
     <div class="inquiryList">
@@ -37,8 +37,8 @@
               已选该商品
               <strong>{{item.subNum}}</strong> 件商品
             </span>
-            <span class="batchBtn">申请特价</span>
-            <img src="@/assets/image/inquirybasket/delete.png" alt />
+            <span class="batchBtn" @click="subSpecial">申请特价</span>
+            <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
           </div>
         </div>
 
@@ -59,17 +59,27 @@
             <div class="googsDesc">
               <h3>{{listItem.productno}}</h3>
               <h4>品牌：{{listItem.brand}}</h4>
+              <el-button
+                class="attention"
+                @click="focusOn(listItem)"
+                v-if="listItem.focus == false"
+              >+ 关注</el-button>
+              <el-button
+                class="alredyAtten"
+                :disabled="disabled"
+                v-if="listItem.focus == true"
+              >+ 已关注</el-button>
               <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
               <p>型号描述：{{listItem.productdesc}}</p>
               <p>
                 <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                 <span
                   v-if="listItem.map.totalSeller != 0"
-                >￥{{listItem.map.minPrice | pointTwo(listItem.map.minPrice)}} ------ ￥{{listItem.map.maxPrice | pointTwo(listItem.map.maxPrice)}}</span>
+                >￥{{listItem.map.minPrice}} ------ ￥{{listItem.map.maxPrice}}</span>
               </p>
             </div>
             <div class="goodPrice">
-              <h3>原厂报价</h3>
+              <h3 v-if="listItem.factorySellerInfo.price_level != undefined">原厂报价</h3>
               <li
                 v-if="listItem.factorySellerInfo.price_level != undefined"
                 v-for="(subitem,index) in listItem.ladderPrice"
@@ -78,12 +88,11 @@
                 <span>{{subitem.num}}+</span> -------
                 <span>￥{{subitem.price}}</span>
               </li>
-              <li v-if="listItem.factorySellerInfo.price_level == undefined">
-                <p style="text-align: center">暂无原厂报价</p>
+              <li style="height:100%" v-if="listItem.factorySellerInfo.price_level == undefined">
+                <p style="text-align: center;height:100%;line-height:200px;color:#d5d5d5;">暂无原厂报价</p>
               </li>
             </div>
             <div class="goodEdit">
-              <el-button class="attention">+ 关注</el-button>
               <el-button class="special" @click="applySpecial(listItem)">申请特价</el-button>
             </div>
           </div>
@@ -98,7 +107,7 @@ import "./WaitInquiry.less";
 import { axios, shoppingCar } from "@/api/apiObj";
 import { ladderPrice } from "@/lib/utils";
 import { debuglog } from "util";
-import { constants } from 'crypto';
+import { constants } from "crypto";
 export default {
   data() {
     return {
@@ -106,6 +115,7 @@ export default {
       factorySale: [],
       baseListData: [],
       allNum: 0,
+      disabled: true
     };
   },
   inject: ["reload"],
@@ -156,13 +166,13 @@ export default {
       if (this.waitInquiryList[k].baseList[index].itemCheck == true) {
         this.allNum++;
         this.waitInquiryList[k].subNum++;
-        this.baseListData.push(this.waitInquiryList[k].baseList[index])
+        this.baseListData.push(this.waitInquiryList[k].baseList[index]);
       } else {
         this.allNum--;
         this.waitInquiryList[k].subNum--;
-        this.baseListData.splice(k,1)
+        this.baseListData.splice(k, 1);
       }
-      console.log(this.baseListData)
+      console.log(this.baseListData);
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
       this.allShow();
     },
@@ -172,26 +182,25 @@ export default {
         for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
           this.waitInquiryList[k].baseList[j].itemCheck = false;
           this.allNum--;
-          this.baseListData.splice(k,1)
-         
+          this.baseListData.splice(k, 1);
         }
       } else {
-        this.waitInquiryList[k].subNum = 0
+        this.waitInquiryList[k].subNum = 0;
         for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
           this.waitInquiryList[k].baseList[j].itemCheck = true;
           this.waitInquiryList[k].subNum++;
           this.allNum++;
-          this.baseListData.push(this.waitInquiryList[k].baseList[j])
-         
+          this.baseListData.push(this.waitInquiryList[k].baseList[j]);
         }
       }
-      console.log(this.baseListData)
+      console.log(this.baseListData);
       this.waitInquiryList[k].subCheck = !this.waitInquiryList[k].subCheck;
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
       this.allShow();
     },
     allCheck() {
       this.allNum = 0;
+      this.baseListData = [];
       if (this.waitInquiryList.allCheck == true) {
         this.allNum = 0;
         for (var i = 0; i < this.waitInquiryList.length; i++) {
@@ -202,43 +211,69 @@ export default {
           }
         }
       } else {
-        this.baseListData = []
+        this.baseListData = [];
         for (var i = 0; i < this.waitInquiryList.length; i++) {
           this.waitInquiryList[i].subCheck = true;
-           this.waitInquiryList[i].subNum = 0
+          this.waitInquiryList[i].subNum = 0;
           for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
             this.waitInquiryList[i].subNum++;
             this.waitInquiryList[i].baseList[j].itemCheck = true;
             this.allNum++;
-            this.baseListData.push(this.waitInquiryList[i].baseList[j])
+            this.baseListData.push(this.waitInquiryList[i].baseList[j]);
           }
         }
       }
-      console.log(this.baseListData)
+      console.log(this.baseListData);
       this.waitInquiryList.allCheck = !this.waitInquiryList.allCheck;
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
     },
     allShow() {
       let checkedShow = true;
+      let subCheckShow = true;
+      let k = 0;
+
       for (var i = 0; i < this.waitInquiryList.length; i++) {
         for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
           if (this.waitInquiryList[i].subCheck == false) {
-            checkedShow = false;
-
-            this.waitInquiryList[i].subCheck = true;
+            checkedShow = true;
+            subCheckShow = true;
+            k = i;
           }
           if (this.waitInquiryList[i].baseList[j].itemCheck == false) {
             checkedShow = false;
-            this.waitInquiryList[i].subCheck = false;
+            subCheckShow = false;
+            k = i;
           }
         }
       }
+      this.waitInquiryList[k].subCheck = subCheckShow;
       this.waitInquiryList.allCheck = checkedShow;
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
+    },
+    focusOn(val) {
+      console.log(val);
+      var obj = {
+        favour_type: "1",
+        goods_id: val.id,
+        catergory_id: val.classificationId
+      };
+      axios
+        .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == 200) {
+            this.$message.success("关注成功");
+            this.getInquiry();
+          }
+        });
     },
     applySpecial(val) {
       console.log(val);
       this.$store.dispatch("promation", val);
+      this.$router.push("/InquiryBasket/ApplySpecialPrice");
+    },
+    subSpecial() {
+      this.$store.dispatch("promation", this.baseListData);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
     batchApplication() {
@@ -417,8 +452,6 @@ export default {
               }
             }
           }
-        }
-        .goodEdit {
         }
       }
     }
