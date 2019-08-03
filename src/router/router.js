@@ -60,7 +60,7 @@ export default [
   },
   // 购物车
   {
-    path: '/ShoppingCart/',
+    path: '/ShoppingCart',
     name: 'ShoppingCart',
     component: () => import('@/views/ShoppingCart'),
     meta: {
@@ -165,7 +165,7 @@ export default [
   },
   // 消息
   {
-    path: '/News/',
+    path: '/News',
     name: 'News',
     component: () => import('@/views/News'),
     meta: {
