@@ -5,7 +5,7 @@
     <div class="goods-detail">
       <div class="tit-h">
         <div class="wrapper">
-          <img src="@/assets/image/brandDetail/u9664.png" alt>
+          <img src="@/assets/image/brandDetail/u9664.png" alt />
           <span>商品详情</span>
         </div>
       </div>
@@ -40,29 +40,29 @@
 
             <div class="add-car">
               <span>
-                <img src="@/assets/image/brandDetail/_u4510.png" alt>
+                <img src="@/assets/image/brandDetail/_u4510.png" alt />
                 +关注
               </span>
               <span>
-                <img  @click="addInquiry(goodsinfo)" src="@/assets/image/brandDetail/_u4518.png" alt>
+                <img @click="addInquiry(goodsinfo)" src="@/assets/image/brandDetail/_u4518.png" alt />
                 +询价篮
               </span>
               <span>
-                <img src="@/assets/image/brandDetail/u12296.png" alt>
+                <img src="@/assets/image/brandDetail/u12296.png" alt />
                 分享
               </span>
               <span>
-                <img src="@/assets/image/brandDetail/u10698.png" alt>
+                <img src="@/assets/image/brandDetail/u10698.png" alt />
                 +购物车
               </span>
             </div>
             <div class="Purchase">
               <ButtonIcon>
-                <img src="@/assets/image/brandDetail/u6221.png" alt>
+                <img src="@/assets/image/brandDetail/u6221.png" alt />
                 立即采购
               </ButtonIcon>
               <ButtonIcon>
-                <img src="@/assets/image/brandDetail/u4504.png" alt>
+                <img src="@/assets/image/brandDetail/u4504.png" alt />
                 申请特价
               </ButtonIcon>
             </div>
@@ -113,7 +113,7 @@
     <div class="special-offer">
       <div class="tit-h">
         <div class="wrapper">
-          <img src="@/assets/image/brandDetail/u9664.png" alt>
+          <img src="@/assets/image/brandDetail/u9664.png" alt />
           <span>特价共享区</span>
           <span class="more-special">申请更低价</span>
         </div>
@@ -126,7 +126,7 @@
     <div class="detail-informan">
       <div class="tit-h">
         <div class="wrapper">
-          <img src="@/assets/image/brandDetail/u10011.png" alt>
+          <img src="@/assets/image/brandDetail/u10011.png" alt />
           <span>详细信息（RMC1/16-102JTP）</span>
         </div>
       </div>
@@ -196,7 +196,7 @@
     <div class="related-documents">
       <div class="tit-h">
         <div class="wrapper">
-          <img src="@/assets/image/brandDetail/u12076.png" alt>
+          <img src="@/assets/image/brandDetail/u12076.png" alt />
           <span>相关应用方案与文档</span>
         </div>
       </div>
@@ -226,7 +226,6 @@
 </style>
 
 <script>
-
 import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
 import { mapGetters, mapActions } from "vuex";
@@ -271,17 +270,18 @@ export default {
       // }, 3000);
     },
     addInquiry(val) {
-       var obj = {
+      var obj = {
         sellerGoodsId: val.id,
         sellerId: val.brandId,
-        goodsSource: "2"
+        goodsSource: "2",
+        goodsName: val.productno
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
           console.log(res);
-          if(res.resultCode == "200"){
-            this.$message.success("添加成功")
+          if (res.resultCode == "200") {
+            this.$message.success("添加成功");
           }
         });
     }

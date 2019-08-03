@@ -66,16 +66,36 @@ const message = {
         url: "/api-n/notification/deleteMessage"
     }
 }
-const shoppingCar={
-    //加入购物车或询价蓝
-    insertShoppingCar:{url:"/api-g/sc/insertShoppingCar"},
-    //查询购物车
-    inquiryList:{url:"/api-g/sc/queryShoppingCarList"},
-    //删除购物车单个商品
+const shoppingCar = {
+    insertShoppingCar: {
+        url: "/api-g/sc/insertShoppingCar"
+    },
+    inquiryList: {
+        url: "/api-g/sc/queryShoppingCarList"
+    },
     deleteSigletonShoppingCar:{url:"/api-g/sc/deleteSigletonShoppingCar"},
     //批量删除购物车商品
     deleteBatchShoppingCar:{url:"/api-g/sc/deleteBatchShoppingCar"},
     //收藏关注商家和产品
     insertGoodsFavourite:{url:"/api-g/gf/insertGoodsFavourite"},
+    deleteShoppingCarGoods: {
+        url: ""
+    },
+    saveInquiry: {
+        url: "/api-g/ic/saveInquirySheet"
+    },
+    saveBatchInquiry:{
+        url:"/api-g/ic/saveBatchInquirySheet",
+        method:'post'
+    }
+
 }
-export {axios,common,home,buyerOrderCenter,sellerOrderCenter,message,shoppingCar}
+export {
+    axios,
+    common,
+    home,
+    buyerOrderCenter,
+    sellerOrderCenter,
+    message,
+    shoppingCar
+}

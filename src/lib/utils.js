@@ -96,14 +96,14 @@ export const TimeForma2 = (value) => {
 function formatTen(num) {
     return num > 9 ? (num + '') : ('0' + num)
 }
-export function formatDateTime (date) {
-  var year = date.getFullYear()
-  var month = date.getMonth() + 1
-  var day = date.getDate()
-  // var hour = date.getHours()
-  // var minute = date.getMinutes()
-  // var second = date.getSeconds()
-  return year + '-' + formatTen(month) + '-' + formatTen(day)
+export function formatDateTime(date) {
+    var year = date.getFullYear()
+    var month = date.getMonth() + 1
+    var day = date.getDate()
+    // var hour = date.getHours()
+    // var minute = date.getMinutes()
+    // var second = date.getSeconds()
+    return year + '-' + formatTen(month) + '-' + formatTen(day)
 }
 // element 数字输入框的验证的验证
 export const checkAge = (rule, value, callback) => {
@@ -131,4 +131,20 @@ export function ladderPrice(value) {
         })
     }
     return array
+}
+export function formatAllDate(value, remark) {
+    let y = value.getFullYear()
+    let MM = value.getMonth() + 1
+    MM = MM < 10 ? '0' + MM : MM
+    let d = value.getDate()
+    d = d < 10 ? '0' + d : d
+    let h = value.getHours()
+    h = h < 10 ? '0' + h : h
+    let m = value.getMinutes()
+    m = m < 10 ? '0' + m : m
+    let s = value.getSeconds()
+    s = s < 10 ? '0' + s : s
+    var date1 = y + remark + MM + remark + d 
+    var date2 = y + remark + MM + remark + d + ' ' + h + ':' + m + ':' + s
+    return [date1, date2]
 }
