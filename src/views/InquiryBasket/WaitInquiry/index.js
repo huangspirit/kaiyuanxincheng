@@ -1,2 +1,2 @@
-import waitInquiry from './WaitInquiry.vue';
-export default waitInquiry;
+import waitInquiry from './WaitInquiry.vue'
+export default waitInquiry
