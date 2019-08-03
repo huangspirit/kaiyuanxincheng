@@ -96,7 +96,7 @@
                 display:flex;
                 justify-items: end;
                 .mes{
-                    width:60%;
+                    width:90%;
                     line-height:1.4;
                 }
                 .del{

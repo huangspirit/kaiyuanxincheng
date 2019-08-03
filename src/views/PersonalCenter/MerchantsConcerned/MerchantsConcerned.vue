@@ -50,7 +50,7 @@
 </template>
 
 <script>
-
+import {axios,buyerOrderCenter} from "../../../api/apiObj"
 import MerchantsConcernedImgTab from "_c/MerchantsConcernedImgTab";
 export default {
   name: "MerchantsConcerned",
@@ -86,17 +86,42 @@ export default {
           tit: "描述相符",
           start: 3
         }
-      ]
+      ],
+        pageSize:10,
+        currentPage:1,
+        total:0,
+        catergory_id:-1
     };
   },
   components: {
     MerchantsConcernedImgTab
   },
+    mounted(){
+      this.init()
+    },
   methods: {
     tabChange(x) {
       this.tabFlag = x;
+    },
+      init(){
+        let obj={
+            start:this.start,
+            length:this.pageSize,
+            favour_type:2
+        }
+        if(this.catergory_id>0){
+            obj.catergory_id=this.catergory_id
+        }
+        axios.request({...buyerOrderCenter.queryGoodsFavouriteList,params:obj}).then(res=>{
+            console.log(res)
+        })
+      }
+  },
+    computed:{
+      start(){
+          return this.pageSize*(this.currentPage-1)
+      }
     }
-  }
 };
 </script>
 

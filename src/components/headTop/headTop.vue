@@ -13,7 +13,8 @@
         <router-link to="/Brand">品牌</router-link>
         <router-link to="/InquiryBasket">询价篮</router-link>
         <router-link to="/ShoppingCart">购物车</router-link>
-        <router-link to="/News" v-if="loginState">消息</router-link>
+          <router-link to="/News" v-if="loginState" class="messageCountWrap">消息 <span v-if="UserInforma.messageCount" class="messageCount">{{UserInforma.messageCount}}</span></router-link>
+
       </div>
       <router-link class="login" tag="div" to="/Login" v-if="!loginState">
         <span>快速登录</span>
