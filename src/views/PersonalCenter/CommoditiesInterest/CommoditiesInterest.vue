@@ -150,13 +150,13 @@ export default {
             goodsName:this.goodsList[index].goodsBase.productno
         }
           axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
-                this.$message.success(res.message)
+                this.$message.success("已加入询价篮")
           })
       }
   },
     filters:{
       tofixed(val,length){
-          return val.toFixed(length);
+          return Number(val).toFixed(length);
       }
     }
 };
