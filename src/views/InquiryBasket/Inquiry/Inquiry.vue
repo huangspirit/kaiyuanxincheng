@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import WaitInquiry from "../waitInquiry";
+import WaitInquiry from "../WaitInquiry";
 import AleadyInquiry from "../AlreadyInquiry";
 import "./Inquiry.less";
 export default {
