@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(item,k) in list" class="item">
                 <div class="title">
-                    <span class="fr time">{{item.parameter.diliverTime}}</span>
+                    <span class="fr time">{{item.messageTime | formatDate}}</span>
                     <h3>审核通知</h3>
                 </div>
                 <div class="cont clear">
@@ -25,6 +25,7 @@
 
 </template>
 <script>
+    import { TimeForma2 } from "@/lib/utils";
     import {axios,message} from "../../../api/apiObj";
     export default {
         name:'dg',
@@ -44,9 +45,14 @@
                 return (this.currentPage-1)*this.pageSize
             }
         },
+        filters:{
+            formatDate(value) {
+                return TimeForma2(value);
+            },
+        },
         methods:{
             handleCurrentChange(x){
-                console.log(x)
+
                 this.currentPage=x;
                 this.init();
             },
@@ -62,7 +68,7 @@
                         return item;
                     });
                     this.total=res.data.total;
-                    console.log(res)
+
                 })
             },
             delEvent(k){

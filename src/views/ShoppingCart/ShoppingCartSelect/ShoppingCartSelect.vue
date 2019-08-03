@@ -234,7 +234,7 @@ export default {
   data() {
     return {
       ShoppingCartAllCheckbox: false,
-        pageSize:1,
+        pageSize:2,
         currentPage:1,
         total:0,
         goodsList:[],
