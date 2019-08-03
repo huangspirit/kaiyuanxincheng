@@ -298,7 +298,8 @@ this.GetUpdatePublishGoodsSatus({
       this.GetPublishGoodsListByUser({
         start: this.start,
         length: this.pageSize,
-        isenable: this.currentModlue.isenable
+        isenable: this.currentModlue.isenable,
+        searchType:true
       })
         .then(res => {
           let arr = res.data;

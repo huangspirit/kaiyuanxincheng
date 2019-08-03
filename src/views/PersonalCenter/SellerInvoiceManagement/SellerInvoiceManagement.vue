@@ -156,7 +156,6 @@
   @import "./SellerInvoiceManagement.less";
 </style>
 <script>
-// import "@/assets/css/ele-form.less";
 import {mapState,mapActions} from "vuex"
 import {axios,sellerOrderCenter} from "@/api/apiObj";
 import { TimeForma, TimeForma2 } from "@/lib/utils";

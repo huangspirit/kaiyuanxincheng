@@ -7,58 +7,46 @@
         flex:1;
     }
     .tab-list {
-        height: 36px;
-        margin-bottom: 30px;
-
+        margin-bottom:15px;
         .active {
-
-            border: 3px solid #0068B7;
-
-            .select {
-                display: block;
-                height: 38px;
-                width: 38px;
-                background: #0068B7;
-                position: relative;
-                float: right;
-                top: -1px;
-                right: -1px;
-
-                img {
-                    width: 20px;
-                    height: 20px;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    margin-top: -10px;
-                    margin-left: -10px;
-                    display: block;
-                    float: left;
-                }
+            border-color:#0068B7;
+            .select{
+                opacity: 1;
             }
         }
 
         &>li {
-            width: 173px;
-            height: 36px;
-            line-height: 36px;
-            font-size: 18px;
+            min-width: 150px;
+            line-height: 30px;
+            font-size: 16px;
             color: #4A5A6A;
             float: left;
             cursor: pointer;
             text-align: center;
+            border: 2px solid transparent;
+            margin-right:15px;
             &:hover {
                 color: #0068B7
             }
-
             .text {
                 display: inline-block;
-                height: 36px;
-                line-height: 36px;
+                height: 30px;
+                line-height: 30px;
+                .num{
+                    color:#4a5a6a;
+                    margin-left:5px;
+                }
             }
-
             .select {
-                display: none
+                opacity: 0;
+                height: 32px;
+                width: 32px;
+                background: #0068B7;
+                float: right;
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
             }
         }
     }
@@ -66,13 +54,11 @@
     .merchant-list{
         &>li{
             border: 1px solid #ddd;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             display:flex;
             // 品牌信息
             .brand-information{
-                width: 310px;
-                height: 330px;
-                padding: 20px 0;
+                padding: 10px;
                 display: flex;
                 justify-content: space-around;
                 flex-direction: column;
@@ -82,8 +68,7 @@
                 border-right: 1px solid #ddd;
 
                 .bd-img{
-                    width: 260px;
-                    height: 100px;
+                    width: 200px;
                 }
                 .name{
                     font-weight: bold;
@@ -98,48 +83,22 @@
                     background: #949494;
                 }
                 .tag{
-                    width: 64px;
-                    height: 21px;
-                    line-height: 21px;
-                    text-align: center;
+                    line-height: 18px;
                     color: #fff;
                     text-align: center;
-                    font-size: 14px;
-                    border-radius: 4px;
-                }
-                .start{
-                    width: 208px;
-                    overflow: hidden;
-                    li{
-                        width: 100%;
-                        overflow: hidden;
-                        span{
-                            float: left;
-                        }
-                        img{
-                            width: 20px;
-                            height: 20px;
-                            float: left;
-                            vertical-align: middle;
-                            position: relative;
-                            top: 4px;
-                        }
-                    }
+                    font-size: 12px;
+                    padding:2px 15px;
                 }
                 .focus-on{
-                    width: 208px;
-                    height: 36px;
-                    line-height: 36px;
+                    padding:0 20px;
+                    line-height:30px;
                     text-align: center;
                     background: #949494;
                     color: #fff;
-                    font-size: 18px;
+                    font-size: 14px;
                 }
             }
 
         }
-    }
-    .TabImageFoot{
-        margin-top: 200px;
     }
 }

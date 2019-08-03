@@ -2,24 +2,19 @@
   <div class="MerchantsConcernedImgTab">
     <!-- 关注商家产品列表 -->
     <div class="product-list">
-
       <ul class="product-list-con">
         <li
-          v-for='(item, k) in 3'
-          :key='`item_${k}`'
-          v-if='k === hoverIndx'
-          :class="{ blockStyle: k === hoverIndx}"
+          v-for='(item, k) in list.data'
+          :key='k'
         >
-          <div v-for="item in 3" :key="`item_${item}`">
             <p class="num price">￥3.5{{k}}</p>
-            <img src="@/assets/image/PersonalCenter/_u24718.png" alt class="prod-img">
-            <p class="num">CDHDFJHKS-234J</p>
-            <p>DIP 盒子 1/8</p>
+            <img :src="item.goodsImageUrl" alt class="prod-img">
+            <p class="num">{{item.goods_name}}</p>
+            <p>{{item.goodsDesc}}</p>
             <ButtonIcon :width="140" :height="36">
               <img src="@/assets/image/PersonalCenter/u6221.png" alt>
               立即采购
             </ButtonIcon>
-          </div>
         </li>
       </ul>
         <p class="product-list-tab">
@@ -38,11 +33,24 @@
 import "./MerchantsConcernedImgTab.less";
 export default {
   name: "MerchantsConcernedImgTab",
+    props:{
+      list:{
+          type:Object,
+          default:{}
+      },
+        total:{
+          type:Number,
+            default: 0
+        }
+    },
   data() {
     return {
       hoverIndx: 1
     };
   },
+    mounted(){
+      console.log(this.list)
+    },
   methods: {
     hover(k) {
       this.hoverIndx = k;
