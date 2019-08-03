@@ -26,6 +26,8 @@ const buyerOrderCenter = {
     //确认更改交期
     confirmChangeDiliverTime: {
         url: "/api-order/customerCenter/confirmChangeDiliverTime",
+
+        
         method: "post"
     },
     //查询收藏的商品和商家
