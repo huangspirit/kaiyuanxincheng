@@ -96,7 +96,12 @@ const shoppingCar = {
     saveBatchInquiry: {
         url: "/api-g/ic/saveBatchInquirySheet",
         method: 'post'
-    }
+    },
+    //询价栏搜索
+    searchSheetList: {
+        url: "api-g/ic/queryInquirySheetList"
+    },
+   
 
 }
 const siderInquiryList = {

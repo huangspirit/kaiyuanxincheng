@@ -13,7 +13,7 @@
         </li>
         <li class="search">
           <img src="@/assets/image/inquirybasket/u26.png" alt />
-          <el-input placeholder="搜索询价蓝" v-model="seachText"></el-input>
+          <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>
         </li>
       </div>
       <WaitInquiry v-if="tabShow == true" />
@@ -25,6 +25,7 @@
 <script>
 import WaitInquiry from "../WaitInquiry";
 import AleadyInquiry from "../AlreadyInquiry";
+import { axios, shoppingCar } from "@/api/apiObj";
 import "./Inquiry.less";
 export default {
   name: "Inquiry",
@@ -33,7 +34,8 @@ export default {
       isAllCheck: false,
       value: "1",
       seachText: "",
-      tabShow: true
+      tabShow: true,
+      waitMoney: ""
     };
   },
   components: {
@@ -42,7 +44,20 @@ export default {
   },
   methods: {
     change() {},
-    waitMoney() {}
+    searchSheetList() {
+      console.log("111");
+      var obj = {
+        start: 0,
+        length: 1,
+        type: true
+      };
+      axios
+        .request({ ...shoppingCar.searchSheetList, params: obj })
+        .then(res => {
+          console.log(res);
+          eventBus.$emit('waitMoney','789987')
+        });
+    }
   }
 };
 </script>
@@ -76,7 +91,7 @@ export default {
     padding-top: 60px;
     min-height: 100%;
     overflow: hidden;
-     box-sizing: border-box;
+    box-sizing: border-box;
     .inquiryTab {
       display: flex;
       padding: 0 42px;

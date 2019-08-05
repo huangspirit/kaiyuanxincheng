@@ -1,25 +1,5 @@
 <template>
   <div class="AlreadyInquiry">
-    <!-- 标题 -->
-    <div class="tit">
-      <span class="tit-l">
-        <img src="@/assets/image/inquirybasket/u11940.png" alt>
-        询价篮
-      </span>
-      <div class="inquiry">
-        <router-link to="/InquiryBasket/Inquiry" tag="span" class="inquiry-n">
-          <img src="@/assets/image/inquirybasket/u12008.png" alt>待询价
-        </router-link>
-        <span>|</span>
-        <router-link to="/InquiryBasket/AlreadyInquiry" tag="span" class="inquiry-y">
-          <img src="@/assets/image/inquirybasket/u12013.png" alt>已询价
-        </router-link>
-      </div>
-      <span class="more">
-        <img src="@/assets/image/inquirybasket/u11991.png" alt>
-        更多申请特价技巧
-      </span>
-    </div>
     <!-- 内容部分 -->
     <div class="already-con">
       <div class="already-con-tit">
@@ -38,7 +18,7 @@
             <li>近半年</li>
           </ul>
         </div>
-        <SearchInput :placeholder="'在结果中搜索'" :width='383'></SearchInput>
+        <SearchInput :placeholder="'在结果中搜索'" :width="383"></SearchInput>
       </div>
       <!-- 列表 -->
       <ul class="already-list">
@@ -50,13 +30,13 @@
           </p>
           <div class="application-price">
             <div class="application-price-l price-l">
-              <img src="@/assets/image/inquirybasket/_u11948.png" alt>
+              <img src="@/assets/image/inquirybasket/_u11948.png" alt />
               <div>
                 <router-link to="/BrandDetail/GoodsDetails" tag="p">
-                    <span class="name">CDHDFJHKS-234J</span>
+                  <span class="name">CDHDFJHKS-234J</span>
                 </router-link>
                 <router-link to="/BrandDetail" tag="p">
-                   <span>品牌：</span>罗彻斯特电子
+                  <span>品牌：</span>罗彻斯特电子
                 </router-link>
                 <p>
                   <span>型号描述：</span>
@@ -109,7 +89,7 @@
           </div>
           <div class="approved-price">
             <div class="approved-price-l price-l">
-              <img src="@/assets/image/inquirybasket/u345.png" alt>
+              <img src="@/assets/image/inquirybasket/u345.png" alt />
               <div>
                 <p>
                   <span class="name">Nicky Wu</span>
@@ -151,7 +131,6 @@
               </ul>
               <div class="ladder-price">
                 <LadderPrice>阶梯价格</LadderPrice>
-
               </div>
             </div>
             <div class="approved-price-r price-r">
@@ -178,13 +157,13 @@
           </p>
           <div class="application-price">
             <div class="application-price-l price-l">
-              <img src="@/assets/image/inquirybasket/_u11948.png" alt>
+              <img src="@/assets/image/inquirybasket/_u11948.png" alt />
               <div>
                 <router-link to="/BrandDetail/GoodsDetails" tag="p">
-                    <span class="name">CDHDFJHKS-234J</span>
+                  <span class="name">CDHDFJHKS-234J</span>
                 </router-link>
                 <router-link to="/BrandDetail" tag="p">
-                   <span>品牌：</span>罗彻斯特电子
+                  <span>品牌：</span>罗彻斯特电子
                 </router-link>
                 <p>
                   <span>型号描述：</span>
@@ -237,7 +216,7 @@
           </div>
           <div class="approved-price">
             <div class="approved-price-l price-l">
-              <img src="@/assets/image/inquirybasket/u345.png" alt>
+              <img src="@/assets/image/inquirybasket/u345.png" alt />
               <div>
                 <p>
                   <span class="name">Nicky Wu</span>
@@ -279,7 +258,6 @@
               </ul>
               <div class="ladder-price">
                 <LadderPrice>阶梯价格</LadderPrice>
-
               </div>
             </div>
             <div class="approved-price-r price-r">
@@ -306,13 +284,13 @@
           </p>
           <div class="application-price">
             <div class="application-price-l price-l">
-              <img src="@/assets/image/inquirybasket/_u11948.png" alt>
+              <img src="@/assets/image/inquirybasket/_u11948.png" alt />
               <div>
                 <router-link to="/BrandDetail/GoodsDetails" tag="p">
-                    <span class="name">CDHDFJHKS-234J</span>
+                  <span class="name">CDHDFJHKS-234J</span>
                 </router-link>
                 <router-link to="/BrandDetail" tag="p">
-                   <span>品牌：</span>罗彻斯特电子
+                  <span>品牌：</span>罗彻斯特电子
                 </router-link>
                 <p>
                   <span>型号描述：</span>
@@ -365,7 +343,7 @@
           </div>
           <div class="approved-price">
             <div class="approved-price-l price-l">
-              <img src="@/assets/image/inquirybasket/u345.png" alt>
+              <img src="@/assets/image/inquirybasket/u345.png" alt />
               <div>
                 <p>
                   <span class="name">Nicky Wu</span>
@@ -407,7 +385,6 @@
               </ul>
               <div class="ladder-price">
                 <LadderPrice>阶梯价格</LadderPrice>
-
               </div>
             </div>
             <div class="approved-price-r price-r">
@@ -433,8 +410,8 @@
 
 <script>
 export default {
-  name: 'AlreadyInquiry'
-}
+  name: "AlreadyInquiry"
+};
 </script>
 
 <style lang="less" scoped src="./AlreadyInquiry.less">

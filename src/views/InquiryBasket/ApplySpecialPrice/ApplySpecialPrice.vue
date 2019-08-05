@@ -81,7 +81,7 @@
           </el-form-item>
           <el-form-item v-if="topShow" class="acceptPrice" label="接受价格" prop="price">
             <el-input placeholder="请输入价格" v-model="formAlign.price" class="input-with-select">
-              <span slot="prepend" v-if="formAlign.priceType==1">￥</span>
+              <span slot="prepend" v-if="formAlign.priceType=='false'">￥</span>
               <span slot="prepend" v-else>$</span>
               <el-select
                 v-model="formAlign.priceType"
@@ -89,8 +89,8 @@
                 placeholder="请选择"
                 @change="selectChange"
               >
-                <el-option :label="'人民币'" :value="1"></el-option>
-                <el-option :label="'美元'" :value="2"></el-option>
+                <el-option :label="'人民币'" :value="false"></el-option>
+                <el-option :label="'美元'" :value="true"></el-option>
               </el-select>
             </el-input>
           </el-form-item>
@@ -168,7 +168,7 @@
                         v-model="listItem.price"
                         class="input-with-select"
                       >
-                        <span slot="prepend" v-if="listItem.priceType==1">￥</span>
+                        <span slot="prepend" v-if="listItem.priceType=='false'">￥</span>
                         <span slot="prepend" v-else>$</span>
                         <el-select
                           v-model="listItem.priceType"
@@ -287,7 +287,7 @@ export default {
     if (this.proInformation.length) {
       this.topShow = false;
       for (var i = 0; i < this.proInformation.length; i++) {
-        this.proInformation[i]["priceType"] = 1;
+        this.proInformation[i]["priceType"] = 'false';
         this.proInformation[i]["price"] = "";
         this.proInformation[i]["amountPurchased"] = "";
         this.proInformation[i]["insteadNo"] = "";
@@ -325,7 +325,7 @@ export default {
               goodsName: this.proInformation.productno,
               requestId: this.proInformation.id,
               bucketId: this.proInformation.bucketId,
-              acceptPriceUnit: this.formAlign.priceType
+              acceptUnit: this.formAlign.priceType
             };
             axios
               .request({ ...shoppingCar.saveInquiry, params: obj })
@@ -352,7 +352,8 @@ export default {
                 insteadNo: element.insteadNo,
                 goodsName: element.productno,
                 brandId: element.brandId,
-                bucketId: element.bucketId
+                bucketId: element.bucketId,
+                acceptUnit: element.priceType,
               });
             });
             var orderData = JSON.stringify(infoData);
@@ -367,7 +368,7 @@ export default {
               telphone: this.formAlign.telephone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
-              acceptPriceUnit: this.formAlign.priceType,
+              
               order: orderData
             };
             axios

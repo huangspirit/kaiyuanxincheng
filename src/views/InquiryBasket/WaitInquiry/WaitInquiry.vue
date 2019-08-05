@@ -127,6 +127,7 @@ import { ladderPrice } from "@/lib/utils";
 import { debuglog } from "util";
 import { constants } from "crypto";
 export default {
+  props:['waitMoney'],
   data() {
     return {
       waitInquiryList: [],
@@ -141,6 +142,9 @@ export default {
   inject: ["reload"],
   mounted() {
     this.getInquiry();
+    eventBus.$on('waitMoney',val=>{
+      console.log(val)
+    })
   },
   beforeDestroy() {
     eventBus.$off("proInformation");
@@ -430,6 +434,9 @@ export default {
             border: none;
             height: 25px;
             margin-left: 12px;
+            >img{
+              height:100%;
+            }
           }
         }
       }
