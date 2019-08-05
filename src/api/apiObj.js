@@ -55,6 +55,13 @@ const sellerOrderCenter = {
     },
     queryBillListBySeller: {
         url: "/api-order/sellerCenter/queryBillListBySeller"
+    },
+
+}
+const sellerCenter={
+    //卖家账单中心查询
+    queryAccountDetail:{
+        url:"/api-order/sellerCenter/queryAccountDetail"
     }
 }
 const message = {
@@ -101,7 +108,7 @@ const shoppingCar = {
     searchSheetList: {
         url: "api-g/ic/queryInquirySheetList"
     },
-   
+
 
 }
 const siderInquiryList = {
@@ -114,6 +121,7 @@ export {
     common,
     home,
     buyerOrderCenter,
+    sellerCenter,
     sellerOrderCenter,
     message,
     shoppingCar,

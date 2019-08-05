@@ -196,8 +196,34 @@
 </style>
 
 <script>
+import {axios,sellerCenter} from "../../../api/apiObj";
 
 export default {
-  name: "SellerBillCenter"
+  name: "SellerBillCenter",
+    data(){
+      return{
+          pageSize:10,
+          currentPage:1,
+      }
+    },
+    mounted(){
+      this.init()
+    },
+    methods:{
+      init(){
+          let obj={
+              start:this.start,
+              length:this.pageSize
+          };
+          axios.request({...sellerCenter.queryAccountDetail,params:obj}).then(res=>{
+              console.log(res)
+          })
+      }
+    },
+    computed:{
+      start(){
+          return this.pageSize*(this.currentPage-1)
+      }
+    }
 };
 </script>

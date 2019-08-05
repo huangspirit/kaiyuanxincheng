@@ -1,94 +1,60 @@
 // 卖家中心
 .BuyerCenter {
-    width: 1183px;
-    overflow: hidden;
-    background: #fff;
     padding: 20px;
     //个人信息
     .personal-information {
         width: 100%;
-        height: 168px;
-        float: left;
-
+        display: flex;
+        border-bottom: 2px solid #4a5a6a;
         .personal-information-l {
-            width: 260px;
-            height: 128px;
             padding: 20px;
-            border-radius: 4px;
-            border: 3px solid #4a5a6a;
+            border: 2px solid #4a5a6a;
+            border-bottom:none;
             color: #4a5a6a;
-            float: left;
-            display: flex;
-            justify-content: space-between;
-
             &>.img {
-                width: 100px;
-                height: 128px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-
-                &>span {
-                    width: 96px;
-                    height: 25px;
+                margin-right:10px;
+                text-align: center;
+                img{
+                    width:60px;
+                    height:60px;
+                    border-radius: 60px;
+                }
+               span {
+                   padding:0 15px;
                     line-height: 25px;
-                    text-align: center;
                     font-size: 12px;
                     color: #fff;
                     background: #4a5a6a;
+                   margin-top:15px;
+                   text-align: center;
+                   cursor: pointer;
                 }
             }
 
             &>.text {
-                width: 140px;
-                height: 128px;
-
-                &>span {
-
-                    font-size: 18px;
-                    color: #4a5a6a;
-                    float: left;
-                }
-
                 .name {
-                    font-size: 28px;
+                    font-size: 22px;
                     font-weight: bold;
+                    margin-bottom:10px;
                 }
-
-                .rz {
-                    width: 100px;
-                    text-align: center;
-                    width: 75px;
-                    height: 16px;
-                    line-height: 16px;
-                    text-align: center;
-                    font-size: 12px;
-                    background: rgb(97, 94, 94);
-                    margin-bottom: 10px;
-                    color: #fff;
-                    border-radius: 4px;
-                }
-
-                .yrx {
-                    width: 100px;
-                    color: #fff;
-                    text-align: center;
-                    background: #3da8f5;
+                .tag{
+                    span{
+                        background: #ff4400;
+                        color:#fff;
+                        padding:0px 8px;
+                        font-size:12px;
+                        border-radius: 3px;
+                        margin-bottom:10px;
+                    }
                 }
             }
         }
 
         .personal-information-r {
-            width: 862px;
-            height: 168px;
-            float: left;
             padding-left: 15px;
-            border-bottom: 3px solid #4a5a6a;
             display: flex;
             justify-content: space-between;
             flex-direction: column;
-
             &>.tit {
                 width: 100%;
                 font-size: 28px;
@@ -96,121 +62,55 @@
                 color: #4a5a6a;
             }
 
-            .certifica-lines {
-                width: 100%;
-                height: 40px;
-                align-items: center;
-                display: flex;
-                justify-content: space-between;
-
-                img {
-                    width: 25px;
-                    height: 25px;
-                    margin-right: 5px;
-                    vertical-align: middle;
-                }
-
-                span {
-                    font-size: 20px;
-                    color: #4a5a6a;
-                    cursor: pointer;
-                }
-                // 未认证
-                .unauthorized {
-                    width: 250px;
-                    height: 40px;
-                    align-items: center;
-                    display: flex;
-                    justify-content: space-between;
-
-                    .no-rz {
-                        color: #AEAEAE;
-                    }
-
-                    .go-rz {
-                        color: #3da8f5;
-                        font-size: 18px;
-                    }
-
-                }
-                // 已认证
+            // 已认证
                 .certified{
-                    width: 250px;
-                    height: 40px;
-                    align-items: center;
-                    display: flex;
-                    justify-content: space-between;
                     .num{
                         color: #cc0000;
+                        margin-right:10px;
                     }
                     .top-up{
                         color: #3da8f5
                     }
                     img{
                         vertical-align: middle;
+                        width:25px;
+                        margin-right: 5px;
                     }
                 }
-                .lines {
-                    width: 350px;
-                    height: 40px;
-                    align-items: center;
-                    display: flex;
-                    justify-content: space-between;
-
-                    .num {
-                        color: #cc0000;
-                        font-weight: bold;
-                    }
-
-                    .about {
-                        color: #3da8f5;
-                    }
-                }
-            }
         }
     }
 
     // 商品状态
     .goods-state {
-        width: 1182px;
-        overflow: hidden;
         display: flex;
-        justify-content: space-between;
         padding-top: 70px;
-        padding-bottom: 40px;
         flex-wrap: wrap;
-        float: left;
-
         li {
-            width: 275px;
-            height: 340px;
+            width: 280px;
             background: #f2f2f2;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
             font-size: 20px;
             color: #4a5a6a;
             font-weight: bold;
             cursor: pointer;
             margin-right: 20px;
             margin-bottom: 30px;
-
+            text-align: center;
+            padding:20px 0;
             &:hover {
                 box-shadow: 2px 2px 2px 2px rgba(148, 143, 143, 0.5)
             }
 
             &>.img {
-                width: 180px;
-                height: 180px;
-                border-radius: 90px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
-                border: 3px solid #686868;
+                width: 90px;
+                line-height:90px;
+                margin:10px auto;
+                border-radius: 100%;
+                border: 2px solid #686868;
+                img{
+                    width:50%;
+                    vertical-align:middle;
+                }
             }
-
             .num {
                 color: #cc0000;
                 font-size: 24px;
@@ -221,24 +121,14 @@
     //   品牌入驻
     .brands {
         width: 100%;
-        height: 105px;
-        padding: 20px 0;
-        float: left;
-        span {
-            width: 653px;
-            height: 105px;
-            line-height: 105px;
-            background: #f2f2f2;
-            font-size: 28px;
-            text-align: center;
-            line-height: 105px;
-            float: right;
-            cursor: pointer;
-            &:hover {
-                box-shadow: 2px 2px 2px 2px rgba(148, 143, 143, 0.5)
-            }
+        background: #f2f2f2;
+        text-align: center;
+        font-size: 28px;
+        line-height: 105px;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 2px 2px 2px 2px rgba(148, 143, 143, 0.5)
         }
 
-       
     }
 }

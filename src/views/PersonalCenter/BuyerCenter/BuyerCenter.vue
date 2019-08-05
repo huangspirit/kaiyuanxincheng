@@ -3,16 +3,18 @@
     <div class="BuyerCenter">
       <!-- 个人信息 -->
       <div class="personal-information">
-        <div class="personal-information-l">
+        <div class="personal-information-l clear">
           <!-- 名字信息 -->
-          <div class="img">
+          <div class="img fl">
             <img src="@/assets/image/PersonalCenter/u23123.png" alt>
-            <span>编辑资料</span>
+              <p><span>编辑资料</span></p>
           </div>
-          <div class="text">
-            <span class="name">爱就这么玩</span>
-            <span class="yrx">认证商家</span>
-            <span>111111111</span>
+          <div class="text fl">
+            <p class="name">爱就这么玩</p>
+            <p class="tag">
+                <span>认证商家</span>
+            </p>
+            <p class="tel">1771****9639</p>
           </div>
         </div>
         <div class="personal-information-r">
@@ -50,9 +52,8 @@
       </div>
       <!-- 商品状态 -->
       <ul class="goods-state">
-        <router-link tag="li" to="">
-
-        </router-link>
+<!--        <router-link tag="li" to="">-->
+<!--        </router-link>-->
         <li>
           <div class="img">
             <img src="@/assets/image/PersonalCenter/u37206.png" alt>
@@ -62,11 +63,25 @@
         </li>
         <li>
           <div class="img">
-            <img src="@/assets/image/PersonalCenter/u37838.png" alt>
+              <img src="@/assets/image/PersonalCenter/u25552.png" alt>
           </div>
           <p>我的购物车</p>
           <p class="num">11</p>
         </li>
+          <li>
+              <div class="img">
+                  <img src="@/assets/image/PersonalCenter/u37882.png" alt>
+              </div>
+              <p>我关注的商家</p>
+              <p class="num">11</p>
+          </li>
+          <li>
+              <div class="img">
+                  <img src="@/assets/image/PersonalCenter/u37900.png" alt>
+              </div>
+              <p>我的收货地址</p>
+              <p class="num">11</p>
+          </li>
         <li>
           <div class="img">
             <img src="@/assets/image/PersonalCenter/u37824.png" alt>
@@ -76,9 +91,7 @@
         </li>
         <li>
           <div class="img">
-            <el-badge :value="12" class="item">
               <img src="@/assets/image/PersonalCenter/u37838.png" alt>
-            </el-badge>
           </div>
           <p>我的消息</p>
           <p class="num">11</p>
@@ -99,7 +112,6 @@
     </div>
   </div>
 </template>
-
 <script>
 
 export default {
