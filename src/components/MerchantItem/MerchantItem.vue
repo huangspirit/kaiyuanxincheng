@@ -6,7 +6,6 @@
 
         <div>
           <p>{{item.sellerName}}</p>
-
           <span v-if="item.tag === 1" class="tag y-con">原厂商户</span>
           <span v-if="item.tag === 2" class="tag y-con">代理商</span>
           <span v-if="item.tag === 3" class="tag r-con">商城买家</span>
@@ -192,7 +191,7 @@ export default {
     }
   },
   mounted() {
-    
+
     this.priceLevelList = this.item.priceLevelList;
     if (this.item.priceType) {
       this.purchaseObj = {

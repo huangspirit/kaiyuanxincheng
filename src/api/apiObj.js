@@ -31,8 +31,11 @@ const buyerOrderCenter = {
     //查询收藏的商品和商家
     queryGoodsFavouriteList: {
         url: "/api-g/gf/queryGoodsFavouriteList"
+    },
+    //查询收藏商家的商品
+    queryPublishGoodsListByUser:{
+        url:"/api-g/goods-b/queryPublishGoodsListByUser"
     }
-
 }
 const sellerOrderCenter = {
     diliverGoods: {
@@ -75,6 +78,7 @@ const shoppingCar = {
     inquiryList: {
         url: "/api-g/sc/queryShoppingCarList"
     },
+    //删除购物车商品
     deleteSigletonShoppingCar: {
         url: "/api-g/sc/deleteSigletonShoppingCar"
     },
@@ -86,10 +90,6 @@ const shoppingCar = {
     insertGoodsFavourite:{url:"/api-g/gf/insertGoodsFavourite"},
     //取消关注商家和产品，删除收藏
     deleteGoodsFavourite:{url:"/api-g/gf/deleteGoodsFavourite"},
-
-    insertGoodsFavourite: {
-        url: "/api-g/gf/insertGoodsFavourite"
-    },
     saveInquiry: {
         url: "/api-g/ic/saveInquirySheet"
     },

@@ -30,12 +30,12 @@
                     <img src="@/assets/image/PersonalCenter/_u4512.png" alt @click="canclePub(index)">
                 </div>
                 <div class="buttonIcon">
-                    <div class="specialPrice">
+                    <div class="specialPrice" @click="specialPrice">
                         <img src="@/assets/image/PersonalCenter/u4504.png" alt> 我有特价
                     </div>
                     <div class="purchase" v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">
-                        <img src="@/assets/image/PersonalCenter/u6221.png" alt>
-                        去采购
+                        <router-link to="/BrandDetail/GoodsDetails" tag="p"> <img src="@/assets/image/PersonalCenter/u6221.png" alt>
+                            去采购</router-link>
                     </div>
                         <!--                    <ButtonIcon :width="175" :height="51">-->
 <!--                        <img src="@/assets/image/PersonalCenter/u4504.png" alt>-->
@@ -120,8 +120,12 @@ export default {
       this.init()
     },
   methods: {
+      specialPrice(){
+          this.$message.success("开发中。。。")
+      },
     tabChange(k) {
       this.catergoryId = this.tabList[k].catergoryId;
+      this.currentPage=1;
       this.init();
     },
       handleCurrentChange(x){
@@ -138,13 +142,13 @@ export default {
             obj.catergory_id=this.catergoryId;
         }
         axios.request({...buyerOrderCenter.queryGoodsFavouriteList,params:obj}).then(res=>{
+            console.log(res)
             let count=0
             let arr=res.data.title.map(item=>{
                 count+=item.summaryTotal;
                 return item;
             })
             arr.unshift({...this.tabList[0],summaryTotal:count})
-
             this.tabList=arr;
             this.goodsList=res.data.list.data;
             this.total=res.data.list.total
@@ -163,6 +167,7 @@ export default {
       },
       canclePub(index){
         axios.request({...shoppingCar.deleteGoodsFavourite,params:{id:this.goodsList[index].id}}).then(res=>{
+            this.currentPage=1;
             this.init()
         })
       }

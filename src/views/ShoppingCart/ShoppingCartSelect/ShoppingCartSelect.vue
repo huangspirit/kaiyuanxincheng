@@ -133,7 +133,7 @@
                             </li>
                         </template>
                         <li style="width:15%" class="count">
-                            <el-input-number  v-model="item1.count" size="mini" @change="handleChange($event,k,index)" :min="item1.moq" :step="item1.mpq" step-strictly></el-input-number>
+                            <el-input-number  v-model="item1.count" size="mini" @blur="handleBlur($event,k,index)" @change="handleChange($event,k,index)" :max="item1.goodsStockCount" :min="item1.moq" :step="item1.mpq" step-strictly></el-input-number>
                             <p>Moq:{{item1.moq}}</p>
                             <p>Mpq:{{item1.mpq}}</p>
                         </li>
@@ -361,6 +361,10 @@ export default {
               this.$message.success("成功移除")
               this.init()
           })
+      },
+      handleBlur(event,k,index){
+          let e=event.target.value;
+          this.handleChange(e,k,index)
       },
       handleChange(e,k,index){
           let obj=this.goodsList[k].list[index]
