@@ -35,6 +35,7 @@ export default [
                 path: 'Inquiry',
                 name: 'Inquiry',
                 component: () => import('@/views/InquiryBasket/Inquiry')
+                
             },
             // // 已询价
             // {
