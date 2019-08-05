@@ -176,8 +176,8 @@
                           placeholder="请选择"
                           @change="listChange(index)"
                         >
-                          <el-option :label="'人民币'" :value="1"></el-option>
-                          <el-option :label="'美元'" :value="2"></el-option>
+                          <el-option :label="'人民币'" value="false"></el-option>
+                          <el-option :label="'美元'" value="true"></el-option>
                         </el-select>
                       </el-input>
                     </el-form-item>
@@ -231,7 +231,7 @@ export default {
         user: "",
         telephone: "",
         price: "",
-        priceType: 1,
+        priceType: "false",
         remark: "",
         projectBeginTime: "",
         amountPurchased: "",
@@ -324,7 +324,8 @@ export default {
               brandId: this.proInformation.brandId,
               goodsName: this.proInformation.productno,
               requestId: this.proInformation.id,
-              bucketId: this.proInformation.bucketId
+              bucketId: this.proInformation.bucketId,
+              acceptPriceUnit: this.formAlign.priceType
             };
             axios
               .request({ ...shoppingCar.saveInquiry, params: obj })
@@ -366,6 +367,7 @@ export default {
               telphone: this.formAlign.telephone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
+              acceptPriceUnit: this.formAlign.priceType,
               order: orderData
             };
             axios
