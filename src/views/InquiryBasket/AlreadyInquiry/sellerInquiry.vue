@@ -3,7 +3,7 @@
     <!-- <p class="topStep">
       卖家中心 > 询价单列表 >
       <span>{{title}}</span>
-    </p> -->
+    </p>-->
     <div class="inquiryContent">
       <div class="topTab">
         <ul>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import './sellerInquiry.less'
+import "./sellerInquiry.less";
 export default {
   data() {
     return {
@@ -45,7 +45,7 @@ export default {
         },
         {
           id: "2",
-          name: "用户提醒",
+          name: "未批复",
           path: "/userNotice"
         },
         {
@@ -59,26 +59,28 @@ export default {
           path: "/alreadyOverdue"
         }
       ],
-      reppyValue:"",
-      reppyData:[
-          {
-          value: '7',
-          label: '近一周'
-        }, {
-          value: '30',
-          label: '近一月'
-        }, {
-          value: '90',
-          label: '近三月'
-        }, {
-          value: '180',
-          label: '近半年'
+      reppyValue: "",
+      reppyData: [
+        {
+          value: "7",
+          label: "近一周"
         },
+        {
+          value: "30",
+          label: "近一月"
+        },
+        {
+          value: "90",
+          label: "近三月"
+        },
+        {
+          value: "180",
+          label: "近半年"
+        }
       ]
     };
   },
   mounted() {
-    console.log(this.$route);
     var routeAlign = this.$route;
     if (routeAlign.name == "allApply") {
       this.title = "全部待批复";

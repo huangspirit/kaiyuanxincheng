@@ -287,7 +287,7 @@ export default {
     if (this.proInformation.length) {
       this.topShow = false;
       for (var i = 0; i < this.proInformation.length; i++) {
-        this.proInformation[i]["priceType"] = 'false';
+        this.proInformation[i]["priceType"] = "false";
         this.proInformation[i]["price"] = "";
         this.proInformation[i]["amountPurchased"] = "";
         this.proInformation[i]["insteadNo"] = "";
@@ -344,7 +344,6 @@ export default {
             console.log(this.proInformation);
             var infoData = [];
             this.proInformation.forEach(element => {
-              console.log(element);
               infoData.push({
                 requestId: element.id,
                 acceptPrice: element.price,
@@ -353,7 +352,7 @@ export default {
                 goodsName: element.productno,
                 brandId: element.brandId,
                 bucketId: element.bucketId,
-                acceptUnit: element.priceType,
+                acceptUnit: element.priceType
               });
             });
             var orderData = JSON.stringify(infoData);
@@ -368,13 +367,12 @@ export default {
               telphone: this.formAlign.telephone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
-              
+
               order: orderData
             };
             axios
               .request({ ...shoppingCar.saveBatchInquiry, data: obj })
               .then(res => {
-                console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
                   this.$router.push("/InquiryBasket/Inquiry");

@@ -108,7 +108,8 @@ export default {
       var obj = {
         start: this.start,
         length: 2,
-        type: false
+        reply_status: false,
+        type: true
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         console.log(res);

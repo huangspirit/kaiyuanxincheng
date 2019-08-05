@@ -8,23 +8,22 @@
     <div class="waitContent">
       <div class="inquiryTab">
         <li>
-          <span @click="tabShow = true;" :class="tabShow? 'active':'' ">待询价</span>
-          <span @click="tabShow = false;" :class="!tabShow? 'active':''">已询价</span>
+          <span @click="waitInquiry" :class="tabShow? 'active':'' ">待询价</span>
+          <span @click="alreadyInquiry" :class="!tabShow? 'active':''">已询价</span>
         </li>
         <li class="search">
           <img src="@/assets/image/inquirybasket/u26.png" alt />
           <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>
         </li>
       </div>
-      <WaitInquiry v-if="tabShow == true" />
-      <AleadyInquiry v-if="tabShow == false" />
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import WaitInquiry from "../WaitInquiry";
-import AleadyInquiry from "../AlreadyInquiry";
+import AleadyInquiry from "../ApplySpecialPrice";
 import { axios, shoppingCar } from "@/api/apiObj";
 import "./Inquiry.less";
 export default {
@@ -42,8 +41,35 @@ export default {
     WaitInquiry,
     AleadyInquiry
   },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      waitInquiry;
+      if (to.name == "waitInquiry") {
+        this.tabShow = true;
+      } else {
+        this.tabShow = false;
+      }
+    }
+  },
+  mounted() {
+    var routeAlign = this.$route;
+    if (routeAlign.name == "waitInquiry") {
+        this.tabShow = true;
+      } else {
+        this.tabShow = false;
+      }
+  },
   methods: {
     change() {},
+    waitInquiry() {
+      this.tabShow = true;
+      this.$router.push("/InquiryBasket/Inquiry/waitInquiry");
+    },
+    alreadyInquiry() {
+      this.tabShow = false;
+      this.$router.push("/InquiryBasket/Inquiry/AlreadyInquiry");
+    },
     searchSheetList() {
       console.log("111");
       var obj = {
@@ -55,7 +81,7 @@ export default {
         .request({ ...shoppingCar.searchSheetList, params: obj })
         .then(res => {
           console.log(res);
-          eventBus.$emit('waitMoney','789987')
+          eventBus.$emit("waitMoney", "789987");
         });
     }
   }
@@ -75,6 +101,7 @@ export default {
     padding: 54px 0 28px 0;
     display: flex;
     background: #f4f4f4;
+    box-sizing: border-box;
     justify-content: space-between;
     span {
       font-size: 28px;
