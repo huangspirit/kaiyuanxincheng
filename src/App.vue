@@ -243,28 +243,5 @@ background:#f4f4f4;
     color: #3da8f5;
     font-weight:bold;
   }
-  .wrapper {
-    // width: 1350px;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-  .tit-h {
-    width: 100%;
-    height: 70px;
-    line-height: 70px;
-    background: #4a5a6a;
-    font-size: 28px;
-    color: #fff;
-
-    .wrapper {
-      & > img {
-        width: 35px;
-        height: 35px;
-        margin-right: 20px;
-        position: relative;
-        top: 7px;
-      }
-    }
-  }
 }
 </style>

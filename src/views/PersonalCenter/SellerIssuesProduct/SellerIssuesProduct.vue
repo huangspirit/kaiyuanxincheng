@@ -77,114 +77,7 @@
                     </el-radio-group>
                     <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单两天内发货</p>
                     <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
-                    <!-- <span class="small-sp">是否系统提供发票,不提供发票增加2%手续费</span>
-                     <span class="small-sp">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</span> -->
                 </el-form-item>
-                <!-- <div class="form-item">
-                  <label for>交货地：</label>
-                  <div>
-                    <select name id v-model="ruleForm.diliver_place">
-                      <option :value="item.name" v-for="item in diliverPlace" :key="item.name">{{item.name}}</option>
-                    </select>
-                  </div>
-                </div> -->
-                <!-- <div class="form-item">
-                  <label for>商品价格是否含税:</label>
-                  <div>
-                    <span class="label-sp-2" v-if="clude_billFlag">
-                      <label class="label">
-                        <input type="radio" :value="true" v-model="ruleForm.clude_bill" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.clude_bill"
-                          />
-                        </span>
-                      </label>
-                      <span>含税价</span>
-                    </span>
-                    <span class="label-sp-2">
-                      <label class="label">
-                        <input type="radio" :value="false" v-model="ruleForm.clude_bill" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.clude_bill === false"
-                          />
-                        </span>
-                      </label>
-                      <span>不含税价</span>
-                    </span>
-                  </div>
-                </div> -->
-                <!-- <div class="form-item">
-                  <label for>是否开票:</label>
-                  <div>
-                    <span class="label-sp-2">
-                      <label class="label">
-                        <input type="radio" :value="true" v-model="ruleForm.support_bill" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.support_bill"
-                          />
-                        </span>
-                      </label>
-                      <span>自己开</span>
-                    </span>
-                    <span class="label-sp-2" v-if="support_billFlag">
-                      <label class="label">
-                        <input type="radio" :value="false" v-model="ruleForm.support_bill" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.support_bill === false"
-                          />
-                        </span>
-                      </label>
-                      <span>系统开</span>
-                      <span class="small-sp">是否系统提供发票,不提供发票增加2%手续费</span>
-                    </span>
-                  </div>
-                </div> -->
-                <!-- <div class="form-item">
-                  <label for>货物类型:</label>
-                  <div>
-                    <span class="label-sp-2">
-                      <label class="label">
-                        <input type="radio" :value="true" v-model="ruleForm.goods_type" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.goods_type"
-                          />
-                        </span>
-                      </label>
-                      <span>现货</span>
-                      <span class="small-sp">现货商品需在买家下单两天内发货</span>
-                    </span>
-                    <span class="label-sp-2">
-                      <label class="label">
-                        <input type="radio" :value="false" v-model="ruleForm.goods_type" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.goods_type === false"
-                          />
-                        </span>
-                      </label>
-                      <span>期货</span>
-                      <span class="small-sp">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</span>
-                    </span>
-                  </div>
-                </div> -->
-
                 <el-form-item label="出价方式:">
                     <el-radio-group v-model="ruleForm.price_type" class="defaultradioSquare">
                         <el-radio :label="true" :value="true" v-if="ruleForm.goods_type">阶梯价</el-radio>
@@ -207,18 +100,6 @@
                                     <!--                        <template slot="append">K</template>-->
                                 </el-input>
                             </div>
-
-                            <!-- <el-form-item label="数量：">
-                              <el-input v-model="item.num">
-                                <template slot="append">K</template>
-                              </el-input>
-                            </el-form-item>
-                            <el-form-item label="价格：">
-                              <el-input v-model="item.price">
-                                <template slot="prepend">￥</template>
-                              </el-input>
-                            </el-form-item> -->
-
                         </div>
                         <div class="add-stepped-price">
                             <p v-if="SteppedPriceListlength === 3" style="color:#ff6600" >最多添加三个阶梯价格</p>
@@ -228,39 +109,6 @@
                         </div>
                     </div>
                 </el-form-item>
-                <!-- <div class="form-item">
-                  <label for>出价方式：</label>
-                  <div>
-                    <span class="label-sp-2" v-if="ruleForm.goods_type">
-                      <label class="label">
-                        <input type="radio" :value="true" v-model="ruleForm.price_type" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.price_type"
-                          />
-                        </span>
-                      </label>
-                      <span>阶梯价</span>
-                      <span class="small-sp">只适合现货</span>
-                    </span>
-                    <span class="label-sp-2">
-                      <label class="label">
-                        <input type="radio" :value="false" v-model="ruleForm.price_type" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.price_type === false"
-                          />
-                        </span>
-                      </label>
-                      <span>一口价</span>
-                    </span>
-                  </div>
-                </div> -->
-
                 <el-form-item label="价格：" prop="seckil_price" v-if="ruleForm.price_type === false">
                     <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" min="0"></el-input>
                 </el-form-item>
@@ -298,37 +146,6 @@
                         <el-radio :label="false" :value="false">限时卖</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <!-- <div class="form-item">
-                  <label for>售卖时长：</label>
-                  <div>
-                    <span class="label-sp">
-                      <label class="label">
-                        <input type="radio" :value="false" v-model="ruleForm.seller_always" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.seller_always === false"
-                          />
-                        </span>
-                      </label>
-                      <span>限时卖</span>
-                    </span>
-                    <span class="label-sp">
-                      <label class="label">
-                        <input type="radio" :value="true" v-model="ruleForm.seller_always" />
-                        <span>
-                          <img
-                            src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                            alt
-                            v-if="ruleForm.seller_always"
-                          />
-                        </span>
-                      </label>
-                      <span>长期卖</span>
-                    </span>
-                  </div>
-                </div> -->
                 <el-form-item label="多长时间后交货：" prop="day_interval" v-if="ruleForm.seller_always">
                     <el-input v-model="ruleForm.day_interval">
                         <template slot="append">天</template>
@@ -636,7 +453,6 @@
             // 发货地发生变化
             "ruleForm.diliver_place": {
                 handler() {
-                    console.log("// 发货地发生变化")
                     if (this.ruleForm.diliver_place === "香港") {
                         this.exchange=this.SellerCredit.exchange
                         this.ruleForm.clude_bill = false;
@@ -734,12 +550,6 @@
                 }
                 this.ruleForm.seckil_price=obj;
                 this.selectedPrice=Number(this.ruleForm.seckil_price)
-                // this.exchange=this.ruleForm.diliver_place=="香港"?this.SellerCredit.change:1;
-                //  if( this.exchange*Number(this.ruleForm.seckil_price)*count>this.SellerCredit.restcredit){
-                //      this.needCredit= this.exchange*Number(this.ruleForm.seckil_price)*count
-                //  }else{
-                //      this.needCredit=0;
-                //  }
             },
             //监控阶梯价
             changePrice(k){
@@ -772,26 +582,6 @@
                 let obj =this.ruleForm.stock_count+"";
                 obj = obj.replace(/\D/g,'');
                 this.ruleForm.stock_count=obj;
-                // let count=Number(this.ruleForm.stock_count);
-                // this.exchange=this.ruleForm.diliver_place=="香港"?this.SellerCredit.change:1;
-                // //阶梯价
-                // if(this.ruleForm.price_type){
-                //     if(this.SteppedPriceListobj.price0){
-                //         if( this.exchange*this.SteppedPriceListobj.price0*count>this.SellerCredit.restcredit){
-                //             this.needCredit= this.exchange*this.SteppedPriceListobj.price0*count
-                //         }else{
-                //             this.needCredit=0;
-                //         }
-                //
-                //     }
-                // }else{
-                //     //一口价
-                //     if( this.exchange*Number(this.ruleForm.seckil_price)*count>this.SellerCredit.restcredit){
-                //         this.needCredit= this.exchange*Number(this.ruleForm.seckil_price)*count
-                //     }else{
-                //         this.needCredit=0;
-                //     }
-                // }
             },
             //监控阶梯价的变化
             priceblur(event){
@@ -869,7 +659,7 @@
                         if (this.priceunit == "$美元") {
                             this.ruleForm.priceunit = true;
                         } else {
-                            this.priceunit = false;
+                            this.ruleForm.priceunit = false;
                         }
                         this.ruleForm.access_token = this.access_token;
                         if(this.UserInforma.userTagMap.tag==1){

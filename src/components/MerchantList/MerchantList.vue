@@ -1,38 +1,95 @@
 <template>
   <!-- 商家列表 -->
   <div class="MerchantList" ref="searchBar" v-if="total">
-    <table v-show="flag">
+    <table v-show="closeTable" border="1">
       <thead>
-        <th style="width:260px">商家</th>
-        <th style="width:120px">MOQ</th>
-        <th style="width:120px">MPQ</th>
-        <th style="width:120px">库存</th>
-        <th style="width:190px">状态</th>
-        <th style="width:190px">预计交期</th>
-        <th style="width:330px">价格</th>
-        <th style="width:190px">操作</th>
+        <th>商家</th>
+        <th>MOQ</th>
+        <th>MPQ</th>
+        <th>库存</th>
+        <th>状态</th>
+        <th>预计交期</th>
+        <th>价格</th>
+        <th>操作</th>
       </thead>
       <tbody>
-        <MerchantItem v-for="item in MerchantList" :item="item" :key="item.id"></MerchantItem>
+        <template v-for="item in MerchantList">
+            <tr class="MerchantItem"  :key="item.id">
+                <td class="info">
+                    <div>
+                        <img :src="item.userImgeUrl"></img>
+                        <div>
+                            <p>{{item.sellerName}}</p>
+                            <p><span class="tag">{{item.tag | tagFilter}}</span></p>
+                        </div>
+                    </div>
+                </td>
+                <td><p>{{item.moq}}</p></td>
+                <td><p>{{item.mpq}}</p></td>
+                <td><p>{{item.goodsStockCount}}</p></td>
+                <td><p><span>{{item.priceType ? '现货' : '期货'}}</span></p></td>
+                <td>
+                    <p>{{item.diliverPlace}}</p>
+                    <p>
+                        交期:
+                        <span v-if="item.seller_always">
+                            {{item.day_interval}}天后交货
+                        </span>
+                        <span v-else>
+                            {{item.deliverTime | formatDate}}
+                        </span>
+                    </p>
+                </td>
+                <td class="price">
+                        <div class="stepped-price" v-if="item.priceType">
+                            <ul>
+                                <li v-for="(val, k) in item.priceList" :key="k">
+                                        <span>{{val.num}}+ ---</span>
+                                        <strong >{{item.priceUnit ? '$' : '￥'}}{{val.price}}{{item.includBill ? '(含税)' : '(不含税)'}}</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-else>
+                            <strong class="price-num">{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</strong>
+                        </div>
+                        <div v-if="!item.seller_always">
+                            <CountTime
+                                v-on:end_callback="countDownE_cb()"
+                                :currentTime="item.currentTime"
+                                :startTime="item.currentTime"
+                                :endTime="item.expireTime"
+                                :tipText="''"
+                                :tipTextEnd="'距特价结束:'"
+                                :endText="'活动已结束'"
+                                :dayTxt="'天'"
+                                :hourTxt="'小时'"
+                                :minutesTxt="'分钟'"
+                                :secondsTxt="'秒'"
+                            ></CountTime>
+                        </div>
+                </td>
+                <td class="operation">
+                    <p @click="purchase">购买</p>
+                    <p @click="addCar">加入购物车</p>
+                </td>
+            </tr>
+        </template>
       </tbody>
     </table>
     <div class="arrow-bar">
-      <p v-if="!flag">
-        <span>共有{{total}}个供应商有特价，点击我查看特价</span>
-      </p>
-
-      <p>
-        <img :src="imgUrl" @click="change" alt>
-      </p>
+        <p v-if="!closeTable">共有{{total}}个供应商发布特价产品，点击查看</p>
+        <img src="@/assets/image/brandDetail/u4650.png" alt="" class="closeTable" v-show="closeTable" title="关闭" @click="closeEvent">
+        <img src="@/assets/image/brandDetail/u4530.png" alt="" class="getMore" v-show="getMore" title="获取更多供应商特价" @click="getMoreList">
     </div>
   </div>
 </template>
-
+<style scoped lang="less">
+    @import "./MerchantList.less";
+</style>
 <script>
-import "./MerchantList.less";
-import { mapGetters, mapActions, mapState } from "vuex";
-
-import MerchantItem from "@/components/MerchantItem";
+import {TimeForma2,ladderPrice} from "../../lib/utils";
+import {axios,home} from "../../api/apiObj";
+import { mapActions} from "vuex";
 import { constants } from "crypto";
 export default {
   name: "MerchantList",
@@ -44,38 +101,61 @@ export default {
   },
   data() {
     return {
-      flag: false,
-
-      // 阶梯价
-      priceLevelList: [],
-      // 总数量
-      total: 0
+        flag: false,
+        // 阶梯价
+        priceLevelList: [],
+        // 总数量
+        total: 0,
+        MerchantList:[],
+        purchaseFlag:false,
+        pageSize:10,
+        getMore:false,
     };
   },
-  components: {
-    MerchantItem
-  },
-
   computed: {
-    ...mapState({
-      MerchantList: state => state.MerchantList.MerchantList
-    }),
-    access_token() {
-      return localStorage.getItem("access_token");
-    },
-    imgUrl() {
-      return this.flag
-        ? require("@/assets/image/brandDetail/u4650.png")
-        : require("@/assets/image/brandDetail/u4530.png");
-    }
+      closeTable(){
+        if(this.MerchantList.length){
+            return true;
+        }else{
+            return false;
+        }
+      }
   },
-  methods: {
-    ...mapActions("MerchantList", ["GetMerchantList"]),
-    // 改变列表的显示隐藏
-    change() {
-      this.flag = !this.flag;
-    },
 
+  methods: {
+    GetMerchantList(){
+        let obj={
+            goods_id: this.id,
+            start: 0,
+            length: this.pageSize,
+            status: "1"
+        };
+        axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
+            this.flag=true;
+            this.total = res.data.total;
+            this.MerchantList=res.data.data.map(item0 =>{
+                if(item0.priceType){
+                    item0.priceList=ladderPrice(item0.priceLevel)
+                }
+                return item0;
+            })
+            if(this.total>this.pageSize){
+                //未完全请求，需展示请求更多的按钮
+                this.getMore=true;
+            }else{
+                //不再请求更多数据
+                this.getMore=false;
+            }
+        })
+    },
+    getMoreList(){
+        this.pageSize+=10;
+        this.GetMerchantList()
+    },
+      closeEvent(){
+        this.MerchantList=[];
+        this.getMore=true;
+      },
     handleScroll() {
       if (this.flag) {
         let scrollTop =
@@ -85,49 +165,33 @@ export default {
         let offsetTop = this.$refs.searchBar.offsetTop;
         scrollTop - 300 < offsetTop ? (this.flag = true) : (this.flag = false);
       }
-    }
+    },
+      countDownE_cb(){
+        this.init();
+      },
+      purchase(){},
+      addCar(){},
+      closeAddCar(){
+        this.purchaseFlag=false
+      }
   },
   mounted() {
-    this.GetMerchantList({
-      access_token: this.access_token,
-      goods_id: this.id,
-      start: 0,
-      length: 10,
-      status: "1"
-    }).then(res => {
-      console.log(res)
-      this.total = res.total;
-      res.data.forEach(item => {
-
-        if (item.priceLevel) {
-          let arr = item.priceLevel.split("@");
-          item.priceLevelList = arr.map(item2 => {
-            return item2.split("-");
-          });
-        }
-      });
-      res.data.forEach(item => {
-        if (item.priceLevel) {
-          let arr3 = [];
-          item.priceLevelList.forEach((val, index) => {
-            let obj = {};
-            if (index === 0) {
-              obj.num = [0, `${item.priceLevelList[index][0]}`];
-              obj.price = item.priceLevelList[index][1];
-            } else {
-              obj.num = [
-                `${item.priceLevelList[index - 1][0]}`,
-                `${item.priceLevelList[index][0]}`
-              ];
-              obj.price = item.priceLevelList[index][1];
+    this.GetMerchantList()
+  },
+    filters:{
+        tagFilter(val){
+            switch (val) {
+                case 1:
+                    return "原厂商户";
+                case 2:
+                    return "代理商户";
+                case 3:
+                    return "普通商户";
             }
-            arr3.push(obj);
-          });
-          item.priceLevelList = arr3;
+        },
+        formatDate(val){
+            return TimeForma2(val)
         }
-      });
-    });
-    // window.addEventListener("scroll", this.handleScroll);
-  }
+    }
 };
 </script>

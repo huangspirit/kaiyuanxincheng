@@ -15,6 +15,7 @@ const home = {
     GetHotSearch: {
         url: `api-g/gods-anon/querySummaryHome`
     },
+    //查询基准库产品的售卖商家产品
     SpecialOfferList: {
         url: `api-g/gods-anon/queryDirectGoods`
     },

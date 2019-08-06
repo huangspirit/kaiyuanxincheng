@@ -11,8 +11,11 @@
     </div>
   </div>
 </template>
+<style scoped lang="less">
+    @import './LadderPrice.less';
+</style>
 <script>
-import './LadderPrice.less'
+
 export default {
   name: 'LadderPrice',
   props: {

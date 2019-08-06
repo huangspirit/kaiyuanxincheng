@@ -153,9 +153,11 @@
     </td>
   </tr>
 </template>
-
+<style scoped lang="less">
+    @import "./MerchantItem.less";
+</style>
 <script>
-import "./MerchantItem.less";
+
 import Countdown from "_c/Countdown";
 import { TimeForma } from "@/lib/utils";
 import { mapState, mapGetters, mapActions } from "vuex";

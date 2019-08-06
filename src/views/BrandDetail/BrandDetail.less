@@ -3,55 +3,37 @@ body {
 }
 
 .BrandDetail {
-    width: 100%;
-    overflow: hidden;
-    margin-top: 101px;
     //banner
     .banner {
         width: 100%;
-        height: 273px;
         position: relative;
-
         img {
             width: 100%;
-            height: 100%;
-
         }
-
         .text {
-            width: 1800px;
+
             z-index: 10;
             color: #fff;
-            font-size: 36px;
+            font-size: 28px;
             position: absolute;
-            top: 50px;
-            left: 108px;
-
-            &>div {
-                width: 644px;
-                overflow: hidden;
-                float: left;
-
-                p {
-                    font-size: 48px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-
-                .time {
-                    font-size: 36px;
-                }
-            }
-
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            white-space: nowrap;
+            font-weight: bold;
             &>span {
-                width: 390px;
-                height: 87px;
-                line-height: 87px;
-                text-align: center;
+                vertical-align: middle;
+            }
+            .btn{
                 border: 2px solid #fff;
-                float: left;
-                margin: 80px;
+                margin-left:200px;
                 cursor: pointer;
+                padding:10px 50px;
+                font-weight: normal;
+                &:hover{
+                    color:#f22e2e;
+                    border-color:#f22e2e;
+                }
             }
         }
 

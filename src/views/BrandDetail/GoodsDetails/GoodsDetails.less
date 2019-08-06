@@ -1,262 +1,129 @@
 .GoodsDetails {
   width: 100%;
-  overflow: hidden;
-
+  max-width:1200px;
+  margin:0 auto;
+  margin-top:20px;
   .tit-h {
     width: 100%;
-    height: 70px;
-    line-height: 70px;
+    line-height:60px;
     background: #4A5A6A;
-    font-size: 28px;
+    font-size: 22px;
     color: #fff;
-
-    .wrapper {
+    padding-left:20px;
+    box-sizing:border-box;
       &>img {
-        width: 35px;
-        height: 35px;
+        width: 30px;
         margin-right: 20px;
-        position: relative;
-        top: 7px;
+        vertical-align: middle;
       }
-    }
-
   }
 
   // 商品详情
   .goods-detail {
-    width: 100%;
-    overflow: hidden;
-    background: #fff;
-
     .goods-detail-con {
-      width: 100%;
-      overflow: hidden;
-      padding: 30px 0;
-      float: left;
+      padding: 30px;
       position: relative;
-
-      // background: red;
-      .TabImages {
-        // position: absolute;
-        // top: 31px;
-        // right: 500px;
-
-        float: left;
-        margin-right: 20px;
-      }
-
+      background:#fff;
+      display:flex;
+      &>.ImgE{
+          margin-right: 20px;
+          box-shadow: 2px 1px 2px 2px #999;
+          text-align: center;
+          padding:20px;
+          box-sizing:border-box;
+          /deep/img{
+            height:190px;
+          }
+        }
       // 商品文字信息
-      .goods-detail-text {
-        float: left;
-        width: 960px;
-        height: 100%;
-        // background: red;
-        margin-right: 20px;
-
-        .text-cont {
-          width: 726px;
-          float: left;
-
+      .text-cont {
+        flex:1;
+        display:flex;
+        justify-content: space-around;
+        flex-flow: column;
           &>ul {
-            width: 100%;
-            height: 30px;
-            line-height: 30px;
-            margin: 20px 0;
-
+            margin-bottom:15px;
             li {
+              line-height:22px;
               float: left;
-              width: 120px;
-              text-align: center;
               font-size: 12px;
               color: #0D98FF;
               border: 1px solid #0D98FF;
               border-radius: 4px;
-              margin-right: 10px;
+              margin-right: 18px;
+              padding:2px 22px;
             }
           }
-
-          &>.text {
-            width: 100%;
-            overflow: hidden;
-
-            p {
-              font-size: 28px;
-              color: #4A5A6A;
-              line-height: 50px;
-
-              // margin-bottom: 20px;
-              img {
-
-                position: relative;
-                top: 7px;
-                margin-left: 20px;
-              }
-
-              span {
-                font-weight: bold;
-
-              }
-            }
-          }
-        }
-
         .name {
           color: #CC0000;
-          font-size: 36px;
+          font-size: 28px;
           font-weight: bold;
-
+          margin-bottom:15px;
         }
-
-
-
-        .add-car {
-          width: 80%;
-          height: 50px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          color: #666;
-          line-height: 50px;
-          font-size: 20px;
-          margin-bottom: 40px;
-          margin-top: 40px;
-          float: left;
-
-          span {
-            width: 170px;
-            height: 50px;
-            line-height: 50px;
-
-            img {
-              width: 32px;
-              height: 32px;
-              position: relative;
-              top: 6px;
-              margin-right: 4px;
+        .brand{
+          margin-bottom:15px;
+          /deep/.ImgE{
+            box-shadow: none;
+            height:100%;
+            position: relative;
+            margin-left:10px;
+            img{
+              height:100%;
+            }
+            &:after{
+              content:"";
+              display: block;
+              position: absolute;
+              top:0;
+              left:0;
+              width:100%;
+              height: 100%;
+              background: rgba(0,0,0,0.05);
+              z-index: 1;
             }
           }
         }
-
-        .Purchase {
-          width: 100%;
-          overflow: hidden;
-
-          .ButtonIcon {
-            width: 100%;
-            margin-bottom: 10px;
-            float: left;
-            margin-right: 30px;
-
-            img {
-              top: 15px;
+        .desc{
+          margin-bottom:15px;
+        }
+        .btn{
+          span{
+            cursor: pointer;
+            margin-right:20px;
+            img{
+              height:20px;
+              vertical-align: middle;
             }
           }
         }
-
-        &>.follow {
-          width: 100%;
-          height: 38px;
-          float: left;
-          margin-bottom: 40px;
-
-          span {
-            width: 152px;
-            line-height: 38px;
-            text-align: center;
-            font-size: 12px;
-            color: #fff;
-            background: #4A5A6A;
-            border-radius: 4px;
-
-            img {
-              width: 20px;
-              height: 20px;
-              position: relative;
-              top: 4px;
-            }
-          }
-        }
-
-
       }
-
-      // 商品价格
-      .goods-detail-price {
-        width: 349px;
-        height: 100%;
-        float: right;
-
-        .ButtonIcon {
-          &:hover {
-            color: palevioletred
+      .goods-detail-price{
+          .title{
+            background:#4a5a6a;
+            color:#fff;
+            text-align: center;
+            line-height: 1.7;
           }
-        }
-
-        ul {
-          width: 229px;
-          padding: 10px 60px;
-          overflow: hidden;
-          background: rgba(242, 242, 242, 0.298039215686275);
-
-          li {
-            width: 100%;
-            height: 30px;
-            line-height: 30px;
-            // margin-bottom: 20px;
-            font-size: 20px;
-            color: #4A5A6A;
-
-            span {
-              float: left;
-
-              &:last-child {
-                float: right;
+        ul{
+          li{
+            padding-top:5px;
+            .name{
+              width:150px;
+              padding-left:20px;
+            }
+            .fr{
+              min-width:50px;
+              text-align: left;
+            }
+            &.LadderPrice{
+              background:#d5d5d5;
+              margin-top:10px;
+              padding:6px 20px;
+              p{
+                margin-bottom:10px;
+                border-bottom:1px dashed #999;
               }
             }
-          }
-        }
-
-        &>.LadderPrice {
-          padding: 20px 60px;
-          background: #f2f2f2;
-          margin-bottom: 20px;
-        }
-
-
-      }
-
-      .no-factorySellerInfo {
-        height: 415px;
-
-        &>div {
-          width: 100%;
-          height: 100%;
-          background: #f2f2f2;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .no {
-          font-size: 24px;
-          color: #4A5A6A;
-          font-weight: bold;
-        }
-
-        .factorySeller {
-          width: 200px;
-          height: 60px;
-          text-align: center;
-          background: #4A5A6A;
-          line-height: 60px;
-          text-align: center;
-          font-size: 20px;
-          color: #fff;
-          cursor: pointer;
-
-          &:hover {
-            color: peru
           }
         }
       }
@@ -267,268 +134,40 @@
   .special-offer {
     width: 100%;
     margin-bottom: 20px;
-
-    .more-special {
-      margin-left: 30px;
-      cursor: pointer;
-
-      &:hover {
-        color: #0D98FF;
-      }
+    .StatementStatus {
+      padding: 15px;
+      color: #CC0000;
+      font-size: 20px;
     }
-  }
 
-  .StatementStatus {
-    padding: 15px;
-    color: #CC0000;
-    font-size: 20px;
   }
 
   // 详细信息
   .detail-informan {
-    width: 100%;
-    overflow: hidden;
     background: #fff;
     margin-bottom: 20px;
     padding-bottom: 20px;
-
     .detail-informan-con {
       width: 100%;
       overflow: hidden;
       padding-top: 20px;
       background: #fff;
-
-      .wrapper {
-        position: relative;
-      }
-
       .tit {
-        width: 100%;
-        float: left;
-        height: 80px;
-        line-height: 80px;
-        // background: red;
-
+        line-height:50px;
+        background: #0068B7;
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
         span {
           width: 50%;
-          background: #0068B7;
-          color: #fff;
-          font-size: 28px;
-          text-align: center;
-
         }
       }
-
       .parameter {
-        width: 100%;
-        overflow: hidden;
-
         li {
-          width: 700px;
-          height: 952px;
-          float: left;
-
-          .review {
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-          }
-
-          .cell {
-            font-size: 20px !important;
-            color: #4A5A6A !important;
-          }
-          .el-table--enable-row-hover .el-table__body tr:hover>td{
-            background: #fff;
-          }
-        }
-
-        .datasheet {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-
-          .s-psc {
-            width: 200px;
-            margin-bottom: 20px;
-            height: 50px;
-            color: #fff;
-            background: #4A5A6A;
-            font-size: 20px;
-            cursor: pointer;
-            text-align: center;
-            line-height: 50px;
-            text-decoration: none;
-
-            &:hover {
-              color: peru;
-            }
-          }
-        }
-
-        &>:nth-child(1) {
           width: 50%;
-          height: 790px;
-          padding: 30px 0;
-          overflow-y: auto
-        }
-      }
-    }
-  }
-
-  // 代换型号
-  .substitu-model {
-    width: 100%;
-    overflow: hidden;
-    background: #fff;
-
-    .substitu-model-list {
-      width: 100%;
-      padding-top: 30px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-
-      li {
-        width: 840px;
-        height: 410px;
-        border: 1px solid #ddd;
-        padding: 20px;
-        margin-bottom: 20px;
-
-        .model-list-t {
-          width: 100%;
-          overflow: hidden;
           float: left;
-          padding-top: 20px;
-          position: relative;
-
-          .TabImage {
-            float: left;
-            margin: 0 20px;
-          }
-
-          &>.text {
-            width: 595px;
-            overflow: hidden;
-            float: left;
-
-            &>.name {
-              color: #CC0000;
-              font-size: 28px;
-              font-weight: bold;
-
-            }
-
-            &>.brand {
-              margin-top: 10px;
-              margin-bottom: 15px;
-            }
-
-            p {
-              font-size: 20px;
-              color: #4A5A6A;
-              line-height: 30px;
-
-              span {
-                font-weight: bold;
-
-              }
-
-              &>.num {
-                color: #CC0000
-              }
-
-              &>.detail {
-                float: right;
-                font-size: 20px;
-                color: #0D98FF;
-                cursor: pointer;
-
-                &:hover {
-                  color: peru;
-                }
-              }
-            }
-          }
-
-          .quote {
-            min-width: 100px;
-            position: absolute;
-            top: 0;
-            right: 20px;
-
-            span {
-              width: 100%;
-              float: left;
-              font-size: 36px;
-              color: #CC0000;
-              margin-bottom: 10px;
-              font-weight: bold;
-              text-align: right;
-            }
-
-            &>:last-child {
-              font-size: 20px;
-              color: #4A5A6A;
-
-            }
-
-          }
-        }
-
-        .model-list-b {
-          width: 100%;
-          overflow: hidden;
-          padding-top: 40px;
-
-          &>.ButtonIcon {
-            float: left;
-            margin-right: 10px;
-
-            img {
-              width: 25px;
-              height: 25px;
-            }
-          }
-
-          &>span {
-            img {
-              width: 41px;
-              height: 41px;
-              margin: 0 20px;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // 相关应用方案与文档
-  .related-documents {
-    width: 100%;
-    ;
-    overflow: hidden;
-
-    .related-documents-con {
-      width: 100%;
-      overflow: hidden;
-      float: left;
-      padding-top: 20px;
-
-      p {
-        width: 1320px;
-        padding-left: 60px;
-        font-size: 28px;
-        color: #4A5A6A;
-        line-height: 60px;
-
-        span {
-          &:last-child {
-            font-size: 20px;
-            margin-left: 30px;
+          /deep/.cell{
+            color:#666;
           }
         }
       }
