@@ -34,8 +34,8 @@ const buyerOrderCenter = {
         url: "/api-g/gf/queryGoodsFavouriteList"
     },
     //查询收藏商家的商品
-    queryPublishGoodsListByUser:{
-        url:"/api-g/goods-b/queryPublishGoodsListByUser"
+    queryPublishGoodsListByUser: {
+        url: "/api-g/goods-b/queryPublishGoodsListByUser"
     }
 }
 const sellerOrderCenter = {
@@ -59,10 +59,10 @@ const sellerOrderCenter = {
     },
 
 }
-const sellerCenter={
+const sellerCenter = {
     //卖家账单中心查询
-    queryAccountDetail:{
-        url:"/api-order/sellerCenter/queryAccountDetail"
+    queryAccountDetail: {
+        url: "/api-order/sellerCenter/queryAccountDetail"
     }
 }
 const message = {
@@ -95,9 +95,13 @@ const shoppingCar = {
         url: "/api-g/sc/deleteBatchShoppingCar"
     },
     //收藏关注商家和产品
-    insertGoodsFavourite:{url:"/api-g/gf/insertGoodsFavourite"},
+    insertGoodsFavourite: {
+        url: "/api-g/gf/insertGoodsFavourite"
+    },
     //取消关注商家和产品，删除收藏
-    deleteGoodsFavourite:{url:"/api-g/gf/deleteGoodsFavourite"},
+    deleteGoodsFavourite: {
+        url: "/api-g/gf/deleteGoodsFavourite"
+    },
     saveInquiry: {
         url: "/api-g/ic/saveInquirySheet"
     },
@@ -115,7 +119,11 @@ const shoppingCar = {
 const siderInquiryList = {
     allReply: {
         url: "/api-g/ic/queryInquirySheetList"
+    },
+    replyRequest: {
+        url: "/api-g/ic/updateInquirySheet"
     }
+
 }
 export {
     axios,

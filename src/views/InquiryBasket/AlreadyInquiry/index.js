@@ -1,2 +1,2 @@
-import AlreadyInquiry from './AlreadyInquiry.vue'
-export default AlreadyInquiry
+import sellerInquiry from './sellerInquiry'
+export default sellerInquiry

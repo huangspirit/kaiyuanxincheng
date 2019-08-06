@@ -1,9 +1,9 @@
 <template>
   <div id="inquiry">
-    <p class="topStep">
+    <!-- <p class="topStep">
       卖家中心 > 询价单列表 >
       <span>{{title}}</span>
-    </p>
+    </p>-->
     <div class="inquiryContent">
       <div class="topTab">
         <ul>
@@ -41,22 +41,22 @@ export default {
         {
           id: "1",
           name: "全部待批复",
-          path: "/personalallApply"
+          path: "/allApply"
         },
         {
           id: "2",
           name: "未批复",
-          path: "/personaluserNotice"
+          path: "/userNotice"
         },
         {
           id: "3",
           name: "已批复",
-          path: "/personalalreadyReply"
+          path: "/alreadyReply"
         },
         {
           id: "4",
           name: "已过期",
-          path: "/personalalreadyOverdue"
+          path: "/alreadyOverdue"
         }
       ],
       reppyValue: "",

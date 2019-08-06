@@ -1,15 +1,38 @@
 import Vue from 'vue'
-Vue.filter('pointTwo',(value)=>{
-    
-    if(typeof(value)=='string') {
+Vue.filter('pointTwo', (value) => {
+
+    if (typeof (value) == 'string') {
 
     } else {
         return value.toFixed(4)
     }
 })
+Vue.filter('formatDate', value => {
+    var date = new Date(value)
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate()
+    var hour = date.getHours()
+    var minute = date.getMinutes()
+    var second = date.getSeconds()
+    return year + "-" + month + "-" + day + " " + hour + ':' + minute + ':' + second
 
+})
+Vue.filter('effective', (value, value1) => {
+    if (value == true) {
+        if (value1 == true) {
+            return '已批复'
+        } else {
+            return '未批复'
+        }
+
+    } else {
+        return '已失效'
+    }
+
+})
 // 毫秒转化正常日期格式
-const formatDate =function(date, fmt) {
+const formatDate = function (date, fmt) {
     if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
     }
@@ -29,16 +52,16 @@ const formatDate =function(date, fmt) {
     return fmt
 };
 
-function padLeftZero (str) {
+function padLeftZero(str) {
     return ('00' + str).substr(str.length)
 };
 
 // 中国标准时间转化为---格式日期
-function formatTen (num) {
+function formatTen(num) {
     return num > 9 ? (num + '') : ('0' + num)
 }
 // 时间格式化（不带时秒分）
- function formatDateTime (date) {
+function formatDateTime(date) {
     var year = date.getFullYear()
     var month = date.getMonth() + 1
     var day = date.getDate()
@@ -49,7 +72,7 @@ function formatTen (num) {
 }
 
 // element 数字输入框的验证的验证
- const checkAge = (rule, value, callback) => {
+const checkAge = (rule, value, callback) => {
     if (!value) {
         return callback(new Error(`输入框的值不能为空!`))
     }
@@ -64,5 +87,6 @@ function formatTen (num) {
     }
 };
 export default {
-    formatDate,formatDateTime
+    formatDate,
+    formatDateTime
 }

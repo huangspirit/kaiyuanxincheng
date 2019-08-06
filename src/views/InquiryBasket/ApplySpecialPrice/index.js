@@ -1,2 +1,2 @@
-import ApplySpecialPrice from './ApplySpecialPrice.vue'
+import ApplySpecialPrice from './ApplySpecialPrice'
 export default ApplySpecialPrice

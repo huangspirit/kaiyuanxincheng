@@ -62,60 +62,6 @@
               </p>
             </el-col>
           </el-row>
-          <el-row v-if="item.replayStates == 'true'" class="applyContent">
-            <el-col :span="4">
-              <div class="goodsImg">
-                <img :src="listItem.imageUrl " alt />
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
-                <h3>{{listItem.goodsName}}</h3>
-                <p>
-                  <span>品牌：</span>
-                  {{listItem.brandName}}
-                </p>
-                <p>
-                  <span>公司描述：</span>
-                  {{listItem.goodsDesc}}
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
-                <h3>
-                  申请价格：
-                  <span>{{listItem.acceptPrice}}</span>
-                </h3>
-                <p>
-                  公司名称：
-                  <span>{{listItem.companyName}}</span>
-                </p>
-                <p>
-                  提交日期：
-                  <span>{{listItem.projectBeginTime}}</span>
-                </p>
-                <p>
-                  年采购量：
-                  <span>{{listItem.projectEau}}</span>
-                </p>
-                <p>
-                  竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
-                </p>
-                <p>
-                  备注说明：
-                  <span>{{listItem.remark}}</span>
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime}}</span>
-              </p>
-            </el-col>
-          </el-row>
         </li>
       </div>
     </div>
@@ -147,19 +93,24 @@ export default {
   mounted() {
     this.getAllReplyList();
   },
+  computed: {},
   methods: {
     getAllReplyList() {
       var obj = {
         start: this.start,
         length: 2,
-        reply_status: false,
-        type: true
+        type: true,
+        sheet_effective: false
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         console.log(res);
         if (res.resultCode == "200") {
-          this.allInquiryData = res.data.data;
-          this.total = res.data.total;
+          if (res.data != null) {
+            this.allInquiryData = res.data.data;
+            this.total = res.data.total;
+          } else {
+            this.allInquiryData = [];
+          }
         }
       });
     },
@@ -277,4 +228,3 @@ export default {
   }
 }
 </style>
-
