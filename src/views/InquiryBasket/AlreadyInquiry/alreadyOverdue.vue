@@ -62,60 +62,6 @@
               </p>
             </el-col>
           </el-row>
-          <el-row v-if="item.replayStates == 'true'" class="applyContent">
-            <el-col :span="4">
-              <div class="goodsImg">
-                <img :src="listItem.imageUrl " alt />
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
-                <h3>{{listItem.goodsName}}</h3>
-                <p>
-                  <span>品牌：</span>
-                  {{listItem.brandName}}
-                </p>
-                <p>
-                  <span>公司描述：</span>
-                  {{listItem.goodsDesc}}
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
-                <h3>
-                  申请价格：
-                  <span>{{listItem.acceptPrice}}</span>
-                </h3>
-                <p>
-                  公司名称：
-                  <span>{{listItem.companyName}}</span>
-                </p>
-                <p>
-                  提交日期：
-                  <span>{{listItem.projectBeginTime}}</span>
-                </p>
-                <p>
-                  年采购量：
-                  <span>{{listItem.projectEau}}</span>
-                </p>
-                <p>
-                  竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
-                </p>
-                <p>
-                  备注说明：
-                  <span>{{listItem.remark}}</span>
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime}}</span>
-              </p>
-            </el-col>
-          </el-row>
         </li>
       </div>
     </div>
@@ -154,13 +100,17 @@ export default {
         start: this.start,
         length: 2,
         type: true,
-        sheet_effective:false
+        sheet_effective: false
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         console.log(res);
         if (res.resultCode == "200") {
-          this.allInquiryData = res.data.data;
-          this.total = res.data.total;
+          if (res.data != null) {
+            this.allInquiryData = res.data.data;
+            this.total = res.data.total;
+          } else {
+            this.allInquiryData = [];
+          }
         }
       });
     },
@@ -197,6 +147,7 @@ export default {
       display: flex;
       justify-content: space-between;
       overflow: hidden;
+      box-sizing: border-box;
       position: relative;
       > span {
         background: #cc0000;
@@ -206,7 +157,7 @@ export default {
         line-height: 74px;
         text-align: center;
         position: absolute;
-        right: -16px;
+        right: -37px;
         bottom: 20px;
       }
     }
@@ -219,9 +170,15 @@ export default {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
+          &:hover {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          }
         }
         > .applyContent {
           padding: 10px 0;
+          &:hover {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          }
         }
         .goodsImg {
           width: 200px;

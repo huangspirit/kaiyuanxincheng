@@ -56,64 +56,65 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p>
+              <div>
                 申请有效期至：
                 <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
-              </p>
+              </div>
             </el-col>
           </el-row>
-          <el-row v-if="item.replayStates == 'true'" class="applyContent">
+          <el-row v-if="item.replayStates == true" class="applyContent">
             <el-col :span="4">
               <div class="goodsImg">
-                <img :src="listItem.imageUrl " alt />
+                <img :src="listItem.sellerInfoMap.headImgUrl" alt />
               </div>
             </el-col>
             <el-col :span="8">
               <div class="goodsProdu">
-                <h3>{{listItem.goodsName}}</h3>
-                <p>
-                  <span>品牌：</span>
-                  {{listItem.brandName}}
-                </p>
-                <p>
-                  <span>公司描述：</span>
-                  {{listItem.goodsDesc}}
-                </p>
+                <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span>
+                <div class="merchant">
+                  <span v-if="listItem.sellerInfoMap.tag == 1">原厂商户</span>
+                  <span v-if="listItem.sellerInfoMap.tag != 1">认证商户</span>
+                </div>
+
+                <p>{{listItem.position}}</p>
               </div>
             </el-col>
             <el-col :span="7">
               <div class="googsDesc">
                 <h3>
-                  申请价格：
+                  批复价格：
                   <span>{{listItem.acceptPrice}}</span>
                 </h3>
                 <p>
-                  公司名称：
-                  <span>{{listItem.companyName}}</span>
+                  商户名称：
+                  <span>{{listItem.brandName}}</span>
                 </p>
                 <p>
-                  提交日期：
-                  <span>{{listItem.projectBeginTime}}</span>
+                  回复日期：
+                  <span>{{listItem.replyTime}}</span>
                 </p>
                 <p>
-                  年采购量：
-                  <span>{{listItem.projectEau}}</span>
+                  MOQ：
+                  <span>{{listItem.moq}}</span>
                 </p>
                 <p>
-                  竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
+                  MPQ：
+                  <span>{{listItem.mpq}}</span>
                 </p>
                 <p>
-                  备注说明：
-                  <span>{{listItem.remark}}</span>
+                  交付周期：
+                  <span>{{listItem.priceIntervalDay}}</span>
                 </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
+              <div>
+                价格有效期至：
                 <span>{{listItem.effectEndTime}}</span>
-              </p>
+                <p>立即采购</p>
+                <p>二次议价</p>
+                <p>重新申请</p>
+              </div>
             </el-col>
           </el-row>
         </li>
@@ -157,8 +158,12 @@ export default {
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         if (res.resultCode == "200") {
-          this.allInquiryData = res.data.data;
-          this.total = res.data.total;
+          if (res.data != null) {
+            this.allInquiryData = res.data.data;
+            this.total = res.data.total;
+          } else {
+            this.allInquiryData = [];
+          }
         }
       });
     },
@@ -196,6 +201,7 @@ export default {
       justify-content: space-between;
       overflow: hidden;
       position: relative;
+      box-sizing: border-box;
       > span {
         background: #cc0000;
         transform: rotate(45deg);
@@ -204,7 +210,7 @@ export default {
         line-height: 74px;
         text-align: center;
         position: absolute;
-        right: -16px;
+        right: -37px;
         bottom: 20px;
       }
     }
@@ -213,13 +219,20 @@ export default {
       .listContent {
         border: 1px solid #dee3e9;
         padding: 0 10px;
+
         > .content {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
+          &:hover {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          }
         }
         > .applyContent {
           padding: 10px 0;
+          &:hover {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          }
         }
         .goodsImg {
           width: 200px;
@@ -230,15 +243,53 @@ export default {
         }
 
         .goodsProdu {
+          overflow: hidden;
+          position: relative;
           > h3 {
             color: #cc0000;
+            margin-top: 30px;
+            font-size: 28px;
           }
           > p {
             color: #000;
             width: 80%;
-            line-height: 30px;
+            line-height: 35px;
             > span {
               color: #4a5a6a;
+            }
+          }
+          .companyName {
+            color: #cc0000;
+            font-weight: 700;
+            margin-top: 20px;
+            font-size: 28px;
+            display: inline-block;
+          }
+          .merchant {
+            position: absolute;
+            top: 26px;
+            right: 55px;
+            span {
+              &:nth-of-type(1) {
+                font-size: 12px;
+                font-weight: normal;
+                background-color: rgba(255, 102, 0, 1);
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin-left: 20px;
+                color: #fff;
+                display: inline-block;
+              }
+              &:nth-of-type(2) {
+                font-size: 12px;
+                font-weight: normal;
+                background-color: rgba(13, 152, 255, 1);
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin-left: 20px;
+                color: #fff;
+                display: inline-block;
+              }
             }
           }
         }
@@ -257,10 +308,20 @@ export default {
           }
         }
         .goodPrice {
-          > p {
+          > div {
             color: #4a5a6a;
             > span {
               color: #000;
+            }
+            p {
+              width: 155px;
+              background-color: rgba(74, 90, 106, 1);
+              font-size: 20px;
+              padding: 5px 0;
+              color: #fff;
+              text-align: center;
+              margin-top: 5px;
+              margin-left: 7%;
             }
           }
         }

@@ -20,13 +20,14 @@ Vue.filter('formatDate', value => {
 })
 Vue.filter('effective', (value, value1) => {
     if (value == true) {
-        return '已失效'
-    } else {
         if (value1 == true) {
             return '已批复'
         } else {
             return '未批复'
         }
+
+    } else {
+        return '已失效'
     }
 
 })
@@ -86,5 +87,6 @@ const checkAge = (rule, value, callback) => {
     }
 };
 export default {
-    formatDate, formatDateTime
+    formatDate,
+    formatDateTime
 }

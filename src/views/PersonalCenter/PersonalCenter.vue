@@ -52,7 +52,7 @@ export default {
             {
               title: "询价单列表",
               index: "1-4",
-              path: "/allApply",
+              path: "/PersonalCenter/inquiryList",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
             {
@@ -211,9 +211,11 @@ export default {
         if (UserInforma.userTagMap) {
           item.isShow = UserInforma.userTagMap.seller;
           item.diabled = !UserInforma.userTagMap.seller;
-        } else {
-          item.isShow = !UserInforma.userTagMap.seller;
-          item.diabled = tUserInforma.userTagMap.seller;
+          if(UserInforma.userTagMap.seller == true) {
+            if(UserInforma.userTagMap.tag != 1) {
+                 item.children.splice(3,1)
+            }
+          }
         }
       }
       return item;

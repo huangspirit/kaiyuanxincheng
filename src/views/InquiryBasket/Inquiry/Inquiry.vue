@@ -43,8 +43,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log(to);
-      waitInquiry;
       if (to.name == "waitInquiry") {
         this.tabShow = true;
       } else {

@@ -1,80 +1,78 @@
 <template>
   <div class="allQuiryList">
+    <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
       <div class="allQuiryTop">
-        <span>申请编号：2038474</span>
-        <span>用户与 2019—2—2 12：33：44 提醒批复</span>
+        申请编号：{{item.inquirySheetNo}}
+        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
       </div>
-      <div class="allQuiryDetail">
+      <div class="companyDetail">
         <li>
-          <p>
-            项目名称：
-            <span>{{item.projectName}}</span>
-          </p>
-          <p>
-            产品阶段:
-            <span>{{item.projectProcess}}</span>
-          </p>
-          <p>
-            量产时间：
-            <span>{{item.projectBeginTime | formatDate(item.projectBeginTime)}}</span>
-          </p>
+          项目名称：
+          <span>{{item.projectName}}</span>
         </li>
         <li>
-          <p>
-            公司名称：
-            <span>{{item.companyName}}</span>
-          </p>
-          <p>
-            公司网址：
-            <span>{{item.website}}</span>
-          </p>
-          <p>
-            联系人：
-            <span>{{item.contactName}}</span>
-          </p>
-          <p>
-            职位：
-            <span>{{item.position}}</span>
-          </p>
-          <p>
-            联系电话:
-            <span>{{item.telphone}}</span>
-          </p>
+          产品阶段：
+          <span>{{item.projectProcess}}</span>
         </li>
         <li>
-          <p>
-            提交日期
-            <span>{{item.website}}</span>
-          </p>
-          <p>
-            有效期至：
-            <span>{{item.website}}</span>
-          </p>
-          <p>
-            备注说明：
-            <span>{{item.remark}}</span>
-          </p>
+          量产时间：
+          <span>{{item.projectBeginTime}}</span>
+        </li>
+        <li>
+          公司名称：
+          <span>{{item.companyName}}</span>
+        </li>
+        <li>
+          公司网址：
+          <span>{{item.website}}</span>
+        </li>
+        <li>
+          联系人：
+          <span>{{item.contactName}}</span>
+        </li>
+        <li>
+          职位：
+          <span>{{item.position}}</span>
+        </li>
+        <li>
+          联系电话：
+          <span>{{item.telphone}}</span>
+        </li>
+        <li>
+          提交日期：
+          <span>{{item.sheetCreatime}}</span>
+        </li>
+        <li>
+          有效期至：
+          <span>{{item.effectEndTime}}</span>
+        </li>
+        <li>
+          备注说明：
+          <span>{{item.remark}}</span>
         </li>
       </div>
-      <table class="allQuiryTable" border="1" width="100%">
-        <tr>
-          <th width="30%">询价商品</th>
-          <th>竞争型号</th>
-          <th>竞争型号</th>
-          <th>接受价格T/p</th>
-          <th>操作</th>
-        </tr>
-        <tr>
-          <td>January</td>
-          <td>$100</td>
-          <td>$100</td>
-          <td>$100</td>
-          <td>$100</td>
-        </tr>
-      </table>
+      <div class="inquiryList">
+        <el-table :data="item.list" border stripe style="width: 100%">
+          <el-table-column prop="goodsImage" label="图片" width="180">
+            <template slot-scope="scope">
+              <img :src="scope.row.goodsImage" width="120" alt />
+            </template>
+          </el-table-column>
+          <el-table-column prop="goodsName" label="名称"></el-table-column>
+          <el-table-column prop="goodsDesc" label="功能描述"></el-table-column>
+          <el-table-column prop="inquirySheetNo" label="竞争型号"></el-table-column>
+          <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
+          <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
+          <el-table-column prop label="操作">
+            <template slot-scope="scope">
+              <el-button @click.native.prevent="replyRequest(scope)" type="text" size="small">批复请求</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
-    <div class="Pagination">
+    <div class="Pagination" v-if="allInquiryData.length>0">
       <!-- 分页 -->
       <el-pagination
         layout="prev, pager, next, jumper"
@@ -85,19 +83,31 @@
         @current-change="change"
       ></el-pagination>
     </div>
+    <allReplyDialog
+      v-if="replyDialogVisible"
+      :replyDialogVisible="replyDialogVisible"
+      :allListData="allListData"
+      v-on:dialogVisibleClose="replyVisibleClose"
+    ></allReplyDialog>
   </div>
 </template>
 
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
+import allReplyDialog from "./replyDialog/replyDialog";
 export default {
   data() {
     return {
       allInquiryData: [],
+      allListData: [],
+      replyDialogVisible: false,
       start: 0,
       total: 0
     };
+  },
+  components: {
+    allReplyDialog
   },
   mounted() {
     this.getAllReplyList();
@@ -108,16 +118,23 @@ export default {
       var obj = {
         start: this.start,
         length: 2,
-        reply_status: false,
-        type: true
+        type: false
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
-        console.log(res);
         if (res.resultCode == "200") {
           this.allInquiryData = res.data.data;
           this.total = res.data.total;
         }
       });
+    },
+    replyRequest(val) {
+      console.log(val);
+      this.replyDialogVisible = true;
+      this.allListData = val.row;
+    },
+    replyVisibleClose(val) {
+      console.log(val, "5555555");
+      this.replyDialogVisible = val;
     },
     currentPage(val) {
       console.log("11", val);
@@ -134,49 +151,63 @@ export default {
 <style lang="less" scoped>
 .allQuiryList {
   width: 100%;
+  > p {
+    width: 100%;
+    min-height: 600px;
+    line-height: 200px;
+    text-align: center;
+  }
   > div {
     margin: 20px 0;
     .allQuiryTop {
       width: 100%;
       padding: 0 20px;
-      height: 45px;
-      line-height: 45px;
+      box-sizing: border-box;
+      height: 60px;
+      line-height: 60px;
       background-color: rgb(74, 90, 106);
       color: #fff;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
       > span {
-        margin-right: 20px;
+        background: #cc0000;
+        transform: rotate(45deg);
+        width: 100px;
+        height: 50px;
+        line-height: 74px;
+        text-align: center;
+        position: absolute;
+        right: -37px;
+        bottom: 20px;
       }
     }
-    .allQuiryDetail {
+    .companyDetail {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      border: 1px solid #dee3e9;
       > li {
-        display: flex;
-        flex-wrap: wrap;
-        &:nth-child(even) {
-          background: #eee;
+        min-width: 320px;
+        line-height: 45px;
+        margin: 10px 20px;
+        font-size: 20px;
+        border-right: 1px solid #dee3e9;
+        color: #8194a7;
+        font-weight: 500;
+        &:nth-child(1) {
+          color: #4a5a6a;
         }
-        > p {
-          min-width: 200px;
-          margin-right: 10px;
-          height: 40px;
-          line-height: 40px;
+        > span {
+          color: #4a5a6a;
         }
       }
     }
-    .allQuiryTable {
-      > tr {
-        height: 45px;
-        &:nth-child(old) {
-          background: #eee;
-        }
-        > th {
-          border: 1px solid rgba(74, 90, 106, 0.8);
-          background: #eeeeee;
-        }
-        > td {
-          text-align: center;
-          border: 1px solid rgba(74, 90, 106, 0.8);
-        }
-      }
+    .inquiryList {
+      width: 100%;
     }
   }
 }

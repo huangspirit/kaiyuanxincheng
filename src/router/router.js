@@ -35,57 +35,58 @@ export default [
                 name: 'Inquiry',
                 component: () => import('@/views/InquiryBasket/Inquiry'),
                 children: [{
-                    path: 'waitInquiry',
-                    name: 'waitInquiry',
-                    component: () => import('@/views/InquiryBasket/WaitInquiry'),
-                    meta: {
-                        requireAuth: true,
-                        title: '待询价'
+                        path: 'waitInquiry',
+                        name: 'waitInquiry',
+                        component: () => import('@/views/InquiryBasket/WaitInquiry'),
+                        meta: {
+                            requireAuth: true,
+                            title: '待询价'
+                        },
+                    }, // 已询价
+                    {
+                        path: 'AlreadyInquiry',
+                        name: 'AlreadyInquiry',
+                        redirect: '/allApply',
+                        component: () => import('@/views/InquiryBasket/AlreadyInquiry'),
+                        meta: {
+                            requireAuth: true,
+                            title: '已询价'
+                        },
+                        children: [{
+                            path: '/allApply',
+                            name: 'allApply',
+                            component: () => import('@/views/InquiryBasket/AlreadyInquiry/allReply.vue'),
+                            meta: {
+                                requireAuth: true,
+                                title: '全部待批复'
+                            },
+                        }, {
+                            path: '/userNotice',
+                            name: 'userNotice',
+                            component: () => import('@/views/InquiryBasket/AlreadyInquiry/userNotice.vue'),
+                            meta: {
+                                requireAuth: true,
+                                title: '用户提醒'
+                            },
+                        }, {
+                            path: '/alreadyReply',
+                            name: 'alreadyReply',
+                            component: () => import('@/views/InquiryBasket/AlreadyInquiry/alreadyReply.vue'),
+                            meta: {
+                                requireAuth: true,
+                                title: '已批复'
+                            },
+                        }, {
+                            path: '/alreadyOverdue',
+                            name: 'alreadyOverdue',
+                            component: () => import('@/views/InquiryBasket/AlreadyInquiry/alreadyOverdue.vue'),
+                            meta: {
+                                requireAuth: true,
+                                title: '已过期'
+                            },
+                        }]
                     },
-                }, // 已询价
-                {
-                    path: 'AlreadyInquiry',
-                    name: 'AlreadyInquiry',
-                    redirect: '/allApply',
-                    component: () => import('@/views/InquiryBasket/AlreadyInquiry'),
-                    meta: {
-                        requireAuth: true,
-                        title: '已询价'
-                    },
-                    children: [{
-                        path: '/allApply',
-                        name: 'allApply',
-                        component: () => import('@/views/InquiryBasket/AlreadyInquiry/allReply.vue'),
-                        meta: {
-                            requireAuth: true,
-                            title: '全部待批复'
-                        },
-                    }, {
-                        path: '/userNotice',
-                        name: 'userNotice',
-                        component: () => import('@/views/InquiryBasket/AlreadyInquiry/userNotice.vue'),
-                        meta: {
-                            requireAuth: true,
-                            title: '用户提醒'
-                        },
-                    }, {
-                        path: '/alreadyReply',
-                        name: 'alreadyReply',
-                        component: () => import('@/views/InquiryBasket/AlreadyInquiry/alreadyReply.vue'),
-                        meta: {
-                            requireAuth: true,
-                            title: '已批复'
-                        },
-                    }, {
-                        path: '/alreadyOverdue',
-                        name: 'alreadyOverdue',
-                        component: () => import('@/views/InquiryBasket/AlreadyInquiry/alreadyOverdue.vue'),
-                        meta: {
-                            requireAuth: true,
-                            title: '已过期'
-                        },
-                    }]
-                },]
+                ]
             },
 
             // 申请特价
@@ -110,42 +111,42 @@ export default [
             title: '购物车'
         },
         children: [{
-            path: '/',
-            name: 'ShoppingCartSelect',
-            component: () => import('@/views/ShoppingCart/ShoppingCartSelect'),
-            meta: {
-                requireAuth: true,
-                title: '购物车'
+                path: '/',
+                name: 'ShoppingCartSelect',
+                component: () => import('@/views/ShoppingCart/ShoppingCartSelect'),
+                meta: {
+                    requireAuth: true,
+                    title: '购物车'
+                }
+            },
+            {
+                path: 'ShoppingSettlement',
+                name: 'ShoppingSettlement',
+                component: () => import('@/views/ShoppingCart/ShoppingSettlement'),
+                meta: {
+                    requireAuth: true,
+                    title: '结算页面'
+                }
+            },
+            {
+                path: 'SignContract',
+                name: 'SignContract',
+                component: () => import('@/views/ShoppingCart/SignContract'),
+                meta: {
+                    requireAuth: true,
+                    title: '签署合同'
+                }
+            },
+            // 支付订单
+            {
+                path: 'PaymentOrders',
+                name: 'PaymentOrders',
+                component: () => import('@/views/ShoppingCart/PaymentOrders'),
+                meta: {
+                    requireAuth: true,
+                    title: '支付订单'
+                }
             }
-        },
-        {
-            path: 'ShoppingSettlement',
-            name: 'ShoppingSettlement',
-            component: () => import('@/views/ShoppingCart/ShoppingSettlement'),
-            meta: {
-                requireAuth: true,
-                title: '结算页面'
-            }
-        },
-        {
-            path: 'SignContract',
-            name: 'SignContract',
-            component: () => import('@/views/ShoppingCart/SignContract'),
-            meta: {
-                requireAuth: true,
-                title: '签署合同'
-            }
-        },
-        // 支付订单
-        {
-            path: 'PaymentOrders',
-            name: 'PaymentOrders',
-            component: () => import('@/views/ShoppingCart/PaymentOrders'),
-            meta: {
-                requireAuth: true,
-                title: '支付订单'
-            }
-        }
         ]
     },
     // 原厂入驻
@@ -158,50 +159,50 @@ export default [
             title: '平台入驻'
         },
         children: [{
-            path: '/',
-            name: 'BasicInforma',
-            component: () => import('@/views/OriginalFactoryEntry/BasicInforma'),
-            meta: {
-                requireAuth: true,
-                title: '平台入驻（基本信息）'
+                path: '/',
+                name: 'BasicInforma',
+                component: () => import('@/views/OriginalFactoryEntry/BasicInforma'),
+                meta: {
+                    requireAuth: true,
+                    title: '平台入驻（基本信息）'
+                }
+            },
+            {
+                path: 'CheckInformation',
+                name: 'CheckInformation',
+                component: () => import('@/views/OriginalFactoryEntry/CheckInformation'),
+                meta: {
+                    requireAuth: true,
+                    title: '平台入驻信息'
+                }
+            },
+            {
+                path: 'TraderCheckInformation',
+                name: 'TraderCheckInformation',
+                component: () => import('@/views/OriginalFactoryEntry/TraderCheckInformation'),
+                meta: {
+                    requireAuth: true,
+                    title: '平台入驻信息'
+                }
+            },
+            {
+                path: 'WaitingAudit',
+                name: 'WaitingAudit',
+                component: () => import('@/views/OriginalFactoryEntry/WaitingAudit'),
+                meta: {
+                    requireAuth: true,
+                    title: '等待审核'
+                }
+            },
+            {
+                path: 'NewBrand',
+                name: 'NewBrand',
+                component: () => import('@/views/OriginalFactoryEntry/NewBrand'),
+                meta: {
+                    requireAuth: true,
+                    title: '新建品牌'
+                }
             }
-        },
-        {
-            path: 'CheckInformation',
-            name: 'CheckInformation',
-            component: () => import('@/views/OriginalFactoryEntry/CheckInformation'),
-            meta: {
-                requireAuth: true,
-                title: '平台入驻信息'
-            }
-        },
-        {
-            path: 'TraderCheckInformation',
-            name: 'TraderCheckInformation',
-            component: () => import('@/views/OriginalFactoryEntry/TraderCheckInformation'),
-            meta: {
-                requireAuth: true,
-                title: '平台入驻信息'
-            }
-        },
-        {
-            path: 'WaitingAudit',
-            name: 'WaitingAudit',
-            component: () => import('@/views/OriginalFactoryEntry/WaitingAudit'),
-            meta: {
-                requireAuth: true,
-                title: '等待审核'
-            }
-        },
-        {
-            path: 'NewBrand',
-            name: 'NewBrand',
-            component: () => import('@/views/OriginalFactoryEntry/NewBrand'),
-            meta: {
-                requireAuth: true,
-                title: '新建品牌'
-            }
-        }
         ]
     },
     // 消息
@@ -282,50 +283,50 @@ export default [
         },
         // 全部品牌详情
         children: [{
-            path: '/',
-            // name: 'AllBrand',
-            component: () => import('@/views/BrandDetail/AllBrand')
-        },
-        // 一级类商品
-        {
-            path: 'Undirect',
-            name: 'Undirect',
-            component: () => import('@/views/BrandDetail/Undirect'),
-            meta: {
+                path: '/',
+                // name: 'AllBrand',
+                component: () => import('@/views/BrandDetail/AllBrand')
+            },
+            // 一级类商品
+            {
+                path: 'Undirect',
+                name: 'Undirect',
+                component: () => import('@/views/BrandDetail/Undirect'),
+                meta: {
 
-                title: '一级类商品'
-            }
-        },
-        // 二级
-        {
-            path: 'Direct',
-            name: 'Direct',
-            component: () => import('@/views/BrandDetail/Direct'),
-            meta: {
+                    title: '一级类商品'
+                }
+            },
+            // 二级
+            {
+                path: 'Direct',
+                name: 'Direct',
+                component: () => import('@/views/BrandDetail/Direct'),
+                meta: {
 
-                title: '二级类商品'
-            }
-        },
-        // 商品详情页
-        {
-            path: 'GoodsDetails',
-            name: 'GoodsDetails',
-            component: () => import('@/views/BrandDetail/GoodsDetails'),
-            meta: {
+                    title: '二级类商品'
+                }
+            },
+            // 商品详情页
+            {
+                path: 'GoodsDetails',
+                name: 'GoodsDetails',
+                component: () => import('@/views/BrandDetail/GoodsDetails'),
+                meta: {
 
-                title: '商品详情页'
-            }
-        },
-        // 大搜索内容页面
-        {
-            path: 'SearchPage',
-            name: 'SearchPage',
-            component: () => import('@/views/BrandDetail/SearchPage'),
-            meta: {
+                    title: '商品详情页'
+                }
+            },
+            // 大搜索内容页面
+            {
+                path: 'SearchPage',
+                name: 'SearchPage',
+                component: () => import('@/views/BrandDetail/SearchPage'),
+                meta: {
 
-                title: '搜索'
+                    title: '搜索'
+                }
             }
-        }
         ]
     },
     // 个人中心
@@ -372,7 +373,7 @@ export default [
                         requireAuth: true,
                         title: '卖家中心'
                     }
-                },]
+                }, ]
             },
             // 卖家商品管理
             {
@@ -429,12 +430,45 @@ export default [
             {
                 path: 'inquiryList',
                 name: 'inquiryList',
+                redirect:"/personalallApply",
                 component: () => import('@/views/PersonalCenter/sellerInquiry'),
                 meta: {
                     requireAuth: true,
                     title: '询价单列表'
                 },
-
+                children: [{
+                    path: '/personalallApply',
+                    name: 'allApply',
+                    component: () => import('@/views/PersonalCenter/sellerInquiry/allReply.vue'),
+                    meta: {
+                        requireAuth: true,
+                        title: '全部待批复'
+                    },
+                }, {
+                    path: '/personaluserNotice',
+                    name: 'userNotice',
+                    component: () => import('@/views/PersonalCenter/sellerInquiry/userNotice.vue'),
+                    meta: {
+                        requireAuth: true,
+                        title: '用户提醒'
+                    },
+                }, {
+                    path: '/personalalreadyReply',
+                    name: 'alreadyReply',
+                    component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyReply.vue'),
+                    meta: {
+                        requireAuth: true,
+                        title: '已批复'
+                    },
+                }, {
+                    path: '/personalalreadyOverdue',
+                    name: 'alreadyOverdue',
+                    component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyOverdue.vue'),
+                    meta: {
+                        requireAuth: true,
+                        title: '已过期'
+                    },
+                }]
             },
             // 发票管理
             {
