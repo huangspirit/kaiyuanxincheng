@@ -113,6 +113,10 @@ export default {
         sellerId: val.brandId,
         goodsSource: "2",
         goodsName:val.productno,
+<<<<<<< HEAD
+=======
+        goodsId:val.id
+>>>>>>> 1fa304b6b6f02825625ac43d45a749e516e04edf
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })

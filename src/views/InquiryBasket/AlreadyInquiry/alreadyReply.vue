@@ -52,19 +52,7 @@
                 </p>
                 <p>
                   申请有效期至：
-                  <span>{{listItem.sheetExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
-                </p>
-                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
-                  <countTime
-                   v-on:end_callback="getAllReplyList()"
-                    :startTime="listItem.projectBeginTime"
-                    dayTxt="天"
-                    hourTxt="时"
-                    minutesTxt="分"
-                    secondsTxt="秒"
-                    :endTime="listItem.sheetExpireTime"
-                    :currentTime="listItem.currentTime"
-                  ></countTime>
+                  <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
                 </p>
               </div>
             </el-col>
@@ -103,7 +91,7 @@
                 </p>
                 <p>
                   回复日期：
-                  <span>{{listItem.replyTime}}</span>
+                  <span>{{listItem.replyTime | formatDate(listItem.priceExpireTime)}}</span>
                 </p>
                 <p>
                   MOQ：
@@ -119,17 +107,17 @@
                 </p>
                 <p>
                   价格有效期至：
-                  <span>{{listItem.priceExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                  <span>{{listItem.priceExpireTime | formatDate(listItem.priceExpireTime)}}</span>
                 </p>
                 <p>
                   <countTime
-                  v-on:end_callback="getAllReplyList()"
+                    v-on:end_callback="getAllReplyList()"
                     :startTime="listItem.projectBeginTime"
                     dayTxt="天"
                     hourTxt="时"
                     minutesTxt="分"
                     secondsTxt="秒"
-                    :endTime="listItem.effectEndTime"
+                    :endTime="listItem.priceExpireTime"
                     :currentTime="listItem.currentTime"
                   ></countTime>
                 </p>
@@ -206,13 +194,15 @@ export default {
     },
     againSpecial(val, val1) {
       console.log(val, val1);
-      axios.request({...siderInquiryList.replyAgain,params:{id:val.id}}).then(res=>{
-        console.log(res)
-        if(res.resultCode == '200') {
-          this.$store.dispatch("promation", res.data);
-          this.$router.push('/InquiryBasket/ApplySpecialPrice')
-        }
-      })
+      axios
+        .request({ ...siderInquiryList.replyAgain, params: { id: val.id } })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            this.$store.dispatch("promation", res.data);
+            this.$router.push("/InquiryBasket/ApplySpecialPrice");
+          }
+        });
     },
     purchase(val, val1) {
       this.purshase = true;
@@ -245,7 +235,7 @@ export default {
     },
     change(val) {
       console.log(val);
-      this.start = val;
+      this.start = val - 1;
       this.getAllReplyList();
     }
   }
@@ -384,6 +374,11 @@ export default {
               margin-left: 30%;
             }
             .isApproved {
+              width: 130px;
+              font-size: 20px;
+              padding: 5px 0;
+              color: #fff;
+              text-align: center;
               background-color: #cc0000;
               margin-top: 45px;
               margin-left: 30%;

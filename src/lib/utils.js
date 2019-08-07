@@ -133,6 +133,11 @@ export function ladderPrice(value) {
     return array
 }
 export function formatAllDate(value, remark) {
+    
+    if(typeof(value) == 'number') {
+        value = new Date(value)
+    }
+    console.log(typeof(value))
     let y = value.getFullYear()
     let MM = value.getMonth() + 1
     MM = MM < 10 ? '0' + MM : MM

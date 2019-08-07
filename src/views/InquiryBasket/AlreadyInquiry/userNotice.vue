@@ -2,10 +2,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
@@ -53,13 +50,29 @@
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                  申请有效期至：
+                  <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
+                </p>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                  <countTime
+                    v-on:end_callback="getAllReplyList()"
+                    :startTime="listItem.projectBeginTime"
+                    dayTxt="天"
+                    hourTxt="时"
+                    minutesTxt="分"
+                    secondsTxt="秒"
+                    :endTime="listItem.effectEndTime"
+                    :currentTime="listItem.currentTime"
+                  ></countTime>
+                </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
-              </p>
+              <p
+                class="noApproved"
+                v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
+              >未批复</p>
             </el-col>
           </el-row>
         </li>
@@ -80,7 +93,9 @@
 </template>
 
 <script>
+import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
+
 import "@/lib/filters";
 export default {
   data() {
@@ -92,6 +107,9 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
+  },
+  components: {
+    countTime
   },
   methods: {
     getAllReplyList() {
@@ -114,7 +132,7 @@ export default {
     },
     change(val) {
       console.log(val);
-      this.start = val;
+      this.start = val - 1;
       this.getAllReplyList();
     }
   }
@@ -144,17 +162,6 @@ export default {
       overflow: hidden;
       position: relative;
       box-sizing: border-box;
-      > span {
-        background: #cc0000;
-        transform: rotate(45deg);
-        width: 100px;
-        height: 50px;
-        line-height: 74px;
-        text-align: center;
-        position: absolute;
-        right: -37px;
-        bottom: 20px;
-      }
     }
     .inquiryList {
       width: 100%;
@@ -211,11 +218,15 @@ export default {
           }
         }
         .goodPrice {
-          > p {
-            color: #4a5a6a;
-            > span {
-              color: #000;
-            }
+          .noApproved {
+            width: 130px;
+            font-size: 20px;
+            padding: 5px 0;
+            color: #fff;
+            text-align: center;
+            background-color: #ff9900;
+            margin-top: 45px;
+            margin-left: 30%;
           }
         }
       }

@@ -252,8 +252,7 @@ export default {
             sellerId:this.item.sellerId,
             sellerGoodsId:this.item.id,
             goodsSource:1,
-            goodsName:this.item.goods_name,
-            goodsId:this.item.goods_id
+            goodsName:this.item.goods_name
         }
         console.log(this.item)
         axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{

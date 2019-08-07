@@ -50,9 +50,9 @@
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.sheetEffective != false">
                   申请有效期至：
-                  <span>{{listItem.sheetExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                  <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
                 </p>
                 <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
                   <countTime
@@ -62,7 +62,7 @@
                     hourTxt="时"
                     minutesTxt="分"
                     secondsTxt="秒"
-                    :endTime="listItem.sheetExpireTime"
+                    :endTime="listItem.effectEndTime"
                     :currentTime="listItem.currentTime"
                   ></countTime>
                 </p>
@@ -130,7 +130,7 @@
                 </p>
                 <p>
                   价格有效期至：
-                  <span>{{listItem.priceExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                  <span>{{listItem.priceExpireTime | formatDate(listItem.priceExpireTime)}}</span>
                 </p>
                 <p>
                   <countTime
@@ -148,8 +148,9 @@
             </el-col>
             <el-col :span="5" class="goodPrice">
               <div>
-                <p>立即采购</p>
-                <p>重新申请</p>
+                <p @click="purchase(listItem,item)">立即采购</p>
+                <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="purshase"></purChase>
+                <p @click="againSpecial(listItem,item)">重新申请</p>
               </div>
             </el-col>
           </el-row>
@@ -173,13 +174,15 @@
 <script>
 import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
+import purChase from "@/components/purchase";
 import "@/lib/filters";
 export default {
   data() {
     return {
       allInquiryData: [],
       start: 0,
-      total: 0
+      total: 0,
+      purshase: false
     };
   },
   mounted() {
@@ -189,7 +192,8 @@ export default {
     });
   },
   components: {
-    countTime
+    countTime,
+    purChase
   },
   computed: {},
   methods: {
@@ -210,12 +214,50 @@ export default {
         }
       });
     },
+    againSpecial(val, val1) {
+      console.log(val, val1);
+      axios
+        .request({ ...siderInquiryList.replyAgain, params: { id: val.id } })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            this.$store.dispatch("promation", res.data);
+            this.$router.push("/InquiryBasket/ApplySpecialPrice");
+          }
+        });
+    },
+    purchase(val, val1) {
+      this.purshase = true;
+      var levelPrice = ladderPrice(val.priceLevel);
+      var obj = {
+        goods_id: val.requestId,
+        goods_name: val.goods_name,
+        goodsDesc: val.goodsDesc,
+        goodsImage: val.goodsImage,
+        clude_bill: val.cludeBill,
+        price_unit: val.priceUnit,
+        seckill_goods_id: val.seller_goods_id,
+        goods_type: val.goodsType,
+        diliver_place: val.diliverPlace,
+        moq: val.moq,
+        mpq: val.mpq,
+        stockcount: val.goodsCount,
+        price_type: val.priceType,
+        priceList: levelPrice,
+        seckil_price: val.seckilPrice,
+        sellerName: val.sellerInfoMap.nickname,
+        sellerHeader: val.sellerInfoMap.headImgUrl,
+        seller_id: val.sellerInfoMap.id,
+        tag: val.sellerInfoMap.tag
+      };
+      this.purshaseData = obj;
+    },
     currentPage(val) {
       console.log("11", val);
     },
     change(val) {
       console.log(val);
-      this.start = val;
+      this.start = val -1;
       this.getAllReplyList();
     }
   }
