@@ -86,7 +86,7 @@
             handleChange(e){
                 let obj = this.item;
                 let currentPrice=0;
-                if(obj.priceList){
+                if(obj.price_type){
                     if(obj.priceList.length==1){
                         currentPrice=parseFloat(obj.priceList[0].price);
                     }else if(obj.priceList.length==2){

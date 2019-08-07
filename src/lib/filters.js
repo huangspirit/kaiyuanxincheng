@@ -18,8 +18,8 @@ Vue.filter('formatDate', value => {
     return year + "-" + month + "-" + day + " " + hour + ':' + minute + ':' + second
 
 })
-Vue.filter('effective', (value, value1) => {
-    if (value == true) {
+Vue.filter('effective', (val,value1) => {
+    if (val == true) {
         if (value1 == true) {
             return '已批复'
         } else {

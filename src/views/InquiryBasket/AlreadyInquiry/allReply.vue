@@ -2,10 +2,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
@@ -53,16 +50,41 @@
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
+                <p>
+                  申请有效期至：
+                  <span>{{listItem.sheetExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                </p>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                  <countTime
+                    :startTime="listItem.projectBeginTime"
+                    dayTxt="天"
+                    hourTxt="时"
+                    minutesTxt="分"
+                    secondsTxt="秒"
+                    :endTime="listItem.sheetExpireTime"
+                    :currentTime="listItem.currentTime"
+                  ></countTime>
+                </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
               <div>
-                申请有效期至：
-                <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
+                <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
+                <p
+                  class="isApproved"
+                  v-if="listItem.sheetEffective == true&&listItem.replayStates == true"
+                >已批复</p>
+                <p
+                  class="noApproved"
+                  v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
+                >未批复</p>
               </div>
             </el-col>
           </el-row>
-          <el-row v-if="item.replayStates == true" class="applyContent">
+          <el-row
+            v-if="listItem.replayStates == true&&listItem.sheetEffective == true"
+            class="applyContent"
+          >
             <el-col :span="4">
               <div class="goodsImg">
                 <img :src="listItem.sellerInfoMap.headImgUrl" alt />
@@ -91,7 +113,7 @@
                 </p>
                 <p>
                   回复日期：
-                  <span>{{listItem.replyTime}}</span>
+                  <span>{{listItem.replyTime | formatDate(listItem.projectBeginTime)}}</span>
                 </p>
                 <p>
                   MOQ：
@@ -105,14 +127,26 @@
                   交付周期：
                   <span>{{listItem.priceIntervalDay}}</span>
                 </p>
+                <p>
+                  价格有效期至：
+                  <span>{{listItem.priceExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                </p>
+                <p>
+                  <countTime
+                    :startTime="listItem.projectBeginTime"
+                    dayTxt="天"
+                    hourTxt="时"
+                    minutesTxt="分"
+                    secondsTxt="秒"
+                    :endTime="listItem.priceExpireTime"
+                    :currentTime="listItem.currentTime"
+                  ></countTime>
+                </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
               <div>
-                价格有效期至：
-                <span>{{listItem.effectEndTime}}</span>
                 <p>立即采购</p>
-                <p>二次议价</p>
                 <p>重新申请</p>
               </div>
             </el-col>
@@ -135,6 +169,7 @@
 </template>
 
 <script>
+import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
 export default {
@@ -147,6 +182,12 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
+      this.$on('end_callback',()=>{
+      this.getAllReplyList()
+    })
+  },
+  components: {
+    countTime
   },
   computed: {},
   methods: {
@@ -202,37 +243,25 @@ export default {
       overflow: hidden;
       position: relative;
       box-sizing: border-box;
-      > span {
-        background: #cc0000;
-        transform: rotate(45deg);
-        width: 100px;
-        height: 50px;
-        line-height: 74px;
-        text-align: center;
-        position: absolute;
-        right: -37px;
-        bottom: 20px;
-      }
     }
     .inquiryList {
       width: 100%;
       .listContent {
         border: 1px solid #dee3e9;
         padding: 0 10px;
-
         > .content {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         > .applyContent {
-          padding: 10px 0;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          padding: 15px 0;
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         .goodsImg {
           width: 200px;
@@ -314,14 +343,29 @@ export default {
               color: #000;
             }
             p {
-              width: 155px;
+              width: 130px;
               background-color: rgba(74, 90, 106, 1);
               font-size: 20px;
               padding: 5px 0;
               color: #fff;
               text-align: center;
-              margin-top: 5px;
-              margin-left: 7%;
+              margin-top: 30px;
+              margin-left: 30%;
+            }
+            .failure {
+              background-color: #bcbcbc;
+              margin-top: 45px;
+              margin-left: 30%;
+            }
+            .isApproved {
+              background-color: #cc0000;
+              margin-top: 45px;
+              margin-left: 30%;
+            }
+            .noApproved {
+              background-color: #ff9900;
+              margin-top: 45px;
+              margin-left: 30%;
             }
           }
         }

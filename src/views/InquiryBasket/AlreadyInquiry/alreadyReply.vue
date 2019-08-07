@@ -2,10 +2,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
@@ -53,16 +50,30 @@
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
+                <p>
+                  申请有效期至：
+                  <span>{{listItem.sheetExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                </p>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                  <countTime
+                    :startTime="listItem.projectBeginTime"
+                    dayTxt="天"
+                    hourTxt="时"
+                    minutesTxt="分"
+                    secondsTxt="秒"
+                    :endTime="listItem.sheetExpireTime"
+                    :currentTime="listItem.currentTime"
+                  ></countTime>
+                </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
-              </p>
+              <div>
+                <p class="isApproved">{{listItem.sheetEffective | effective(listItem.replayStates)}}</p>
+              </div>
             </el-col>
           </el-row>
-          <el-row v-if="item.replayStates == true" class="applyContent">
+          <el-row v-if="listItem.replayStates == true" class="applyContent">
             <el-col :span="4">
               <div class="goodsImg">
                 <img :src="listItem.sellerInfoMap.headImgUrl" alt />
@@ -105,14 +116,27 @@
                   交付周期：
                   <span>{{listItem.priceIntervalDay}}</span>
                 </p>
+                <p>
+                  价格有效期至：
+                  <span>{{listItem.priceExpireTime | formatDate(listItem.sheetExpireTime)}}</span>
+                </p>
+                <p>
+                  <countTime
+                    :startTime="listItem.projectBeginTime"
+                    dayTxt="天"
+                    hourTxt="时"
+                    minutesTxt="分"
+                    secondsTxt="秒"
+                    :endTime="listItem.effectEndTime"
+                    :currentTime="listItem.currentTime"
+                  ></countTime>
+                </p>
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
               <div>
-                价格有效期至：
-                <span>{{listItem.effectEndTime}}</span>
-                <p>立即采购</p>
-                <p>二次议价</p>
+                <p @click="purchase(listItem,item)">立即采购</p>
+                <purChase :item='purshaseData' v-if="purshase"></purChase>
                 <p @click="againSpecial(listItem,item)">重新申请</p>
               </div>
             </el-col>
@@ -120,6 +144,7 @@
         </li>
       </div>
     </div>
+
     <div class="Pagination" v-if="allInquiryData.length>0">
       <!-- 分页 -->
       <el-pagination
@@ -136,17 +161,29 @@
 
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
+import countTime from "@/components/countTime";
+import { ladderPrice } from "@/lib/utils";
+import purChase from "@/components/purchase"
 import "@/lib/filters";
 export default {
   data() {
     return {
       allInquiryData: [],
       start: 0,
-      total: 0
+      total: 0,
+      purshase:false,
+      purshaseData:{}
     };
   },
   mounted() {
     this.getAllReplyList();
+    this.$on("end_callback", () => {
+      this.getAllReplyList();
+    });
+  },
+  components: {
+    countTime,
+    purChase
   },
   methods: {
     getAllReplyList() {
@@ -168,9 +205,34 @@ export default {
         }
       });
     },
-    againSpecial(val,val1) {
-      console.log(val,val1)
-     
+    againSpecial(val, val1) {
+      console.log(val, val1);
+    },
+    purchase(val, val1) {
+      this.purshase = true
+      var levelPrice = ladderPrice(val.priceLevel);
+      var obj = {
+        goods_id: val.requestId,
+        goods_name: val.goods_name,
+        goodsDesc: val.goodsDesc,
+        goodsImage: val.goodsImage,
+        clude_bill: val.cludeBill,
+        price_unit: val.priceUnit,
+        seckill_goods_id: val.seller_goods_id,
+        goods_type: val.goodsType,
+        diliver_place: val.diliverPlace,
+        moq: val.moq,
+        mpq: val.mpq,
+        stockcount: val.goodsCount,
+        price_type: val.priceType,
+        priceList: ladderPrice,
+        seckil_price: val.seckilPrice,
+        sellerName: val.sellerInfoMap.nickname,
+        sellerHeader: val.sellerInfoMap.headImgUrl,
+        seller_id: val.sellerInfoMap.id,
+        tag: val.sellerInfoMap.tag
+      };
+      this.purshaseData = obj
     },
     currentPage(val) {
       console.log("11", val);
@@ -207,17 +269,6 @@ export default {
       overflow: hidden;
       position: relative;
       box-sizing: border-box;
-      > span {
-        background: #cc0000;
-        transform: rotate(45deg);
-        width: 100px;
-        height: 50px;
-        line-height: 74px;
-        text-align: center;
-        position: absolute;
-        right: -37px;
-        bottom: 20px;
-      }
     }
     .inquiryList {
       width: 100%;
@@ -229,15 +280,12 @@ export default {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
         }
         > .applyContent {
-          padding: 10px 0;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          padding: 15px 0;
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         .goodsImg {
           width: 200px;
@@ -307,6 +355,7 @@ export default {
           }
           p {
             color: #4a5a6a;
+            line-height: 25px;
             > span {
               color: #000;
             }
@@ -325,8 +374,13 @@ export default {
               padding: 5px 0;
               color: #fff;
               text-align: center;
-              margin-top: 5px;
-              margin-left: 7%;
+              margin-top: 15px;
+              margin-left: 30%;
+            }
+            .isApproved {
+              background-color: #cc0000;
+              margin-top: 45px;
+              margin-left: 30%;
             }
           }
         }
