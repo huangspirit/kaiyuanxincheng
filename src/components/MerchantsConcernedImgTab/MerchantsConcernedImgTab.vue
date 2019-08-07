@@ -20,6 +20,7 @@
             </div>
         </transition>
       <ul class="product-list-con">
+          <li v-if="goodsList.length==0" style="margin-top:90px;margin-left:50px;">该商家未发布产品</li>
         <li
           v-for='(item, k) in goodsList'
           :key='k'
@@ -38,6 +39,7 @@
       </ul>
         <div class="Pagination">
             <el-pagination
+                v-if="total"
                 layout="prev, pager, next"
                 :total="total"
                 :page-size="pageSize"

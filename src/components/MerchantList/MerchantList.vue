@@ -13,7 +13,7 @@
         <th>操作</th>
       </thead>
       <tbody>
-        <template v-for="(item,k) in MerchantList">
+        <template v-for="(item,index) in MerchantList">
             <tr class="MerchantItem"  :key="item.id">
                 <td class="info">
                     <div>
@@ -69,9 +69,9 @@
                         </div>
                 </td>
                 <td class="operation">
-                    <p @click="purchase(k)">购买</p>
-                    <p @click="addCar(k)">加入购物车</p>
-                    <Purchase :item="purchaseObj" v-if="showPurchase" @closeCallBack="showPurchase=false"></Purchase>
+                    <p @click="purchase(index)">购买</p>
+                    <p @click="addCar(index)">加入购物车</p>
+                    <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>
                 </td>
             </tr>
         </template>
@@ -180,7 +180,8 @@ export default {
               return;
           };
           let res=this.MerchantList[k]
-          this.purchaseObj={
+          console.log(res)
+         let purchaseObj={
               goods_id: res.goods_id,
               goods_name: res.goods_name,
               goodsDesc: res.goodsDesc,
@@ -200,8 +201,13 @@ export default {
               sellerHeader: res.userImgeUrl,
               seller_id: res.sellerId,
               tag: res.tag,
+             complete_date: res.deliverTime,
+             diliver_date: res.deliverTime,
+             end_date: res.endTime
           };
-        this.showPurchase=true;
+          this.MerchantList[k].purchaseObj=purchaseObj
+          this.$set(this.MerchantList[k],"showPurchase",true)
+       // this.showPurchase=true;
       },
       addCar(k){
           if(!this.loginState){
