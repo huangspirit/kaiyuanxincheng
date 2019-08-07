@@ -233,7 +233,18 @@ export default {
           if(!this.loginState){
               this.$router.push('/Login')
               return;
-          }
+          };
+          var obj = {
+              sellerGoodsId: this.goodsinfo.factorySellerInfo.seller_goods_id,
+              sellerId:this.goodsinfo.factorySellerInfo.seller_id,
+              goodsSource: "1",
+              goodsName:this.goodsinfo.productno,
+          };
+          axios
+              .request({ ...shoppingCar.insertShoppingCar, params: obj })
+              .then(res => {
+                  this.$message.success("添加成功");
+              });
       },
       purchase(){
           if(!this.loginState){

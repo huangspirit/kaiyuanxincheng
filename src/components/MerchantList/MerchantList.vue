@@ -71,6 +71,7 @@
                 <td class="operation">
                     <p @click="purchase(k)">购买</p>
                     <p @click="addCar(k)">加入购物车</p>
+                    <Purchase :item="purchaseObj" v-if="showPurchase" @closeCallBack="showPurchase=false"></Purchase>
                 </td>
             </tr>
         </template>
@@ -88,8 +89,8 @@
 </style>
 <script>
 import {TimeForma2,ladderPrice} from "../../lib/utils";
-import {axios,home} from "../../api/apiObj";
-// import { mapActions} from "vuex";
+import {axios,home,shoppingCar} from "../../api/apiObj";
+//import { mapState} from "vuex";
 // import { constants } from "crypto";
 export default {
   name: "MerchantList",
@@ -107,9 +108,10 @@ export default {
         // 总数量
         total: 0,
         MerchantList:[],
-        purchaseFlag:false,
         pageSize:10,
         getMore:false,
+        purchaseObj:{},
+        showPurchase:false
     };
   },
   computed: {
@@ -119,6 +121,9 @@ export default {
         }else{
             return false;
         }
+      },
+      loginState(){
+          return this.$store.state.loginState
       }
   },
 
@@ -152,10 +157,10 @@ export default {
         this.pageSize+=10;
         this.GetMerchantList()
     },
-      closeEvent(){
-        this.MerchantList=[];
-        this.getMore=true;
-      },
+  closeEvent(){
+    this.MerchantList=[];
+    this.getMore=true;
+  },
     handleScroll() {
       if (this.flag) {
         let scrollTop =
@@ -169,11 +174,54 @@ export default {
       countDownE_cb(){
         this.init();
       },
-      purchase(){},
-      addCar(){},
-      closeAddCar(){
-        this.purchaseFlag=false
-      }
+      purchase(k){
+          if(!this.loginState){
+              this.$router.push('/Login')
+              return;
+          };
+          let res=this.MerchantList[k]
+          this.purchaseObj={
+              goods_id: res.goods_id,
+              goods_name: res.goods_name,
+              goodsDesc: res.goodsDesc,
+              goodsImage: res.goodsImageUrl,
+              clude_bill: res.includBill,
+              price_unit: res.priceUnit,
+              seckill_goods_id: res.id,
+              goods_type:res.goods_type,
+              diliver_place: res.diliverPlace,
+              moq:res.moq,
+              mpq:res.mpq,
+              stockcount:res.goodsStockCount,
+              price_type:res.priceType,
+              priceList:res.priceList,
+              seckil_price:res.goodsPrice,
+              sellerName: res.sellerName,
+              sellerHeader: res.userImgeUrl,
+              seller_id: res.sellerId,
+              tag: res.tag,
+          };
+        this.showPurchase=true;
+      },
+      addCar(k){
+          if(!this.loginState){
+              this.$router.push('/Login')
+              return;
+          }
+          console.log(this.MerchantList[k])
+          var obj = {
+              sellerGoodsId: this.MerchantList[k].id,
+              sellerId:this.MerchantList[k].sellerId,
+              goodsSource: "1",
+              goodsName:this.MerchantList[k].goods_name,
+              goodsId:this.MerchantList[k].goodsId
+          };
+          axios
+              .request({ ...shoppingCar.insertShoppingCar, params: obj })
+              .then(res => {
+                  this.$message.success("添加成功");
+              });
+      },
   },
   mounted() {
     this.GetMerchantList()

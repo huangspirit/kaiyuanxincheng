@@ -92,16 +92,12 @@
                     }else if(obj.priceList.length==2){
                         if(e<=Number(obj.priceList[1].num)){
                             currentPrice=parseFloat(obj.priceList[0].price);
-
                         }else{
                             currentPrice=parseFloat(obj.priceList[1].price);
-
                         }
-
                     }else if(obj.priceList.length==3){
                         if(e<=Number(obj.priceList[1].num)){
                             currentPrice=parseFloat(obj.priceList[0].price);
-
                         }else if(e<=Number(obj.priceList[2].num)){
                             currentPrice=parseFloat(obj.priceList[1].price);
 
@@ -184,8 +180,9 @@
     .purchase{
         position: absolute;
         bottom:0;
-        left:0;
         width:100%;
+        min-width:1200px;
+        right:0;
         background: #f4f4f4;
         padding:15px;
         box-sizing:border-box;
