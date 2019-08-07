@@ -175,6 +175,7 @@
 import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
 import purChase from "@/components/purchase";
+import { ladderPrice } from "@/lib/utils";
 import "@/lib/filters";
 export default {
   data() {
@@ -182,6 +183,7 @@ export default {
       allInquiryData: [],
       start: 0,
       total: 0,
+      purshaseData:{},
       purshase: false
     };
   },
@@ -257,7 +259,7 @@ export default {
     },
     change(val) {
       console.log(val);
-      this.start = val -1;
+       this.start = val * 2 - 2;
       this.getAllReplyList();
     }
   }

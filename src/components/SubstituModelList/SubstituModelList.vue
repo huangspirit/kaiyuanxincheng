@@ -112,11 +112,7 @@ export default {
         goodsId:val.id,
         sellerId: val.brandId,
         goodsSource: "2",
-        goodsName:val.productno,
-<<<<<<< HEAD
-=======
-        goodsId:val.id
->>>>>>> 1fa304b6b6f02825625ac43d45a749e516e04edf
+        goodsName:val.productno
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })

@@ -229,13 +229,14 @@ export default {
         tag: val.sellerInfoMap.tag
       };
       this.purshaseData = obj;
+      console.log(this.purshaseData);
     },
     currentPage(val) {
       console.log("11", val);
     },
     change(val) {
       console.log(val);
-      this.start = val - 1;
+      this.start = val * 2 - 2;
       this.getAllReplyList();
     }
   }
