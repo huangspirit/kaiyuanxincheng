@@ -294,7 +294,8 @@ export default {
       width: 100%;
       .listContent {
         border: 1px solid #dee3e9;
-        padding: 0 10px;
+        padding:10px;
+        margin-bottom: 15px;
         > .content {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;

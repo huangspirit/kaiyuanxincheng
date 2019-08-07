@@ -28,7 +28,10 @@
               <span v-if="oneData.map.totalSeller != 0" class="num">￥2.5——￥4.0</span>
             </p>
           </div>
-          <div class="LadderPrice" v-if="oneData.factorySellerInfo.price_level != undefined">
+          <div
+            class="LadderPrice"
+            v-if="oneData.factorySellerInfo.priceType==true"
+          >
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
               <div v-for="(item, k) in oneData.ladderPrice" :key="k">
@@ -37,12 +40,18 @@
               </div>
             </div>
           </div>
-          <div v-if="oneData.factorySellerInfo.price_level == undefined" class="LadderPrice">
+           <div v-if="oneData.factorySellerInfo.priceType==false" class="LadderPrice">
+            <p class="tit" style="text-align: center">原厂报价</p>
+            <div class="LadderPrice-list">
+              <p style="text-align: center">{{oneData.seckilPrice}}</p>
+            </div>
+          </div>
+          <!-- <div v-if="oneData.factorySellerInfo.priceType==false" class="LadderPrice">
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
               <p style="text-align: center">暂无原厂报价</p>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="brans-msg">
           <img :src="oneData.brandImageUrl" class="bd-img" alt />
@@ -161,6 +170,7 @@
                   >
                     <el-form-item class="acceptPrice" label="接受价格" prop="acceptPrice">
                       <el-input
+                        @input="listChange"
                         placeholder="请输入价格"
                         v-model="listItem.acceptPrice"
                         class="input-with-select"
