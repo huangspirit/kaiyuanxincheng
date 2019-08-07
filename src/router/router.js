@@ -235,6 +235,15 @@ export default [
                 }
             },
             {
+                path: 'inquiry',
+                name: 'inquiry',
+                component: () => import('@/views/News/inquiry/inquiry'),
+                meta: {
+                    requireAuth: true,
+                    title: '询价通知'
+                }
+            },
+            {
                 path: 'sys',
                 name: 'sys',
                 component: () => import('@/views/News/sys/sys'),

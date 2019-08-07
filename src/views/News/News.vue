@@ -49,6 +49,10 @@ export default {
                     return "支付通知";
                 case "auth":
                     return "审核通知";
+                case "sys":
+                    return "系统通知";
+                case "inquiry":
+                    return "询价通知";
             }
         }
     },
