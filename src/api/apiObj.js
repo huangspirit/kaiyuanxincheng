@@ -117,11 +117,16 @@ const shoppingCar = {
 
 }
 const siderInquiryList = {
+    // 全部 批复
     allReply: {
         url: "/api-g/ic/queryInquirySheetList"
     },
+    // 已批复 待批复 已失效 
     replyRequest: {
         url: "/api-g/ic/updateInquirySheet"
+    },
+    replyAgain: {
+        url: "/api-g/ic/reApplyInquirySheet"
     }
 
 }

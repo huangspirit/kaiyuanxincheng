@@ -56,6 +56,7 @@
                 </p>
                 <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
                   <countTime
+                   v-on:end_callback="getAllReplyList()"
                     :startTime="listItem.projectBeginTime"
                     dayTxt="天"
                     hourTxt="时"
@@ -122,6 +123,7 @@
                 </p>
                 <p>
                   <countTime
+                  v-on:end_callback="getAllReplyList()"
                     :startTime="listItem.projectBeginTime"
                     dayTxt="天"
                     hourTxt="时"
@@ -136,7 +138,7 @@
             <el-col :span="5" class="goodPrice">
               <div>
                 <p @click="purchase(listItem,item)">立即采购</p>
-                <purChase :item='purshaseData' v-if="purshase"></purChase>
+                <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="purshase"></purChase>
                 <p @click="againSpecial(listItem,item)">重新申请</p>
               </div>
             </el-col>
@@ -163,7 +165,7 @@
 import { axios, siderInquiryList } from "@/api/apiObj";
 import countTime from "@/components/countTime";
 import { ladderPrice } from "@/lib/utils";
-import purChase from "@/components/purchase"
+import purChase from "@/components/purchase";
 import "@/lib/filters";
 export default {
   data() {
@@ -171,15 +173,12 @@ export default {
       allInquiryData: [],
       start: 0,
       total: 0,
-      purshase:false,
-      purshaseData:{}
+      purshase: false,
+      purshaseData: {}
     };
   },
   mounted() {
     this.getAllReplyList();
-    this.$on("end_callback", () => {
-      this.getAllReplyList();
-    });
   },
   components: {
     countTime,
@@ -207,9 +206,16 @@ export default {
     },
     againSpecial(val, val1) {
       console.log(val, val1);
+      axios.request({...siderInquiryList.replyAgain,params:{id:val.id}}).then(res=>{
+        console.log(res)
+        if(res.resultCode == '200') {
+          this.$store.dispatch("promation", res.data);
+          this.$router.push('/InquiryBasket/ApplySpecialPrice')
+        }
+      })
     },
     purchase(val, val1) {
-      this.purshase = true
+      this.purshase = true;
       var levelPrice = ladderPrice(val.priceLevel);
       var obj = {
         goods_id: val.requestId,
@@ -225,14 +231,14 @@ export default {
         mpq: val.mpq,
         stockcount: val.goodsCount,
         price_type: val.priceType,
-        priceList: ladderPrice,
+        priceList: levelPrice,
         seckil_price: val.seckilPrice,
         sellerName: val.sellerInfoMap.nickname,
         sellerHeader: val.sellerInfoMap.headImgUrl,
         seller_id: val.sellerInfoMap.id,
         tag: val.sellerInfoMap.tag
       };
-      this.purshaseData = obj
+      this.purshaseData = obj;
     },
     currentPage(val) {
       console.log("11", val);
