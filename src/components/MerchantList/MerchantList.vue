@@ -27,7 +27,7 @@
                 <td><p>{{item.moq}}</p></td>
                 <td><p>{{item.mpq}}</p></td>
                 <td><p>{{item.goodsStockCount}}</p></td>
-                <td><p><span>{{item.priceType ? '现货' : '期货'}}</span></p></td>
+                <td><p><span>{{item.goods_type ? '现货' : '期货'}}</span></p></td>
                 <td>
                     <p>{{item.diliverPlace}}</p>
                     <p>
@@ -203,7 +203,7 @@ export default {
               tag: res.tag,
              complete_date: res.deliverTime,
              diliver_date: res.deliverTime,
-             end_date: res.endTime
+             end_date: res.expireTime
           };
           this.MerchantList[k].purchaseObj=purchaseObj
           this.$set(this.MerchantList[k],"showPurchase",true)

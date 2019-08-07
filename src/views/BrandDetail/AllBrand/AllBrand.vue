@@ -1,32 +1,27 @@
 <template>
   <div class="AllBrand">
     <div class="BrandDetail-tit">
-      <div class="wrapper">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/BrandDetail' }">{{brandInfo.name}}</el-breadcrumb-item>
         </el-breadcrumb>
-      </div>
     </div>
     <!-- // 全部品牌 -->
     <div class="all-brand">
       <!-- 品牌信息 -->
       <div class="brand-msg">
         <div class="tit">
-          <div class="wrapper">
-            <img src="@/assets/image/brandDetail/u5426.png" alt> 品牌信息
-          </div>
+            <img src="@/assets/image/brandDetail/u5426.png" alt><span>品牌信息</span>
         </div>
-        <div class="brand-msg-con">
+        <div class="brand-msg-con clear">
           <!--  -->
-          <div class="wrapper">
             <!-- 图片信息 -->
             <div class="brand-msg-con-l">
               <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
               <ul>
-                <li>网址：{{brandInfo.brandWeb}}</li>
-                <li>电话：{{brandInfo.tel}}</li>
-                <li>邮件：{{brandInfo.email}}</li>
+                <li>网址：<a href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
+                <li v-if="brandInfo.tel">电话：{{brandInfo.tel}}</li>
+                <li v-if="brandInfo.email">邮件：{{brandInfo.email}}</li>
               </ul>
             </div>
             <!-- 文字信息 -->
@@ -44,43 +39,13 @@
                 {{brandInfo.brandDesc}}
               </p>
             </div>
-          </div>
         </div>
       </div>
-      <!-- 在线咨询 -->
-      <!-- <ul class="online-consul">
-        <li>
-          <img src="@/assets/image/brandDetail/u4870.png" alt>
-          <div>
-            <p class="name">Williams</p>
-            <p>总经理</p>
-            <p class="online">在线咨询</p>
-          </div>
-        </li>
-        <li>
-          <img src="@/assets/image/brandDetail/u4870.png" alt>
-          <div>
-            <p class="name">Williams</p>
-            <p>总经理</p>
-            <p class="online">在线咨询</p>
-          </div>
-        </li>
-        <li>
-          <img src="@/assets/image/brandDetail/u4870.png" alt>
-          <div>
-            <p class="name">Williams</p>
-            <p>总经理</p>
-            <p class="online">在线咨询</p>
-          </div>
-        </li>
-      </ul>-->
       <!-- 经营品类 -->
-      <div class="management-class">
+      <div class="management-class  brand-msg">
         <div class="tit">
-          <div class="wrapper">
             <img src="@/assets/image/brandDetail/u4675.png" alt>
             <span>经营品类</span>
-          </div>
         </div>
         <ul class="list">
           <li @click="AllSend(-1)" :class="{avtive:listFlag = -1}">
@@ -100,42 +65,43 @@
           </li>
         </ul>
       </div>
-      <!-- 搜索热卖 -->
-      <!-- <HotSearch @input="hotSearchValue"></HotSearch> -->
-      <SearchInput
-        class="search"
-        :placeholder="'搜索罗彻斯特电子(RE)产品'"
-        :width="770"
-        :height="80"
-        :btnWidth="120"
-        @input="hotSearchValue"
-        @submit="hotSearchsubmit"
-      ></SearchInput>
-      <!-- 品牌热卖 -->
-      <div class="brand-hot">
+      <div class="brand-hot brand-msg">
         <div class="tit">
-          <div class="wrapper">
             <img src="@/assets/image/brandDetail/u4832.png" alt>
             <span>品牌热卖</span>
-            <span>|</span>
-            <span>查看全部</span>
-          </div>
+<!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->
+<!--            <span>查看全部</span>-->
+            <!-- 搜索热卖 -->
+            <SearchInput
+                class="clear fr"
+                :value="valueName"
+                :width="350"
+                :height="40"
+                :placeholder="'搜索热卖产品'"
+                :fontSize="14"
+                :btnImgWidth="20"
+                :btnWidth="40"
+                :borderColor="'#fff'"
+                @input="hotSearchValue"
+                @submit="hotSearchsubmit"
+            ></SearchInput>
+            <!-- 品牌热卖 -->
         </div>
         <!--  排序-->
-        <ul class="sort-type">
-          <li
-            :class="{active:sortFlag == k }"
-            v-for="(item, k) in sortTypeList"
-            :key="`sortTypeList_${item.val}`"
-            @click="sortTab(k,item)"
-          >
-            {{item.name}}
-            <img
-              :src="item.sortImgFlag ? require('@/assets/image/home/arrow_b.png') :  require('@/assets/image/home/arrow_t.png')"
-              alt
-            >
-          </li>
-        </ul>
+<!--        <ul class="sort-type clear">-->
+<!--          <li-->
+<!--            :class="{active:sortFlag == k }"-->
+<!--            v-for="(item, k) in sortTypeList"-->
+<!--            :key="`sortTypeList_${item.val}`"-->
+<!--            @click="sortTab(k,item)"-->
+<!--          >-->
+<!--            {{item.name}}-->
+<!--            <img-->
+<!--              :src="item.sortImgFlag ? require('@/assets/image/home/arrow_b.png') :  require('@/assets/image/home/arrow_t.png')"-->
+<!--              alt-->
+<!--            >-->
+<!--          </li>-->
+<!--        </ul>-->
         <SubstituModelList :list="ProductnformaList"></SubstituModelList>
         <Pagination :currentPage.sync="currentPage" :total="total"></Pagination>
       </div>
@@ -206,9 +172,9 @@ export default {
       return {
         brandId: this.brandId,
         name: this.valueName,
-        sort_filds: this.sort_filds,
+      //  sort_filds: this.sort_filds,
         start: this.start,
-        sort_type: this.sort_type ? 0 : 1
+      //  sort_type: this.sort_type ? 0 : 1
       };
     }
   },
@@ -242,7 +208,7 @@ export default {
       this.AllSend;
     },
     send(k, item) {
-      
+
       this.listFlag = k;
       this.parent_id = item.catergoryId;
       this.$router.push({

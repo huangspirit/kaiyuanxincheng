@@ -63,7 +63,7 @@
         mounted(){
             console.log(this.item);
             this.count=this.item.moq;
-            if(this.item.priceList){
+            if(this.item.price_type){
                 this.price=parseFloat(this.item.priceList[0].price);
 
             }else{
@@ -139,11 +139,11 @@
                 }
                 if(!item.goods_type){
                     //标识期货
-                    obj={...obj,
-                        complete_date: item.complete_date,
-                        diliver_date: item.diliver_date,
-                        end_date: item.end_date
-                    }
+                    // obj={...obj,
+                    //     complete_date: item.complete_date,
+                    //     diliver_date: item.diliver_date,
+                    //     end_date: item.end_date
+                    // }
                 }
                 orderJson.push(obj)
                 let billObj = {

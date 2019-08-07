@@ -1,9 +1,25 @@
 <template>
   <div class="SubstituModelList">
-    <ul class="substitu-model-list">
-      <li v-for="item in list" :key="`list_${item.id}`">
-        <div class="product">
-          <div class="model-list-t">
+    <ul class="substitu-model-list clear">
+      <li v-for="(item,k) in modelList" :key="`list_${item.id}`" >
+        <div class="product clear">
+            <div class="model-list-b fr">
+                <ButtonIcon :width="145" :height="50">
+                    <img src="@/assets/image/brandDetail/u4504.png" alt />
+                    申请特价
+                </ButtonIcon>
+<!--                <ButtonIcon :width="145" :height="50">-->
+<!--                    <img src="@/assets/image/brandDetail/u4504.png" alt />-->
+<!--                    我有特价-->
+<!--                </ButtonIcon>-->
+                <span @click="addInquiry(k)">
+                  <img src="@/assets/image/brandDetail/_u4518.png" alt />
+                </span>
+                <span @click="focus(k)">
+                  <img src="@/assets/image/brandDetail/_u4510.png" alt />
+                </span>
+            </div>
+          <div class="model-list-t clear fl">
             <div class="TabImage">
               <ImgE :src="item.imageUrl" :W="190" :H="190"></ImgE>
             </div>
@@ -20,48 +36,17 @@
                 class="name"
                 tag="p"
               >{{item.productno}}</router-link>
-              <router-link
-                :to="{
-                path:'/BrandDetail',
-                query:{
-                  tag:'brand',
-                  name:item.brand,
-                  documentid:item.brandId
-                }
-             }"
-                class="brand"
-                tag="p"
-              >
-                <span>品牌：</span>
-                {{item.brand}}
-              </router-link>
-              <!-- <p class="query">
-                <span>基本参数：</span>
-                <span class="view-document" @click="dialogTableVisible = true">查看参数</span>
-                <el-dialog title="基本参数" :visible.sync="dialogTableVisible" :center="true" border>
-                  <el-table :data="item.list" border>
-                    <el-table-column property="name" label="类型"></el-table-column>
-                    <el-table-column property="value" label="参数"></el-table-column>
-                  </el-table>
-                </el-dialog>
-              </p>-->
-              <!-- <p class="query">
-                <span>技术文档：</span>
-                <span class="view-document" @click="viewDocument">查看文档</span>
-                <el-dialog title="基本参数" :visible.sync="dialogTableVisible2" :center="true" border>
-                  <div v-loading="loading">
-                    <pdf ref="pdf" :src="item.datasheet"></pdf>
-                  </div>
-                </el-dialog>
-              </p>-->
+                <p>
+                    <span>品牌：</span>
+                    {{item.brand}}
+                </p>
               <P>
                 <span>型号描述：</span>
                 {{item.productdesc}}
               </P>
-
               <p v-if="item.map">
                 <span v-if="!item.map.totalSeller">
-                  <span class="num">暂无供应商报价</span>
+                  <span class="nolist">暂无供应商报价</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
@@ -71,42 +56,8 @@
                     class="num"
                   >￥{{ item.map.minPrice | toFixed }}——￥{{item.map.maxPrice | toFixed}}</span>
                 </span>
-                <!-- <router-link
-                  v-if="item.map.totalSeller"
-                  to="/BrandDetail/GoodsDetails"
-                  class="detail"
-                  tag="span"
-                >详情>></router-link>-->
               </p>
             </div>
-            <!-- <div class="quote">
-              <span>{{item.priceunit == 'USD'? '$' : '￥'}}{{item.price}}</span>
-              <span>原厂报价</span>
-            </div>-->
-          </div>
-          <div class="model-list-b">
-            <ButtonIcon :width="145" :height="50">
-              <img src="@/assets/image/brandDetail/u4504.png" alt />
-              申请特价
-            </ButtonIcon>
-            <ButtonIcon :width="145" :height="50">
-              <img src="@/assets/image/brandDetail/u4504.png" alt />
-              我有特价
-            </ButtonIcon>
-
-            <!-- <ButtonIcon :width="145" :height="50">
-              <img src="@/assets/image/brandDetail/u4504.png" alt>
-              去采购
-            </ButtonIcon>-->
-            <!-- <span>
-              <img src="@/assets/image/brandDetail/u10698.png" alt>
-            </span>-->
-            <span @click="addInquiry(item)">
-              <img src="@/assets/image/brandDetail/_u4518.png" alt />
-            </span>
-            <span>
-              <img src="@/assets/image/brandDetail/_u4510.png" alt />
-            </span>
           </div>
         </div>
         <MerchantList :id="item.id" v-if="item.map.totalSeller"></MerchantList>
@@ -114,9 +65,10 @@
     </ul>
   </div>
 </template>
-
+<style lang="less" scoped>
+    @import "./SubstituModelList.less";
+</style>
 <script>
-import "./SubstituModelList.less";
 import Pdf from "_c/Pdf";
 import { setTimeout } from "timers";
 import pdf from "vue-pdf";
@@ -128,7 +80,8 @@ export default {
     return {
       dialogTableVisible: false,
       dialogTableVisible2: false,
-      loading: true
+      loading: true,
+        modelList:[]
     };
   },
   props: {
@@ -137,6 +90,9 @@ export default {
       default: () => []
     }
   },
+    created(){
+      this.modelList=this.list
+    },
   methods: {
     viewDocument() {
       this.loading = true;
@@ -145,14 +101,18 @@ export default {
         this.loading = false;
       }, 4000);
     },
-    addInquiry(val) {
-      console.log(val);
+    addInquiry(k) {
+        if(!this.loginState){
+            this.$router.push('/Login')
+            return;
+        }
+      let val=this.modelList[k]
       var obj = {
         sellerGoodsId: val.id,
+        goodsId:val.id,
         sellerId: val.brandId,
         goodsSource: "2",
         goodsName:val.productno,
-        bucketId:val.bucketId
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
@@ -162,9 +122,31 @@ export default {
             this.$message.success("添加成功")
           }
         });
-    }
+    },
+      focus(k){
+          if(!this.loginState){
+              this.$router.push('/Login')
+              return;
+          }
+          let obj={
+              goods_id:this.modelList[k].id,
+              catergory_id: this.modelList[k].classificationId,
+              favour_type: "1",
+          };
+          axios
+              .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
+              .then(res => {
+                  this.$set(this.modelList[k],"focus",true)
+                  // this.$message.success("已关注");
+              });
+      }
   },
   components: { pdf, MerchantList },
+    computed: {
+        loginState(){
+            return this.$store.state.loginState
+        }
+    },
   filters: {
     toFixed(value) {
       return Number(value).toFixed(3);

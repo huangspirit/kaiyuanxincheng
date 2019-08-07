@@ -283,7 +283,7 @@ export default [
     },
     // 品牌详情
     {
-        path: '/BrandDetail/',
+        path: '/BrandDetail',
         // name: 'BrandDetail',
         component: () => import('@/views/BrandDetail'),
         meta: {

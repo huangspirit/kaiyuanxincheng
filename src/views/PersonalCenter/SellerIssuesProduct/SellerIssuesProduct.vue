@@ -15,7 +15,7 @@
                 class="form-list"
             >
                 <el-form-item label="选择商品：" prop="goods_name" class="selectProduct">
-                    <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  style="width:50%;"></el-input>
+                    <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
                     <ul v-if="selectProductList.length">
                         <li
                             @click.stop="selectProduct(item)"
@@ -716,6 +716,14 @@
                 this.GetSerarchGoods(obj).then(res => {
                     this.selectProductList = res.data;
                 });
+            },
+            SearchBrandBlur(){
+                let item=this.selectProductList[0]
+                this.ruleForm.goods_name = item.productno;
+                this.ruleForm.goods_id = item.id;
+                this.selectProductObj = item;
+                this.ruleForm.catergory_id = item.parent_id;
+                this.selectProductList = [];
             },
             noSelect() {
                 this.selectProductList = [];
