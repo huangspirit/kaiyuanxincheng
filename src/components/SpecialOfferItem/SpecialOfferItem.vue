@@ -246,7 +246,6 @@ export default {
   },
   methods: {
     ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
-    ...mapActions([]),
       //加入购物车
       addCar(){
         let obj={

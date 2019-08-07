@@ -4,34 +4,70 @@
             <span class="close fr" @click="callback">&times;</span>
             <div>
                 <div class="info">
-                    <p class="goodsName">{{currentItem.goods_name}}</p>
-                    <p>库存:{{currentItem.goodsStockCount}}</p>
+                    <p class="goodsName">{{item.goods_name}}</p>
+                    <p>库存:{{item.stockcount}}</p>
                 </div>
                 <div>
-                    购买量：<el-input-number  v-model="currentItem.count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="currentItem.moq"  :max="currentItem.goodsStockCount"  :step="currentItem.mpq"  step-strictly></el-input-number>
+                    购买量：<el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
                 </div>
-                <div>单价: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.price}}</strong></div>
-                <div>总计: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.money | toFixed(4)}}</strong></div>
+                <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
+                <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
                 <div class="btnWrap"><span class="btn" @click="submitPurchase">提交结算</span></div>
             </div>
         </div>
     </transition>
 </template>
 <script>
+    import {mapMutations} from "vuex"
     export default {
         data(){
             return{
-                currentItem:{}
+                //购买量
+                count:0,
+                //对应的购买价格
+                price:0,
+                //对应的总价
+                money:0
             }
         },
         props:{
             item:{
                 type:Object,
-                default:{}
+                default:{
+                    //该组件需要的参数
+                    // goods_id: res.id,
+                    // goods_name: res.productno,
+                    // goodsDesc: res.productdesc,
+                    // goodsImage: res.imageUrl,
+                    // clude_bill: res.factorySellerInfo.clude_bill,
+                    // price_unit: res.factorySellerInfo.priceunit,
+                    // seckill_goods_id: res.factorySellerInfo.seller_goods_id,
+                    // goods_type:res.factorySellerInfo.goods_type,
+                    // diliver_place: res.factorySellerInfo.diliverPlace,
+                    // moq:0,
+                    // mpq:0,
+                    // stockcount:res.factorySellerInfo.stockcount,
+                    // price_type:res.factorySellerInfo.price_type,
+                    // priceList:[],
+                    // seckil_price:res.factorySellerInfo.seckil_price,
+                    // sellerName: this.item0.sellerName,       商家信息
+                    // sellerHeader: this.item0.headUrl,        商家信息
+                    // seller_id: this.item0.seller_id,         商家信息
+                    // tag: this.item0.tag,                     商家信息
+                }
             }
         },
         mounted(){
-            this.currentItem=this.item;
+            console.log(this.item);
+            this.count=this.item.moq;
+            if(this.item.priceList){
+                this.price=parseFloat(this.item.priceList[0].price);
+
+            }else{
+                this.price=this.item.seckil_price;
+
+            }
+            this.money=this.count*this.price
         },
         filters:{
             toFixed(val,length){
@@ -39,6 +75,7 @@
             }
         },
         methods:{
+            ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
             callback(){
                 this.$emit("closeCallBack")
             },
@@ -47,7 +84,7 @@
                 this.handleChange(e);
             },
             handleChange(e){
-                let obj = this.currentItem;
+                let obj = this.item;
                 let currentPrice=0;
                 if(obj.priceList){
                     if(obj.priceList.length==1){
@@ -70,45 +107,45 @@
 
                         }else{
                             currentPrice=parseFloat(obj.priceList[2].price);
-
                         }
                     }
                 }else{
-                    currentPrice=obj.goodsPrice
+                    currentPrice=obj.seckil_price
                 }
-                this.currentItem={...obj,price:currentPrice,money:e*currentPrice,count:e}
+                this.price=currentPrice;
+                this.count=e;
+                this.money=e*currentPrice
             },
             submitPurchase(){
-                console.log(this.currentItem);
-                let item=this.currentItem
-                let orderJson=[]
+                let item=this.item
+                let orderJson=[];
                 let obj={
-                    seckill_goods_id: item.id,
                     goods_id: item.goods_id,
-                    goods_name: item.goods_name,
-                    goods_count: item.count,
-                    goods_price: item.price,
-                    order_channe: 1,
-                    clude_bill: item.includBill,
-                    pay_channe: 1,
-                    price_unit: item.priceUnit,
-                    goods_type:item.goods_type,
-                    sellerName: this.item0.sellerName,
-                    sellerHeader: this.item0.headUrl,
-                    seller_id: this.item0.seller_id,
-                    tag: this.item0.tag,
                     goodsDesc: item.goodsDesc,
-                    goodsImage: item.goodsImageUrl,
-                    diliver_place: item.diliverPlace,
+                    goodsImage: item.goodsImage,
+                    goods_name: item.goods_name,
+                    diliver_place: item.diliver_place,
+                    seckill_goods_id: item.seckill_goods_id,
+                    clude_bill: item.clude_bill,
+                    price_unit: item.price_unit,
+                    goods_type:item.goods_type,
+                    sellerName: item.sellerName,
+                    sellerHeader: item.sellerHeader,
+                    seller_id: item.seller_id,
+                    tag: item.tag,
+                    goods_count: this.count,
+                    goods_price: this.price,
+                    order_channe: 1,
+                    pay_channe: 1,
                 }
-                if(!item.goods_type){
-                    //标识期货
-                    obj={...obj,
-                        complete_date: item.deliverTime,
-                        diliver_date: item.deliverTime,
-                        end_date: item.endTime
-                    }
-                }
+                // if(!item.goods_type){
+                //     //标识期货
+                //     obj={...obj,
+                //         complete_date: item.complete_date,
+                //         diliver_date: item.diliver_date,
+                //         end_date: item.end_date
+                //     }
+                // }
                 orderJson.push(obj)
                 let billObj = {
                     billtype: "1",
@@ -134,6 +171,7 @@
                         data: JSON.stringify(res),
                         obj2: JSON.stringify(obj2)
                     }));
+
                     this.$router.push({
                         path: "/ShoppingCart/ShoppingSettlement",
                     });
@@ -149,9 +187,9 @@
         left:0;
         width:100%;
         background: #f4f4f4;
-        border-top:1px solid #999;
         padding:15px;
         box-sizing:border-box;
+        box-shadow: 0 0 5px 1px #999;
         .close{
             font-size:20px;
             width:20px;

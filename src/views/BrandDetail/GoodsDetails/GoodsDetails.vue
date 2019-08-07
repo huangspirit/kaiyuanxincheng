@@ -10,6 +10,7 @@
       <div class="goods-detail-con clear">
           <!-- 商品文字信息 -->
             <!-- 图片切换 -->
+          <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase"></Purchase>
               <ImgE :src="goodsinfo.imageUrl" :W="210" :H="210" class="ImgE fl"></ImgE>
             <div class="text-cont fl">
               <p class="name">{{goodsinfo.productno}}</p>
@@ -23,10 +24,10 @@
                     <a>{{goodsinfo.classification}}</a>
                 </p>
 
-                <P class="desc brand">
+                <p class="desc brand">
                   <label>功能描述：</label>
                   {{goodsinfo.productdesc}}
-                </P>
+                </p>
                   <p class="btn">
                       <template>
                           <span v-if="goodsinfo.focus">
@@ -165,12 +166,14 @@ export default {
     return {
       loading: false,
       goodsinfo: {},
+      purchaseObj:{},
       // 技术参数
       datasheet: "",
       // 下载技术参数的路径
       downDatasheet: "",
       // loading
-      loading: true
+      loading: true,
+      showPurchase:false
     };
   },
   components: {
@@ -237,6 +240,7 @@ export default {
               this.$router.push('/Login')
               return;
           }
+          this.showPurchase=true
       }
 
   },
@@ -247,7 +251,36 @@ export default {
        if(res.factorySellerInfo.price_type){
            res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
        }
-        this.goodsinfo = res;
+       this.goodsinfo = res;
+       this.purchaseObj={
+           goods_id: res.id,
+           goods_name: res.productno,
+           goodsDesc: res.productdesc,
+           goodsImage: res.imageUrl,
+           clude_bill: res.factorySellerInfo.clude_bill,
+           price_unit: res.factorySellerInfo.priceunit,
+           seckill_goods_id: res.factorySellerInfo.seller_goods_id,
+           goods_type:res.factorySellerInfo.goods_type,
+           diliver_place: res.factorySellerInfo.diliver_place,
+           moq:Number(res.factorySellerInfo.moq),
+           mpq:Number(res.factorySellerInfo.mpq),
+           stockcount:res.factorySellerInfo.stockcount,
+           price_type:res.factorySellerInfo.price_type,
+           priceList:res.factorySellerInfo.priceList,
+           seckil_price:res.factorySellerInfo.seckil_price,
+           sellerName: res.factorySellerInfo.seller_name,
+           sellerHeader: res.factorySellerInfo.seller_header,
+           seller_id: res.factorySellerInfo.seller_id,
+           tag: 1,
+       }
+       // if(!res.factorySellerInfo.seller_always){
+       //     this.purchaseObj={
+       //         ...this.purchaseObj,
+       //         complete_date: res.factorySellerInfo.complete_date,
+       //         diliver_date: res.factorySellerInfo.complete_date,
+       //         end_date: res.factorySellerInfo.end_date
+       //     }
+       // }
         this.searchDatasheet(res.id)
       });
   },

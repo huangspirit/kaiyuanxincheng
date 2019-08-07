@@ -13,7 +13,7 @@
         <th>操作</th>
       </thead>
       <tbody>
-        <template v-for="item in MerchantList">
+        <template v-for="(item,k) in MerchantList">
             <tr class="MerchantItem"  :key="item.id">
                 <td class="info">
                     <div>
@@ -69,8 +69,8 @@
                         </div>
                 </td>
                 <td class="operation">
-                    <p @click="purchase">购买</p>
-                    <p @click="addCar">加入购物车</p>
+                    <p @click="purchase(k)">购买</p>
+                    <p @click="addCar(k)">加入购物车</p>
                 </td>
             </tr>
         </template>
@@ -89,8 +89,8 @@
 <script>
 import {TimeForma2,ladderPrice} from "../../lib/utils";
 import {axios,home} from "../../api/apiObj";
-import { mapActions} from "vuex";
-import { constants } from "crypto";
+// import { mapActions} from "vuex";
+// import { constants } from "crypto";
 export default {
   name: "MerchantList",
   props: {

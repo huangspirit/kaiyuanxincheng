@@ -13,7 +13,7 @@ import uploadImg from '_c/uploadImg'
 import HeaderSearch from '_c/HeaderSearch'
 import CountTime from "_c/countTime";
 import SetTankuang from "_c/SetTankuang"
-import IndexPagination from "_c/IndexPagination"
+import Purchase from "_c/purchase"
 import './plugins/element.js'
 
 Vue.config.productionTip = false
@@ -28,7 +28,7 @@ Vue.component('uploadImg', uploadImg)
 Vue.component('HeaderSearch', HeaderSearch)
 Vue.component('CountTime', CountTime)
 Vue.component('SetTankuang', SetTankuang)
-Vue.component('IndexPagination', IndexPagination)
+Vue.component('Purchase', Purchase)
 import filters from "./lib/filters";
 window.eventBus = new Vue
 Object.keys(filters).forEach((key) => {
