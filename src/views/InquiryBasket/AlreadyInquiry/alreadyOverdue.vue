@@ -2,10 +2,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
@@ -56,10 +53,7 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
-              </p>
+              <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
             </el-col>
           </el-row>
         </li>
@@ -119,7 +113,7 @@ export default {
     },
     change(val) {
       console.log(val);
-      this.start = val;
+      this.start = val - 1;
       this.getAllReplyList();
     }
   }
@@ -216,11 +210,15 @@ export default {
           }
         }
         .goodPrice {
-          > p {
-            color: #4a5a6a;
-            > span {
-              color: #000;
-            }
+          .failure {
+            width: 130px;
+            font-size: 20px;
+            padding: 5px 0;
+            color: #fff;
+            text-align: center;
+            background-color: #bcbcbc;
+            margin-top: 45px;
+            margin-left: 30%;
           }
         }
       }

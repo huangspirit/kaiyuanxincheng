@@ -156,10 +156,11 @@ export default {
       },
       addInquiry(index){
         let obj={
-            goodsSource:2,
+            goodsSource:'2',
             sellerGoodsId:this.goodsList[index].goods_id,
             sellerId:this.goodsList[index].goodsBase.brandId,
-            goodsName:this.goodsList[index].goodsBase.productno
+            goodsName:this.goodsList[index].goodsBase.productno,
+            goodsId:this.goodsList[index].goods_id
         }
           axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
                 this.$message.success("已加入询价篮")

@@ -201,6 +201,7 @@ export default {
         }
       var obj = {
         sellerGoodsId: this.goodsinfo.id,
+        goodsId:this.goodsinfo.id,
         sellerId:this.goodsinfo.brandId,
         goodsSource: "2",
         goodsName: this.goodsinfo.productno,
@@ -238,8 +239,7 @@ export default {
               sellerGoodsId: this.goodsinfo.factorySellerInfo.seller_goods_id,
               sellerId:this.goodsinfo.factorySellerInfo.seller_id,
               goodsSource: "1",
-              goodsName:this.goodsinfo.productno,
-              goodsId:this.goodsinfo.id
+              goodsName:this.goodsinfo.productno
           };
           axios
               .request({ ...shoppingCar.insertShoppingCar, params: obj })

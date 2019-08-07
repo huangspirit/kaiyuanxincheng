@@ -219,8 +219,7 @@ export default {
               sellerGoodsId: this.MerchantList[k].id,
               sellerId:this.MerchantList[k].sellerId,
               goodsSource: "1",
-              goodsName:this.MerchantList[k].goods_name,
-              goodsId:this.MerchantList[k].goods_id
+              goodsName:this.MerchantList[k].goods_name
           };
           axios.request({ ...shoppingCar.insertShoppingCar, params: obj })
               .then(res => {

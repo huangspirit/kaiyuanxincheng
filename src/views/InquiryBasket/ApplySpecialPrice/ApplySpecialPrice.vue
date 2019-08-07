@@ -11,36 +11,33 @@
             <span class="attention">-已关注</span>
           </div>
           <div class="product-msg-text">
-            <p class="name">{{proInformation.productno}}</p>
+            <p class="name">{{oneData.productno}}</p>
             <P>
               <label>品牌：</label>
-              {{proInformation.brand}}
+              {{oneData.brand}}
             </P>
             <p>
               <label>型号描述：</label>
-              {{proInformation.productdesc}}
+              {{oneData.productdesc}}
             </p>
 
             <p>
               共有
-              <span class="num">{{proInformation.map.totalSeller}}</span>
+              <span class="num">{{oneData.map.totalSeller}}</span>
               个供应商报价
-              <span
-                v-if="proInformation.map.totalSeller != 0"
-                class="num"
-              >￥2.5——￥4.0</span>
+              <span v-if="oneData.map.totalSeller != 0" class="num">￥2.5——￥4.0</span>
             </p>
           </div>
-          <div class="LadderPrice" v-if="proInformation.factorySellerInfo.price_level != undefined">
+          <div class="LadderPrice" v-if="oneData.factorySellerInfo.price_level != undefined">
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
-              <div v-for="(item, k) in proInformation.ladderPrice" :key="k">
+              <div v-for="(item, k) in oneData.ladderPrice" :key="k">
                 <span>{{item.num}}+</span>
                 <span>￥{{item.price}}</span>
               </div>
             </div>
           </div>
-          <div v-if="proInformation.factorySellerInfo.price_level == undefined" class="LadderPrice">
+          <div v-if="oneData.factorySellerInfo.price_level == undefined" class="LadderPrice">
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
               <p style="text-align: center">暂无原厂报价</p>
@@ -48,8 +45,8 @@
           </div>
         </div>
         <div class="brans-msg">
-          <img :src="proInformation.brandImageUrl" class="bd-img" alt />
-          <p>{{proInformation.brand}}</p>
+          <img :src="oneData.brandImageUrl" class="bd-img" alt />
+          <p>{{oneData.brand}}</p>
           <p>
             <!-- <span>
               <img src="@/assets/image/inquirybasket/u4858.png" alt />
@@ -65,22 +62,22 @@
           <el-form-item label="公司名称" prop="companyName">
             <el-input v-model="formAlign.companyName"></el-input>
           </el-form-item>
-          <el-form-item label="公司网址" prop="companyHttp">
-            <el-input v-model="formAlign.companyHttp"></el-input>
+          <el-form-item label="公司网址" prop="website">
+            <el-input v-model="formAlign.website"></el-input>
           </el-form-item>
           <el-form-item label="项目名称" prop="projectName">
             <el-input v-model="formAlign.projectName"></el-input>
           </el-form-item>
-          <el-form-item label="产品阶段" prop="productPhase">
-            <el-input v-model="formAlign.productPhase"></el-input>
+          <el-form-item label="产品阶段" prop="projectProcess">
+            <el-input v-model="formAlign.projectProcess"></el-input>
           </el-form-item>
           <el-form-item label="预计量产时间" prop="projectBeginTime">
             <div class="product-time">
               <el-date-picker v-model="formAlign.projectBeginTime" type="month" placeholder="选择年月"></el-date-picker>
             </div>
           </el-form-item>
-          <el-form-item v-if="topShow" class="acceptPrice" label="接受价格" prop="price">
-            <el-input placeholder="请输入价格" v-model="formAlign.price" class="input-with-select">
+          <el-form-item v-if="topShow" class="acceptPrice" label="接受价格" prop="acceptPrice">
+            <el-input placeholder="请输入价格" v-model="formAlign.acceptPrice" class="input-with-select">
               <span slot="prepend" v-if="formAlign.priceType=='false'">￥</span>
               <span slot="prepend" v-else>$</span>
               <el-select
@@ -89,28 +86,28 @@
                 placeholder="请选择"
                 @change="selectChange"
               >
-                <el-option :label="'人民币'" :value="false"></el-option>
-                <el-option :label="'美元'" :value="true"></el-option>
+                <el-option :label="'人民币'" value="false"></el-option>
+                <el-option :label="'美元'" value="true"></el-option>
               </el-select>
             </el-input>
           </el-form-item>
-          <el-form-item v-if="topShow" label="年采购量" class="purchaseAmount" prop="amountPurchased">
+          <el-form-item v-if="topShow" label="年采购量" class="purchaseAmount" prop="projectEau">
             <el-input
               placeholder="请输入采购量"
-              v-model="formAlign.amountPurchased"
+              v-model="formAlign.projectEau"
               class="input-with-select unit"
             ></el-input>
           </el-form-item>
-          <el-form-item label="联系人" class="contact" prop="user">
-            <el-input v-model="formAlign.user" placeholder="姓名"></el-input>
+          <el-form-item label="联系人" class="contact" prop="contactName">
+            <el-input v-model="formAlign.contactName" placeholder="姓名"></el-input>
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="职位" class="contact" prop="position">
             <el-input v-model="formAlign.position" placeholder="姓名"></el-input>
             <span slot="append">K</span>
           </el-form-item>
-          <el-form-item label="电话" class="contact" prop="telephone">
-            <el-input v-model="formAlign.telephone" placeholder="请输入内容" type="number"></el-input>
+          <el-form-item label="电话" class="contact" prop="telphone">
+            <el-input v-model="formAlign.telphone" placeholder="请输入内容" type="number"></el-input>
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="备注说明" class="contact" prop="remark">
@@ -162,10 +159,10 @@
                     ref="editPrice"
                     label-width="80px"
                   >
-                    <el-form-item class="acceptPrice" label="接受价格" prop="price">
+                    <el-form-item class="acceptPrice" label="接受价格" prop="acceptPrice">
                       <el-input
                         placeholder="请输入价格"
-                        v-model="listItem.price"
+                        v-model="listItem.acceptPrice"
                         class="input-with-select"
                       >
                         <span slot="prepend" v-if="listItem.priceType=='false'">￥</span>
@@ -181,11 +178,11 @@
                         </el-select>
                       </el-input>
                     </el-form-item>
-                    <el-form-item label="年采购量" class="purchaseAmount" prop="amountPurchased">
+                    <el-form-item label="年采购量" class="purchaseAmount" prop="projectEau">
                       <el-input
                         placeholder="请输入采购量"
                         @input="listChange"
-                        v-model="listItem.amountPurchased"
+                        v-model="listItem.projectEau"
                         class="input-with-select unit"
                       ></el-input>
                     </el-form-item>
@@ -225,33 +222,33 @@ export default {
     return {
       formAlign: {
         companyName: "",
-        companyHttp: "",
+        website: "",
         projectName: "",
-        productPhase: "",
-        user: "",
-        telephone: "",
-        price: "",
+        projectProcess: "",
+        contactName: "",
+        telphone: "",
+        acceptPrice: "",
         priceType: "false",
         remark: "",
         projectBeginTime: "",
-        amountPurchased: "",
+        projectEau: "",
         position: ""
       },
       rules: {
         companyName: [
           { required: true, message: "公司名称不能为空", trigger: "blur" }
         ],
-        companyHttp: [
-          { required: true, message: "网址不能为空", trigger: "blur" }
-        ],
+        website: [{ required: true, message: "网址不能为空", trigger: "blur" }],
         projectName: [
           { required: true, message: "项目名称不能为空", trigger: "blur" }
         ],
-        productPhase: [
+        projectProcess: [
           { required: true, message: "产品不能为空", trigger: "blur" }
         ],
-        user: [{ required: true, message: "联系人不能为空", trigger: "blur" }],
-        telephone: [
+        contactName: [
+          { required: true, message: "联系人不能为空", trigger: "blur" }
+        ],
+        telphone: [
           { required: true, message: "手机号不能为空", trigger: "blur" },
           {
             pattern: /^1[3456789]\d{9}$/,
@@ -261,13 +258,13 @@ export default {
             trigger: "blur"
           }
         ],
-        price: [
+        acceptPrice: [
           { required: true, message: "接受价格不能为空", trigger: "blur" }
         ],
         projectBeginTime: [
           { required: true, message: "预计量产时间不能为空", trigger: "blur" }
         ],
-        amountPurchased: [
+        projectEau: [
           { required: true, message: "年采购量不能为空", trigger: "blur" }
         ],
         position: [
@@ -277,7 +274,8 @@ export default {
       editPriceRules: {},
       topShow: false,
       checked: true,
-      productData: []
+      productData: [],
+      oneData: []
     };
   },
   computed: {
@@ -288,13 +286,19 @@ export default {
       this.topShow = false;
       for (var i = 0; i < this.proInformation.length; i++) {
         this.proInformation[i]["priceType"] = "false";
-        this.proInformation[i]["price"] = "";
-        this.proInformation[i]["amountPurchased"] = "";
+        this.proInformation[i]["acceptPrice"] = "";
+        this.proInformation[i]["projectEau"] = "";
         this.proInformation[i]["insteadNo"] = "";
       }
       this.productData = this.proInformation;
     } else {
-      console.log("2");
+      if (this.proInformation.goodsbaseIno) {
+        this.oneData = this.proInformation.goodsbaseIno;
+        this.formAlign = this.proInformation;
+      } else {
+        this.oneData = this.proInformation;
+      }
+
       this.topShow = true;
     }
   },
@@ -310,21 +314,21 @@ export default {
             )[1];
             var obj = {
               projectName: this.formAlign.projectName,
-              projectProcess: this.formAlign.productPhase,
+              projectProcess: this.formAlign.projectProcess,
               projectBeginTime: projectBeginTime,
-              projectEau: this.formAlign.amountPurchased,
-              acceptPrice: this.formAlign.price,
+              projectEau: this.formAlign.projectEau,
+              acceptPrice: this.formAlign.acceptPrice,
               companyName: this.formAlign.companyName,
-              website: this.formAlign.companyHttp,
-              contactName: this.formAlign.user,
+              website: this.formAlign.website,
+              contactName: this.formAlign.contactName,
               position: this.formAlign.position,
-              telphone: this.formAlign.telephone,
+              telphone: this.formAlign.telphone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
-              brandId: this.proInformation.brandId,
-              goodsName: this.proInformation.productno,
-              requestId: this.proInformation.id,
-              bucketId: this.proInformation.bucketId,
+              brandId: this.oneData.brandId,
+              goodsName: this.oneData.productno,
+              requestId: this.oneData.id,
+              bucketId: this.oneData.bucketId,
               acceptUnit: this.formAlign.priceType
             };
             axios
@@ -333,7 +337,7 @@ export default {
                 console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
-                  this.$router.push("/InquiryBasket/Inquiry");
+                  this.$router.push("/InquiryBasket/Inquiry/waitInquiry");
                 }
               });
           } else {
@@ -346,8 +350,8 @@ export default {
             this.proInformation.forEach(element => {
               infoData.push({
                 requestId: element.id,
-                acceptPrice: element.price,
-                projectEau: element.amountPurchased,
+                acceptPrice: element.acceptPrice,
+                projectEau: element.projectEau,
                 insteadNo: element.insteadNo,
                 goodsName: element.productno,
                 brandId: element.brandId,
@@ -358,13 +362,13 @@ export default {
             var orderData = JSON.stringify(infoData);
             var obj = {
               projectName: this.formAlign.projectName,
-              projectProcess: this.formAlign.productPhase,
+              projectProcess: this.formAlign.projectProcess,
               projectBeginTime: projectBeginTime,
               companyName: this.formAlign.companyName,
-              website: this.formAlign.companyHttp,
-              contactName: this.formAlign.user,
+              website: this.formAlign.website,
+              contactName: this.formAlign.contactName,
               position: this.formAlign.position,
-              telphone: this.formAlign.telephone,
+              telphone: this.formAlign.telphone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
 
@@ -375,7 +379,7 @@ export default {
               .then(res => {
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
-                  this.$router.push("/InquiryBasket/Inquiry");
+                  this.$router.push("/InquiryBasket/Inquiry/waitInquiry");
                 }
               });
           }
@@ -383,7 +387,8 @@ export default {
       });
     },
     selectChange(e) {
-      console.log(this.priceType);
+      console.log(this.formAlign);
+      this.formAlign = Object.assign({}, this.formAlign);
     },
     listChange(index) {
       this.productData = Object.assign([], this.productData);
