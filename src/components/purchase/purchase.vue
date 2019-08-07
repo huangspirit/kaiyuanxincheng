@@ -54,6 +54,9 @@
                     // sellerHeader: this.item0.headUrl,        商家信息
                     // seller_id: this.item0.seller_id,         商家信息
                     // tag: this.item0.tag,                     商家信息
+                    // complete_date: item.complete_date,
+                    // diliver_date: item.diliver_date,
+                    // end_date: item.end_date
                 }
             }
         },
@@ -134,14 +137,14 @@
                     order_channe: 1,
                     pay_channe: 1,
                 }
-                // if(!item.goods_type){
-                //     //标识期货
-                //     obj={...obj,
-                //         complete_date: item.complete_date,
-                //         diliver_date: item.diliver_date,
-                //         end_date: item.end_date
-                //     }
-                // }
+                if(!item.goods_type){
+                    //标识期货
+                    obj={...obj,
+                        complete_date: item.complete_date,
+                        diliver_date: item.diliver_date,
+                        end_date: item.end_date
+                    }
+                }
                 orderJson.push(obj)
                 let billObj = {
                     billtype: "1",

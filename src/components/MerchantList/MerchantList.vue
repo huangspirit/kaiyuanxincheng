@@ -110,8 +110,8 @@ export default {
         MerchantList:[],
         pageSize:10,
         getMore:false,
-        purchaseObj:{},
-        showPurchase:false
+        // purchaseObj:{},
+        // showPurchase:false
     };
   },
   computed: {
@@ -214,10 +214,9 @@ export default {
               sellerId:this.MerchantList[k].sellerId,
               goodsSource: "1",
               goodsName:this.MerchantList[k].goods_name,
-              goodsId:this.MerchantList[k].goodsId
+              goodsId:this.MerchantList[k].goods_id
           };
-          axios
-              .request({ ...shoppingCar.insertShoppingCar, params: obj })
+          axios.request({ ...shoppingCar.insertShoppingCar, params: obj })
               .then(res => {
                   this.$message.success("添加成功");
               });
