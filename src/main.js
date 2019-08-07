@@ -30,10 +30,10 @@ Vue.component('CountTime', CountTime)
 Vue.component('SetTankuang', SetTankuang)
 Vue.component('Purchase', Purchase)
 import filters from "./lib/filters";
-window.eventBus = new Vue
+window.eventBus = new Vue;
 Object.keys(filters).forEach((key) => {
     Vue.filter(key, filters[key][key])
-})
+});
 new Vue({
     router,
     store,

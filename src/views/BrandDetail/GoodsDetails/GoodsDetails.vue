@@ -239,6 +239,7 @@ export default {
               sellerId:this.goodsinfo.factorySellerInfo.seller_id,
               goodsSource: "1",
               goodsName:this.goodsinfo.productno,
+              goodsId:this.goodsinfo.id
           };
           axios
               .request({ ...shoppingCar.insertShoppingCar, params: obj })
