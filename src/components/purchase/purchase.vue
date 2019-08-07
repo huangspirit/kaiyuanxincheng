@@ -63,8 +63,9 @@
         mounted(){
             console.log(this.item);
             this.count=this.item.moq;
-            if(this.item.price_type){
+            if(this.item.priceList){
                 this.price=parseFloat(this.item.priceList[0].price);
+
             }else{
                 this.price=this.item.seckil_price;
 
