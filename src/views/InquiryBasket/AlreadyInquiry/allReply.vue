@@ -56,6 +56,7 @@
                 </p>
                 <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
                   <countTime
+                    v-on:end_callback="getAllReplyList()"
                     :startTime="listItem.projectBeginTime"
                     dayTxt="天"
                     hourTxt="时"
@@ -133,6 +134,7 @@
                 </p>
                 <p>
                   <countTime
+                    v-on:end_callback="getAllReplyList()"
                     :startTime="listItem.projectBeginTime"
                     dayTxt="天"
                     hourTxt="时"
@@ -182,9 +184,9 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
-      this.$on('end_callback',()=>{
-      this.getAllReplyList()
-    })
+    this.$on("end_callback", () => {
+      this.getAllReplyList();
+    });
   },
   components: {
     countTime
