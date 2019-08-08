@@ -28,7 +28,7 @@
               <span v-if="oneData.map.totalSeller != 0" class="num">￥2.5——￥4.0</span>
             </p>
           </div>
-          <div v-if="oneData.factorySellerInfo== 'undefined' " class="LadderPrice">
+          <div v-if="oneData.factorySellerInfo== undefined " class="LadderPrice">
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
               <p style="text-align: center">暂无原厂报价</p>
@@ -36,35 +36,38 @@
           </div>
           <div
             class="LadderPrice"
-            v-if="oneData.factorySellerInfo!= 'undefined'&&oneData.factorySellerInfo.priceType==true"
+            v-if="oneData.factorySellerInfo!= undefined&&oneData.factorySellerInfo.priceType==true"
           >
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
               <div v-for="(item, k) in oneData.ladderPrice" :key="k">
                 <span>{{item.num}}+</span>
-                <span>￥{{item.price}}</span>
+                <span>
+                  <span v-if="item.priceUnit ==true">$</span>
+                  <span v-if="item.priceUnit ==false">￥</span>
+                  {{item.price}}
+                </span>
               </div>
             </div>
           </div>
           <div
-            v-if="oneData.factorySellerInfo!= 'undefined'&&oneData.factorySellerInfo.priceType==false"
+            v-if="oneData.factorySellerInfo!= undefined&&oneData.factorySellerInfo.priceType==false"
             class="LadderPrice"
           >
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
-              <p style="text-align: center">{{oneData.seckilPrice}}</p>
+              <p style="text-align: center">
+                <span v-if="item.priceUnit ==true">$</span>
+                <span v-if="item.priceUnit ==false">￥</span>
+                {{oneData.seckilPrice}}
+              </p>
             </div>
           </div>
         </div>
         <div class="brans-msg">
           <img :src="oneData.brandImageUrl" class="bd-img" alt />
           <p>{{oneData.brand}}</p>
-          <p>
-            <!-- <span>
-              <img src="@/assets/image/inquirybasket/u4858.png" alt />
-              已入驻芯手网
-            </span>-->
-          </p>
+          <p></p>
         </div>
       </div>
       <!-- 申请信息 -->
@@ -153,14 +156,26 @@
                 <div class="goodPrice">
                   <h3>原厂报价</h3>
                   <li
-                    v-if="listItem.factorySellerInfo.price_level != undefined"
+                    v-if="!listItem.factorySellerInfo && listItem.factorySellerInfo.priceType==true"
                     v-for="(subitem,index) in listItem.ladderPrice"
                     :key="index"
                   >
                     <span>{{subitem.num}}+</span> -------
-                    <span>￥{{subitem.price}}</span>
+                    <span>
+                      <span v-if="listItem.priceUnit ==true">$</span>
+                      <span v-if="listItem.priceUnit ==false">￥</span>
+                      {{subitem.price}}
+                    </span>
                   </li>
-                  <li v-if="listItem.factorySellerInfo.price_level == undefined">
+                  <li
+                    v-if="!listItem.factorySellerInfo && listItem.factorySellerInfo.priceType==false"
+                    :key="index"
+                  >
+                    <span v-if="listItem.priceUnit ==true">$</span>
+                    <span v-if="listItem.priceUnit ==false">￥</span>
+                    {{oneData.seckilPrice}}
+                  </li>
+                  <li v-if="listItem.factorySellerInfo == undefined">
                     <p style="text-align: center">暂无原厂报价</p>
                   </li>
                 </div>
