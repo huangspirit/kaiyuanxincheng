@@ -11,7 +11,7 @@
             query:{
               tag:'goodsinfo',
               name:item.goods_name,
-              documentid:item.goods_id
+              id:item.goods_id
             }
           }"
             tag="p"
@@ -23,7 +23,7 @@
             query:{
               tag:'brand',
               name:item.brandName,
-              documentid:item.brandId
+              id:item.brandId
             }
           }"
             tag="p"
@@ -252,7 +252,8 @@ export default {
             sellerId:this.item.sellerId,
             sellerGoodsId:this.item.id,
             goodsSource:1,
-            goodsName:this.item.goods_name
+            goodsName:this.item.goods_name,
+            goodsId:this.item.goods_id
         }
         console.log(this.item)
         axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{

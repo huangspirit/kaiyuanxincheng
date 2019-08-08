@@ -188,6 +188,7 @@
         padding:15px;
         box-sizing:border-box;
         box-shadow: 0 0 5px 1px #999;
+        z-index: 100000000;
         .close{
             font-size:20px;
             width:20px;

@@ -129,7 +129,9 @@ const siderInquiryList = {
 
 }
 const BrandDetail={
-    findGoodsBaseInfoAndExInfo:{url:"api-g/gods-anon/findGoodsBaseInfoAndExInfo"}
+    findGoodsBaseInfoAndExInfo:{url:"api-g/gods-anon/findGoodsBaseInfoAndExInfo"},
+    queryCatergoryByParentId:{url:"api-g/gods-anon/queryCatergoryByParentId"},
+    searchResult:{url:"api-g/gods-anon/searchResult"}
 }
 export {
     axios,

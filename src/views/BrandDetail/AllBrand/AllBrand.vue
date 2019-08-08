@@ -3,7 +3,7 @@
     <div class="BrandDetail-tit">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/BrandDetail' }">{{brandInfo.name}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{brandInfo.name}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
     <!-- // 全部品牌 -->
@@ -19,7 +19,7 @@
             <div class="brand-msg-con-l">
               <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
               <ul>
-                <li>网址：<a href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
+                <li>网址：<a href="brandInfo.brand.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
                 <li v-if="brandInfo.tel">电话：{{brandInfo.tel}}</li>
                 <li v-if="brandInfo.email">邮件：{{brandInfo.email}}</li>
               </ul>
@@ -51,11 +51,11 @@
           <li @click="AllSend(-1)" :class="{avtive:listFlag = -1}">
             <img src="@/assets/image/brandDetail/u1086.png" alt>
             <p>全部品类</p>
-            <p class="num">({{totalCount}})</p>
+            <p class="num">({{brandInfo.count}})</p>
           </li>
           <li
-            v-for="(item, k)  in childrenList"
-            :key="`childrenList_${item.catergoryId}`"
+            v-for="(item, k)  in brandInfo.childrenList"
+            :key="item.catergoryId"
             @click="send(k,item)"
             :class="{avtive:listFlag === k}"
           >
@@ -113,7 +113,6 @@
 </style>
 
 <script>
-
 //import { BrandDetailData } from "@/api/BrandDetail";
 //import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
@@ -131,90 +130,115 @@ export default {
         ProductnformaList:[],
         valueName: "",
         total:0,
+        brandInfo:{},
         //
-      sortFlag: "",
-      // 当前类的id
-      parent_id: "",
-      listFlag: -1,
-      sort_filds: "",
-      // 排序列表
-      sortTypeList: [
-        {
-          val: "",
-          name: "综合排序",
-          sortImgFlag: true
-        },
-        {
-          val: 0,
-          name: "销售总量",
-          sortImgFlag: true
-        },
-        {
-          val: 1,
-          name: "原厂价格",
-          sortImgFlag: true
-        }
-      ],
-      sort_type: 0,
+      // sortFlag: "",
+      // // 当前类的id
+      // parent_id: "",
+      // listFlag: -1,
+      // sort_filds: "",
+      // // 排序列表
+      // sortTypeList: [
+      //   {
+      //     val: "",
+      //     name: "综合排序",
+      //     sortImgFlag: true
+      //   },
+      //   {
+      //     val: 0,
+      //     name: "销售总量",
+      //     sortImgFlag: true
+      //   },
+      //   {
+      //     val: 1,
+      //     name: "原厂价格",
+      //     sortImgFlag: true
+      //   }
+      // ],
+      // sort_type: 0,
     };
   },
   computed: {
-    ...mapGetters([
-      "brandInfo",
-      "managementList",
-      "totalCount",
-      "childrenList"
-    ]),
-    brandId() {
-      return this.$route.query.documentid;
-    },
+    // ...mapGetters([
+    //  // "brandInfo",
+    //  // "managementList",
+    // //  "totalCount",
+    //  // "childrenList"
+    // ]),
+    // brandId() {
+    //   return this.$route.query.id;
+    // },
     start() {
       return (this.currentPage - 1) * this.pageSize;
     },
     // 参数
-    params() {
-      return {
-            type:1,
-            brandId: this.brandId,
-            name: this.valueName,
-      //  sort_filds: this.sort_filds,
-            start: this.start,
-            length:this.pageSize
-      //  sort_type: this.sort_type ? 0 : 1
-      };
-    }
+    // params() {
+    //   return {
+    //         type:1,
+    //         brandId: this.brandId,
+    //         name: this.valueName,
+    //         start: this.start,
+    //         length:this.pageSize
+    //   };
+    // }
   },
-  watch: {
-    params: {
-      handler() {
-        this.AllSend()
-      },
-      deep: true
-    }
-  },
+  // watch: {
+  //   params: {
+  //     handler() {
+  //       this.AllSend()
+  //     },
+  //     deep: true
+  //   }
+  // },
   components: {
    // MerchantList,
    // HotSearch,
     SubstituModelList
   },
   methods: {
+      init(){
+          this.$loading(this.$store.state.loading)
+          // this.$store
+          //     .dispatch("GetBrandDetailData", {
+          //         tag: this.$route.query.tag,
+          //         brandId: this.$route.query.brandId,
+          //         name: this.$route.query.name,
+          //         start: this.start
+          //     })
+          //     .then(res => {
+          //         this.AllSend();
+          //     });
+          let obj={
+              ...this.$route.query,
+              start:0,
+              length:10
+          }
+          axios.request({...BrandDetail.searchResult,params:obj}).then(res=>{
+               this.brandInfo=res.data.brand;
+              this.AllSend();
+          });
+          this.$store.commit("SetBrandId", this.$route.query);
+      },
     AllSend(k) {
-     // this.$loading(this.$store.state.loading);
-        this.ProductnformaList=[];
       this.listFlag = k;
-      axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params: this.params}).then(res=>{
+      this.ProductnformaList=[];
+      let obj={
+          type:1,
+          brandId: this.$route.query.id,
+          name: this.valueName,
+          start: this.start,
+          length:this.pageSize
+      };
+      axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params:obj}).then(res=>{
          this.$loading(this.$store.state.loading).close();
           this.ProductnformaList=res.data.data;
-          console.log(this.ProductnformaList)
           this.total=res.data.total;
       })
-      // this.$store.dispatch("GetAllCategory", this.params).then(() => {
-      //   this.$loading(this.$store.state.loading).close()
-      // })
     },
     // 获取热搜的值
     hotSearchValue(val) {
       this.valueName = val;
+        this.AllSend()
     },
     // 点击搜索按钮
     hotSearchsubmit() {
@@ -229,7 +253,7 @@ export default {
           catergoryId: item.catergoryId,
           name: item.catergoryName,
           brandName: this.brandInfo.name,
-          brnadId: this.$route.query.documentid
+          brandId: this.$route.query.id
         }
       });
     },
@@ -247,18 +271,7 @@ export default {
       }
   },
   mounted() {
-    this.$loading(this.$store.state.loading)
-    this.$store
-      .dispatch("GetBrandDetailData", {
-        tag: this.$route.query.tag,
-        documentid: this.$route.query.documentid,
-        name: this.$route.query.name,
-        start: this.start
-      })
-      .then(res => {
-        this.AllSend();
-      });
-    this.$store.commit("SetBrandId", this.$route.query);
+    this.init()
   }
 };
 </script>

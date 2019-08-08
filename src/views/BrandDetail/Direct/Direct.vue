@@ -1,28 +1,42 @@
 <template>
-  <div class="Direct">
+  <div class="Direct AllBrand">
     <div class="BrandDetail-tit">
-      <div class="wrapper">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
-          <el-breadcrumb-item v-if="this.query.brandName">
-            <span @click="$router.go(-2)" class="span_">{{this.query.brandName}}</span>
+          <el-breadcrumb-item v-if="query.brandName"
+                              :to="{
+            path:'/BrandDetail',
+            query:{
+              tag:'brand',
+              id:query.brandId,
+              name:query.name
+            }
+          }">
+              {{query.brandName}}
+<!--            <span @click="$router.go(-2)" class="span_">{{query.brandName}}</span>-->
           </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="!this.query.tag">
-            <span @click="AllSend()" class="span_">{{preName}}</span>
+<!--          <el-breadcrumb-item v-if="!query.tag">-->
+<!--            <span @click="AllSend()" class="span_">{{preName}}</span>-->
+<!--          </el-breadcrumb-item>-->
+          <el-breadcrumb-item
+              :to="{
+            path:'/BrandDetail/Undirect',
+            query:{
+              tag:'undirect',
+              documentid:query.parentId,
+              name:query.parentName
+            }
+          }">
+            <span>{{query.parentName}}</span>
           </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="this.query.tag">
-            <span>{{preName}}</span>
-          </el-breadcrumb-item>
-          <el-breadcrumb-item>{{currentName}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
-      </div>
+
     </div>
-    <div class="screen">
-      <div class="tit-h">
-        <div class="wrapper">
+    <div class="screen management-class">
+      <div class="tit">
           <img src="@/assets/image/brandDetail/u8717.png" alt>
           <span>筛选</span>
-        </div>
       </div>
       <!-- 筛选条件列表 -->
       <table class="screen-list">
@@ -72,7 +86,8 @@
     <div class="all-brand">
       <!-- 经营品类 -->
       <div class="management-class">
-        <SubstituModelList :list="ScreenProductList.length ? ScreenProductList : ProductnformaList"></SubstituModelList>
+       <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList>
+      <SubstituModelList :list="ScreenProductList" v-if="ScreenProductList.length "></SubstituModelList>
         <Pagination
           :currentPage.sync="currentPage"
           :total="ScreenProductTotal ? ScreenProductTotal : total"
@@ -82,12 +97,13 @@
   </div>
 </template>
 <style lang="less" scoped>
+@import "../AllBrand/AllBrand.less";
 @import "./Direct.less";
 </style>
 
 <script>
-
-import { mapGetters, mapActions, mapState } from "vuex";
+import {axios,BrandDetail} from "../../../api/apiObj";
+import { mapGetters, mapActions, mapState} from "vuex";
 import SubstituModelList from "_c/SubstituModelList";
 import ScreenItem from "_c/ScreenItem";
 export default {
@@ -95,7 +111,10 @@ export default {
   data() {
     return {
       currentPage: 1,
+        ProductnformaList:[],
+        total:0,
       currentName: "全部分类",
+        query:{},
       preName: "",
       sort_type: 0,
       screenVal: "",
@@ -103,7 +122,7 @@ export default {
       screenTypeListOne: "",
       screenListOne: {},
       flag: true,
-      fullscreenLoading: false
+      fullscreenLoading: false,
     };
   },
   watch: {
@@ -154,15 +173,11 @@ export default {
     ScreenItem
   },
   computed: {
-    query() {
-      return this.$route.query;
-    },
     start() {
       return (this.currentPage - 1) * 10;
     },
     ...mapState({
-      ProductnformaList: state => state.Direct.ProductnformaList,
-      total: state => state.Direct.total,
+      directJOSN:state => state.Direct.directJOSN,
       screenTypeList: state => state.Direct.screenTypeList,
       ScreenProductList: state => state.Direct.ScreenProductList,
       ScreenProductTotal: state => state.Direct.ScreenProductTotal
@@ -212,32 +227,60 @@ export default {
     }
   },
   mounted() {
-    
-    this.$loading(this.$store.state.loading);
+      this.$loading(this.$store.state.loading);
+      if(this.$route.query.tag){
+          this.query=this.$route.query
+      }else{
+          this.query=this.directJOSN
+      }
     if (this.query.brandId) {
-      this.currentName = this.query.name;
-      this.preName = this.query.preName;
-      this.listFlag = this.query.parent_id;
-      this.$store
-        .dispatch("Direct/GetDirectList", {
-          brandId: this.query.brandId,
-          name: "",
-          sort_filds: 0,
-          parent_id: this.query.parent_id,
-          start: 0
-        })
-        .then(() => {
+      console.log(this.query)
+      let obj={
+          type:3,
+          parent_id:this.query.parentId,
+          brandId:this.query.brandId,
+          start:0,
+          length:10
+      }
+      axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params:obj}).then(res=>{
+            console.log(res)
           this.$loading(this.$store.state.loading).close();
-        });
+      })
+      // this.$store
+      //   .dispatch("Direct/GetDirectList", {
+      //     brandId: this.query.brandId,
+      //     name: "",
+      //     sort_filds: 0,
+      //     parent_id: this.query.parent_id,
+      //     start: 0
+      //   })
+      //   .then(() => {
+      //     this.$loading(this.$store.state.loading).close();
+      //   });
       //筛查类型
       this.GetScreenType({
-        catergoryId: this.query.parent_id,
+        catergoryId: this.query.parentId,
         brandId: this.query.brandId
       }).then(res => {
         this.screenTypeListOne = this.screenTypeList.slice(0, 2);
       });
     } else {
-      this.currentName = this.query.name;
+
+        let obj={
+            tag: this.query.tag,
+            id: this.query.documentid,
+            name: this.query.name,
+            start:0,
+            length:10
+        }
+        axios.request({...BrandDetail.searchResult,params:obj}).then(res=>{
+            this.$loading(this.$store.state.loading).close();
+            this.ProductnformaList=res.data.direct.data;
+            console.log(res.data.direct)
+            this.total=res.data.direct.total;
+            this.query={...this.query,parentName:res.data.parentName,parentId:res.data.parentId,}
+        })
+        return;
       this.$store
         .dispatch("Direct/GetSearchDirect", {
           tag: this.query.tag,

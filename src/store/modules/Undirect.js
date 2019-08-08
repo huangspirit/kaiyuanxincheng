@@ -4,6 +4,7 @@ import {
   CategoryDetail
 } from '@/api/BrandDetail'
 const state = {
+
   // 二级类列表信息
   ProductnformaList: [],
   // 总数目
@@ -16,7 +17,6 @@ const state = {
   // 二级数目列表
   parentList: []
 }
-
 const getters = {
   ProductnformaList(state) {
     return state.ProductnformaList
@@ -26,7 +26,6 @@ const getters = {
   }
 }
 const actions = {
-
   // 一级跳二级
   GetUndirect({
     commit
@@ -45,7 +44,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       CategoryDetail(data).then(res => {
         if (res.resultCode === '200') {
-          resolve()
+          resolve(res)
           commit('GetDirectList', res.data)
         } else reject(res.message)
       })
@@ -79,7 +78,8 @@ const mutations = {
   GetSearchDirect (state, data) {
     state.productTotal = data.undirect.productTotal
     state.parentList = data.undirect.list
-  }
+  },
+
 }
 
 export default {

@@ -8,6 +8,7 @@ import {
 } from '@/api/BrandDetail'
 
 const state = {
+    directJOSN:{},
   ProductnformaList: [],
   total: 0,
   // 筛选的type列表
@@ -86,6 +87,9 @@ const actions = {
   }
 }
 const mutations = {
+    savedirectJOSN(state,data){
+        state.directJOSN=data
+    },
   GetSearchDirect (state, data) {
     state.ProductnformaList = data.direct.data
     state.total = data.direct.total
