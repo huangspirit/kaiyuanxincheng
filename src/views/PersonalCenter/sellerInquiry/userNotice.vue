@@ -4,119 +4,75 @@
     <div v-for="(item,index) in allInquiryData" :key="index">
       <div class="allQuiryTop">
         申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
+      </div>
+      <div class="companyDetail">
+        <li>
+          项目名称：
+          <span>{{item.projectName}}</span>
+        </li>
+        <li>
+          产品阶段：
+          <span>{{item.projectProcess}}</span>
+        </li>
+        <li>
+          量产时间：
+          <span>{{item.projectBeginTime}}</span>
+        </li>
+        <li>
+          公司名称：
+          <span>{{item.companyName}}</span>
+        </li>
+        <li>
+          公司网址：
+          <span>{{item.website}}</span>
+        </li>
+        <li>
+          联系人：
+          <span>{{item.contactName}}</span>
+        </li>
+        <li>
+          职位：
+          <span>{{item.position}}</span>
+        </li>
+        <li>
+          联系电话：
+          <span>{{item.telphone}}</span>
+        </li>
+        <li>
+          提交日期：
+          <span>{{item.sheetCreatime}}</span>
+        </li>
+        <li>
+          有效期至：
+          <span>{{item.effectEndTime}}</span>
+        </li>
+        <li>
+          备注说明：
+          <span>{{item.remark}}</span>
+        </li>
       </div>
       <div class="inquiryList">
-        <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
-          <el-row class="content">
-            <el-col :span="4">
-              <div class="goodsImg">
-                <img :src="listItem.goodsImage " alt />
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
-                <h3>{{listItem.goodsName}}</h3>
-                <p>
-                  品牌：
-                  <span>{{listItem.brandName}}</span>
-                </p>
-                <p>
-                  公司描述：
-                  <span>{{listItem.goodsDesc}}</span>
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
-                <h3>
-                  申请价格：
-                  <span>{{listItem.acceptUnit==true?'$':'￥'}}{{listItem.acceptPrice}}</span>
-                </h3>
-                <p>
-                  公司名称：
-                  <span>{{listItem.companyName}}</span>
-                </p>
-                <p>
-                  提交日期：
-                  <span>{{listItem.projectBeginTime | formatDate(listItem.projectBeginTime)}}</span>
-                </p>
-                <p>
-                  年采购量：
-                  <span>{{listItem.projectEau}}</span>
-                </p>
-                <p>
-                  竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
-                </p>
-                <p>
-                  备注说明：
-                  <span>{{listItem.remark}}</span>
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
-              </p>
-            </el-col>
-          </el-row>
-          <el-row v-if="item.replayStates == 'true'" class="applyContent">
-            <el-col :span="4">
-              <div class="goodsImg">
-                <img :src="listItem.imageUrl " alt />
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
-                <h3>{{listItem.goodsName}}</h3>
-                <p>
-                  <span>品牌：</span>
-                  {{listItem.brandName}}
-                </p>
-                <p>
-                  <span>公司描述：</span>
-                  {{listItem.goodsDesc}}
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
-                <h3>
-                  申请价格：
-                  <span>{{listItem.acceptPrice}}</span>
-                </h3>
-                <p>
-                  公司名称：
-                  <span>{{listItem.companyName}}</span>
-                </p>
-                <p>
-                  提交日期：
-                  <span>{{listItem.projectBeginTime}}</span>
-                </p>
-                <p>
-                  年采购量：
-                  <span>{{listItem.projectEau}}</span>
-                </p>
-                <p>
-                  竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
-                </p>
-                <p>
-                  备注说明：
-                  <span>{{listItem.remark}}</span>
-                </p>
-              </div>
-            </el-col>
-            <el-col :span="5" class="goodPrice">
-              <p>
-                申请有效期至：
-                <span>{{listItem.effectEndTime}}</span>
-              </p>
-            </el-col>
-          </el-row>
-        </li>
+        <el-table :data="item.list" border stripe style="width: 100%">
+          <el-table-column prop="goodsImage" label="图片" width="180">
+            <template slot-scope="scope">
+              <img :src="scope.row.goodsImage" width="120" alt />
+            </template>
+          </el-table-column>
+          <el-table-column prop="goodsName" label="名称"></el-table-column>
+          <el-table-column prop="goodsDesc" label="功能描述"></el-table-column>
+          <el-table-column prop="inquirySheetNo" label="竞争型号"></el-table-column>
+          <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
+          <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
+          <el-table-column prop label="操作">
+            <template slot-scope="scope">
+              <el-button @click.native.prevent="replyRequest(scope)" type="text" size="small">批复请求</el-button>
+              <p
+                class="noApproved"
+                v-if="scope.row.sheetEffective == true&&scope.row.replayStates == false"
+              >未批复</p>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
     <div class="Pagination" v-if="allInquiryData.length>0">
@@ -130,38 +86,60 @@
         @current-change="change"
       ></el-pagination>
     </div>
+    <allReplyDialog
+      v-if="replyDialogVisible"
+      :replyDialogVisible="replyDialogVisible"
+      :allListData="allListData"
+      v-on:dialogVisibleClose="replyVisibleClose"
+    ></allReplyDialog>
   </div>
 </template>
 
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
+import allReplyDialog from "./replyDialog/replyDialog";
+import './AlreadyInquiry.less'
 export default {
   data() {
     return {
       allInquiryData: [],
+      allListData: [],
+      replyDialogVisible: false,
       start: 0,
       total: 0
     };
   },
+  components: {
+    allReplyDialog
+  },
   mounted() {
     this.getAllReplyList();
   },
+  computed: {},
   methods: {
     getAllReplyList() {
       var obj = {
         start: this.start,
         length: 2,
         reply_status: false,
-        type: true
+        type: false
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
-        console.log(res);
         if (res.resultCode == "200") {
           this.allInquiryData = res.data.data;
           this.total = res.data.total;
         }
       });
+    },
+    replyRequest(val) {
+      console.log(val);
+      this.replyDialogVisible = true;
+      this.allListData = val.row;
+    },
+    replyVisibleClose(val) {
+      console.log(val, "5555555");
+      this.replyDialogVisible = val;
     },
     currentPage(val) {
       console.log("11", val);
@@ -189,6 +167,7 @@ export default {
     .allQuiryTop {
       width: 100%;
       padding: 0 20px;
+      box-sizing: border-box;
       height: 60px;
       line-height: 60px;
       background-color: rgb(74, 90, 106);
@@ -210,71 +189,31 @@ export default {
         bottom: 20px;
       }
     }
-    .inquiryList {
+    .companyDetail {
       width: 100%;
-      .listContent {
-        border: 1px solid #dee3e9;
-        padding: 0 10px;
-        > .content {
-          border-bottom: 1px solid #dee3e9;
-          padding: 10px 0;
-          min-height: 150px;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      border: 1px solid #dee3e9;
+      > li {
+        min-width: 320px;
+        line-height: 45px;
+        margin: 10px 20px;
+        font-size: 20px;
+        border-right: 1px solid #dee3e9;
+        color: #8194a7;
+        font-weight: 500;
+        &:nth-child(1) {
+          color: #4a5a6a;
         }
-        > .applyContent {
-          padding: 10px 0;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
-        }
-        .goodsImg {
-          width: 200px;
-          text-align: center;
-          > img {
-            width: 150px;
-          }
-        }
-
-        .goodsProdu {
-          > h3 {
-            color: #cc0000;
-          }
-          > p {
-            color: #000;
-            width: 80%;
-            line-height: 30px;
-            > span {
-              color: #4a5a6a;
-            }
-          }
-        }
-        .googsDesc {
-          h3 {
-            color: #4a5a6a;
-            > span {
-              color: #cc0000;
-            }
-          }
-          p {
-            color: #4a5a6a;
-            > span {
-              color: #000;
-            }
-          }
-        }
-        .goodPrice {
-          > p {
-            color: #4a5a6a;
-            > span {
-              color: #000;
-            }
-          }
+        > span {
+          color: #4a5a6a;
         }
       }
+    }
+    .inquiryList {
+      width: 100%;
     }
   }
 }
 </style>
-

@@ -69,10 +69,12 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p
-                class="noApproved"
-                v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
-              >未批复</p>
+              <div class="applyStatus">
+                <p
+                  class="noApproved"
+                  v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
+                >未批复</p>
+              </div>
             </el-col>
           </el-row>
         </li>
@@ -95,7 +97,7 @@
 <script>
 import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
-
+import "./AlreadyInquiry.less";
 import "@/lib/filters";
 export default {
   data() {
@@ -132,7 +134,7 @@ export default {
     },
     change(val) {
       console.log(val);
-       this.start = val * 2 - 2;
+      this.start = val * 2 - 2;
       this.getAllReplyList();
     }
   }
@@ -218,16 +220,6 @@ export default {
           }
         }
         .goodPrice {
-          .noApproved {
-            width: 130px;
-            font-size: 20px;
-            padding: 5px 0;
-            color: #fff;
-            text-align: center;
-            background-color: #ff9900;
-            margin-top: 45px;
-            margin-left: 30%;
-          }
         }
       }
     }

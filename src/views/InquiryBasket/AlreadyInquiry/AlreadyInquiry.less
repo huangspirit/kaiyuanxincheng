@@ -1,3 +1,37 @@
-.listContent {
-   
+.goodPrice {
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+
+    >.applyStatus {
+        color: #4a5a6a;
+        p {
+            position: absolute;
+            right: -37px!important;
+            top: -8px!important;
+            -webkit-transform: rotate(45deg)!important;
+            transform: rotate(45deg)!important;
+            color: #fff!important;
+            width: 100px!important;
+            height: 45px!important;
+            text-align: center!important;
+            line-height: 60px!important;
+            margin-top: 0!important;
+            margin-left: 0!important;
+            padding: 0!important;
+            font-size: 14px!important;
+        }
+
+        .failure {
+            background-color: #bcbcbc!important;
+        }
+
+        .isApproved {
+            background-color: #cc0000!important;
+        }
+
+        .noApproved {
+            background-color: #ff9900!important;
+        }
+    }
 }

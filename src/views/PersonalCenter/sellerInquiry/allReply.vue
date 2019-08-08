@@ -2,10 +2,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-        <span>{{item.effectiveStates | effective(item.effectiveStates,item.replayStates)}}</span>
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="companyDetail">
         <li>
           项目名称：
@@ -66,7 +63,68 @@
           <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
           <el-table-column prop label="操作">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="replyRequest(scope)" type="text" size="small">批复请求</el-button>
+              <el-button
+                v-if="scope.row.sheetEffective==true&&scope.row.replayStates==false"
+                @click.native.prevent="replyRequest(scope)"
+                type="text"
+                size="small"
+              >批复请求</el-button>
+              <div v-if="scope.row.sheetEffective==true&&scope.row.replayStates==true">
+                <p>
+                  <span>批复价格：</span>
+                  <span v-if="scope.row.priceType == false">{{scope.row.seckilPrice}}</span>
+                  <span v-if="scope.row.priceType == true">{{scope.row.priceLevel}}</span>
+                </p>
+                <p>
+                  <span>预计交期：</span>
+                  <span>{{scope.row.currentTime | formatDate(scope.row.currentTime)}}</span>
+                </p>
+                <p>
+                  <span>交货地：</span>
+                  <span>{{scope.row.diliverPlace}}</span>
+                </p>
+                <p>
+                  <span>价格有效期：</span>
+                  <span>{{scope.row.priceExpireTime | formatDate(scope.row.priceExpireTime)}}</span>
+                </p>
+                <p>
+                  <span>批复时间：</span>
+                  <span>{{scope.row.replyTime | formatDate(scope.row.replyTime)}}</span>
+                </p>
+              </div>
+              <div v-if="scope.row.sheetEffective==false&&scope.row.replayStates==true">
+                <p>
+                  <span>批复价格：</span>
+                  <span v-if="scope.row.priceType == false">{{scope.row.seckilPrice}}</span>
+                  <span v-if="scope.row.priceType == true">{{scope.row.priceLevel}}</span>
+                </p>
+                <p>
+                  <span>预计交期：</span>
+                  <span>{{scope.row.priceIntervalDay}} 天</span>
+                </p>
+                <p>
+                  <span>交货地：</span>
+                  <span>{{scope.row.diliverPlace}}</span>
+                </p>
+                <p>
+                  <span>价格有效期：</span>
+                  <span>{{scope.row.priceExpireTime | formatDate(scope.row.priceExpireTime)}}</span>
+                </p>
+                <p>
+                  <span>批复时间：</span>
+                  <span>{{scope.row.replyTime | formatDate(scope.row.replyTime)}}</span>
+                </p>
+              </div>
+              <p v-if="scope.row.sheetEffective==false&&scope.row.replayStates==false">-------</p>
+              <p class="failure" v-if="scope.row.sheetEffective != true">已失效</p>
+              <p
+                class="isApproved"
+                v-if="scope.row.sheetEffective == true&&scope.row.replayStates == true"
+              >已批复</p>
+              <p
+                class="noApproved"
+                v-if="scope.row.sheetEffective == true&&scope.row.replayStates == false"
+              >未批复</p>
             </template>
           </el-table-column>
         </el-table>
@@ -96,6 +154,7 @@
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
 import allReplyDialog from "./replyDialog/replyDialog";
+import './AlreadyInquiry.less'
 export default {
   data() {
     return {
@@ -172,17 +231,6 @@ export default {
       overflow: hidden;
       box-sizing: border-box;
       position: relative;
-      > span {
-        background: #cc0000;
-        transform: rotate(45deg);
-        width: 100px;
-        height: 50px;
-        line-height: 74px;
-        text-align: center;
-        position: absolute;
-        right: -37px;
-        bottom: 20px;
-      }
     }
     .companyDetail {
       width: 100%;

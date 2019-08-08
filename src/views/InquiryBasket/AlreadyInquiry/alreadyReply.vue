@@ -57,7 +57,7 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <div>
+              <div class="applyStatus">
                 <p class="isApproved">{{listItem.sheetEffective | effective(listItem.replayStates)}}</p>
               </div>
             </el-col>
@@ -155,6 +155,7 @@ import countTime from "@/components/countTime";
 import { ladderPrice } from "@/lib/utils";
 import purChase from "@/components/purchase";
 import "@/lib/filters";
+import "./AlreadyInquiry.less";
 export default {
   data() {
     return {
@@ -372,16 +373,6 @@ export default {
               color: #fff;
               text-align: center;
               margin-top: 15px;
-              margin-left: 30%;
-            }
-            .isApproved {
-              width: 130px;
-              font-size: 20px;
-              padding: 5px 0;
-              color: #fff;
-              text-align: center;
-              background-color: #cc0000;
-              margin-top: 45px;
               margin-left: 30%;
             }
           }

@@ -69,7 +69,7 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <div>
+              <div class="applyStatus">
                 <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
                 <p
                   class="isApproved"
@@ -177,13 +177,14 @@ import { axios, siderInquiryList } from "@/api/apiObj";
 import purChase from "@/components/purchase";
 import { ladderPrice } from "@/lib/utils";
 import "@/lib/filters";
+import "./AlreadyInquiry.less";
 export default {
   data() {
     return {
       allInquiryData: [],
       start: 0,
       total: 0,
-      purshaseData:{},
+      purshaseData: {},
       purshase: false
     };
   },
@@ -259,7 +260,7 @@ export default {
     },
     change(val) {
       console.log(val);
-       this.start = val * 2 - 2;
+      this.start = val * 2 - 2;
       this.getAllReplyList();
     }
   }
@@ -294,7 +295,7 @@ export default {
       width: 100%;
       .listContent {
         border: 1px solid #dee3e9;
-        padding:10px;
+        padding: 10px;
         margin-bottom: 15px;
         > .content {
           border-bottom: 1px solid #dee3e9;
@@ -384,35 +385,13 @@ export default {
           }
         }
         .goodPrice {
+          height: 170px;
+          position: relative;
+          overflow: hidden;
           > div {
             color: #4a5a6a;
             > span {
               color: #000;
-            }
-            p {
-              width: 130px;
-              background-color: rgba(74, 90, 106, 1);
-              font-size: 20px;
-              padding: 5px 0;
-              color: #fff;
-              text-align: center;
-              margin-top: 30px;
-              margin-left: 30%;
-            }
-            .failure {
-              background-color: #bcbcbc;
-              margin-top: 45px;
-              margin-left: 30%;
-            }
-            .isApproved {
-              background-color: #cc0000;
-              margin-top: 45px;
-              margin-left: 30%;
-            }
-            .noApproved {
-              background-color: #ff9900;
-              margin-top: 45px;
-              margin-left: 30%;
             }
           }
         }

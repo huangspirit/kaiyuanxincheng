@@ -53,7 +53,9 @@
               </div>
             </el-col>
             <el-col :span="5" class="goodPrice">
-              <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
+              <div class="applyStatus">
+                <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
+              </div>
             </el-col>
           </el-row>
         </li>
@@ -76,6 +78,7 @@
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
+import "./AlreadyInquiry.less";
 export default {
   data() {
     return {
