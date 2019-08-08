@@ -155,8 +155,11 @@
                 </div>
                 <div class="goodPrice">
                   <h3>原厂报价</h3>
+                  <li v-if="listItem.factorySellerInfo == undefined">
+                    <p style="text-align: center">暂无原厂报价</p>
+                  </li>
                   <li
-                    v-if="!listItem.factorySellerInfo && listItem.factorySellerInfo.priceType==true"
+                    v-if="listItem.factorySellerInfo!=undefined && listItem.factorySellerInfo.priceType==true"
                     v-for="(subitem,index) in listItem.ladderPrice"
                     :key="index"
                   >
@@ -168,15 +171,12 @@
                     </span>
                   </li>
                   <li
-                    v-if="!listItem.factorySellerInfo && listItem.factorySellerInfo.priceType==false"
+                    v-if="listItem.factorySellerInfo!= undefined && listItem.factorySellerInfo.priceType==false"
                     :key="index"
                   >
                     <span v-if="listItem.priceUnit ==true">$</span>
                     <span v-if="listItem.priceUnit ==false">￥</span>
                     {{oneData.seckilPrice}}
-                  </li>
-                  <li v-if="listItem.factorySellerInfo == undefined">
-                    <p style="text-align: center">暂无原厂报价</p>
                   </li>
                 </div>
                 <div class="edit">
