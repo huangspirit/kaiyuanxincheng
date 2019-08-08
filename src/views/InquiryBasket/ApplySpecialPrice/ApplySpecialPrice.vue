@@ -28,7 +28,7 @@
               <span v-if="oneData.map.totalSeller != 0" class="num">￥2.5——￥4.0</span>
             </p>
           </div>
-          <div v-if="oneData.factorySellerInfo== undefined " class="LadderPrice">
+          <div v-if="oneData.factorySellerInfo.priceType== undefined " class="LadderPrice">
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
               <p style="text-align: center">暂无原厂报价</p>
@@ -36,30 +36,32 @@
           </div>
           <div
             class="LadderPrice"
-            v-if="oneData.factorySellerInfo && oneData.factorySellerInfo.priceType"
+            v-if="oneData.factorySellerInfo.priceType!=undefined&&oneData.factorySellerInfo.priceType"
           >
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
-              <div v-for="(item, k) in oneData.priceList" :key="k">
-                <span>{{item.num}}+</span>
+              <div v-for="(item, k) in oneData.factorySellerInfo.priceList" :key="k">
+                <span>{{item.num}}+</span>--------
                 <span>
-                  <span v-if="item.priceUnit ==true">$</span>
-                  <span v-if="item.priceUnit ==false">￥</span>
+                  <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
+                  <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
+
                   {{item.price}}
                 </span>
               </div>
             </div>
           </div>
           <div
-            v-if="oneData.factorySellerInfo!= undefined&&oneData.factorySellerInfo.priceType==false"
+            v-if="oneData.factorySellerInfo.priceType!=undefined&&!oneData.factorySellerInfo.priceType"
             class="LadderPrice"
           >
             <p class="tit" style="text-align: center">原厂报价</p>
             <div class="LadderPrice-list">
               <p style="text-align: center">
-                <span v-if="item.priceUnit ==true">$</span>
-                <span v-if="item.priceUnit ==false">￥</span>
-                {{oneData.seckilPrice}}
+                <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
+                <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
+
+                {{oneData.factorySellerInfo.seckilPrice}}
               </p>
             </div>
           </div>
@@ -155,11 +157,11 @@
                 </div>
                 <div class="goodPrice">
                   <h3>原厂报价</h3>
-                  <div v-if="listItem.factorySellerInfo == undefined">
+                  <div v-if="listItem.factorySellerInfo.priceType == undefined">
                     <p style="text-align: center">暂无原厂报价</p>
                   </div>
                   <div
-                    v-if="listItem.factorySellerInfo!=undefined && listItem.factorySellerInfo.priceType==true"
+                    v-if="listItem.factorySellerInfo.priceType!=undefined && listItem.factorySellerInfo.priceType==true"
                     v-for="(subitem,index) in listItem.priceList"
                     :key="index"
                   >
@@ -171,7 +173,7 @@
                     </span>
                   </div>
                   <div
-                    v-if="listItem.factorySellerInfo!= undefined && listItem.factorySellerInfo.priceType==false"
+                    v-if="listItem.factorySellerInfo.priceType!= undefined && listItem.factorySellerInfo.priceType==false"
                     :key="index"
                   >
                     <span v-if="listItem.priceUnit ==true">$</span>
