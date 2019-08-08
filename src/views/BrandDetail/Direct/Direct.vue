@@ -24,7 +24,10 @@
             query:{
               tag:'undirect',
               documentid:query.parentId,
-              name:query.parentName
+              name:query.parentName,
+              brandId:query.brandId,
+              brandName:query.brandName,
+              catergoryId:query.firstCatergoryId
             }
           }">
             <span>{{query.parentName}}</span>
@@ -111,10 +114,10 @@ export default {
   data() {
     return {
       currentPage: 1,
-        ProductnformaList:[],
-        total:0,
+      ProductnformaList:[],
+      total:0,
       currentName: "全部分类",
-        query:{},
+      query:{},
       preName: "",
       sort_type: 0,
       screenVal: "",
@@ -126,6 +129,15 @@ export default {
     };
   },
   watch: {
+      $route: {
+          // val是改变之后的路由，oldVal是改变之前的val
+          handler: function(val, oldVal){
+              console.log(val);
+              this.init()
+          },
+          // 深度观察监听
+          deep: true
+      },
     currentPage() {
       this.$loading(this.$store.state.loading);
       let arr = Object.keys(this.screenListOne);
@@ -224,81 +236,71 @@ export default {
       } else {
         this.screenTypeListOne = this.screenTypeList.slice(0, 2);
       }
-    }
+    },
+      init(){
+          this.$loading(this.$store.state.loading);
+          if(this.$route.query.tag){
+              this.query=this.$route.query
+          }else{
+              this.query=this.directJOSN
+          }
+          if (this.query.brandId) {
+              console.log(this.query)
+              let obj={
+                  type:3,
+                  parent_id:this.query.parentId,
+                  brandId:this.query.brandId,
+                  start:0,
+                  length:10
+              }
+              axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params:obj}).then(res=>{
+                  console.log(res)
+                  this.$loading(this.$store.state.loading).close();
+              })
+              // this.$store
+              //   .dispatch("Direct/GetDirectList", {
+              //     brandId: this.query.brandId,
+              //     name: "",
+              //     sort_filds: 0,
+              //     parent_id: this.query.parent_id,
+              //     start: 0
+              //   })
+              //   .then(() => {
+              //     this.$loading(this.$store.state.loading).close();
+              //   });
+              //筛查类型
+              this.GetScreenType({
+                  catergoryId: this.query.parentId,
+                  brandId: this.query.brandId
+              }).then(res => {
+                  this.screenTypeListOne = this.screenTypeList.slice(0, 2);
+              });
+          } else {
+              let obj={
+                  tag: this.query.tag,
+                  id: this.query.documentid,
+                  name: this.query.name,
+                  start:0,
+                  length:10
+              }
+              axios.request({...BrandDetail.searchResult,params:obj}).then(res=>{
+                  this.$loading(this.$store.state.loading).close();
+                  this.ProductnformaList=res.data.direct.data;
+                  console.log(res.data.direct)
+                  this.total=res.data.direct.total;
+                  this.query={...this.query,parentName:res.data.parentName,parentId:res.data.parentId,}
+              })
+              //筛查类型
+              this.GetScreenType({
+                  catergoryId: this.query.documentid
+              }).then(res => {
+                  this.screenTypeListOne = this.screenTypeList.slice(0, 2);
+              });
+          }
+      }
   },
   mounted() {
-      this.$loading(this.$store.state.loading);
-      if(this.$route.query.tag){
-          this.query=this.$route.query
-      }else{
-          this.query=this.directJOSN
-      }
-    if (this.query.brandId) {
-      console.log(this.query)
-      let obj={
-          type:3,
-          parent_id:this.query.parentId,
-          brandId:this.query.brandId,
-          start:0,
-          length:10
-      }
-      axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params:obj}).then(res=>{
-            console.log(res)
-          this.$loading(this.$store.state.loading).close();
-      })
-      // this.$store
-      //   .dispatch("Direct/GetDirectList", {
-      //     brandId: this.query.brandId,
-      //     name: "",
-      //     sort_filds: 0,
-      //     parent_id: this.query.parent_id,
-      //     start: 0
-      //   })
-      //   .then(() => {
-      //     this.$loading(this.$store.state.loading).close();
-      //   });
-      //筛查类型
-      this.GetScreenType({
-        catergoryId: this.query.parentId,
-        brandId: this.query.brandId
-      }).then(res => {
-        this.screenTypeListOne = this.screenTypeList.slice(0, 2);
-      });
-    } else {
-
-        let obj={
-            tag: this.query.tag,
-            id: this.query.documentid,
-            name: this.query.name,
-            start:0,
-            length:10
-        }
-        axios.request({...BrandDetail.searchResult,params:obj}).then(res=>{
-            this.$loading(this.$store.state.loading).close();
-            this.ProductnformaList=res.data.direct.data;
-            console.log(res.data.direct)
-            this.total=res.data.direct.total;
-            this.query={...this.query,parentName:res.data.parentName,parentId:res.data.parentId,}
-        })
-        return;
-      this.$store
-        .dispatch("Direct/GetSearchDirect", {
-          tag: this.query.tag,
-          documentid: this.query.documentid,
-          name: this.query.name,
-          start: 0
-        })
-        .then(res => {
-          this.$loading(this.$store.state.loading).close();
-          this.preName = res.parentName;
-        });
-      //筛查类型
-      this.GetScreenType({
-        catergoryId: this.query.documentid
-      }).then(res => {
-        this.screenTypeListOne = this.screenTypeList.slice(0, 2);
-      });
-    }
+      this.init()
   }
 };
 </script>
