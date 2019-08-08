@@ -44,7 +44,7 @@
                 </p>
                 <p>
                   竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
+                  <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
                 <p>
                   备注说明：
@@ -68,7 +68,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="5" class="goodPrice">
+            <el-col :span="5" class="goodsStatus">
               <div class="applyStatus">
                 <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
                 <p
@@ -166,6 +166,7 @@
         background
         @current-page="currentPage"
         @current-change="change"
+        ref="pagination"
       ></el-pagination>
     </div>
   </div>
@@ -193,12 +194,27 @@ export default {
     this.$on("end_callback", () => {
       this.getAllReplyList();
     });
+    eventBus.$on("allApply", val => {
+      this.$refs.pagination.internalCurrentPage = 1;
+      if (val != null) {
+        this.allInquiryData = val.data;
+        this.total = val.total;
+      } else {
+        this.allInquiryData = [];
+      }
+    });
   },
   components: {
     countTime,
     purChase
   },
   computed: {},
+  filters: {
+    insteadFilter(val) {
+      console.log(val);
+      return val.split("@");
+    }
+  },
   methods: {
     getAllReplyList() {
       var obj = {
@@ -392,6 +408,16 @@ export default {
             color: #4a5a6a;
             > span {
               color: #000;
+            }
+             p {
+              width: 155px;
+              background-color: rgba(74, 90, 106, 1);
+              font-size: 20px;
+              padding: 5px 0;
+              color: #fff;
+              text-align: center;
+              margin-top: 15px;
+              margin-left: 30%;
             }
           }
         }

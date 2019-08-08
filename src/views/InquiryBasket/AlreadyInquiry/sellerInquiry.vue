@@ -1,9 +1,5 @@
 <template>
   <div id="inquiry">
-    <!-- <p class="topStep">
-      卖家中心 > 询价单列表 >
-      <span>{{title}}</span>
-    </p>-->
     <div class="inquiryContent">
       <div class="topTab">
         <ul>
@@ -15,7 +11,7 @@
             :to="item.path"
             @click.native="tabShow(item.name)"
           >{{item.name}}</router-link>
-          <el-select v-model="reppyValue" placeholder="请选择">
+          <el-select v-model="reppyValue" @change="getInquiryList(reppyValue)" placeholder="请选择">
             <el-option
               v-for="item in reppyData"
               :key="item.value"
@@ -33,10 +29,10 @@
 
 <script>
 import "./sellerInquiry.less";
+import { axios, siderInquiryList } from "@/api/apiObj";
 export default {
   data() {
     return {
-      title: "",
       tabData: [
         {
           id: "1",
@@ -77,24 +73,78 @@ export default {
           value: "180",
           label: "近半年"
         }
-      ]
+      ],
+      paramsInfo: {},
+      routeAlign: ""
     };
   },
-  mounted() {
-    var routeAlign = this.$route;
-    if (routeAlign.name == "allApply") {
-      this.title = "全部待批复";
-    } else if (routeAlign.name == "userNotice") {
-      this.title = "用户提醒";
-    } else if (routeAlign.name == "alreadyReply") {
-      this.title = "已批复";
-    } else if (routeAlign.name == "alreadyOverdue") {
-      this.title = "已过期";
+  watch: {
+    $route(to, from) {
+      this.routeAlign = to
     }
+  },
+  mounted() {
+    this.routeAlign = this.$route;
   },
   methods: {
     tabShow(val) {
-      this.title = val;
+      console.log(val);
+    },
+    getInquiryList(val) {
+      console.log(val);
+      if (this.routeAlign.name == "allApply") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          day: val
+        };
+      } else if (this.routeAlign.name == "userNotice") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          reply_status: false,
+          day: val
+        };
+      } else if (this.routeAlign.name == "alreadyReply") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          reply_status: true,
+          type: true,
+          day: val
+        };
+      } else if (this.routeAlign.name == "alreadyOverdue") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          sheet_effective: false,
+          day: val
+        };
+      }
+      axios
+        .request({ ...siderInquiryList.allReply, params: this.paramsInfo })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            if (res.data != null) {
+              this.allInquiryData = res.data;
+            } else {
+              this.allInquiryData = [];
+            }
+            if (this.routeAlign.name == "allApply") {
+              eventBus.$emit("allApply", this.allInquiryData);
+            } else if (this.routeAlign.name == "userNotice") {
+              eventBus.$emit("userNotice", this.allInquiryData);
+            } else if (this.routeAlign.name == "alreadyReply") {
+              eventBus.$emit("alreadyReply", this.allInquiryData);
+            } else if (this.routeAlign.name == "alreadyOverdue") {
+              eventBus.$emit("alreadyOverdue", this.allInquiryData);
+            }
+          }
+        });
     }
   }
 };

@@ -45,7 +45,6 @@
                 <span>
                   <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
                   <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
-
                   {{item.price}}
                 </span>
               </div>
@@ -60,7 +59,6 @@
               <p style="text-align: center">
                 <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
                 <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
-
                 {{oneData.factorySellerInfo.seckilPrice}}
               </p>
             </div>
@@ -106,6 +104,23 @@
                 <el-option :label="'人民币'" value="false"></el-option>
                 <el-option :label="'美元'" value="true"></el-option>
               </el-select>
+            </el-input>
+          </el-form-item>
+          <el-form-item v-if="topShow" label="竞争型号" class="purchaseAmount" prop="insteadNo">
+            <el-input
+              v-for="(item,k) in formAlign.insteadData"
+              :key="k"
+              placeholder="请输入竞争型号"
+              v-model="formAlign.insteadData[k]"
+            >
+              <el-button slot="append" @click="deleteInsteadNo(k)" icon="el-icon-delete"></el-button>
+            </el-input>
+            <el-input placeholder="请输入竞争型号" v-model="formAlign.insteadNo">
+              <el-button
+                slot="append"
+                @click.native="addInsteadNo(formAlign.insteadNo)"
+                icon="el-icon-circle-plus"
+              ></el-button>
             </el-input>
           </el-form-item>
           <el-form-item v-if="topShow" label="年采购量" class="purchaseAmount" prop="projectEau">
@@ -219,7 +234,9 @@
                     <el-form-item label="竞争型号" class="contact" prop="insteadNo">
                       <el-input
                         @input="listChange"
-                        placeholder="请输入内容"
+                        type="textarea"
+                        :rows="2"
+                        placeholder="多个型号时以@分割"
                         v-model="listItem.insteadNo"
                       ></el-input>
                     </el-form-item>
@@ -262,44 +279,44 @@ export default {
         remark: "",
         projectBeginTime: "",
         projectEau: "",
-        position: ""
+        position: "",
+        insteadNo: "",
+        insteadData: []
       },
       rules: {
-        companyName: [
-          { required: true, message: "公司名称不能为空", trigger: "blur" }
-        ],
-        website: [{ required: true, message: "网址不能为空", trigger: "blur" }],
-        projectName: [
-          { required: true, message: "项目名称不能为空", trigger: "blur" }
-        ],
-        projectProcess: [
-          { required: true, message: "产品不能为空", trigger: "blur" }
-        ],
-        contactName: [
-          { required: true, message: "联系人不能为空", trigger: "blur" }
-        ],
-        telphone: [
-          { required: true, message: "手机号不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3456789]\d{9}$/,
-
-            message: "格式不正确",
-
-            trigger: "blur"
-          }
-        ],
-        acceptPrice: [
-          { required: true, message: "接受价格不能为空", trigger: "blur" }
-        ],
-        projectBeginTime: [
-          { required: true, message: "预计量产时间不能为空", trigger: "blur" }
-        ],
-        projectEau: [
-          { required: true, message: "年采购量不能为空", trigger: "blur" }
-        ],
-        position: [
-          { required: true, message: "职位不能不能为空", trigger: "blur" }
-        ]
+        // companyName: [
+        //   { required: true, message: "公司名称不能为空", trigger: "blur" }
+        // ],
+        // website: [{ required: true, message: "网址不能为空", trigger: "blur" }],
+        // projectName: [
+        //   { required: true, message: "项目名称不能为空", trigger: "blur" }
+        // ],
+        // projectProcess: [
+        //   { required: true, message: "产品不能为空", trigger: "blur" }
+        // ],
+        // contactName: [
+        //   { required: true, message: "联系人不能为空", trigger: "blur" }
+        // ],
+        // telphone: [
+        //   { required: true, message: "手机号不能为空", trigger: "blur" },
+        //   {
+        //     pattern: /^1[3456789]\d{9}$/,
+        //     message: "格式不正确",
+        //     trigger: "blur"
+        //   }
+        // ],
+        // acceptPrice: [
+        //   { required: true, message: "接受价格不能为空", trigger: "blur" }
+        // ],
+        // projectBeginTime: [
+        //   { required: true, message: "预计量产时间不能为空", trigger: "blur" }
+        // ],
+        // projectEau: [
+        //   { required: true, message: "年采购量不能为空", trigger: "blur" }
+        // ],
+        // position: [
+        //   { required: true, message: "职位不能不能为空", trigger: "blur" }
+        // ]
       },
       editPriceRules: {},
       topShow: false,
@@ -318,7 +335,7 @@ export default {
         this.proInformation[i]["priceType"] = "false";
         this.proInformation[i]["acceptPrice"] = "";
         this.proInformation[i]["projectEau"] = "";
-        this.proInformation[i]["insteadNo"] = "";
+        this.proInformation[i]["insteadNo"] = [];
       }
       this.productData = this.proInformation;
     } else {
@@ -334,9 +351,13 @@ export default {
   },
   methods: {
     commitSprice() {
+      var insteadNumber = "";
+      for (var i = 0; i < this.formAlign.insteadData.length; i++) {
+        insteadNumber += this.formAlign.insteadData[i] + "@";
+      }
+      insteadNumber += this.formAlign.insteadNo;
       this.$refs.formAlign.validate(valid => {
         if (valid) {
-          console.log(projectBeginTime);
           if (this.topShow) {
             var projectBeginTime = formatAllDate(
               this.formAlign.projectBeginTime,
@@ -359,7 +380,8 @@ export default {
               goodsName: this.oneData.productno,
               requestId: this.oneData.id,
               bucketId: this.oneData.bucketId,
-              acceptUnit: this.formAlign.priceType
+              acceptUnit: this.formAlign.priceType,
+              insteadNo: insteadNumber
             };
             axios
               .request({ ...shoppingCar.saveInquiry, params: obj })
@@ -401,7 +423,6 @@ export default {
               telphone: this.formAlign.telphone,
               remark: this.formAlign.remark,
               defaultConfig: this.checked,
-
               order: orderData
             };
             axios
@@ -415,6 +436,27 @@ export default {
           }
         }
       });
+    },
+    addInsteadNo(val) {
+      console.log(val, "0000");
+      if (val == "") {
+        this.$message({
+          message: "请填写竞争型号",
+          type: "warning"
+        });
+      } else {
+        if (this.formAlign.insteadData.length >= 2) {
+          this.$message({
+            message: "最多添加三个竞争型号",
+            type: "warning"
+          });
+        } else {
+          this.formAlign.insteadData.push(val);
+        }
+      }
+    },
+    deleteInsteadNo(index) {
+      this.formAlign.insteadData.splice(index, 1);
     },
     selectChange(e) {
       console.log(this.formAlign);

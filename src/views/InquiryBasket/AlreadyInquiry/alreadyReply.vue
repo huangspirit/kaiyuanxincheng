@@ -44,7 +44,7 @@
                 </p>
                 <p>
                   竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
+                  <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
                 <p>
                   备注说明：
@@ -56,7 +56,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="5" class="goodPrice">
+            <el-col :span="5" class="goodsStatus">
               <div class="applyStatus">
                 <p class="isApproved">{{listItem.sheetEffective | effective(listItem.replayStates)}}</p>
               </div>
@@ -144,6 +144,7 @@
         background
         @current-page="currentPage"
         @current-change="change"
+        ref="pagination"
       ></el-pagination>
     </div>
   </div>
@@ -168,6 +169,21 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
+     eventBus.$on("alreadyReply", val => {
+      this.$refs.pagination.internalCurrentPage = 1
+      if (val != null) {
+        this.allInquiryData = val.data;
+        this.total = val.total;
+      } else {
+        this.allInquiryData = [];
+      }
+    });
+  },
+  filters: {
+    insteadFilter(val) {
+      console.log(val);
+      return val.split("@");
+    }
   },
   components: {
     countTime,

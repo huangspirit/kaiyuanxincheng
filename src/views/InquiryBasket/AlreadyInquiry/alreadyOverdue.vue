@@ -44,7 +44,7 @@
                 </p>
                 <p>
                   竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
+                  <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
                 <p>
                   备注说明：
@@ -52,7 +52,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="5" class="goodPrice">
+            <el-col :span="5" class="goodsStatus">
               <div class="applyStatus">
                 <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
               </div>
@@ -70,6 +70,7 @@
         background
         @current-page="currentPage"
         @current-change="change"
+        ref="pagination"
       ></el-pagination>
     </div>
   </div>
@@ -87,8 +88,26 @@ export default {
       total: 0
     };
   },
+  filters: {
+    insteadFilter(val) {
+      console.log(val);
+      return val.split("@");
+    }
+  },
   mounted() {
     this.getAllReplyList();
+    eventBus.$on("alreadyOverdue", val => {
+      this.$refs.pagination.internalCurrentPage = 1;
+      if (val != null) {
+        this.allInquiryData = val.data;
+        this.total = val.total;
+      } else {
+        this.allInquiryData = [];
+      }
+    });
+  },
+  beforeDestroy() {
+    eventBus.$off("alreadyOverdue");
   },
   computed: {},
   methods: {
@@ -111,9 +130,7 @@ export default {
         }
       });
     },
-    currentPage(val) {
-      console.log("11", val);
-    },
+    currentPage(val) {},
     change(val) {
       console.log(val);
       this.start = val * 2 - 2;
@@ -162,20 +179,21 @@ export default {
       width: 100%;
       .listContent {
         border: 1px solid #dee3e9;
-        padding: 0 10px;
+        padding: 10px;
+        margin-bottom: 15px;
         > .content {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         > .applyContent {
           padding: 10px 0;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         .goodsImg {
           width: 200px;
@@ -210,18 +228,6 @@ export default {
             > span {
               color: #000;
             }
-          }
-        }
-        .goodPrice {
-          .failure {
-            width: 130px;
-            font-size: 20px;
-            padding: 5px 0;
-            color: #fff;
-            text-align: center;
-            background-color: #bcbcbc;
-            margin-top: 45px;
-            margin-left: 30%;
           }
         }
       }

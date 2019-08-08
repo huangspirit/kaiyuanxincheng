@@ -44,7 +44,7 @@
                 </p>
                 <p>
                   竞争型号：
-                  <span>{{listItem.insteadNo}}</span>
+                  <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
                 <p>
                   备注说明：
@@ -68,7 +68,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="5" class="goodPrice">
+            <el-col :span="5" class="goodsStatus">
               <div class="applyStatus">
                 <p
                   class="noApproved"
@@ -89,6 +89,7 @@
         background
         @current-page="currentPage"
         @current-change="change"
+        ref="pagination"
       ></el-pagination>
     </div>
   </div>
@@ -109,9 +110,24 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
+    eventBus.$on("userNotice", val => {
+      this.$refs.pagination.internalCurrentPage = 1;
+      if (val != null) {
+        this.allInquiryData = val.data;
+        this.total = val.total;
+      } else {
+        this.allInquiryData = [];
+      }
+    });
   },
   components: {
     countTime
+  },
+  filters: {
+    insteadFilter(val) {
+      console.log(val)
+      return val.split('@')
+    }
   },
   methods: {
     getAllReplyList() {
@@ -124,8 +140,12 @@ export default {
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         console.log(res);
         if (res.resultCode == "200") {
-          this.allInquiryData = res.data.data;
-          this.total = res.data.total;
+          if (res.data != null) {
+            this.allInquiryData = res.data.data;
+            this.total = res.data.total;
+          } else {
+            this.allInquiryData = [];
+          }
         }
       });
     },
@@ -169,20 +189,21 @@ export default {
       width: 100%;
       .listContent {
         border: 1px solid #dee3e9;
-        padding: 0 10px;
+        padding: 10px;
+        margin-bottom: 15px;
         > .content {
           border-bottom: 1px solid #dee3e9;
           padding: 10px 0;
           min-height: 150px;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         > .applyContent {
           padding: 10px 0;
-          &:hover {
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          }
+          // &:hover {
+          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+          // }
         }
         .goodsImg {
           width: 200px;

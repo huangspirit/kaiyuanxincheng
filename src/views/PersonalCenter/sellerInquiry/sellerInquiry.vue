@@ -15,7 +15,7 @@
             :to="item.path"
             @click.native="tabShow(item.name)"
           >{{item.name}}</router-link>
-          <el-select v-model="reppyValue" placeholder="请选择">
+          <el-select v-model="reppyValue" @change="getInquiryList(reppyValue)" placeholder="请选择">
             <el-option
               v-for="item in reppyData"
               :key="item.value"
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { axios, siderInquiryList } from "@/api/apiObj";
 import "./sellerInquiry.less";
 export default {
   data() {
@@ -77,24 +78,87 @@ export default {
           value: "180",
           label: "近半年"
         }
-      ]
+      ],
+      routeAlign: ""
     };
   },
+  watch: {
+    $route(to, from) {
+      this.routeAlign = to;
+    }
+  },
   mounted() {
-    var routeAlign = this.$route;
-    if (routeAlign.name == "allApply") {
+    this.routeAlign = this.$route;
+    console.log(this.routeAlign)
+    if (this.routeAlign.name == "personalallApply") {
       this.title = "全部待批复";
-    } else if (routeAlign.name == "userNotice") {
+    } else if (this.routeAlign.name == "personaluserNotice") {
       this.title = "用户提醒";
-    } else if (routeAlign.name == "alreadyReply") {
+    } else if (this.routeAlign.name == "personalalreadyReply") {
       this.title = "已批复";
-    } else if (routeAlign.name == "alreadyOverdue") {
+    } else if (this.routeAlign.name == "personalalreadyOverdue") {
       this.title = "已过期";
     }
   },
   methods: {
     tabShow(val) {
       this.title = val;
+    },
+    getInquiryList(val) {
+      console.log(val);
+      if (this.routeAlign.name == "personalallApply") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          day: val
+        };
+      } else if (this.routeAlign.name == "personaluserNotice") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          reply_status: false,
+          day: val
+        };
+      } else if (this.routeAlign.name == "personalalreadyReply") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          reply_status: true,
+          type: true,
+          day: val
+        };
+      } else if (this.routeAlign.name == "personalalreadyOverdue") {
+        this.paramsInfo = {
+          start: 0,
+          length: 2,
+          type: true,
+          sheet_effective: false,
+          day: val
+        };
+      }
+      axios
+        .request({ ...siderInquiryList.allReply, params: this.paramsInfo })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            if (res.data != null) {
+              this.allInquiryData = res.data;
+            } else {
+              this.allInquiryData = [];
+            }
+            if (this.routeAlign.name == "personalallApply") {
+              eventBus.$emit("personalallApply", this.allInquiryData);
+            } else if (this.routeAlign.name == "personaluserNotice") {
+              eventBus.$emit("personaluserNotice", this.allInquiryData);
+            } else if (this.routeAlign.name == "personalalreadyReply") {
+              eventBus.$emit("personalalreadyReply", this.allInquiryData);
+            } else if (this.routeAlign.name == "personalalreadyOverdue") {
+              eventBus.$emit("personalalreadyOverdue", this.allInquiryData);
+            }
+          }
+        });
     }
   }
 };

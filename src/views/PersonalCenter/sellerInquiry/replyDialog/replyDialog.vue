@@ -452,7 +452,6 @@ export default {
     },
     // 发布商品
     applyOk(formName) {
-        
       this.$refs[formName].validate(valid => {
         if (valid) {
           let arr = [];
@@ -502,7 +501,7 @@ export default {
             goodsCount: this.ruleForm.goods_count,
             cludeBill: this.ruleForm.clude_bill,
             diliverIntervalDay: this.ruleForm.complete_date,
-            brandId:this.allListData.brandId,
+            brandId: this.allListData.brandId,
             uid: this.allListData.uid,
             id: this.allListData.id
           };
@@ -514,8 +513,9 @@ export default {
             .then(res => {
               this.$message({
                 type: "success",
-                message: '批复成功'
+                message: "批复成功"
               });
+              this.$parent.getAllReplyList();
               this.dialogVisible = false;
               this.$emit("dialogVisibleClose", false);
             })

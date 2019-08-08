@@ -3,9 +3,7 @@
   <div class="allQuiryList">
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
-      <div class="allQuiryTop">
-        申请编号：{{item.inquirySheetNo}}
-      </div>
+      <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="companyDetail">
         <li>
           项目名称：
@@ -61,7 +59,11 @@
           </el-table-column>
           <el-table-column prop="goodsName" label="名称"></el-table-column>
           <el-table-column prop="goodsDesc" label="功能描述"></el-table-column>
-          <el-table-column prop="inquirySheetNo" label="竞争型号"></el-table-column>
+          <el-table-column prop label="竞争型号">
+            <template slot-scope="scope">
+              <span>{{scope.row.insteadNo.split('@')}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
           <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
           <el-table-column prop label="批复价格" width="300px">
@@ -105,6 +107,7 @@
         background
         @current-page="currentPage"
         @current-change="change"
+        ref="pagination"
       ></el-pagination>
     </div>
     <allReplyDialog
@@ -119,7 +122,7 @@
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
-import './AlreadyInquiry.less'
+import "./AlreadyInquiry.less";
 import allReplyDialog from "./replyDialog/replyDialog";
 export default {
   data() {
@@ -136,6 +139,15 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
+    eventBus.$on("personalalreadyOverdue", val => {
+      this.$refs.pagination.internalCurrentPage = 1;
+      if (val != null) {
+        this.allInquiryData = val.data;
+        this.total = val.total;
+      } else {
+        this.allInquiryData = [];
+      }
+    });
   },
   computed: {},
   methods: {
@@ -148,8 +160,12 @@ export default {
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
         if (res.resultCode == "200") {
-          this.allInquiryData = res.data.data;
-          this.total = res.data.total;
+          if (res.data != null) {
+            this.allInquiryData = res.data.data;
+            this.total = res.data.total;
+          } else {
+            this.allInquiryData = [];
+          }
         }
       });
     },
@@ -219,7 +235,7 @@ export default {
       > li {
         min-width: 320px;
         line-height: 45px;
-        margin: 10px 20px;
+        margin: 0 20px;
         font-size: 20px;
         border-right: 1px solid #dee3e9;
         color: #8194a7;

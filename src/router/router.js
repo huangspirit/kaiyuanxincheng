@@ -447,7 +447,7 @@ export default [
                 },
                 children: [{
                     path: '/personalallApply',
-                    name: 'allApply',
+                    name: 'personalallApply',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/allReply.vue'),
                     meta: {
                         requireAuth: true,
@@ -455,7 +455,7 @@ export default [
                     },
                 }, {
                     path: '/personaluserNotice',
-                    name: 'userNotice',
+                    name: 'personaluserNotice',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/userNotice.vue'),
                     meta: {
                         requireAuth: true,
@@ -463,7 +463,7 @@ export default [
                     },
                 }, {
                     path: '/personalalreadyReply',
-                    name: 'alreadyReply',
+                    name: 'personalalreadyReply',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyReply.vue'),
                     meta: {
                         requireAuth: true,
@@ -471,7 +471,7 @@ export default [
                     },
                 }, {
                     path: '/personalalreadyOverdue',
-                    name: 'alreadyOverdue',
+                    name: 'personalalreadyOverdue',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyOverdue.vue'),
                     meta: {
                         requireAuth: true,
