@@ -22,7 +22,7 @@ export default {
   },
   data(){
     return {
-      errorGoodsImgUrl:'http://brand.113ic.com/8edd1edf1169493cbdae9dcd303be337.jpg'
+      errorGoodsImgUrl:'http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg'
     }
   },
 

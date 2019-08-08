@@ -83,7 +83,7 @@
               <h3 v-if="listItem.factorySellerInfo.price_level != undefined">原厂报价</h3>
               <li
                 v-if="listItem.factorySellerInfo.price_level != undefined"
-                v-for="(subitem,index) in listItem.ladderPrice"
+                v-for="(subitem,index) in listItem.priceList"
                 :key="index"
               >
                 <span>{{subitem.num}}+</span> -------
@@ -176,7 +176,7 @@ export default {
                     .price_level
                 );
                 this.waitInquiryList[i].baseList[j][
-                  "ladderPrice"
+                  "priceList"
                 ] = this.factorySale;
               }
             }

@@ -65,10 +65,8 @@
             this.count=this.item.moq;
             if(this.item.price_type){
                 this.price=parseFloat(this.item.priceList[0].price);
-
             }else{
                 this.price=this.item.seckil_price;
-
             }
             this.money=this.count*this.price
         },

@@ -28,10 +28,10 @@
             <div class="brand-msg-con-r">
               <div class="tit">
                 <span>{{brandInfo.name}}</span>
-                <span class="tag">
-                  <img src="@/assets/image/brandDetail/u4858.png" alt>
-                  已入驻芯手网
-                </span>
+<!--                <span class="tag">-->
+<!--                  <img src="@/assets/image/brandDetail/u4858.png" alt>-->
+<!--                  已入驻芯手网-->
+<!--                </span>-->
               </div>
               <p>
                 公司简介
@@ -102,8 +102,8 @@
 <!--            >-->
 <!--          </li>-->
 <!--        </ul>-->
-        <SubstituModelList :list="ProductnformaList"></SubstituModelList>
-        <Pagination :currentPage.sync="currentPage" :total="total"></Pagination>
+        <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList>
+        <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage"></Pagination>
       </div>
     </div>
   </div>
@@ -114,18 +114,24 @@
 
 <script>
 
-import { BrandDetailData } from "@/api/BrandDetail";
-import MerchantList from "_c/MerchantList";
+//import { BrandDetailData } from "@/api/BrandDetail";
+//import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
-import HotSearch from "_c/HotSearch";
-import { mapGetters, mapActions } from "vuex";
-import { stat } from "fs";
+//import HotSearch from "_c/HotSearch";
+import { mapGetters} from "vuex";
+//import { stat } from "fs";
+import {axios,BrandDetail} from "../../../api/apiObj";
+
 export default {
   name: "AllBrand",
   data() {
     return {
-      currentPage: 1,
-      valueName: "",
+        pageSize:10,
+        currentPage: 1,
+        ProductnformaList:[],
+        valueName: "",
+        total:0,
+        //
       sortFlag: "",
       // 当前类的id
       parent_id: "",
@@ -157,23 +163,23 @@ export default {
       "brandInfo",
       "managementList",
       "totalCount",
-      "ProductnformaList",
-      "total",
       "childrenList"
     ]),
     brandId() {
       return this.$route.query.documentid;
     },
     start() {
-      return (this.currentPage - 1) * 10;
+      return (this.currentPage - 1) * this.pageSize;
     },
     // 参数
     params() {
       return {
-        brandId: this.brandId,
-        name: this.valueName,
+            type:1,
+            brandId: this.brandId,
+            name: this.valueName,
       //  sort_filds: this.sort_filds,
-        start: this.start,
+            start: this.start,
+            length:this.pageSize
       //  sort_type: this.sort_type ? 0 : 1
       };
     }
@@ -187,17 +193,24 @@ export default {
     }
   },
   components: {
-    MerchantList,
-    HotSearch,
+   // MerchantList,
+   // HotSearch,
     SubstituModelList
   },
   methods: {
     AllSend(k) {
-      this.$loading(this.$store.state.loading)
+     // this.$loading(this.$store.state.loading);
+        this.ProductnformaList=[];
       this.listFlag = k;
-      this.$store.dispatch("GetAllCategory", this.params).then(() => {
-        this.$loading(this.$store.state.loading).close()
+      axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params: this.params}).then(res=>{
+         this.$loading(this.$store.state.loading).close();
+          this.ProductnformaList=res.data.data;
+          console.log(this.ProductnformaList)
+          this.total=res.data.total;
       })
+      // this.$store.dispatch("GetAllCategory", this.params).then(() => {
+      //   this.$loading(this.$store.state.loading).close()
+      // })
     },
     // 获取热搜的值
     hotSearchValue(val) {
@@ -205,10 +218,9 @@ export default {
     },
     // 点击搜索按钮
     hotSearchsubmit() {
-      this.AllSend;
+      this.AllSend();
     },
     send(k, item) {
-
       this.listFlag = k;
       this.parent_id = item.catergoryId;
       this.$router.push({
@@ -227,7 +239,12 @@ export default {
       this.sort_filds = item.val;
       item.sortImgFlag = !item.sortImgFlag;
       this.sort_type = item.sortImgFlag;
-    }
+    },
+      //翻页器
+      handleChangePage(x){
+        this.currentPage=x;
+        this.AllSend()
+      }
   },
   mounted() {
     this.$loading(this.$store.state.loading)
@@ -241,7 +258,6 @@ export default {
       .then(res => {
         this.AllSend();
       });
-
     this.$store.commit("SetBrandId", this.$route.query);
   }
 };

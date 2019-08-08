@@ -1,10 +1,10 @@
 <template>
   <div class="SubstituModelList">
-    <ul class="substitu-model-list clear">
+    <ul class="substitu-model-list clear" v-if="modelList.length">
       <li v-for="(item,k) in modelList" :key="`list_${item.id}`" >
         <div class="product clear">
             <div class="model-list-b fr">
-                <ButtonIcon :width="145" :height="50">
+                <ButtonIcon :width="100" :height="40" @click="specialPrice(k)">
                     <img src="@/assets/image/brandDetail/u4504.png" alt />
                     申请特价
                 </ButtonIcon>
@@ -54,7 +54,7 @@
                   <span>供应商报价</span>
                   <span
                     class="num"
-                  >￥{{ item.map.minPrice | toFixed }}——￥{{item.map.maxPrice | toFixed}}</span>
+                  >{{ item.map.minPrice}} --- {{item.map.maxPrice}}</span>
                 </span>
               </p>
             </div>
@@ -69,9 +69,9 @@
     @import "./SubstituModelList.less";
 </style>
 <script>
-import Pdf from "_c/Pdf";
+//import Pdf from "_c/Pdf";
 import { setTimeout } from "timers";
-import pdf from "vue-pdf";
+//import pdf from "vue-pdf";
 import MerchantList from "_c/MerchantList";
 import { axios, shoppingCar } from "@/api/apiObj";
 export default {
@@ -81,7 +81,7 @@ export default {
       dialogTableVisible: false,
       dialogTableVisible2: false,
       loading: true,
-        modelList:[]
+      modelList:[]
     };
   },
   props: {
@@ -90,7 +90,7 @@ export default {
       default: () => []
     }
   },
-    created(){
+    mounted(){
       this.modelList=this.list
     },
   methods: {
@@ -137,21 +137,28 @@ export default {
               .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
               .then(res => {
                   this.$set(this.modelList[k],"focus",true)
-                  // this.$message.success("已关注");
+                  this.$message.success("已关注");
               });
+      },
+      specialPrice(k){
+        let item=this.modelList[k]
+          let factorySellerInfo=item.factorySellerInfo
+          factorySellerInfo.priceType=factorySellerInfo.price_type
+          factorySellerInfo.priceLevel=factorySellerInfo.price_level
+          this.$store.dispatch("promation", {...item,factorySellerInfo:factorySellerInfo});
+          this.$router.push("/InquiryBasket/ApplySpecialPrice");
+
       }
   },
-  components: { pdf, MerchantList },
+  components: {
+      //pdf,
+      MerchantList
+  },
     computed: {
         loginState(){
             return this.$store.state.loginState
         }
     },
-  filters: {
-    toFixed(value) {
-      return Number(value).toFixed(3);
-    }
-  }
 };
 </script>
 

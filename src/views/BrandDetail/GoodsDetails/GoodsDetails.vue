@@ -47,11 +47,17 @@
                         <img src="@/assets/image/brandDetail/u10698.png"  alt />
                         +购物车
                       </span>
-                      <span @click="purchase" >
-                          <img src="@/assets/image/brandDetail/u10698.png" alt />
-                        +立即购买
-                      </span>
                   </p>
+                <p>
+                    <ButtonIcon :width="120" :height="35" :fontSize="12" @click="purchase" class="fl">
+                        <img src="@/assets/image/brandDetail/u4504.png" alt />
+                        +立即购买
+                    </ButtonIcon>
+                    <ButtonIcon :width="120" :height="35" :fontSize="12" @click="specialPrice" class="fl">
+                        <img src="@/assets/image/brandDetail/u4504.png" alt />
+                        +申请特价
+                    </ButtonIcon>
+                </p>
             </div>
           <div
             class="goods-detail-price"
@@ -78,12 +84,12 @@
                 </li>
                   <li v-if="!goodsinfo.factorySellerInfo.price_type">
                       <span class="name">一口价：</span>
-                      <span class="fr">{{goodsinfo.priceunit?"$":"￥"}}{{goodsinfo.factorySellerInfo.seckil_price}}</span>
+                      <span class="fr">{{goodsinfo.factorySellerInfo.priceunit?"$":"￥"}}{{goodsinfo.factorySellerInfo.seckil_price}}</span>
                   </li>
                 <li class="LadderPrice" v-if="goodsinfo.factorySellerInfo.price_type">
                     <p v-for="item0 in goodsinfo.factorySellerInfo.priceList">
                         <span class="name">{{item0.num}}+</span>
-                        <strong class="fr">{{goodsinfo.priceunit?"$":"￥"}}{{item0.price}}</strong>
+                        <strong class="fr">{{goodsinfo.factorySellerInfo.priceunit?"$":"￥"}}{{item0.price}}</strong>
                     </p>
                 </li>
               </ul>
@@ -253,6 +259,17 @@ export default {
               return;
           }
           this.showPurchase=true
+      },
+      specialPrice(){
+          if(!this.loginState){
+              this.$router.push('/Login')
+              return;
+          }
+          let factorySellerInfo=this.goodsinfo.factorySellerInfo
+          factorySellerInfo.priceType=factorySellerInfo.price_type
+          factorySellerInfo.priceLevel=factorySellerInfo.price_level
+          this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
+          this.$router.push("/InquiryBasket/ApplySpecialPrice");
       }
 
   },

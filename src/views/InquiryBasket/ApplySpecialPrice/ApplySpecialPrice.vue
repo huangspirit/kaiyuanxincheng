@@ -36,11 +36,11 @@
           </div>
           <div
             class="LadderPrice"
-            v-if="oneData.factorySellerInfo!= undefined&&oneData.factorySellerInfo.priceType==true"
+            v-if="oneData.factorySellerInfo && oneData.factorySellerInfo.priceType"
           >
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
-              <div v-for="(item, k) in oneData.ladderPrice" :key="k">
+              <div v-for="(item, k) in oneData.priceList" :key="k">
                 <span>{{item.num}}+</span>
                 <span>
                   <span v-if="item.priceUnit ==true">$</span>
@@ -155,12 +155,12 @@
                 </div>
                 <div class="goodPrice">
                   <h3>原厂报价</h3>
-                  <li v-if="listItem.factorySellerInfo == undefined">
+                  <div v-if="listItem.factorySellerInfo == undefined">
                     <p style="text-align: center">暂无原厂报价</p>
-                  </li>
-                  <li
+                  </div>
+                  <div
                     v-if="listItem.factorySellerInfo!=undefined && listItem.factorySellerInfo.priceType==true"
-                    v-for="(subitem,index) in listItem.ladderPrice"
+                    v-for="(subitem,index) in listItem.priceList"
                     :key="index"
                   >
                     <span>{{subitem.num}}+</span> -------
@@ -169,15 +169,15 @@
                       <span v-if="listItem.priceUnit ==false">￥</span>
                       {{subitem.price}}
                     </span>
-                  </li>
-                  <li
+                  </div>
+                  <div
                     v-if="listItem.factorySellerInfo!= undefined && listItem.factorySellerInfo.priceType==false"
                     :key="index"
                   >
                     <span v-if="listItem.priceUnit ==true">$</span>
                     <span v-if="listItem.priceUnit ==false">￥</span>
                     {{oneData.seckilPrice}}
-                  </li>
+                  </div>
                 </div>
                 <div class="edit">
                   <el-form

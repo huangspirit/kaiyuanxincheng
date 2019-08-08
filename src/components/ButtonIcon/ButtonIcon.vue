@@ -1,11 +1,9 @@
 <template>
-  <div  class="ButtonIcon" :style="butStyle" @click="click">
+  <div class="ButtonIcon" :style="butStyle" @click="click">
     <slot></slot>
   </div>
 </template>
-
 <script>
-import './ButtonIcon.less'
 export default {
   name: 'ButtonIcon',
   props: {
@@ -44,7 +42,6 @@ export default {
     butStyle () {
       return {
         'width': `${this.width}px`,
-        'height': `${this.height}px`,
         'lineHeight': `${this.height}px`,
         'color': this.color,
         'background': this.background,
@@ -64,20 +61,16 @@ export default {
   }
 }
 </script>
-<style lang="less">
-.ButtonIcon {
-  text-align: center;
-  &:hover{
-    color: peru !important;
-  }
-  cursor: pointer;
+<style lang="less" scoped>
+.ButtonIcon{
+    text-align: center;
+    cursor: pointer;
+    &:hover{
+        color: peru !important;
+    }
   img {
-    width: 35px;
-    height: 35px;
-    position: relative;
-    margin-right: 10px;
-    top: 8px;
+      vertical-align: middle;
+      width:20px;
   }
-
 }
 </style>

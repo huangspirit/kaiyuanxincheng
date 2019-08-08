@@ -1,4 +1,7 @@
 .SubstituModelList {
+    /deep/.purchase{
+        min-width:1140px!important;
+    }
     .substitu-model-list {
         &>li {
             border-bottom: 1px solid #ddd;
@@ -10,7 +13,6 @@
                 .TabImage {
                     margin-right: 20px;
                     position: relative;
-
                     &:after{
                         content: "";
                         position: absolute;
@@ -75,16 +77,16 @@
             }
 
             .model-list-b {
-                //&>.ButtonIcon {
-                //    float: left;
-                //    margin-right: 10px;
-                //
-                //    img {
-                //        width: 25px;
-                //        height: 25px;
-                //    }
-                //}
-                line-height: 150px;
+                margin-top:50px;
+                /deep/.ButtonIcon {
+                    float: left;
+                    margin-right: 10px;
+                    img {
+                        width: 20px;
+                        height:20px;
+                        vertical-align: middle;
+                    }
+                }
                 &>span {
                     img {
                         width: 41px;

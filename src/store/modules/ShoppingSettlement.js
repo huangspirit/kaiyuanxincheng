@@ -31,6 +31,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       AllReceivingAddress(data).then(res => {
         if (res.resultCode === '200') {
+          resolve(res)
           commit('GetAllReceivingAddress', res.data)
         } else {
           reject(res.message)
@@ -95,7 +96,6 @@ const actions = {
   }, data) {
     return new Promise((resolve, reject) => {
       AllPersonalInvoice(data).then(res => {
-
         if (res.resultCode === '200') {
           resolve(res.data)
           commit('GetAllPersonalInvoice', res.data)
@@ -156,8 +156,11 @@ const actions = {
 
 const mutations = {
   GetAllReceivingAddress(state, data) {
-    state.addressList = data.data
-
+      if(data){
+          state.addressList = data.data
+      }else{
+          state.addressList=[]
+      }
   },
   GetAllPersonalInvoice(state, data) {
     state.InvoiceList = data.data

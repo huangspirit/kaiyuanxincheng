@@ -884,12 +884,10 @@ export default {
     },
     // 获取全部的收货地址
     allAddress() {
-
      this.GetAllReceivingAddress({
         start: 0,
         length: 10
       })
-
     },
     // 关闭时的回调
     closeDialogAddress(formName) {
