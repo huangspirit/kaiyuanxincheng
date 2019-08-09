@@ -278,7 +278,6 @@ export default {
       },
       DeliverGoodsInvoice() {
           axios.request(sellerOrderCenter.querySysBill).then(res=>{
-
               this.sysBillDefault=res.data
           })
       },

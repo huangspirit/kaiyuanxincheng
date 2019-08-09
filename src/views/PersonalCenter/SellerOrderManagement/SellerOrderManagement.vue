@@ -258,7 +258,7 @@
       <router-view></router-view>
   </div>
 </template>
-<style lang="less"  scoped>
+<style lang="less">
 @import "./SellerOrderManagement.less";
 </style>
 <script>

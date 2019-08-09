@@ -48,6 +48,9 @@ const sellerOrderCenter = {
     querySysBill: {
         url: "/api-u/userBill/querySysBill"
     },
+    billManager: {
+        url: "/api-order/customerCenter/billManager"
+    },
     openBill: {
         url: "/api-order/sellerCenter/openBill"
     },
@@ -57,7 +60,6 @@ const sellerOrderCenter = {
     queryBillListBySeller: {
         url: "/api-order/sellerCenter/queryBillListBySeller"
     },
-
 }
 const sellerCenter = {
     //卖家账单中心查询
@@ -128,10 +130,16 @@ const siderInquiryList = {
     }
 
 }
-const BrandDetail={
-    findGoodsBaseInfoAndExInfo:{url:"api-g/gods-anon/findGoodsBaseInfoAndExInfo"},
-    queryCatergoryByParentId:{url:"api-g/gods-anon/queryCatergoryByParentId"},
-    searchResult:{url:"api-g/gods-anon/searchResult"}
+const BrandDetail = {
+    findGoodsBaseInfoAndExInfo: {
+        url: "api-g/gods-anon/findGoodsBaseInfoAndExInfo"
+    },
+    queryCatergoryByParentId: {
+        url: "api-g/gods-anon/queryCatergoryByParentId"
+    },
+    searchResult: {
+        url: "api-g/gods-anon/searchResult"
+    }
 }
 export {
     axios,

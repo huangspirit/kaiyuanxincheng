@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb  separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>买家中心</el-breadcrumb-item>
       <el-breadcrumb-item>发票管理</el-breadcrumb-item>
       <el-breadcrumb-item>开票信息管理</el-breadcrumb-item>
@@ -11,10 +11,8 @@
       </p>
       <ul class="InvoiceInforma-list">
         <li v-for="item in list" :key="item.id">
+          <span v-if="item.isdefault">默认</span>
           <div class="item-l">
-            <!-- <div class="item-l-text">
-              <span>增值税专用发票</span>
-            </div>-->
             <div class="item-l-name">
               <p>
                 公司名称：
@@ -24,9 +22,13 @@
               <p>开票电话：{{item.registeredphone}}</p>
               <p>
                 <label class="label">
-                  <input type="checkbox" v-model="item.flag" @change="checkboxChange(item)">
+                  <input disabled type="checkbox" v-model="item.isdefault" />
                   <span>
-                    <img src="@/assets/image/OriginalFactoryEntry/_u11446.png" alt v-if="item.flag">
+                    <img
+                      src="@/assets/image/OriginalFactoryEntry/_u11446.png"
+                      alt
+                      v-if="item.isdefault"
+                    />
                   </span>
                 </label>
                 <span>设为默认的开票信息</span>
@@ -83,6 +85,9 @@
           <el-form-item label="开票地址：" prop="registeredaddress">
             <el-input v-model="ruleForm.registeredaddress"></el-input>
           </el-form-item>
+          <el-form-item label="设为默认：" prop="invoCheck">
+            <el-switch v-model="ruleForm.isdefault" active-color="#13ce66" inactive-color="#d5d5d5"></el-switch>
+          </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialo-footer">
@@ -113,7 +118,6 @@
 </template>
 
 <script>
-
 import "@/assets/css/label-checkbox.less";
 import "@/assets/css/ele-form.less";
 import "@/assets/css/dialog-delect.less";
@@ -140,7 +144,8 @@ export default {
         registeredaddress: "",
         registeredphone: "",
         bankaccount: "",
-        access_token: ""
+        access_token: "",
+        isdefault: true
       },
       rules: {
         corporatename: [
@@ -194,15 +199,14 @@ export default {
       "GetQueryUserBillById"
     ]),
     // 默认框改变时
-    checkboxChange(item) {
-   
-      if (item.flag) {
-        this.list.map(item => {
-          item.flag = false;
-        });
-        item.flag = true;
-      }
-    },
+    // checkboxChange(item) {
+    //   if (item.isdefault) {
+    //     this.list.map(item => {
+    //       item.isdefault = false;
+    //     });
+    //     item.isdefault = true;
+    //   }
+    // },
     all() {
       this.GetAllPersonalInvoice({
         start: 0,
@@ -243,7 +247,7 @@ export default {
               });
           }
         } else {
-          this.$message.error('请完善信息!')
+          this.$message.error("请完善信息!");
           return false;
         }
       });
@@ -284,7 +288,6 @@ export default {
         id: item.id,
         access_token: this.access_token
       }).then(res => {
-
         this.ruleForm = res;
       });
     },
@@ -295,7 +298,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import "./InvoiceInformationManagement.less";
 </style>
 
