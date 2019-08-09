@@ -129,9 +129,18 @@ const siderInquiryList = {
 
 }
 const BrandDetail={
+    //导航搜索
     findGoodsBaseInfoAndExInfo:{url:"api-g/gods-anon/findGoodsBaseInfoAndExInfo"},
+    //获取品类
     queryCatergoryByParentId:{url:"api-g/gods-anon/queryCatergoryByParentId"},
-    searchResult:{url:"api-g/gods-anon/searchResult"}
+    //input搜索结果获取
+    searchResult:{url:"api-g/gods-anon/searchResult"},
+    //获取筛选项
+    queryPropertyByParentId:{url:"api-g/gods-anon/queryPropertyByParentId"},
+    //根据筛选条件筛选产品
+    queryByProperty:{url:"api-g/gods-anon/queryByProperty",method:"post"},
+    //根据筛选条件筛选数量
+    queryMatchCount:{url:"api-g/gods-anon/queryMatchCount",method:"post"}
 }
 export {
     axios,

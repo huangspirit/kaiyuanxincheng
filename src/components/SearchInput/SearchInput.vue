@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import './SearchInput.less'    
+import './SearchInput.less'
 
 export default {
   name: 'SearchInput',
@@ -79,7 +79,7 @@ export default {
         'border': `1px solid ${this.borderColor}`,
         'background': `${this.backgroundColor}`,
         'color': this.fontColor,
-        
+
       }
     },
     inputStyle(){
@@ -104,7 +104,11 @@ export default {
   },
   methods: {
     change (e) {
-      this.$emit('input', e.target.value)
+        let value=e.target.value.trim();
+        if(value){
+            this.$emit('input', value)
+        }
+
     },
     submit(){
          this.$emit('submit')

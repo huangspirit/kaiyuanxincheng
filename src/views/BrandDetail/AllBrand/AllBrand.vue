@@ -102,8 +102,9 @@
 <!--            >-->
 <!--          </li>-->
 <!--        </ul>-->
+          <div class="nocontent" v-if="total==0">暂无此类产品</div>
         <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList>
-        <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage"></Pagination>
+        <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage" v-if="total"></Pagination>
       </div>
     </div>
   </div>
@@ -117,7 +118,7 @@
 //import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
 //import HotSearch from "_c/HotSearch";
-import { mapGetters} from "vuex";
+//import { mapGetters} from "vuex";
 //import { stat } from "fs";
 import {axios,BrandDetail} from "../../../api/apiObj";
 
@@ -209,7 +210,9 @@ export default {
           //         this.AllSend();
           //     });
           let obj={
-              ...this.$route.query,
+              id:this.$route.query.documentid,
+              tag:this.$route.query.tag,
+              name:this.$route.query.name,
               start:0,
               length:10
           }
@@ -217,14 +220,14 @@ export default {
                this.brandInfo=res.data.brand;
               this.AllSend();
           });
-          this.$store.commit("SetBrandId", this.$route.query);
+        //  this.$store.commit("SetBrandId", this.$route.query);
       },
     AllSend(k) {
-      this.listFlag = k;
-      this.ProductnformaList=[];
+    //  this.listFlag = k;
+     // this.ProductnformaList=[];
       let obj={
           type:1,
-          brandId: this.$route.query.id,
+          brandId: this.$route.query.documentid,
           name: this.valueName,
           start: this.start,
           length:this.pageSize
@@ -238,14 +241,16 @@ export default {
     // 获取热搜的值
     hotSearchValue(val) {
       this.valueName = val;
+      this.currentPage=1;
         this.AllSend()
     },
     // 点击搜索按钮
     hotSearchsubmit() {
+       this.currentPage=1;
       this.AllSend();
     },
     send(k, item) {
-      this.listFlag = k;
+     // this.listFlag = k;
       this.parent_id = item.catergoryId;
       this.$router.push({
         path: "/BrandDetail/Undirect",
@@ -253,17 +258,17 @@ export default {
           catergoryId: item.catergoryId,
           name: item.catergoryName,
           brandName: this.brandInfo.name,
-          brandId: this.$route.query.id
+          brandId: this.$route.query.documentid
         }
       });
     },
     // 排序
-    sortTab(k, item) {
-      this.sortFlag = k;
-      this.sort_filds = item.val;
-      item.sortImgFlag = !item.sortImgFlag;
-      this.sort_type = item.sortImgFlag;
-    },
+    // sortTab(k, item) {
+    //  this.sortFlag = k;
+    //   this.sort_filds = item.val;
+    //   item.sortImgFlag = !item.sortImgFlag;
+    //   this.sort_type = item.sortImgFlag;
+    // },
       //翻页器
       handleChangePage(x){
         this.currentPage=x;

@@ -95,6 +95,14 @@ export default {
       default: () => []
     }
   },
+    watch:{
+      list:{
+          deep:true,
+          handler(val){
+              this.modelList=val
+          }
+      }
+    },
     mounted(){
       this.modelList=this.list
     },

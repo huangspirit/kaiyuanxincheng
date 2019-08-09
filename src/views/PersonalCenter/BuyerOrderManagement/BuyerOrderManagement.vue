@@ -82,9 +82,9 @@
             <span style="width:20%">操作</span>
           </p>
           <BuyerOrderItem
-
+              v-if="BuyerOrderList.length"
+              v-for="item in BuyerOrderList"
             :item="item"
-            v-for="item in BuyerOrderList"
             :key="item.id"
             @successFlagHandel='all()'
           ></BuyerOrderItem>

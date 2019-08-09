@@ -33,23 +33,23 @@
               <img src="@/assets/image/brandDetail/u4675.png" alt>
               <span>品类</span>
           </div>
-        <ul class="list">
-          <li @click="AllSend" :class="{avtive:listFlag = ''}">
-            <img src="@/assets/image/brandDetail/u1086.png" alt>
-            <p>全部品类</p>
-            <p class="num">({{titleObj.productTotal}})</p>
-          </li>
-          <li
-            v-for="(item, k)  in titleObj.list"
-            :key="`parentList_${item.catergoryId}`"
-            @click="send(item)"
-            :class="{avtive:listFlag == item.catergoryId}"
-          >
-            <ImgE :src="item.catergoryUrl" :W="60" :H="60"></ImgE>
-            <p>{{item.catergoryName}}</p>
-            <p class="num">({{item.summaryTotal}})</p>
-          </li>
-        </ul>
+          <ul class="list">
+              <li @click="AllSend" :class="{avtive:listFlag = ''}">
+                <img src="@/assets/image/brandDetail/u1086.png" alt>
+                <p>全部品类</p>
+                <p class="num">({{titleObj.productTotal}})</p>
+              </li>
+              <li
+                v-for="(item, k)  in titleObj.list"
+                :key="`parentList_${item.catergoryId}`"
+                @click="send(item)"
+                :class="{avtive:listFlag == item.catergoryId}"
+              >
+                <ImgE :src="item.catergoryUrl" :W="60" :H="60"></ImgE>
+                <p>{{item.catergoryName}}</p>
+                <p class="num">({{item.summaryTotal}})</p>
+              </li>
+            </ul>
           <div class="brand-hot brand-msg">
               <div class="tit">
                   <img src="@/assets/image/brandDetail/u4832.png" alt>
@@ -73,8 +73,9 @@
                   <!-- 品牌热卖 -->
               </div>
           </div>
+          <div class="nocontent" v-if="ProductnformaList.length==0">暂无此类产品</div>
         <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList>
-        <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage"></Pagination>
+        <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage" v-if="total"></Pagination>
       </div>
     </div>
   </div>
@@ -97,10 +98,21 @@ export default {
       //sort_type: 0,
       valueName:"",
       titleObj:{},
-        ProductnformaList:[],
+       ProductnformaList:[],
         total:0
     };
   },
+    watch:{
+        $route: {
+            // val是改变之后的路由，oldVal是改变之前的val
+            handler: function(val, oldVal){
+                console.log(val);
+                this.init()
+            },
+            // 深度观察监听
+            deep: true
+        },
+    },
   computed: {
   //  ...mapGetters("Undirect", ["ProductnformaList", "total"]),
   //   ...mapState({
@@ -211,7 +223,7 @@ export default {
     },
       // 获取热搜的值
       hotSearchValue(val) {
-           this.valueName = val;
+          this.valueName = val;
           this.AllSend()
       },
       // 点击搜索按钮

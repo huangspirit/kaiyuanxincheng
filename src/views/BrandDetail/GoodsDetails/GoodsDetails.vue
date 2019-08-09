@@ -14,16 +14,36 @@
               <ImgE :src="goodsinfo.imageUrl" :W="210" :H="210" class="ImgE fl"></ImgE>
             <div class="text-cont fl">
               <p class="name">{{goodsinfo.productno}}</p>
-                <p class="brand">
+                <router-link
+                    :to="{
+                    path:'/BrandDetail',
+                    query:{
+                      tag:'brand',
+                      name:goodsinfo.brand,
+                      documentid:goodsinfo.brandId
+                    }
+                  }"
+                    tag="p"
+                    class="brand"
+                >
                     <label>品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;牌：</label>
                     {{goodsinfo.brand}}
                     <ImgE :src="goodsinfo.brandImageUrl" :W="82" :H="32"></ImgE>
-                </p>
-                <p class="classification brand">
+                </router-link>
+                <router-link
+                :to="{
+                    path:'/BrandDetail/Direct',
+                    query:{
+                      tag:'direct',
+                      name:goodsinfo.classification,
+                      documentid:goodsinfo.classificationId
+                    }
+                }"
+                    tag="p"
+                    class="brand classification">
                     <label>类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</label>
                     <a>{{goodsinfo.classification}}</a>
-                </p>
-
+                </router-link>
                 <p class="desc brand">
                   <label>功能描述：</label>
                   {{goodsinfo.productdesc}}
@@ -43,13 +63,13 @@
                         <img src="@/assets/image/brandDetail/_u4518.png" alt />
                         +询价篮
                       </span>
-                      <span @click="addShopingCar">
+                      <span @click="addShopingCar" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.priceType">
                         <img src="@/assets/image/brandDetail/u10698.png"  alt />
                         +购物车
                       </span>
                   </p>
                 <p>
-                    <ButtonIcon :width="120" :height="35" :fontSize="12" @click="purchase" class="fl">
+                    <ButtonIcon :width="120" :height="35" :fontSize="12" @click="purchase" class="fl" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.priceType">
                         <img src="@/assets/image/brandDetail/u4504.png" alt />
                         +立即购买
                     </ButtonIcon>
@@ -164,7 +184,7 @@ import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
 import {mapActions} from "vuex";
 import { baseURL, baseURL2 } from "@/config";
-import { axios, shoppingCar } from "@/api/apiObj";
+import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
 
 export default {
   name: "GoodsDetails",
@@ -274,44 +294,42 @@ export default {
 
   },
   mounted() {
-    this.$store
-      .dispatch("GoodsDetails/GetGoodsDetailData", this.$route.query)
-      .then(res => {
-       if(res.factorySellerInfo.price_type){
-           res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
-       }
-       this.goodsinfo = res;
-       this.purchaseObj={
-           goods_id: res.id,
-           goods_name: res.productno,
-           goodsDesc: res.productdesc,
-           goodsImage: res.imageUrl,
-           clude_bill: res.factorySellerInfo.clude_bill,
-           price_unit: res.factorySellerInfo.priceunit,
-           seckill_goods_id: res.factorySellerInfo.seller_goods_id,
-           goods_type:res.factorySellerInfo.goods_type,
-           diliver_place: res.factorySellerInfo.diliver_place,
-           moq:Number(res.factorySellerInfo.moq),
-           mpq:Number(res.factorySellerInfo.mpq),
-           stockcount:res.factorySellerInfo.stockcount,
-           price_type:res.factorySellerInfo.price_type,
-           priceList:res.factorySellerInfo.priceList,
-           seckil_price:res.factorySellerInfo.seckil_price,
-           sellerName: res.factorySellerInfo.seller_name,
-           sellerHeader: res.factorySellerInfo.seller_header,
-           seller_id: res.factorySellerInfo.seller_id,
-           tag: 1,
-       }
-       // if(!res.factorySellerInfo.seller_always){
-       //     this.purchaseObj={
-       //         ...this.purchaseObj,
-       //         complete_date: res.factorySellerInfo.complete_date,
-       //         diliver_date: res.factorySellerInfo.complete_date,
-       //         end_date: res.factorySellerInfo.end_date
-       //     }
-       // }
-        this.searchDatasheet(res.id)
-      });
+      let obj={
+          id:this.$route.query.documentid,
+          tag:this.$route.query.tag,
+          name:this.$route.query.name
+      }
+      axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
+          let res=result.data.goodsinfo
+          if(res.factorySellerInfo.price_type){
+              res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
+          }
+          this.goodsinfo = res
+          this.purchaseObj={
+              goods_id: res.id,
+              goods_name: res.productno,
+              goodsDesc: res.productdesc,
+              goodsImage: res.imageUrl,
+              clude_bill: res.factorySellerInfo.clude_bill,
+              price_unit: res.factorySellerInfo.priceunit,
+              seckill_goods_id: res.factorySellerInfo.seller_goods_id,
+              goods_type:res.factorySellerInfo.goods_type,
+              diliver_place: res.factorySellerInfo.diliver_place,
+              moq:Number(res.factorySellerInfo.moq),
+              mpq:Number(res.factorySellerInfo.mpq),
+              stockcount:res.factorySellerInfo.stockcount,
+              price_type:res.factorySellerInfo.price_type,
+              priceList:res.factorySellerInfo.priceList,
+              seckil_price:res.factorySellerInfo.seckil_price,
+              sellerName: res.factorySellerInfo.seller_name,
+              sellerHeader: res.factorySellerInfo.seller_header,
+              seller_id: res.factorySellerInfo.seller_id,
+              tag: 1,
+          }
+          this.searchDatasheet(res.id)
+      })
+
+
   },
   computed: {
       loginState(){

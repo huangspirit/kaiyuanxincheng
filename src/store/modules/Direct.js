@@ -8,7 +8,7 @@ import {
 } from '@/api/BrandDetail'
 
 const state = {
-    directJOSN:{},
+    directJOSN:localStorage.getItem("directJOSN")?JSON.parse(localStorage.getItem("directJOSN")):{},
   ProductnformaList: [],
   total: 0,
   // 筛选的type列表
@@ -88,7 +88,8 @@ const actions = {
 }
 const mutations = {
     savedirectJOSN(state,data){
-        state.directJOSN=data
+        state.directJOSN=data;
+        localStorage.setItem("directJOSN",JSON.stringify(data))
     },
   GetSearchDirect (state, data) {
     state.ProductnformaList = data.direct.data

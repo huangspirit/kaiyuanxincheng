@@ -11,7 +11,7 @@
             query:{
               tag:'goodsinfo',
               name:item.goods_name,
-              id:item.goods_id
+              documentid:item.goods_id
             }
           }"
             tag="p"
@@ -23,7 +23,7 @@
             query:{
               tag:'brand',
               name:item.brandName,
-              id:item.brandId
+              documentid:item.brandId
             }
           }"
             tag="p"
@@ -74,7 +74,7 @@
                 <img :src="item.userImgeUrl" alt>
                 <div class="username">
                 <span class="name">{{item.sellerName}}</span>
-                <span class="brd">原厂商户</span>
+                <span class="brd">{{item.tag | tagFilter}}</span>
               </div>
               </div>
             </div>
@@ -227,7 +227,17 @@ export default {
     formatDate(time) {
       var data = new Date(time);
       return formatDate(data, "yyyy-MM-dd");
-    }
+    },
+      tagFilter(val){
+        switch (val) {
+            case 1:
+                return "原厂商户";
+            case 2:
+                return "代理商户";
+            case 3:
+                return "普通商户";
+        }
+      }
   },
   watch: {
     "purchaseObj.num": {
@@ -378,7 +388,6 @@ export default {
     }
   },
   mounted() {
-
     if (this.item.priceType) {
       let ret = this.item.priceLevel.split("@");
       ret.forEach((item, index) => {
