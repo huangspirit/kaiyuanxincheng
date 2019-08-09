@@ -1,51 +1,79 @@
 <template>
-  <div class="BuyerOrderItem" >
+  <div class="BuyerOrderItem">
+    <p v-if="item == null">32424</p>
     <div class="list-item">
       <div class="list-item-tit">
         <span>
           <strong>下单时间:</strong>
-          {{item.createtime | formatDate}}
+          {{item.orderVo.createtime | formatDate}}
         </span>
         <span>
           <strong>订单号：</strong>
-          {{item.order_no}}
+          {{item.orderVo.order_no}}
         </span>
-         <span v-if="item.firtPayNo && item.firtPayNo==item.lastPayNo">
-           <strong>付款编号:</strong>
-           {{item.firtPayNo}}
-            <img :src="payTypeMark[item.prePayChannel]['imgurl']" class="payTypeMark" :title="payTypeMark[item.prePayChannel].title"/>
-         </span>
-         <span v-if="item.firtPayNo && item.firtPayNo!=item.lastPayNo">
-           <strong>预付款编号:</strong>
-           {{item.firtPayNo}}
-            <img :src="payTypeMark[item.prePayChannel]['imgurl']" class="payTypeMark" :title="payTypeMark[item.prePayChannel].title"/>
-         </span>
-         <span v-if="item.lastPayNo && item.firtPayNo!=item.lastPayNo">
-           <strong>尾款款编号:</strong>
-           {{item.lastPayNo}}
-            <img :src="payTypeMark[item.lastPayChannel]['imgurl']" class="payTypeMark" :title="payTypeMark[item.prePayChannel].title"/>
-         </span>
+        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo==item.lastPayNo">
+          <strong>付款编号:</strong>
+          {{item.orderVo.firtPayNo}}
+          <img
+            :src="payTypeMark[item.orderVo.prePayChannel]['imgurl']"
+            class="payTypeMark"
+            :title="payTypeMark[item.orderVo.prePayChannel].title"
+          />
+        </span>
+        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo!=item.lastPayNo">
+          <strong>预付款编号:</strong>
+          {{item.orderVo.firtPayNo}}
+          <img
+            :src="payTypeMark[item.orderVo.prePayChannel]['imgurl']"
+            class="payTypeMark"
+            :title="payTypeMark[item.orderVo.prePayChannel].title"
+          />
+        </span>
+        <span v-if="item.orderVo.lastPayNo && item.orderVo.firtPayNo!=item.orderVo.lastPayNo">
+          <strong>尾款款编号:</strong>
+          {{item.orderVo.lastPayNo}}
+          <img
+            :src="payTypeMark[item.orderVo.lastPayChannel]['imgurl']"
+            class="payTypeMark"
+            :title="payTypeMark[item.orderVo.prePayChannel].title"
+          />
+        </span>
         <span class="isMonth-con">
-          <span class="isMonth">{{item.isMonth ? '月结订单' :'普通订单'}}</span>
+          <span class="isMonth">{{item.orderVo.isMonth ? '月结订单' :'普通订单'}}</span>
           <strong>订单类型：</strong>
         </span>
-
       </div>
-      <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed;" class="table">
+      <table
+        width="100%"
+        border="1"
+        cellpadding="0"
+        cellspacing="0"
+        style="table-layout:fixed;"
+        class="table"
+      >
         <tr>
           <td style="width:20%;" class="receiverInfo">
-            <div class="text_left"><label for="">收件人：</label>  <p>{{item.receivingName}}</p></div>
-            <div class="text_left"><label for="">电&nbsp;&nbsp; 话：</label><p>{{item.phone}}</p> </div>
-            <div class="text_left"><label for="">地 &nbsp;&nbsp; 址：</label> <p>{{item.address}}{{item.detailedAddress}}</p> </div>
+            <div class="text_left">
+              <label for>收件人：</label>
+              <p>{{item.orderVo.receivingName}}</p>
+            </div>
+            <div class="text_left">
+              <label for>电&nbsp;&nbsp; 话：</label>
+              <p>{{item.orderVo.phone}}</p>
+            </div>
+            <div class="text_left">
+              <label for>地 &nbsp;&nbsp; 址：</label>
+              <p>{{item.orderVo.address}}{{item.orderVo.detailedAddress}}</p>
+            </div>
           </td>
           <td style="width:15%">
-            <p>{{item.goods_type ? '$' : '￥'}}{{item.postage}}</p>
-            <span v-if="item.postage">(预付邮费)</span>
+            <p>{{item.orderVo.goods_type ? '$' : '￥'}}{{item.orderVo.postage}}</p>
+            <span v-if="item.orderVo.postage">(预付邮费)</span>
             <span v-else>(到付)</span>
           </td>
           <td style="width:15%" class="operation">
             <div>
-              <span style="color:red;font-weight:bolder;">{{item.order_status | payStatus}}</span>
+              <span style="color:red;font-weight:bolder;">{{item.orderVo.order_status | payStatus}}</span>
               <!-- <span v-if="item.order_status === 0">未支付</span>
               <span v-if="item.order_status === 1">已支付</span>
               <span v-if="item.order_status === 2">取消中</span>
@@ -53,39 +81,34 @@
               <span v-if="item.order_status === 4">已完成</span>
               <span v-if="item.order_status === 5">预付款已付款</span>
               <span v-if="item.order_status === 6">待付尾款</span>
-              <span v-if="item.order_status === 13">已逾期</span> -->
+              <span v-if="item.order_status === 13">已逾期</span>-->
             </div>
-            <el-popover
-              placement="top-start"
-              width="500"
-              trigger="hover"
-              @show="showPopover(item)"
-            >
+            <el-popover placement="top-start" width="500" trigger="hover" @show="showPopover(item)">
               <div class="orderpress">
-                <p style="margin-bottom:15px;font-size:20px">订单号：{{item.order_no}}</p>
+                <p style="margin-bottom:15px;font-size:20px">订单号：{{item.orderVo.order_no}}</p>
                 <p style="margin-bottom:15px;font-size:20px">当前订单状态</p>
-                  <el-timeline>
-                    <el-timeline-item
-                      :timestamp="val.createtime"
-                      placement="top"
-                      v-for="(val, k) in OrderProcessList"
-                      :key="val.id"
-                      type="success"
-                      :class="k === val.length - 1 ? 'lastfood' : '' "
-                    >
-                      <el-card>
-                        <h4>{{val.ordesc}}</h4>
-                      </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
+                <el-timeline>
+                  <el-timeline-item
+                    :timestamp="val.createtime"
+                    placement="top"
+                    v-for="(val, k) in OrderProcessList"
+                    :key="val.id"
+                    type="success"
+                    :class="k === val.length - 1 ? 'lastfood' : '' "
+                  >
+                    <el-card>
+                      <h4>{{val.ordesc}}</h4>
+                    </el-card>
+                  </el-timeline-item>
+                </el-timeline>
               </div>
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">查看订单进程</span>
             </el-popover>
-             <!-- 合同的按钮 -->
-            <div v-if="item.download" class="box-con">
+            <!-- 合同的按钮 -->
+            <div v-if="item.orderVo.download" class="box-con">
               <div class="wrapbtn">
                 <span class="downloadContract">
-                  <a  @click="downLoadOrderContract(item.contractUrl)">下载合同</a>
+                  <a @click="downLoadOrderContract(item.orderVo.contractUrl)">下载合同</a>
                 </span>
               </div>
               <el-upload
@@ -95,69 +118,82 @@
                 :data="uploadObj"
                 :on-success="uploadSuccess"
                 :before-upload="beforeAvatarUpload"
-                v-if="item.order_status !== 11"
+                v-if="item.orderVo.order_status !== 11"
               >
-              <span class="uploadContract upload-demo-uploadContract">上传合同</span>
+                <span class="uploadContract upload-demo-uploadContract">上传合同</span>
               </el-upload>
             </div>
           </td>
           <td style="width:15%">
-            <p class="num" v-if="item.order_prepay">{{item.goods_type ? '$' : '￥'}}{{item.order_prepay}}</p>
+            <p
+              class="num"
+              v-if="item.orderVo.order_prepay"
+            >{{item.orderVo.goods_type ? '$' : '￥'}}{{item.orderVo.order_prepay}}</p>
           </td>
           <td style="width:15%">
-            <p class="num">总额：￥{{item.order_amount}}</p>
-            <span>附加发票金额（￥{{item.order_bill}}）</span>
-            <span>关税（￥{{item.guanshui}}）</span>
+            <p class="num">总额：￥{{item.orderVo.order_amount}}</p>
+            <span>附加发票金额（￥{{item.orderVo.order_bill}}）</span>
+            <span>关税（￥{{item.orderVo.guanshui}}）</span>
           </td>
           <td style="width:20%" class="operation">
             <!-- 是不是月结 -->
-              <div class="box-con">
-                <!-- <div class="wrapbtn">
+            <div class="box-con">
+              <!-- <div class="wrapbtn">
                   <span @click="payment(0)">去预付款</span>
-                </div> -->
-                <div class="wrapbtn"  v-if="item.prePayButton"><span @click="payment(0)">去付定金</span></div>
-                <div class="wrapbtn"  v-if="item.finalPayButton"> <span @click="payment(1)">去付尾款</span></div>
-                <div class="wrapbtn" v-if="item.isMonth && !item.need_pre_pay && item.payButton"><span  @click="vipPayment">全额付款</span></div>
-                <div class="wrapbtn" v-if="!item.isMonth && !item.need_pre_pay && item.payButton"><span  @click="payment(2)">全额付款</span></div>
-                 <div class="wrapbtn cancleBtn" v-if="item.cancelButton"><span   @click="cancleOrder(1,item.id)">取消订单</span></div>
-                <!-- <div class="wrapbtn" v-if="item.payButton"><span  @click="payment(2)">去付全款</span></div> -->
+              </div>-->
+              <div class="wrapbtn" v-if="item.orderVo.prePayButton">
+                <span @click="payment(0)">去付定金</span>
               </div>
+              <div class="wrapbtn" v-if="item.orderVo.finalPayButton">
+                <span @click="payment(1)">去付尾款</span>
+              </div>
+              <div class="wrapbtn" v-if="item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">
+                <span @click="vipPayment">全额付款</span>
+              </div>
+              <div class="wrapbtn" v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">
+                <span @click="payment(2)">全额付款</span>
+              </div>
+              <div class="wrapbtn cancleBtn" v-if="item.orderVo.cancelButton">
+                <span @click="cancleOrder(1,item.orderVo.id)">取消订单</span>
+              </div>
+              <!-- <div class="wrapbtn" v-if="item.payButton"><span  @click="payment(2)">去付全款</span></div> -->
+            </div>
             <!-- <div class="box-con cancleBtn">
 
-            </div> -->
+            </div>-->
             <!-- 判断倒计时是否失效 -->
             <div class="counttimewrap">
-                <div v-if="item.expireTime">
-                  <!-- <p>订单剩余有效时间：</p> -->
-                    <CountTime
-                      class="CountTime"
-                      v-on:end_callback="countDownE_cb()"
-                      :currentTime="item.currentTime"
-                      :startTime="item.currentTime"
-                      :endTime="item.expireTime"
-                      :tipText="'距离开始文字1'"
-                      :tipTextEnd="''"
-                      :endText="'订单已失效'"
-                      :dayTxt="'天'"
-                      :hourTxt="'小时'"
-                      :minutesTxt="'分钟'"
-                      :secondsTxt="'秒'"
-                    ></CountTime>
-                </div>
+              <div v-if="item.orderVo.expireTime">
+                <!-- <p>订单剩余有效时间：</p> -->
+                <CountTime
+                  class="CountTime"
+                  v-on:end_callback="countDownE_cb()"
+                  :currentTime="item.orderVo.currentTime"
+                  :startTime="item.orderVo.currentTime"
+                  :endTime="item.orderVo.expireTime"
+                  :tipText="'距离开始文字1'"
+                  :tipTextEnd="''"
+                  :endText="'订单已失效'"
+                  :dayTxt="'天'"
+                  :hourTxt="'小时'"
+                  :minutesTxt="'分钟'"
+                  :secondsTxt="'秒'"
+                ></CountTime>
+              </div>
             </div>
           </td>
         </tr>
       </table>
       <!-- list的详细 -->
       <div class="list-detail" v-if="flag">
-          <table
-            width="100%"
-            border="1"
-            cellpadding="0"
-            cellspacing="0"
-            style="table-layout:fixed;"
-            class="secondTable"
-          >
+        <table
+          width="100%"
+          border="1"
+          cellpadding="0"
+          cellspacing="0"
+          style="table-layout:fixed;"
+          class="secondTable"
+        >
           <thead>
             <tr>
               <th>商品详细</th>
@@ -169,97 +205,121 @@
             </tr>
           </thead>
           <tbody>
-            <template  v-for="(value ,index) in BuyerOrderDetaileList" >
-            <tr :key="index">
-              <td colspan="6" class="sellerInfo">
-                <div class="fr sellerInfowrap">
-                  <!-- <span>{{value.sellerName}}</span> -->
-                  <img :src="value.headImgUrl" alt="" class="sellerImg">
-                  <div class="hisinfo">
-                    <p><span class="sellername">{{value.username}}</span><span class="type" :class="'type'+value.tag">{{value.tag | tagfilter }}</span></p>
-                    <p>成交量 <span>{{value.finishOrder}}</span></p>
-                    <p>发布产品 <span>{{value.historyPublish}}</span></p>
+            <template v-for="(value ,index) in item.orderInfoList">
+              <tr :key="index">
+                <td colspan="6" class="sellerInfo">
+                  <div class="fr sellerInfowrap">
+                    <!-- <span>{{value.sellerName}}</span> -->
+                    <img :src="value.headImgUrl" alt class="sellerImg" />
+                    <div class="hisinfo">
+                      <p>
+                        <span class="sellername">{{value.username}}</span>
+                        <span class="type" :class="'type'+value.tag">{{value.tag | tagfilter }}</span>
+                      </p>
+                      <p>
+                        成交量
+                        <span>{{value.finishOrder}}</span>
+                      </p>
+                      <p>
+                        发布产品
+                        <span>{{value.historyPublish}}</span>
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-            <tr :key="value.id">
-              <td >
-                <div class="goodsDetail">
-                  <img :src="value.goods_image" :W="50" :H="50"/>
-                  <div>
-                    <p class="num">{{value.goods_name}}</p>
-                    <p>品牌：{{value.goods_brand}}</p>
+                </td>
+              </tr>
+              <tr :key="value.id">
+                <td>
+                  <div class="goodsDetail">
+                    <img :src="value.goods_image" :W="50" :H="50" />
+                    <div>
+                      <p class="num">{{value.goods_name}}</p>
+                      <p>品牌：{{value.goods_brand}}</p>
+                    </div>
                   </div>
-                </div>
-
-              </td>
-              <td>
-                <p
-                  class="num"
-                >{{value.priceunit ? '$' : '￥'}}{{value.good_price}}x{{value.goods_count}}</p>
-                <p class="num">({{value.clude_bill ? '含税' : '不含税'}})</p>
-              </td>
-              <td>
-                <p>{{value.diliver_place}}</p>
-                <p>{{value.complete_date | formatDate}}</p>
-              </td>
-              <td>
-                <p
-                  class="num"
-                >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price}}（{{value.goods_type ? '现货' : '期货'}}）</p>
-                <!-- <span>需预付款：（{{value.priceunit ? '$' : '￥'}}{{value.pre_pay}}）</span>
+                </td>
+                <td>
+                  <p
+                    class="num"
+                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price}}x{{value.goods_count}}</p>
+                  <p class="num">({{value.clude_bill ? '含税' : '不含税'}})</p>
+                </td>
+                <td>
+                  <p>{{value.diliver_place}}</p>
+                  <p>{{value.complete_date | formatDate}}</p>
+                </td>
+                <td>
+                  <p
+                    class="num"
+                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price}}（{{value.goods_type ? '现货' : '期货'}}）</p>
+                  <!-- <span>需预付款：（{{value.priceunit ? '$' : '￥'}}{{value.pre_pay}}）</span>
                 <span>发票扣税额（￥{{value.bill_price}}）</span>
 
                 <div v-if="value.priceunit">
                   <span>预付款汇率汇率（${{value.pre_exchange}}）</span>
                   <span v-if="value.fi_exchange">最终付款汇率（${{value.fi_exchange}}）</span>
-                </div> -->
-              </td>
-              <td>
-                <div v-if="value.expressButton">
-                   <el-popover
-              placement="top-start"
-              width="500"
-              trigger="hover"
-              @show="getDiliverInfo(value.id)"
-            >
-              <div class="orderpress">
-                <p style="margin-bottom:15px;font-size:20px">物流单号：{{value.trans_no}}</p>
-                <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
-                  <el-timeline>
-                    <el-timeline-item
-                      :timestamp="val.datetime"
-                      placement="top"
-                      v-for="(val, k) in expressList"
-                      :key="k"
-                      type="success"
-                      :class="k === val.length - 1 ? 'lastfood' : '' "
+                  </div>-->
+                </td>
+                <td>
+                  <div v-if="value.expressButton">
+                    <el-popover
+                      placement="top-start"
+                      width="500"
+                      trigger="hover"
+                      @show="getDiliverInfo(value.id)"
                     >
-                      <el-card>
-                        <h4>{{val.remark}}</h4>
-                      </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
-              </div>
-              <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">{{value.trans_no}}</span>
-            </el-popover>
-                </div>
-                <p v-else>暂无物流编号</p>
-              </td>
-              <td>
-                <div class="operaBtn ">
-                  <div v-if="value.reason" class="cancleReason">取消原因：{{value.reason}}</div>
-                  <div class="wrapbtn" v-else>
-                    <span v-if="value.confirmChangeDiliverTimeButton" @click="confirmChangeDiliverTime(value)" class="btn">确认新交期</span>
-                    <!-- <span v-else class="yjs">已接受新交期</span> -->
-                    <span  v-if="value.cancleButton" class="btn cancleBtn" @click="cancleOrder(2,value.id)">取消订单</span>
-                    <span @click="dialogVisible3 = true" v-if="value.receivingGoodsButton" class="btn">确认收货</span>
-                    <!-- <p>交期延期至{{value.complete_date | formatDate}}</p> -->
+                      <div class="orderpress">
+                        <p style="margin-bottom:15px;font-size:20px">物流单号：{{value.trans_no}}</p>
+                        <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
+                        <el-timeline>
+                          <el-timeline-item
+                            :timestamp="val.datetime"
+                            placement="top"
+                            v-for="(val, k) in expressList"
+                            :key="k"
+                            type="success"
+                            :class="k === val.length - 1 ? 'lastfood' : '' "
+                          >
+                            <el-card>
+                              <h4>{{val.remark}}</h4>
+                            </el-card>
+                          </el-timeline-item>
+                        </el-timeline>
+                      </div>
+                      <span
+                        slot="reference"
+                        style="color:#0d98ff; cursor: pointer;margin-top:10px"
+                      >{{value.trans_no}}</span>
+                    </el-popover>
                   </div>
-                </div>
-                 <div v-if="item.expireTime" class="counttimewrap">
-                  <!-- <p>订单剩余有效时间：</p> -->
+                  <p v-else>暂无物流编号</p>
+                </td>
+                <td>
+                  <div class="operaBtn">
+                    <div v-if="value.reason" class="cancleReason">取消原因：{{value.reason}}</div>
+                    <div class="wrapbtn" v-else>
+                      <span
+                        v-if="value.confirmChangeDiliverTimeButton"
+                        @click="confirmChangeDiliverTime(value)"
+                        class="btn"
+                      >确认新交期</span>
+                      <!-- <span v-else class="yjs">已接受新交期</span> -->
+                      <span
+                        v-if="value.cancleButton"
+                        class="btn cancleBtn"
+                        @click="cancleOrder(2,value.id)"
+                      >取消订单</span>
+                      <span
+                        @click="dialogVisible3 = true"
+                        v-if="value.receivingGoodsButton"
+                        class="btn"
+                      >确认收货</span>
+                      <!-- <p>交期延期至{{value.complete_date | formatDate}}</p> -->
+                    </div>
+                  </div>
+                  <div v-if="item.expireTime" class="counttimewrap">
+                    <!-- <p>订单剩余有效时间：</p> -->
+
                     <CountTime
                       class="CountTime"
                       v-on:end_callback="countDownE_cb()"
@@ -274,13 +334,12 @@
                       :minutesTxt="'分钟'"
                       :secondsTxt="'秒'"
                     ></CountTime>
-                </div>
-              </td>
-            </tr>
+                  </div>
+                </td>
+              </tr>
             </template>
-
-             </tbody>
-          </table>
+          </tbody>
+        </table>
         <!-- </div> -->
       </div>
       <div class="list-detail-bar" @click="DetailList(item)">
@@ -290,42 +349,44 @@
       </div>
     </div>
     <!-- 确认交期模态框 -->
-      <SetTankuang :title="'更新交期提示'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
-          <div class="dialog-body" slot="dialog-body">
-              <p>卖家将此商品的交期更新为 <strong style="">{{currentSecondOrder.complete_date | formatDate}}</strong></p>
-              <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>
-          </div>
-          <div slot="footer" class="dialog-footer">
-              <el-button type="primary" class="primary" @click="isAcceptNewTime(1)">确认，接受新交期</el-button>
-              <el-button type="info" class="info"@click="isAcceptNewTime(2)">拒绝，取消订单</el-button>
-              <el-button @click="dialogVisible = false" class="cancle">取 消</el-button>
+    <SetTankuang :title="'更新交期提示'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
+      <div class="dialog-body" slot="dialog-body">
+        <p>
+          卖家将此商品的交期更新为
+          <strong style>{{currentSecondOrder.complete_date | formatDate}}</strong>
+        </p>
+        <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" class="primary" @click="isAcceptNewTime(1)">确认，接受新交期</el-button>
+        <el-button type="info" class="info" @click="isAcceptNewTime(2)">拒绝，取消订单</el-button>
+        <el-button @click="dialogVisible = false" class="cancle">取 消</el-button>
 
-
-              <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
-          </div>
-      </SetTankuang>
-<!--    <el-dialog-->
-<!--      center-->
-<!--      :visible.sync="dialogVisible"-->
-<!--      width="500px"-->
-<!--      class="confirma-delivery-dialog"-->
-<!--      top="20vh"-->
-<!--      lock-scroll-->
-<!--    >-->
-<!--      <p slot="title" class="title">是否接受新交期</p>-->
-<!--      <div class="con">-->
-<!--        <p>卖家更改了交期</p>-->
-<!--        <p>-->
-<!--          由2016-06-30更改为2016-07-12，共延迟了12天-->
-<!--          是否接受新交期？-->
-<!--        </p>-->
-<!--        <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>-->
-<!--      </div>-->
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--        <span @click="comfirmaDelivery">确认，可接受新交期</span>-->
-<!--        <span @click="dialogVisible = false" class="close">取消</span>-->
-<!--      </span>-->
-<!--    </el-dialog>-->
+        <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
+      </div>
+    </SetTankuang>
+    <!--    <el-dialog-->
+    <!--      center-->
+    <!--      :visible.sync="dialogVisible"-->
+    <!--      width="500px"-->
+    <!--      class="confirma-delivery-dialog"-->
+    <!--      top="20vh"-->
+    <!--      lock-scroll-->
+    <!--    >-->
+    <!--      <p slot="title" class="title">是否接受新交期</p>-->
+    <!--      <div class="con">-->
+    <!--        <p>卖家更改了交期</p>-->
+    <!--        <p>-->
+    <!--          由2016-06-30更改为2016-07-12，共延迟了12天-->
+    <!--          是否接受新交期？-->
+    <!--        </p>-->
+    <!--        <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>-->
+    <!--      </div>-->
+    <!--      <span slot="footer" class="dialog-footer">-->
+    <!--        <span @click="comfirmaDelivery">确认，可接受新交期</span>-->
+    <!--        <span @click="dialogVisible = false" class="close">取消</span>-->
+    <!--      </span>-->
+    <!--    </el-dialog>-->
     <!-- 取消订单模态框 -->
     <el-dialog
       center
@@ -338,7 +399,7 @@
       <p slot="title" class="title">取消订单</p>
       <div class="cancleOrderReason">
         <!-- <p>确认取消此订单吗?</p> -->
-         <el-input type="textarea" v-model="cancleOrderForm.reason" placeholder="请填写取消订单的原因"></el-input>
+        <el-input type="textarea" v-model="cancleOrderForm.reason" placeholder="请填写取消订单的原因"></el-input>
         <p class="desc">取消后该订单无法恢复</p>
         <p class="desc">
           取消后已支付订单款项会在下一个结账日按原路返回
@@ -372,24 +433,24 @@
       </span>
     </el-dialog>
     <!-- 扫码支付模态框 -->
-<!--    <el-dialog-->
-<!--      :visible.sync="dialogCode"-->
-<!--      width="300px"-->
-<!--      center-->
-<!--      class="dialog-ruleForm-code"-->
-<!--      :close-on-click-modal="false"-->
-<!--    >-->
-<!--      <p slot="title" class="title">扫码支付</p>-->
-<!--      <div class="dialog-ruleForm-code-body">-->
-<!--        <div class="code-image">-->
-<!--          <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" />-->
-<!--          <div class="Invalid" v-if="InvalidFlag">-->
-<!--            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle()" />-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <p>{{InvalidFlag ? '刷新重新获取支付二维码' : '请扫描二维码进行支付'}}</p>-->
-<!--      </div>-->
-<!--    </el-dialog>-->
+    <!--    <el-dialog-->
+    <!--      :visible.sync="dialogCode"-->
+    <!--      width="300px"-->
+    <!--      center-->
+    <!--      class="dialog-ruleForm-code"-->
+    <!--      :close-on-click-modal="false"-->
+    <!--    >-->
+    <!--      <p slot="title" class="title">扫码支付</p>-->
+    <!--      <div class="dialog-ruleForm-code-body">-->
+    <!--        <div class="code-image">-->
+    <!--          <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" />-->
+    <!--          <div class="Invalid" v-if="InvalidFlag">-->
+    <!--            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle()" />-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--        <p>{{InvalidFlag ? '刷新重新获取支付二维码' : '请扫描二维码进行支付'}}</p>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
     <!-- 预览合同 -->
     <el-dialog
       :visible.sync="dialogContractFlag"
@@ -409,21 +470,33 @@ import { mapActions, mapState } from "vuex";
 import { TimeForma } from "@/lib/utils";
 import Countdown from "_c/Countdown";
 import { baseURL, baseURL2 } from "@/config";
-import {axios,buyerOrderCenter} from "@/api/apiObj"
+import { axios, buyerOrderCenter } from "@/api/apiObj";
 export default {
   name: "BuyerOrderItem",
   data() {
     return {
       //付款方式
-      payTypeMark:{
-        1:{imgurl:require("@/assets/image/ShoppingCart/wechat.jpg"),title:"微信支付"},
-        2:{imgurl:require("@/assets/image/ShoppingCart/zhifubao.jpg"),title:"支付宝支付"},
-        3:{imgurl:require("@/assets/image/ShoppingCart/bank.png"),title:"银行汇款"},
-        4:{imgurl:require("@/assets/image/ShoppingCart/yue.png"),title:"白条支付"}
+      payTypeMark: {
+        1: {
+          imgurl: require("@/assets/image/ShoppingCart/wechat.jpg"),
+          title: "微信支付"
+        },
+        2: {
+          imgurl: require("@/assets/image/ShoppingCart/zhifubao.jpg"),
+          title: "支付宝支付"
+        },
+        3: {
+          imgurl: require("@/assets/image/ShoppingCart/bank.png"),
+          title: "银行汇款"
+        },
+        4: {
+          imgurl: require("@/assets/image/ShoppingCart/yue.png"),
+          title: "白条支付"
+        }
       },
-      downloadUrl2:"",
+      downloadUrl2: "",
       //取消订单需要的传参
-      cancleOrderForm:{},
+      cancleOrderForm: {},
       BuyerOrderDetaileList: [],
       OrderProcessList: [],
       flag: false,
@@ -433,7 +506,7 @@ export default {
       dialogVisible2: false,
       dialogVisible3: false,
       // 下载合同的连接
-      dialogContractFlag:false,
+      dialogContractFlag: false,
       downloadContracturl: "",
       orderStatus: true,
       // 需要支付付二维码
@@ -445,8 +518,8 @@ export default {
       // 当前支付的状态
       currentStatus: 0,
       //物流列表
-      expressList:[],
-        currentSecondOrder:{}
+      expressList: [],
+      currentSecondOrder: {}
     };
   },
   props: {
@@ -466,61 +539,60 @@ export default {
       "CancleOrderSubmit",
       "queryExpress"
     ]),
-      //确认交期的操作
-      confirmChangeDiliverTime(item){
-        this.currentSecondOrder=item;
-        this.dialogVisible=true;
-      },
-      isAcceptNewTime(isconfirm){
-          let obj={
-                id:this.currentSecondOrder.id,
-                uid:this.currentSecondOrder.uid,
-                isconfirm:isconfirm,
-                order_no:this.currentSecondOrder.order_no,
-                goods_name:this.currentSecondOrder.goods_name
+    //确认交期的操作
+    confirmChangeDiliverTime(item) {
+      this.currentSecondOrder = item;
+      this.dialogVisible = true;
+    },
+    isAcceptNewTime(isconfirm) {
+      let obj = {
+        id: this.currentSecondOrder.id,
+        uid: this.currentSecondOrder.uid,
+        isconfirm: isconfirm,
+        order_no: this.currentSecondOrder.order_no,
+        goods_name: this.currentSecondOrder.goods_name
+      };
+      axios
+        .request({ ...buyerOrderCenter.confirmChangeDiliverTime, params: obj })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            this.dialogVisible = false;
+            this.$emit("successFlagHandel");
           }
-          axios.request({...buyerOrderCenter.confirmChangeDiliverTime,params:obj}).then(res=>{
-              console.log(res)
-              if(res.resultCode=='200'){
-                  this.dialogVisible=false;
-                  this.$emit("successFlagHandel")
-              }
-          })
-      },
+        });
+    },
     //预览下载合同
     downLoadOrderContract(contractUrl) {
       this.dialogContractFlag = true;
       let ret =
-      baseURL +
-      "api-order/customerCenter/downLoad?urls=" +
-      contractUrl +
-      "&access_token=" +
-      this.access_token;
-      console.log("ret:",ret)
-     // this.downloadUrl3 = ret;
+        baseURL +
+        "api-order/customerCenter/downLoad?urls=" +
+        contractUrl +
+        "&access_token=" +
+        this.access_token;
+      console.log("ret:", ret);
+      // this.downloadUrl3 = ret;
       let res =
-        baseURL2 +
-        "static/pdf/web/viewer.html?file=" +
-        encodeURIComponent(ret);
-        console.log(res)
-        this.downloadUrl2 = res;
+        baseURL2 + "static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
+      console.log(res);
+      this.downloadUrl2 = res;
     },
-    getDiliverInfo(orderId){
-      console.log("物流信息")
-      this.queryExpress({orderId}).then(res=>{
-        console.log(res)
-        this.expressList=res.data
-      })
-
+    getDiliverInfo(orderId) {
+      console.log("物流信息");
+      this.queryExpress({ orderId }).then(res => {
+        console.log(res);
+        this.expressList = res.data;
+      });
     },
-     countDownE_cb: function(item) {
+    countDownE_cb: function(item) {
       item.sellStatus = 2;
     },
     // 支付的轮训
     paymentHandle() {
       this.InvalidFlag = false;
       let obj = {
-        message_id: this.item.order_no,
+        message_id: this.item.orderVo.order_no,
         access_token: this.access_token,
         type: this.currentStatus
       };
@@ -542,7 +614,7 @@ export default {
               this.InvalidFlag = false;
               this.$store
                 .dispatch("SignContract/GetPayStatus", {
-                  orderno: this.item.order_no,
+                  orderno: this.item.orderVo.order_no,
                   messageid: codeResp.flag,
                   access_token: this.access_token
                 })
@@ -586,40 +658,41 @@ export default {
         query: {
           // payType: x,
           // totalPrice: totalPrice,
-          orderNumber: this.item.order_no
+          orderNumber: this.item.orderVo.order_no
         }
       });
     },
     // 月结的付款
     vipPayment() {
-      this.$confirm('是否要支付此订单?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      this.$confirm("是否要支付此订单?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           this.GetBuyerOrdervipPay({
-              orderNo: this.item.order_no,
-              access_token: this.access_token
-            }).then(res=>{
-              this.$message({
+            orderNo: this.item.orderVo.order_no,
+            access_token: this.access_token
+          }).then(res => {
+            this.$message({
               type: "success",
               message: "支付成功"
             });
             this.$emit("successFlagHandel");
-            });
-        }).catch(() => {
+          });
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消'
+            type: "info",
+            message: "已取消"
           });
         });
-
     },
     all() {
       this.$loading(this.$store.state.loading);
       this.GetBuyerOrderDetaileList({
         access_token: this.access_token,
-        order_no: this.item.order_no
+        order_no: this.item.orderVo.order_no
       }).then(res => {
         this.BuyerOrderDetaileList = res.data.data;
         this.$loading(this.$store.state.loading).close();
@@ -628,8 +701,8 @@ export default {
     DetailList(item) {
       this.flag = !this.flag;
       if (this.flag) {
-        this.order_no = item.order_no;
-        this.all();
+        this.order_no = item.orderVo.order_no;
+        // this.all();
       }
     },
     // 上传合同成功的函数
@@ -638,9 +711,8 @@ export default {
         type: "success",
         message: "上传成功"
       });
-     // this.$emit("successFlagHandel");
-      // 重新刷新页面
-      // this.$router.go(0);
+      this.$parent.all()
+      // this.$emit("successFlagHandel");
     },
     // 上传合同之前的验证
     beforeAvatarUpload(file) {
@@ -659,40 +731,39 @@ export default {
     },
     // 确认接收交期
     comfirmaDelivery() {
-      console.log("确认接收交期")
+      console.log("确认接收交期");
     },
     //取消订单
-    cancleOrder(type,orderId){
+    cancleOrder(type, orderId) {
       //type==1,标识大订单，type==2,标识小订单
-      this.dialogVisible2=true;
-      this.cancleOrderForm.flag=type==1?true:false;
-      this.cancleOrderForm.orderId=orderId;
+      this.dialogVisible2 = true;
+      this.cancleOrderForm.flag = type == 1 ? true : false;
+      this.cancleOrderForm.orderId = orderId;
     },
     // 确认取消订单并提交
     DeliveryCancel() {
-      console.log(this.cancleOrderForm)
+      console.log(this.cancleOrderForm);
 
       this.CancleOrderSubmit({
-         access_token: this.access_token,
-         reason:this.cancleOrderForm.reason,
-         orderId:this.cancleOrderForm.orderId,
-         flag:this.cancleOrderForm.flag
-      }).then(res=>{
-        console.log("取消订单回调")
-         this.dialogVisible2=false;
-         this.$emit("successFlagHandel")
-      })
-
+        access_token: this.access_token,
+        reason: this.cancleOrderForm.reason,
+        orderId: this.cancleOrderForm.orderId,
+        flag: this.cancleOrderForm.flag
+      }).then(res => {
+        console.log("取消订单回调");
+        this.dialogVisible2 = false;
+        this.$emit("successFlagHandel");
+      });
     },
     // 确认收货
     ConfirmReceipt() {
-      console.log("确认收货按钮")
+      console.log("确认收货按钮");
       // this.$emit("successFlagHandel")
       // this.all();
     },
     showPopover(item) {
       this.GetBuyerOrderOrderProcess({
-        orderno: item.order_no,
+        orderno: item.orderVo.order_no,
         access_token: this.access_token
       }).then(res => {
         this.OrderProcessList = res.data;
@@ -713,42 +784,42 @@ export default {
     // 上传合同的参数
     uploadObj() {
       return {
-        orderno: this.item.order_no,
+        orderno: this.item.orderVo.order_no,
         access_token: this.access_token
       };
     }
   },
   filters: {
-    tagfilter(val){
-      console.log("tagfilter:",val)
+    tagfilter(val) {
+      console.log("tagfilter:", val);
       switch (Number(val)) {
         case 1:
           return "原厂";
         case 2:
           return "代理商";
         case 3:
-          return "普通商户"
+          return "普通商户";
       }
     },
-     payStatus(val){
-        switch (val){
-          case 0:
-            return "未支付";
-          case 1:
-            return "已支付";
-          case 2:
-            return "取消中";
-          case 3:
-            return "已取消";
-          case 4:
-            return "已完成";
-          // case 5:
-          //   return "预付款已付款";
-          case 5:
-            return "待付尾款";
-          case 13:
-            return "已逾期";
-        }
+    payStatus(val) {
+      switch (val) {
+        case 0:
+          return "未支付";
+        case 1:
+          return "已支付";
+        case 2:
+          return "取消中";
+        case 3:
+          return "已取消";
+        case 4:
+          return "已完成";
+        // case 5:
+        //   return "预付款已付款";
+        case 5:
+          return "待付尾款";
+        case 13:
+          return "已逾期";
+      }
     },
     pay_channel(x) {
       switch (x) {
@@ -774,7 +845,7 @@ export default {
     }
   },
   mounted() {
-
+    console.log(this.item,'1111')
   }
 };
 </script>
@@ -783,40 +854,40 @@ export default {
 @import "./BuyerOrderItem.less";
 </style>
 <style scoped>
-.orderpress>>>.el-timeline{
-  max-height:400px;
-  overflow-y:scroll;
+.orderpress >>> .el-timeline {
+  max-height: 400px;
+  overflow-y: scroll;
 }
-.cancleorder>>>.ensure{
+.cancleorder >>> .ensure {
   padding: 4px 14px;
-  margin-right:15px;
+  margin-right: 15px;
   border-radius: 5px;
-  border:1px solid #4a5a6a;
+  border: 1px solid #4a5a6a;
   cursor: pointer;
 }
-.cancleorder>>>.ensure:hover{
-  color:peru;
+.cancleorder >>> .ensure:hover {
+  color: peru;
   font-weight: bolder;
   transition: all 0.2s;
 }
-.cancleorder>>>.close{
-  background:#4a5a6a;
-  color:#fff;
+.cancleorder >>> .close {
+  background: #4a5a6a;
+  color: #fff;
   padding: 4px 14px;
-  margin-right:15px;
+  margin-right: 15px;
   border-radius: 5px;
   cursor: pointer;
 }
-.cancleorder>>>.close:hover{
-  color:peru;
+.cancleorder >>> .close:hover {
+  color: peru;
   font-weight: bolder;
   transition: all 0.2s;
 }
-.box-con>>>.el-upload-list--text{
+.box-con >>> .el-upload-list--text {
   position: absolute;
-  bottom:-12px;
-  width:100%;
-    left:0;
+  bottom: -12px;
+  width: 100%;
+  left: 0;
 }
 </style>
 

@@ -2,9 +2,12 @@
     padding: 20px;
     min-height: 800px;
     background: #fff;
+
     .addInvoice {
         width: 100%;
         overflow: hidden;
+        margin-bottom: 20px;
+
         span {
             width: 146px;
             height: 37px;
@@ -20,90 +23,32 @@
         }
     }
 
-    &>table {
-        margin-top: 20px;
-        border: 1px solid #ddd;
-
-        th {
-            background: #e4e4e4;
-            font-size: 20px;
-            color: #4a5a6a;
-            height: 50px;
-            line-height: 50px;
-        }
-
-        td {
-            border-bottom: 1px solid #ddd;
-            border-left: 1px solid #ddd;
-            height: 110px;
-            font-size: 16px;
-            color: #4a5a6a;
-
-            &>div {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
-                align-items: center;
-
-                p {
-                    height: 30px;
-                    line-height: 30px;
-                }
-            }
-        }
-
-        tr {
-            .num {
-                color: #cc0000;
-            }
-
-            td {
-                p {
-                    span {
-                        font-weight: bold;
-                    }
-                }
-
-                &:nth-child(1) {
-                    &>div {
-                        flex-direction: row;
-
-                        img {
-                            width: 82px;
-                            height: 82px;
-                        }
-
-                        &>div {
-                            width: 260px;
+    >.el-table {
+        .el-table__body-wrapper {
+            .el-table__body {
+                .el-table__row {
+                    >td:nth-child(1) {
+                        .cell {
                             display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
+                            height: 120px;
+                            line-height: 120px;
+                            text-align: center;
+                            align-items: center;
+                            img {
+                                width: 120px;
+                            }
 
-                            .sp_q {
-                                font-weight: bold;
+                            div {
+                                margin-left: 20px;
 
+                                >p {
+                                    line-height: 40px;
+                                }
                             }
                         }
                     }
 
-                }
-                // 操作
-                &:nth-child(5) {
-                    span{
-                        width: 112px;
-                        height: 30px;
-                        line-height: 30px;
-                        text-align: center;
-                        background: #4a5a6a;
-                        color: #fff;
-                        cursor: pointer;
-                        margin-bottom: 10px;
-                        &:hover{
-                            color: peru
-                        }
-                    }
+
                 }
             }
         }

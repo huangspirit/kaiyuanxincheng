@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>买家中心</el-breadcrumb-item>
-      <el-breadcrumb-item>我的订单</el-breadcrumb-item>
+      <el-breadcrumb-item class="itemActive">我的订单</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="BuyerOrderManagement">
       <!-- 订单列表 -->
@@ -17,57 +17,41 @@
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
-          <el-dropdown class="all-time" placement="bottom">
-            <span class="el-dropdown-link">
-              全部时间
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown" class="el-dropdown-menu">
-              <el-dropdown-item>近一周</el-dropdown-item>
-              <el-dropdown-item>近一月</el-dropdown-item>
-              <el-dropdown-item>近三月</el-dropdown-item>
-              <el-dropdown-item>近半年</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <SearchInput
-            class="clear"
-            @input="change"
-            @submit="SearchSubmit"
-            :value="SearchInputValue"
-            :width="350"
-            :height="40"
-            :placeholder="'搜索订单'"
-            :fontSize="14"
-            :btnImgWidth="20"
-            :btnWidth="40"
-            :borderColor="'#e3e3e3'"
-          ></SearchInput>
+          <el-select class="all-time" v-model="orderDate" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
         </div>
         <!-- 二级切换 -->
         <div class="tab-list-b">
           <ul>
             <li v-if="tabFirstFlag === 0">
-              <span>可发货</span>
-              <span>
-                <el-badge :value="12">备货中</el-badge>
-              </span>
-              <span>待付尾款</span>
-              <el-dropdown class="all-time" @command="command">
-                <span class="el-dropdown-link">
-                  {{commandValue}}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown" class="el-dropdown-menu">
-                  <el-dropdown-item command="可变更交期">可变更交期</el-dropdown-item>
-                  <el-dropdown-item command="临近交期">临近交期</el-dropdown-item>
-                  <el-dropdown-item command="超出交期">超出交期</el-dropdown-item>
-                  <el-dropdown-item command="已违约">已违约</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              <span
+                v-for="(item,index) in subWaitPay"
+                :key="index"
+                :class="item.show==true?'active':''"
+                @click="getsubWait(item,index)"
+              >{{item.name}}</span>
             </li>
-            <li v-if="tabFirstFlag === 2">
-              <span>付款待确认</span>
-              <span>到货单待确认</span>
+            <li v-if="tabFirstFlag === 1">
+              <span
+                v-for="(item,index) in subConfirm"
+                :key="index"
+                :class="item.show==true?'active':''"
+                @click="getSubConfirm(item,index)"
+              >{{item.name}}</span>
+            </li>
+            <li v-if="tabFirstFlag === 4">
+              <span
+                v-for="(item,index) in abnormalData"
+                :class="item.show==true?'active':''"
+                :key="index"
+                @click="subAbnormal(item,index)"
+              >超期未交货</span>
             </li>
           </ul>
         </div>
@@ -82,11 +66,15 @@
             <span style="width:20%">操作</span>
           </p>
           <BuyerOrderItem
+<<<<<<< HEAD
               v-if="BuyerOrderList.length"
               v-for="item in BuyerOrderList"
+=======
+            v-for="item in BuyerOrderList"
+>>>>>>> f4933c6dcf803683f4b2f1286e5b8e157a204b86
             :item="item"
             :key="item.id"
-            @successFlagHandel='all()'
+            @successFlagHandel="all()"
           ></BuyerOrderItem>
         </div>
       </div>
@@ -113,35 +101,128 @@ export default {
       tabFirstList: [
         {
           id: "",
+          params: "",
           name: "全部"
         },
         {
           id: 0,
+          params: "2",
           name: "待付款"
         },
         {
           id: 1,
+          params: "3",
           name: "待确认"
         },
         {
           id: 2,
+          params: "4",
           name: "待收货"
         },
         {
           id: 3,
+          params: "5",
           name: "已完成"
         },
         {
           id: 4,
+          params: "6",
           name: "违规/异常"
         }
       ],
+      options: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "7",
+          label: "近一周"
+        },
+        {
+          value: "30",
+          label: "近一月"
+        },
+        {
+          value: "90",
+          label: "近三月"
+        },
+        {
+          value: "180",
+          label: "近半年"
+        }
+      ],
+      subWaitPay: [
+        {
+          name: "新订单",
+          params: "2.1",
+          show: false
+        },
+        {
+          name: "待付尾款",
+          params: "2.2",
+          show: false
+        },
+        {
+          name: "到期未付",
+          params: "2.3",
+          show: false
+        },
+        {
+          name: "月结",
+          params: "2.4",
+          show: false
+        }
+      ],
+      subConfirm: [
+        {
+          name: "交期变更确认",
+          params: "3.1",
+          show: false
+        },
+        {
+          name: "合同被驳回",
+          params: "3.2",
+          show: false
+        },
+        {
+          name: "待上传合同",
+          params: "3.3",
+          show: false
+        },
+        {
+          name: "合同待确认",
+          params: "3.4",
+          show: false
+        },
+        {
+          name: "汇款单待确认",
+          params: "3.5",
+          show: false
+        },
+        {
+          name: "汇款单待驳回",
+          params: "3.6",
+          show: false
+        }
+      ],
+      abnormalData: [
+        {
+          name: "超期未交货",
+          params: "6.1",
+          show: false
+        },
+        {
+          name: "失效订单",
+          params: "6.2",
+          show: false
+        }
+      ],
+      orderDate: "",
       tabFirstFlag: "",
-      commandValue: "全部状态",
       currentPage: 1,
-      pageSize:10,
-      SearchInputValue: "",
-
+      pageSize: 10,
+      SearchInputValue: ""
     };
   },
   components: {
@@ -150,35 +231,49 @@ export default {
 
   watch: {
     currentPage() {
-     // this.all();
+      // this.all();
     }
   },
   methods: {
     ...mapActions("BuyerOrderManagement", ["GetBuyerOrderManagement"]),
-  handleCurrentPageChange(x){
-    console.log("currentpage:",x)
-      this.currentPage=x
-      this.all()
-  },
+    handleCurrentPageChange(x) {
+      console.log("currentpage:", x);
+      this.currentPage = x;
+      this.all();
+    },
     tabFirst(item) {
-        this.tabFirstFlag = item.id;
-        this.currentPage=1
-        this.all()
+      this.tabFirstFlag = item.id;
+      this.currentPage = 1;
+      this.all(item.params);
     },
-    command(x) {
-      this.commandValue = x;
+    getsubWait(val, index) {
+      for (var i = 0; i < this.subWaitPay.length; i++) {
+        this.subWaitPay[i].show = false;
+      }
+      this.subWaitPay[index].show = true;
+      this.all(val.params);
     },
-    all() {
+    getSubConfirm(val, index) {
+      for (var i = 0; i < this.subConfirm.length; i++) {
+        this.subConfirm[i].show = false;
+      }
+      this.subConfirm[index].show = true;
+      this.all(val.params);
+    },
+    subAbnormal(val, index) {
+      for (var i = 0; i < this.abnormalData.length; i++) {
+        this.abnormalData[i].show = false;
+      }
+      this.abnormalData[index].show = true;
+      this.all(val.params);
+    },
+    all(val) {
       this.GetBuyerOrderManagement({
         start: this.start,
-        length: this.pageSize
-
+        length: this.pageSize,
+        type: val
       });
-    },
-    change(x) {
-      this.SearchInputValue = x;
-    },
-    SearchSubmit() {}
+    }
   },
   computed: {
     ...mapState({
@@ -192,11 +287,11 @@ export default {
     }
   },
   mounted() {
-    this.all();
+    this.all("");
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import "./BuyerOrderManagement.less";
 </style>
 

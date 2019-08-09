@@ -1,9 +1,25 @@
+.el-breadcrumb {
+    height: 80px;
+    line-height: 40px;
+    padding: 20px;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-size: 28px;
+    .el-breadcrumb__item:nth-child(3) {
+        >.el-breadcrumb__inner {
+            color: #0D98FF;
+        }
+        
+    }
+}
 .InvoiceInformationManagement {
-    width: 1165px;
+    width: 100%;
     padding: 20px;
     overflow: hidden;
     min-height: 800px;
     background: #fff;
+    box-sizing: border-box;
 
     .addInvoiceInforma {
         width: 100%;
@@ -11,7 +27,6 @@
         padding-bottom: 20px;
 
         span {
-            float: right;
             width: 146px;
             height: 30px;
             line-height: 30px;
@@ -31,6 +46,7 @@
     .InvoiceInforma-list {
         width: 1165px;
         overflow: hidden;
+        margin: 0 auto;
 
         li {
             width: 1163px;
@@ -41,6 +57,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+
+            >span {
+                position: absolute;
+                background: green;
+                color: #fff;
+                font-size: 12px;
+                top: -7px;
+                left: -22px;
+                text-align: center;
+                width: 63px;
+                height: 30px;
+                line-height: 36px;
+                -webkit-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+
+            }
 
             &>div {
                 width: 50%;
@@ -123,34 +156,39 @@
 
         }
     }
-    
+
 }
+
 // 添加发票
-.Add-Invoice{
+.Add-Invoice {
     overflow: hidden;
-    .title{
+
+    .title {
         width: 100%;
         height: 50px;
         line-height: 50px;
         font-size: 30px;
         text-align: center;
     }
-    .dialo-body{
+
+    .dialo-body {
         overflow: hidden;
         padding: 0 40px;
     }
-    .el-dialog__body{
+
+    .el-dialog__body {
         padding: 0;
     }
-    .dialo-footer{
+
+    .dialo-footer {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        
-        span{
-            width:500px ;
-            height:50px ;
+
+        span {
+            width: 500px;
+            height: 50px;
             line-height: 50px;
             text-align: center;
             background: #4a5a6a;
@@ -158,7 +196,8 @@
             font-size: 20px;
             cursor: pointer;
         }
-        .cancel{
+
+        .cancel {
             background: #aeaeae;
             margin-top: 20px;
         }

@@ -10,81 +10,73 @@
       <p class="addInvoice">
         <router-link tag="span" to="/PersonalCenter/InvoiceInformationManagement">管理开票信息</router-link>
       </p>
-      <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed">
-        <thead>
-          <th style="width:300px">订单</th>
-          <th style="width:153px">订单金额</th>
-          <th style="width:146px">发票类型</th>
-          <th style="width:323px">发票信息</th>
-          <th style="width:247px">操作</th>
-        </thead>
-        <tbody>
-          <tr v-for="item in 5" :key="item">
-            <td>
-              <div>
-                <img src="@/assets/image/PersonalCenter/_u24718.png" alt>
-                <div>
-                  <p class="sp_q">
-                    订单编号：
-                    <span class="num">86627573023</span>
-                  </p>
-                  <p>EDHDFJHKS-234J 等2个商品</p>
-                  <p>2019-06-04 00:07:26</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div>
-                <p>￥50000</p>
-              </div>
-            </td>
-            <td>
-              <div>
-                <p>普通发票</p>
-              </div>
-            </td>
-            <td>
-              <div>
-                <p>
-                  <span>抬头：</span>北京芯手网科技有限公司
-                </p>
-                <p>金额：35000元</p>
-              </div>
-            </td>
-            <td>
-              <div>
-                <span @click="seeImg">查看</span>
-                <span>下载</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <el-table :data="tableData" border stripe style="width: 100%">
+        <el-table-column prop="orderTitle" align="center" width="400px"  label="商品">
+          <template slot-scope="scope">
+            <img :src="scope.row.goodsPicture" alt />
+            <div>
+              <p>
+                <span>订单编号：</span>
+                <span style="color:#E84F47;">{{scope.row.orderNo}}</span> 
+              </p>
+              <p>{{scope.row.orderTitle}}</p>
+              <p>{{scope.row.orderCreateTime | formatDate}}</p>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="orderAmount" label="订单金额" align="center"></el-table-column>
+        <el-table-column prop="billType" align="center" label="发票类型"></el-table-column>
+        <el-table-column prop="billTitle" align="center" label="发票信息">
+          <template slot-scope="scope">
+            <p>
+              <span>抬头：</span>
+              {{scope.row.billTitle}}
+            </p>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="billCheck" align="center" label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.billCheck == true">已开票</span>
+            <span v-if="scope.row.billCheck == false">未开票</span>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt>
-    </el-dialog>
   </div>
 </template>
 <script>
-
+import { formatDate } from "@/lib/utils";
+import { axios, sellerOrderCenter } from "@/api/apiObj";
+import "./BuyerInvoiceManagement.less";
 export default {
   name: "BuyerInvoiceManagement",
   data() {
     return {
-      dialogVisible:false,
-      dialogImageUrl:''
+      tableData: []
     };
   },
-  methods:{
-    seeImg(){
-      this.dialogVisible = true
+  mounted() {
+    this.getInvoceList();
+  },
+  methods: {
+    getInvoceList() {
+      axios
+        .request({
+          ...sellerOrderCenter.billManager,
+          params: { start: 0, length: 10 }
+        })
+        .then(res => {
+          console.log(res);
+          if (res.resultCode == "200") {
+            this.tableData = res.data.data;
+          }
+        });
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-@import "./BuyerInvoiceManagement.less";
 </style>
 
