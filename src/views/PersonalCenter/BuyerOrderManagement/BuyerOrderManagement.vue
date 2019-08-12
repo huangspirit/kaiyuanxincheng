@@ -17,7 +17,12 @@
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
-          <el-select class="all-time" v-model="orderDate" placeholder="请选择">
+          <el-select
+            class="all-time"
+            @change="getOrderList(orderDate)"
+            v-model="orderDate"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -215,6 +220,7 @@ export default {
       ],
       orderDate: "",
       tabFirstFlag: "",
+      orderParams: {},
       currentPage: 1,
       pageSize: 10,
       SearchInputValue: ""
@@ -239,35 +245,95 @@ export default {
     tabFirst(item) {
       this.tabFirstFlag = item.id;
       this.currentPage = 1;
-      this.all(item.params);
+      if (this.orderDate) {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: item.params,
+          day: this.orderDate
+        };
+      } else {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: item.params
+        };
+      }
+      this.all();
     },
     getsubWait(val, index) {
       for (var i = 0; i < this.subWaitPay.length; i++) {
         this.subWaitPay[i].show = false;
       }
       this.subWaitPay[index].show = true;
-      this.all(val.params);
+      if (this.orderDate) {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params,
+          day: this.orderDate
+        };
+      } else {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params
+        };
+      }
+
+      this.all();
     },
     getSubConfirm(val, index) {
       for (var i = 0; i < this.subConfirm.length; i++) {
         this.subConfirm[i].show = false;
       }
       this.subConfirm[index].show = true;
-      this.all(val.params);
+
+      if (this.orderDate) {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params,
+          day: this.orderDate
+        };
+      } else {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params
+        };
+      }
+      this.all();
     },
     subAbnormal(val, index) {
       for (var i = 0; i < this.abnormalData.length; i++) {
         this.abnormalData[i].show = false;
       }
       this.abnormalData[index].show = true;
-      this.all(val.params);
+
+      if (this.orderDate) {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params,
+          day: this.orderDate
+        };
+      } else {
+        this.orderParams = {
+          start: this.start,
+          length: this.pageSize,
+          type: val.params
+        };
+      }
+      this.all();
     },
-    all(val) {
-      this.GetBuyerOrderManagement({
-        start: this.start,
-        length: this.pageSize,
-        type: val
-      });
+    getOrderList(val) {
+      this.orderParams["day"] = val;
+      this.all();
+      console.log(this.orderParams);
+    },
+    all() {
+      this.GetBuyerOrderManagement(this.orderParams);
     }
   },
   computed: {
@@ -282,7 +348,11 @@ export default {
     }
   },
   mounted() {
-    this.all("");
+    this.orderParams = {
+      start: this.start,
+      length: this.pageSize
+    };
+    this.all();
   }
 };
 </script>
