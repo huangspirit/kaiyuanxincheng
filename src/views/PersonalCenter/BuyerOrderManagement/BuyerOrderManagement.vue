@@ -66,12 +66,7 @@
             <span style="width:20%">操作</span>
           </p>
           <BuyerOrderItem
-<<<<<<< HEAD
-              v-if="BuyerOrderList.length"
-              v-for="item in BuyerOrderList"
-=======
             v-for="item in BuyerOrderList"
->>>>>>> f4933c6dcf803683f4b2f1286e5b8e157a204b86
             :item="item"
             :key="item.id"
             @successFlagHandel="all()"
