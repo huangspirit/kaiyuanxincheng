@@ -20,14 +20,19 @@ const home = {
     SpecialOfferList: {
         url: `api-g/gods-anon/queryDirectGoods`
     },
+    //获取品牌列表
     findBrandList: {
         url: `api-g/gods-anon/findBrand`
     },
     // 品牌列表
     queryBrandHomePage: {
         url: "api-g/gods-anon/queryBrandHomePage"
-    }
+    },
 
+    //获取分类
+    queryCatergoryHomePage: {
+        url: "api-g/gods-anon/queryCatergoryHomePage"
+    }
 }
 const buyerOrderCenter = {
     //确认更改交期
@@ -165,6 +170,19 @@ const BrandDetail = {
     }
 
 }
+const FactoryEntry = {
+    queryCompnayInfo: {
+        url: "api-b/vipApply/queryCompnayInfo"
+    },
+    //升级为月结用户
+    vipApply: {
+        url: "api-b/vipApply/saveData"
+    },
+    //获取用户月结申请单
+    queryDetail: {
+        url: "api-b/vipApply/queryDetail"
+    }
+}
 export {
     axios,
     common,
@@ -175,5 +193,6 @@ export {
     message,
     shoppingCar,
     siderInquiryList,
-    BrandDetail
+    BrandDetail,
+    FactoryEntry
 }

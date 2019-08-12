@@ -19,7 +19,7 @@
             <div class="brand-msg-con-l">
               <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
               <ul>
-                <li>网址：<a href="brandInfo.brand.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
+                <li v-if="brandInfo.brandWeb">网址：<a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
                 <li v-if="brandInfo.tel">电话：{{brandInfo.tel}}</li>
                 <li v-if="brandInfo.email">邮件：{{brandInfo.email}}</li>
               </ul>

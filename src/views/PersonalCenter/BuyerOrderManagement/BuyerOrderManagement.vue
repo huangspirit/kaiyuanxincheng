@@ -71,7 +71,11 @@
             <span style="width:20%">操作</span>
           </p>
           <BuyerOrderItem
+<<<<<<< HEAD
+              v-for="item in BuyerOrderList"
+=======
             v-for="item in BuyerOrderList"
+>>>>>>> b6bef61e500c9c940636d1ed5cedbc7a569c7b3d
             :item="item"
             :key="item.id"
             @successFlagHandel="all()"

@@ -15,15 +15,6 @@
          <div class="desc" v-if="!addressList || addressList.length==0">您还没有填写收货地址，请先新增配送地址</div>
         <ul class="addressList">
           <li :class="{active:addressValue === item.id}" v-for="item in addressList" :key="item.id">
-<!--<label class="label">
-               <input type="radio" :value="item.id" v-model="addressValue" />
-              <span class="imgwrap">
-                <img
-                  src="@/assets/image/inquirybasket/_u11390.png"
-                  alt
-                  v-if="addressValue === item.id"
-                />
-              </span> -->
               <el-radio-group v-model="addressValue" class="defaultradioSquare label editAddress">
                     <el-radio :label="item.id" :value="item.id" name="defaultInvoice">
                       <span class="edit" @click="editAddress(item)">编辑该地址</span>

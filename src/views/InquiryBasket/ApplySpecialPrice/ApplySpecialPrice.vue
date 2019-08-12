@@ -36,7 +36,7 @@
           </div>
           <div
             class="LadderPrice"
-            v-if="oneData.factorySellerInfo.priceType!=undefined&&oneData.factorySellerInfo.priceType"
+            v-if="oneData.factorySellerInfo.priceType!=undefined && oneData.factorySellerInfo.priceType"
           >
             <p class="tit">原厂报价</p>
             <div class="LadderPrice-list">
@@ -341,6 +341,7 @@ export default {
     } else {
       if (this.proInformation.goodsbaseIno) {
         this.oneData = this.proInformation.goodsbaseIno;
+        console.log(this.oneData)
         this.formAlign = this.proInformation;
       } else {
         this.oneData = this.proInformation;
