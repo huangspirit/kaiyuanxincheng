@@ -56,6 +56,7 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
+          console.log("根據access_token獲取用戶信息")
         //this.UserInforma = res;
       });
     } else {
@@ -87,6 +88,22 @@ background:#f4f4f4;
   width:20px;
   height:20px;
 }
+    .defaultradioSquare .el-checkbox__inner{
+        width:20px;
+        height:20px;
+    }
+    .defaultradioSquare .el-checkbox__inner::after{
+        border:3px solid #fff;
+        width:13px;
+        height:4px;
+        border-top-color:transparent;
+        border-right-color: transparent;
+        transform:rotate(-45deg)!important;
+        left:0;
+        top:0px;
+        border-radius: 0;
+        background:transparent;
+    }
 .defaultradioSquare .el-radio__inner::after{
   border:3px solid #fff;
   width:13px;

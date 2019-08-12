@@ -76,6 +76,7 @@
 <script>
 //import Pdf from "_c/Pdf";
 import { setTimeout } from "timers";
+import {ladderPrice} from "../../lib/utils";
 //import pdf from "vue-pdf";
 import MerchantList from "_c/MerchantList";
 import { axios, shoppingCar } from "@/api/apiObj";
@@ -157,8 +158,14 @@ export default {
         let item=this.modelList[k]
           let factorySellerInfo=item.factorySellerInfo
           factorySellerInfo.priceType=factorySellerInfo.price_type
-          factorySellerInfo.priceLevel=factorySellerInfo.price_level
-          this.$store.dispatch("promation", {...item,factorySellerInfo:factorySellerInfo});
+          if(factorySellerInfo.price_level){
+              factorySellerInfo.priceList=ladderPrice(factorySellerInfo.price_level)
+          }else if(factorySellerInfo.priceLevel){
+              factorySellerInfo.priceList=ladderPrice(factorySellerInfo.priceLevel)
+          }
+          console.log({...item,factorySellerInfo:factorySellerInfo})
+          let obj={goodsbaseIno:{...item,factorySellerInfo:factorySellerInfo}}
+          this.$store.dispatch("promation", obj);
           this.$router.push("/InquiryBasket/ApplySpecialPrice");
 
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="home" @click="noSearch()">
+  <div class="home">
     <!-- banner -->
     <img src="../../assets/image/home/u12.gif" alt="" class="bannerbg">
     <img src="../../assets/image/home/u12.gif" alt="" class="bannerbg">
@@ -48,19 +48,25 @@
     <div class="settledIn">
       <p class="tit">已入驻原厂</p>
       <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
-      <ul>
-        <template  v-for="(item,index) in findBrandList">
+      <ul class="clear">
+        <template  v-for="(item,index) in BrandList">
           <li
-            :key="`findBrandList_${item.id}`"
+            :key="`BrandList_${item.id}`"
             @click="sendLink(item)"
-            :class="(index+1)%4==0?'rightCoverFlag':'leftCoverFlag'"
+       :class="(index+1)%5==0?'rightCoverFlag':'leftCoverFlag'"
+            @mouseleave="item.show=false"
+            @mouseenter="item.show=true"
           >
           <!-- <img :src="item.imgurl" alt=""> -->
-            <ImgE :src="item.imgurl" :W="430" :H="170"></ImgE>
-            <div class="coverFlag">
-              <p class="brandName">{{item.branda}}</p>
-              <p class="brandDesc">{{item.brand_desc}}</p>
-            </div>
+              <div class="wrap">
+                  <ImgE :src="item.imgurl" :W="300" :H="150"></ImgE>
+                  <transition name="el-zoom-in-left">
+                      <div class="coverFlag clear" v-show="item.show">
+                          <p class="brandName fl">{{item.branda}}</p>
+                          <p class="brandDesc fl">{{item.brand_desc}}</p>
+                      </div>
+                  </transition>
+              </div>
           </li>
         </template>
       </ul>
@@ -91,98 +97,38 @@
     </div>
 
     <!-- 产品分类 -->
-    <!-- <div class="prodclass">
-      <div class="prodclass-con">
+    <div class="prodclass">
+      <div class="prodclass-con clear">
         <div class="prodclass-l">
           <p>
             <img src="@/assets/image/home/u1491.png" alt>
             产品分类
           </p>
           <ul>
-            <li>
-              电阻
-              <span>></span>
-            </li>
-            <li>
-              晶体
-              <span>></span>
-            </li>
-            <li>
-              二极
-              <span>></span>
-            </li>
-            <li>
-              晶
-              <span>></span>
-            </li>
-            <li>
-              放大器,线性
-              <span>></span>
-            </li>
-            <li>
-              电源芯
-              <span>></span>
-            </li>
-            <li>
-              电感/磁珠/变压
-              <span>></span>
-            </li>
-            <li>
-              存储
-              <span>></span>
+            <li v-for="(item,k) in CatergoryList" :class="selected==k?'active':''" @click="selected=k">
+              <span class="fr el-icon-arrow-right"></span>
+              <ImgE :src="item.imgUrl" :W="30" :H="30" class="fl"></ImgE>
+              <span>{{item.name}}</span>
             </li>
           </ul>
         </div>
         <div class="prodclass-m">
-          <ul>
-            <li>
-              <span>贴片电阻</span>
-              <span>贴片超低阻值电阻</span>
-              <span>贴片高精密电阻</span>
-              <span>贴片压敏电阻</span>
-            </li>
-            <li>
-              <span>贴片电阻</span>
-              <span>贴片超低阻值电阻</span>
-              <span>贴片高精密电阻</span>
-              <span>贴片压敏电阻</span>
-            </li>
-            <li>
-              <span>贴片电阻</span>
-              <span>贴片超低阻值电阻</span>
-              <span>贴片高精密电阻</span>
-              <span>贴片压敏电阻</span>
-            </li>
-            <li>
-              <span>贴片电阻</span>
-              <span>贴片超低阻值电阻</span>
-              <span>贴片高精密电阻</span>
-              <span>贴片压敏电阻</span>
-            </li>
-          </ul>
+            <div class="fl wrap">
+                <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)">{{item.name}}</a>
+            </div>
         </div>
         <div class="prodclass-r">
           <p>入驻厂商</p>
-          <ul>
-            <li>
-              <img src="@/assets/image/home/logo1_u1153.jpg" alt>
-            </li>
-            <li>
-              <img src="@/assets/image/home/logo1_u1153.jpg" alt>
-            </li>
-            <li>
-              <img src="@/assets/image/home/logo1_u1153.jpg" alt>
-            </li>
-            <li>
-              <img src="@/assets/image/home/logo1_u1153.jpg" alt>
-            </li>
-            <li>
-              <img src="@/assets/image/home/logo1_u1153.jpg" alt>
-            </li>
-          </ul>
+            <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
+                <ul :class="{anim:animate==true}">
+                    <li v-for="(item,k) in catergoryBrandList" :key="item.id" @click="chipBrand(k)">
+                        <ImgE :src="item.imgurl" :W="300" :H="100"></ImgE>
+                    </li>
+                </ul>
+            </div>
         </div>
       </div>
-    </div>-->
+    </div>
   </div>
 </template>
 <script>
@@ -193,11 +139,22 @@ import { SearchJump } from "@/lib/utils";
 import SpecialOfferItem from "_c/SpecialOfferItem";
 import { mapState, mapGetters, mapActions ,mapMutations} from "vuex";
 import countTo from "_c/countTo";
+import {axios,home} from "../../api/apiObj";
 
 export default {
   name: "home",
   data() {
     return {
+
+        interval:null,
+        animate:false,
+        //分类
+        CatergoryList:[],
+        catergoryBrandList:[],
+        selected:0,
+        secondCategory:[],
+        //品牌
+        BrandList:[],
       // 商家总数
       brandTotal: 0,
       // 产品总数
@@ -224,17 +181,36 @@ export default {
     ]),
 
     ...mapState({
-
-      findBrandList: state => state.home.findBrandList,
-      BrandListTotal: state => state.home.BrandListTotal
+     // findBrandList: state => state.home.findBrandList,
+     // BrandListTotal: state => state.home.BrandListTotal
     })
   },
-  watch: {},
+  watch: {
+      selected(k){
+          this.catergoryBrandList=this.CatergoryList[k].list
+          this.querySecondCatergory(k)
+      }
+  },
   methods: {
     ...mapMutations([
       "setloginState"
     ]),
-    // 大搜索跳转
+      handleEnter(){
+        clearInterval(this.interval)
+      },
+      handleLeave(){
+          this.interval=setInterval(this.scroll,5000)
+      },
+      scroll(){
+        console.log("gundong")
+          this.animate=true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+          setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+              this.catergoryBrandList.push(this.catergoryBrandList[0]);  // 将数组的第一个元素添加到数组的
+              this.catergoryBrandList.shift();               //删除数组的第一个元素
+              this.animate=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+          },500)
+      },
+      // 大搜索跳转
     searchLink(item) {
       this.searchValue = item.name;
       this.$router.push({
@@ -242,9 +218,9 @@ export default {
         query: item
       });
     },
-    noSearch() {
-      this.$refs.HeaderSearch.noSearch();
-    },
+    // noSearch() {
+    //   this.$refs.HeaderSearch.noSearch();
+    // },
     // 换一批
     tabChange() {
       this.$loading(this.$store.state.loading);
@@ -262,6 +238,22 @@ export default {
           }
         });
     },
+      //获取品牌
+      findBrandList(){
+        axios.request({
+            ...home.findBrandList,
+            params:{start:0,
+                length:20,
+                type:'',
+                 name:''}
+        }).then(res=>{
+               console.log(res)
+            this.BrandList=res.data.data.map(item=>{
+                item.show=false;
+                return item;
+            });
+        })
+      },
     // 品牌跳转
     sendLink(item) {
       this.$router.push({
@@ -273,6 +265,56 @@ export default {
         }
       });
     },
+      //获取分类
+      queryCatergoryHomePage(catergory_id){
+        let obj={
+            catergory_id:catergory_id,
+            flag:true
+        }
+        axios.request({...home.queryCatergoryHomePage,params:obj}).then(res=>{
+            console.log(res)
+            this.CatergoryList=res.data;
+            this.catergoryBrandList=res.data[0].list;
+            this.interval=setInterval(this.scroll,5000)
+            this.querySecondCatergory(0)
+        })
+      },
+      querySecondCatergory(k){
+          let obj={
+              catergory_id:this.CatergoryList[k].id,
+              flag:false
+          }
+          axios.request({...home.queryCatergoryHomePage,params:obj}).then(res=>{
+              console.log(res)
+              this.secondCategory=res.data;
+          })
+      },
+      //二级分类跳转
+      chipUndirect(k){
+        let obj = this.secondCategory[k];
+        //  /BrandDetail/Direct?tag=direct&documentid=7&name=FPGA
+        this.$router.push({
+            path:"/BrandDetail/Direct",
+            query:{
+                tag:'direct',
+                documentid: obj.id,
+                name:obj.name
+            }
+        })
+      },
+      //厂商跳转
+      chipBrand(k){
+        let obj=this.catergoryBrandList[k]
+          console.log(obj)
+          //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
+          this.$router.push({
+              path:"/BrandDetail",
+              query:{
+                  tag:'brand',
+                  documentid:obj.id,
+                  name:obj.brand}
+          })
+      },
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
@@ -297,42 +339,18 @@ export default {
       this.productTotal = res.productTotal;
     });
     // 获取品牌列表
-    this.$store.dispatch("home/GetfindBrandList",{
-        type:'',
-        name:'',
-        start:0,
-        length:1000
-    });
-    if (sessionStorage.getItem("access_token")) {
-      this.setloginState(true)
-      //this.$store.state.loginState = true;
-      this.$store.dispatch("Login/GetUserInforma", {
-        access_token: sessionStorage.getItem("access_token")
-      });
-    }
+      this.findBrandList();
+      //获取分类
+      this.queryCatergoryHomePage(0)
   },
   destroyed() {
+      console.log("銷毀首頁")
     this.$store.state.headerFxed = true;
     window.removeEventListener("scroll", this.handleScroll);
+    clearInterval(this.interval)
   }
 };
 </script>
 <style lang="less" scoped src="./home.less"></style>
-<style lang="less">
-.settledIn{
-  .ImgE{
-    img {
-        width: 100%;
-        min-height:100%;
-        // height: 75px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-      }
-  }
-}
-
-</style>
 
 

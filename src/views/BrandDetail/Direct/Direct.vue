@@ -8,7 +8,7 @@
             path:'/BrandDetail',
             query:{
               tag:'brand',
-              id:query.brandId,
+              documentid:query.brandId,
               name:query.name
             }
           }">
@@ -42,37 +42,24 @@
           <span>筛选</span>
       </div>
       <!-- 筛选条件列表 -->
-<!--      <table class="screen-list">-->
-<!--        <tr v-for="item in screenTypeListOne" :key="`screenTypeList_${item.propertyId}`">-->
-<!--          <td class="screen-class-tit">{{item.propertyName}}</td>-->
-<!--          <ScreenItem-->
-<!--            :childList="item.childList"-->
-<!--            :item="item"-->
-<!--            :screenListOne.sync="screenListOne"-->
-<!--            :flags.sync="flag"-->
-<!--            :currentPage.sync="currentPage"-->
-<!--            :query='query'-->
-<!--          ></ScreenItem>-->
-<!--        </tr>-->
-<!--      </table>-->
-        <transition name="el-zoom-in-top">
-            <ul class="screen-list" v-show="showScreenList">
-                <li v-for="(item,k) in screenTypeList" :key="k" class="item">
-                    <div class="title"><p>{{item.propertyName}}</p></div>
-                    <div class="itemList">
-                        <template  v-for="(item0,index0) in item.childList">
-                            <p  v-show="index0<limitNum || !item.showmore" :class="item.selected==index0?'active':''" @click="selected(k,index0)" :key="index0">
-                                <a>{{item0}}</a>
-                            </p>
-                        </template>
-                    </div>
-                    <div class="showmore">
-                        <a v-if="item.showmore" @click="item.showmore=!item.showmore"><span>更多</span> >></a>
-                        <a v-if="!item.showmore && item.childList.length>limitNum" @click="item.showmore=!item.showmore"> << <span>收起</span></a>
-                    </div>
-                </li>
-            </ul>
-            </transition >
+<!--        <transition name="el-zoom-in-top">-->
+<!--            <ul class="screen-list" v-show="showScreenList">-->
+<!--                <li v-for="(item,k) in screenTypeList" :key="k" class="item">-->
+<!--                    <div class="title"><p>{{item.propertyName}}</p></div>-->
+<!--                    <div class="itemList">-->
+<!--                        <template  v-for="(item0,index0) in item.childList">-->
+<!--                            <p  v-show="index0<limitNum || !item.showmore" :class="item.selected==index0?'active':''" @click="selected(k,index0)" :key="index0">-->
+<!--                                <a>{{item0}}</a>-->
+<!--                            </p>-->
+<!--                        </template>-->
+<!--                    </div>-->
+<!--                    <div class="showmore">-->
+<!--                        <a v-if="item.showmore" @click="item.showmore=!item.showmore"><span>更多</span> >></a>-->
+<!--                        <a v-if="!item.showmore && item.childList.length>limitNum" @click="item.showmore=!item.showmore"> << <span>收起</span></a>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            </transition >-->
 <!--      <div class="screen-bar">-->
 <!--          <p v-text="`${showScreenList ?'收起筛选项':'展开筛选项'}`"></p>-->
 <!--        <img-->
@@ -81,30 +68,88 @@
 <!--          @click="showScreenList=!showScreenList"-->
 <!--        >-->
 <!--      </div>-->
-      <!-- 筛选数量 -->
-      <div class="showSelectedScreen">
-          <span v-for="(item,k) in selectedScreen" :key="k">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
-      </div>
-      <div class="screenBtn clear">
-        <div class="number">
-          共筛选出
-          <strong>{{ScreenProductTotal}}</strong>个结果
+        <div class="ScreenList clear">
+            <div class="item">
+                <div class="title">品牌</div>
+                <ul class="listwrap">
+                    <li  v-for="(item0,index0) in brandList" @click="getTypeByBrandId(index0)" :class="query.brandId==item0.id?'active':''">
+                        {{item0.brand}}
+                    </li>
+                </ul>
+            </div>
+            <div v-for="(item,k) in screenTypeList" :key="k" class="item">
+                <div class="title">{{item.propertyName}}</div>
+                <ul class="listwrap">
+                    <li  v-for="(item0,index0) in item.childList" @click="selected(k,index0)" :class="item.selected==index0?'active':''">
+                        {{item0}}
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="search btn" v-show="ScreenProductTotal">
-            <span @click="changeType">筛选搜索</span></div>
-        <div class="reset btn" v-show="showScreenList">
-            <span @click="resetScreen">重置条件</span></div>
-         <div class="screen-bar btn">
-             <span  @click="showScreenList=!showScreenList">
-                 <img
-                     :src="`${showScreenList ?require('@/assets/image/brandDetail/u4650.png') : require('@/assets/image/brandDetail/u4530.png')  }`"
-                     alt
+        <div class="selected clear">
+              <div class="showSelectedScreen">
+                  <span v-for="(item,k) in selectedScreen" :key="k">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
+              </div>
+            <ul class="fl">
+                <li>
+                    <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
+                        <el-radio :label="true" :value="true" name="goods_type"  @click.native.prevent="cancleChecked1(true)">现货</el-radio><br>
+                        <el-radio :label="false" :value="false" name="goods_type"  @click.native.prevent="cancleChecked1(false)">订货</el-radio>
+                    </el-radio-group>
+                </li>
+            </ul>
+            <ul class="fl">
+                <li>
+                    <el-radio-group v-model="selectedGoods.create_tag" class="defaultradioSquare label editAddress">
+                        <el-radio :label="true" :value="true" name="create_tag"  @click.native.prevent="cancleChecked(true)">原厂直供</el-radio><br>
+                        <el-radio :label="false" :value="false" name="create_tag"  @click.native.prevent="cancleChecked(false)">代理商</el-radio>
+                    </el-radio-group>
+                </li>
+            </ul>
+            <ul class="fl">
+                <li>
+                        <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
+                    <br>
+                        <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
+                </li>
+            </ul>
+            <ul class="fr">
+                <li>
+                    <el-button type="info" plain class="fl"  @click="resetScreen" size="mini">清除已选参数</el-button>
+                    <el-button type="primary" class="fl" plain @click="changeType" size="mini">应用已选参数</el-button>
+                </li>
 
-                 >
-                <span v-text="`${showScreenList ?'收起':'展开'}`"></span>
-             </span>
-             </div>
-      </div>
+            </ul>
+            <ul class="number fr">
+                <li>
+                    共筛选出
+                    <strong>{{ScreenProductTotal}}</strong>个结果
+                </li>
+            </ul>
+        </div>
+      <!-- 筛选数量 -->
+<!--      <div class="showSelectedScreen">-->
+<!--          <span v-for="(item,k) in selectedScreen" :key="k">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>-->
+<!--      </div>-->
+<!--      <div class="screenBtn clear">-->
+<!--        <div class="number">-->
+<!--          共筛选出-->
+<!--          <strong>{{ScreenProductTotal}}</strong>个结果-->
+<!--        </div>-->
+<!--        <div class="search btn" v-show="ScreenProductTotal">-->
+<!--            <span @click="changeType">筛选搜索</span></div>-->
+<!--        <div class="reset btn" v-show="showScreenList">-->
+<!--            <span @click="resetScreen">重置条件</span></div>-->
+<!--         <div class="screen-bar btn">-->
+<!--             <span  @click="showScreenList=!showScreenList">-->
+<!--                 <img-->
+<!--                     :src="`${showScreenList ?require('@/assets/image/brandDetail/u4650.png') : require('@/assets/image/brandDetail/u4530.png')  }`"-->
+<!--                     alt-->
+<!--                 >-->
+<!--                <span v-text="`${showScreenList ?'收起':'展开'}`"></span>-->
+<!--             </span>-->
+<!--             </div>-->
+<!--      </div>-->
       <!-- 筛选结果商品列表 -->
       <!-- <div class="screen-result">
         <div class="result-tit">
@@ -173,8 +218,11 @@ export default {
   name: "Direct",
   data() {
     return {
+        SpecialPrice:"",
+        isOLdProduct:"",
+        brandList:[],
       currentPage: 1,
-        pageSize:10,
+      pageSize:10,
       ProductnformaList:[],
       total:0,
       query:{},
@@ -182,24 +230,21 @@ export default {
       limitNum:12,
       showScreenList:true,
       selectedScreen:{},
+      selectedGoods:{},
       ScreenProductTotal:0,
         //搜索类型1：标识按照筛查条件搜索0：是按照热搜搜索
         searchType:0,
         valueName:"",
         hasHotResearch:false,
-      //
-      // currentName: "全部分类",
-      // preName: "",
-      // sort_type: 0,
-      // screenVal: "",
-      // screenBarFlag: true,
-      // screenTypeListOne: "",
-      // screenListOne: {},
-      // flag: true,
-      // fullscreenLoading: false,
     };
   },
   watch: {
+       "selectedGoods.goods_type":{
+           handler: function(val, oldVal){
+               console.log(val);
+               delete this.selectedGoods.is_old_product
+           },
+       },
       $route: {
           // val是改变之后的路由，oldVal是改变之前的val
           handler: function(val, oldVal){
@@ -214,48 +259,14 @@ export default {
           handler: function(val, oldVal){
               this.queryMatchCount()
           },
+      },
+      selectedGoods:{
+          deep:true,
+          handler: function(val, oldVal){
+              console.log("val")
+              this.queryMatchCount()
+          },
       }
-    // currentPage() {
-    //   this.$loading(this.$store.state.loading);
-    //   let arr = Object.keys(this.screenListOne);
-    //   if (arr.length > 4) {
-    //     this.GetScreenProductList({
-    //       map: this.screenListOne,
-    //       start: this.start,
-    //       brand_id: this.query.brandId ? this.query.brandId : "",
-    //       parent_id: this.query.brandId
-    //         ? this.query.parent_id
-    //         : this.query.documentid
-    //     }).then(() => {
-    //       this.$loading(this.$store.state.loading).close();
-    //     });
-    //   } else {
-    //     if (this.query.brandId) {
-    //       this.$store
-    //         .dispatch("Direct/GetDirectList", {
-    //           brandId: this.query.brandId,
-    //           name: "",
-    //           sort_filds: 0,
-    //           parent_id: this.query.parent_id,
-    //           start: this.start
-    //         })
-    //         .then(() => {
-    //           this.$loading(this.$store.state.loading).close();
-    //         });
-    //     } else if (this.query.tag) {
-    //       this.$store
-    //         .dispatch("Direct/GetSearchDirect", {
-    //           tag: this.query.tag,
-    //           documentid: this.query.documentid,
-    //           name: this.query.name,
-    //           start: this.start
-    //         })
-    //         .then(() => {
-    //           this.$loading(this.$store.state.loading).close();
-    //         });
-    //     }
-    //   }
-    // }
   },
   components: {
     SubstituModelList,
@@ -270,17 +281,53 @@ export default {
     })
   },
   methods: {
+      changeGoodsType(){
+          console.log(this.goods_type);
+      },
+      changeIsOldProduct(e){
+          if(e){
+              this.$set(this.selectedGoods,"is_old_product",true)
+          }else{
+              delete  this.selectedGoods.is_old_product;
+              this.queryMatchCount()
+          }
+      },
+      changeSpecialPrice(e){
+          if(e){
+              this.$set(this.selectedGoods,"special_price",false)
+          }else{
+              delete  this.selectedGoods.special_price;
+              this.queryMatchCount()
+          }
+
+      },
+      cancleChecked(e){
+          if(e===this.selectedGoods.create_tag){
+              this.$set(this.selectedGoods,"create_tag",'')
+          }else{
+              this.$set(this.selectedGoods,"create_tag",e)
+          }
+      },
+      cancleChecked1(e){
+          if(e===this.selectedGoods.goods_type){
+              this.$set(this.selectedGoods,"goods_type",'')
+          }else{
+              this.$set(this.selectedGoods,"goods_type",e)
+          }
+      },
       // 获取热搜的值
       hotSearchValue(val) {
           console.log("val:",val)
           this.valueName = val;
           this.currentPage=1;
           this.hasHotResearch=true;
+          this.searchType=0;
           this.getSearchByBrandId()
       },
       // 点击搜索按钮
       hotSearchsubmit() {
           this.hasHotResearch=true;
+          this.searchType=0;
           this.currentPage=1
           this.getSearchByBrandId()
       },
@@ -292,12 +339,12 @@ export default {
       //筛选总数
       queryMatchCount(){
           let obj={
-              parent_id: this.query.brandId
-                  ? this.query.parentId
-                  : this.query.documentid,
+              parent_id:this.query.documentid
+                  ? this.query.documentid:this.query.parentId,
               start:this.start,
               length:this.pageSize,
-              ...this.selectedScreen
+              ...this.selectedScreen,
+              ...this.selectedGoods
           }
           if(this.query.brandId){
               obj.brand_id=this.query.brandId
@@ -313,47 +360,53 @@ export default {
       this.searchType=1;
       this.$loading(this.$store.state.loading);
       this.currentPage = 1;
-      let obj={
-          parent_id: this.query.brandId
-              ? this.query.parentId
-              : this.query.documentid,
-          start:this.start,
-          length:this.pageSize,
-          ...this.selectedScreen
-      };
-      if(this.query.brandId){
-          obj.brand_id=this.query.brandId
-      }
-        axios.request({...BrandDetail.queryByProperty,data:obj}).then(res=>{
-            console.log(res)
-            this.$loading(this.$store.state.loading).close();
-            if(res.data.data){
-                this.ProductnformaList=res.data.data;
-            }else{
-                this.ProductnformaList=[]
-            }
-            this.total=res.data.total;
-        });
+      this.getChangeTypeGoodsList()
     },
+      getChangeTypeGoodsList(){
+          let obj={
+              parent_id:this.query.documentid? this.query.documentid:this.query.parentId,
+              start:this.start,
+              length:this.pageSize,
+              ...this.selectedScreen
+          };
+          if(this.query.brandId){
+              obj.brand_id=this.query.brandId
+          }
+          axios.request({...BrandDetail.queryByProperty,data:obj}).then(res=>{
+              console.log(res)
+              this.$loading(this.$store.state.loading).close();
+              if(res.data.data){
+                  this.ProductnformaList=res.data.data;
+              }else{
+                  this.ProductnformaList=[]
+              }
+              this.total=res.data.total;
+          });
+      },
     // 返回上一级
     // AllSend() {
     //   this.$router.go(-1);
     //   this.screenListOne = {};
     //   this.flag = !this.flag;
     // },
+      //根据brandId获取产品参数
+      getTypeByBrandId(index0){
+          this.$set(this.query,'brandId',this.brandList[index0].id);
+          this.getPropertyByParentId();
+          this.selectedScreen={}
+      },
       //获取筛选条件列表
       getPropertyByParentId(){
           let data={
-              catergoryId:this.query.brandId?this.query.parentId:this.query.documentid,
+              catergoryId:this.query.documentid?this.query.documentid:this.query.parentId,
               brandId: this.query.brandId
           }
           //筛查类型
           axios.request({...BrandDetail.queryPropertyByParentId,params:data}).then(res=>{
-              console.log(res)
-              this.screenTypeList=res.data.map(item=>{
-                  if(item.childList.length>this.limitNum){
-                      item.showmore=true
-                  }
+              if(!this.brandList.length){
+                  this.brandList=res.data.factory;
+              }
+              this.screenTypeList=res.data.propertyList.map(item=>{
                   return item;
               })
           })
@@ -364,7 +417,10 @@ export default {
             item.selected=-1;
             return item;
         })
-        this.selectedScreen={}
+        this.selectedScreen={};
+        this.selectedGoods={};
+        this.SpecialPrice=false;
+        this.isOLdProduct=false
     },
       delselectedScreenItem(k){
           let obj=this.selectedScreen;
@@ -379,17 +435,15 @@ export default {
       },
       //按照brandId 搜索
       getSearchByBrandId(){
-          console.log(this.query)
           let obj={
               type:3,
-              parent_id:this.query.brandId?this.query.parentId:this.query.documentid,
+              parent_id:this.query.documentid?this.query.documentid:this.query.parentId,
               brandId:this.query.brandId,
               start:this.start,
               length:this.pageSize,
               name:this.valueName
           }
           axios.request({...BrandDetail.findGoodsBaseInfoAndExInfo,params:obj}).then(res=>{
-              console.log(res)
               this.$loading(this.$store.state.loading).close();
               this.ProductnformaList=res.data.data;
               this.total=res.data.total;
@@ -427,10 +481,9 @@ export default {
                }else{
                    this.init()
                }
-
            }else if(this.searchType==1){
                 //标识筛选
-               this.changeType()
+               this.getChangeTypeGoodsList()
            }
       }
   },

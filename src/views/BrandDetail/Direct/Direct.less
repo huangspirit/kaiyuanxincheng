@@ -74,65 +74,114 @@
   }
 
   // 筛选条件列表
-  .screen-list {
-    background: #fff;
+  .ScreenList{
+      display: flex;
+      background:#f5f5f5;
+      overflow-x: scroll;
+      white-space: nowrap;
       .item{
-        display:flex;
+        float:left;
+        max-width:300px;
         text-align: center;
-        .title{
-          width:150px;
-          background: #8c939d;
-          color:#fff;
-          border-bottom:1px solid #fff;
-          display: flex;
-          flex-flow: column;
-          justify-content: space-around;
-        }
-        .showmore{
-          border-bottom:1px dashed #8c939d;
-          padding:10px 5px ;
-          display: inline-flex;
-          align-items: flex-end;
-          a{
-            span{
-              font-size:12px;
-            }
-          }
-        }
-        .itemList{
-          flex:1;
-          display:flex;
-          flex-wrap: wrap;
-          border-bottom:1px dashed #8c939d;
-          padding:10px 5px 0;
-          box-sizing: border-box;
-          p{
-            float: left;
-            margin-bottom:10px;
-            white-space: nowrap;
-            padding:0 8px;
-            box-sizing: border-box;
-            border:2px solid #fff;
+        margin:15px;
+        min-width:150px;
+
+        .listwrap{
+          text-align: left;
+          max-height:200px;
+          min-width:100px;
+          overflow-y: scroll;
+          background:#fff;
+          height:100%;
+          li{
             line-height:20px;
-            min-width:16.5%;
-            &.active{
-              border-color:#0d94fb;
-              a{
-                color:#0d94fb;
-              }
-            }
+            font-size:12px;
+            padding:0 10px;
+            white-space: nowrap;
+            cursor: pointer;
             &:hover{
-              border-color:peru;
+              background:#d5d5d5;
             }
-            a{
-              font-size:12px;
-              color:#4A5A6A;
+            &.active{
+              background: #d5d5d5;
             }
           }
         }
       }
-
   }
+  .selected{
+    padding-left:15px;
+    padding-bottom:15px;
+    ul{
+      height:100%;
+      margin-left:20px;
+      &.number{
+        margin-top:10px;
+      }
+      button{
+        margin-top:10px;
+      }
+    }
+  }
+  //.screen-list {
+  //  background: #fff;
+  //    .item{
+  //      display:flex;
+  //      text-align: center;
+  //      .title{
+  //        width:150px;
+  //        background: #8c939d;
+  //        color:#fff;
+  //        border-bottom:1px solid #fff;
+  //        display: flex;
+  //        flex-flow: column;
+  //        justify-content: space-around;
+  //      }
+  //      .showmore{
+  //        border-bottom:1px dashed #8c939d;
+  //        padding:10px 5px ;
+  //        display: inline-flex;
+  //        align-items: flex-end;
+  //        a{
+  //          span{
+  //            font-size:12px;
+  //          }
+  //        }
+  //      }
+  //      .itemList{
+  //        flex:1;
+  //        display:flex;
+  //        flex-wrap: wrap;
+  //        border-bottom:1px dashed #8c939d;
+  //        padding:10px 5px 0;
+  //        box-sizing: border-box;
+  //        p{
+  //          float: left;
+  //          margin-bottom:10px;
+  //          white-space: nowrap;
+  //          padding:0 8px;
+  //          box-sizing: border-box;
+  //          border:2px solid #fff;
+  //          line-height:20px;
+  //          min-width:16.5%;
+  //          &.active{
+  //            border-color:#0d94fb;
+  //            a{
+  //              color:#0d94fb;
+  //            }
+  //          }
+  //          &:hover{
+  //            border-color:peru;
+  //          }
+  //          a{
+  //            font-size:12px;
+  //            color:#4A5A6A;
+  //          }
+  //        }
+  //      }
+  //    }
+  //
+  //}
   .showSelectedScreen{
     padding:15px 30px;
     span{

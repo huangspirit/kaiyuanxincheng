@@ -16,7 +16,7 @@
             >
                 <el-form-item label="选择商品：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
-                    <ul v-if="selectProductList.length">
+                    <ul v-if="selectProductList && selectProductList.length">
                         <li
                             @click.stop="selectProduct(item)"
                             v-for="item in selectProductList"
@@ -24,7 +24,7 @@
                             v-html="item.nick_name"
                         ></li>
                     </ul>
-                    <div class="select-product-list" v-if="selectProductObj.productno">
+                    <div class="select-product-list" v-if="selectProductObj && selectProductObj.productno">
                         <div class="product-t">
                             <div class="detail">
                                 <ImgE :src="selectProductObj.imgurl" :W="100" :H="100"></ImgE>
@@ -75,8 +75,17 @@
                         <el-radio :label="true" :value="true">现货</el-radio>
                         <el-radio :label="false" :value="false">期货</el-radio>
                     </el-radio-group>
+
                     <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单两天内发货</p>
                     <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
+                </el-form-item>
+                <el-form-item label="是否为呆料:" v-if="ruleForm.goods_type">
+                    <el-radio-group v-model="ruleForm.is_old_product" class="defaultradioSquare">
+                        <el-radio :label="true" :value="true">是</el-radio>
+                        <el-radio :label="false" :value="false">否</el-radio>
+                    </el-radio-group>
+                    <p class="desc"  v-if="!ruleForm.clude_bill && !ruleForm.support_bill">是否系统提供发票,不提供发票增加2%手续费</p>
+                    <!-- <span class="small-sp"  v-if="!ruleForm.clude_bill">是否系统提供发票,不提供发票增加2%手续费</span> -->
                 </el-form-item>
                 <el-form-item label="出价方式:">
                     <el-radio-group v-model="ruleForm.price_type" class="defaultradioSquare">
@@ -89,13 +98,13 @@
                         <div class="stepped-price" v-for="(item,k) in SteppedPriceListlength" :key="k">
 
                             <div class="steppedItem">
-                                <label for="">价格：</label>
+                                <label>价格：</label>
                                 <el-input @input="changePrice(k)" :placeholder="SteppedPriceListobj['placeholderprice'+k]" :name="k" v-model="SteppedPriceListobj['price'+k]"  :max="SteppedPriceListobj['maxprice'+k]" :min="0"  @blur="priceblur($event)">
                                     <template slot="prepend">{{priceunitMark}}</template>
                                 </el-input>
                             </div>
                             <div class="steppedItem">
-                                <label for="">数量：</label>
+                                <label>数量：</label>
                                 <el-input @input="changeNum(k)" :placeholder="SteppedPriceListobj['placeholdernum'+k]" :name="k" v-model="SteppedPriceListobj['num'+k]" type="number" :min="SteppedPriceListobj['minnum'+k]"  @blur="numblur($event)">
                                     <!--                        <template slot="append">K</template>-->
                                 </el-input>
@@ -135,7 +144,6 @@
                         <el-input v-model="ruleForm.mpq" placeholder=""></el-input>
                     </el-form-item>
                 </div>
-
                 <el-form-item label="数量（库存）：" prop="stock_count">
                     <el-input v-model="ruleForm.stock_count" @input="changeStockCount"></el-input>
                     <p class="small" style="color:#ff6600" v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
@@ -203,6 +211,7 @@
                         <p style="color:#ff6600;line-height:20px" v-if="needImg">必选项，但是有利于您的商品销售</p>
                         <p style>图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
                     </div>
+
                 </el-form-item>
                 <div class="form-item form-item-footer">
                     <label for></label>
@@ -283,6 +292,8 @@
                 support_billFlag: true,
                 // 是不是一口价
                 ruleForm: {
+                    //是否为呆料
+                    is_old_product:false,
                     // 选择商品的名字
                     goods_name: "",
                     // 选择商品的id
@@ -404,21 +415,6 @@
                             trigger: "change"
                         }
                     ]
-                    //  LastPurchaseTime: [
-                    //   {
-                    //     type: "string",
-                    //     required: true,
-                    //     message: "请选择上次购买时间",
-                    //     trigger: "change"
-                    //   }
-                    // ],
-                    // SourceCompany: [
-                    //   { required: true, message: "请输入源头公司名称", trigger: "blur" },
-                    //   { min: 2, message: "源头公司名称最低为2个字符", trigger: "blur" }
-                    // ],
-                    // SourceImg: [
-                    //   { required: true, message: "请上传商品源头证明", trigger: "blur" }
-                    // ]
                 }
             };
         },
@@ -433,7 +429,6 @@
                 return this.exchange*Number(this.ruleForm.stock_count)*this.selectedPrice
             },
             needImg(){
-                console.log(this.ruleForm.goods_type)
                 return this.ruleForm.goods_type
             },
             ...mapState({
@@ -492,9 +487,9 @@
             "ruleForm.goods_type": {
                 handler() {
                     if (!this.ruleForm.goods_type) {
+                        this.ruleForm.is_old_product=false;
                         this.ruleForm.price_type = false;
                     } else {
-
                         this.ruleForm.price_type = true;
                     }
                 }
@@ -626,7 +621,6 @@
                     if (valid) {
                         let flag2 = true;
                         let retTimeFlag = this.ruleForm.start_date < this.ruleForm.end_date;
-                        console.log(retTimeFlag)
                         if (!this.ruleForm.seller_always) {
                             if (!retTimeFlag) {
                                 this.$message.error("售卖起止时间必须大于开始时间");
@@ -664,6 +658,7 @@
                         this.ruleForm.access_token = this.access_token;
                         if(this.UserInforma.userTagMap.tag==1){
                             this.ruleForm.brand = this.UserInforma.userTagMap.brand;
+                            this.ruleForm.brand_id=this.UserInforma.userTagMap.brand
                         }
                         if(this.needImg){
                             if(!this.ruleForm.image_urls){
@@ -704,7 +699,6 @@
             },
             // 搜素品牌
             SearchBrand(x) {
-                console.log(this.UserInforma)
                 let obj={
                     start: 0,
                     length: 10,
@@ -714,11 +708,15 @@
                     obj={...obj,brand:this.UserInforma.userTagMap.brand}
                 }
                 this.GetSerarchGoods(obj).then(res => {
+                    console.log(res)
                     this.selectProductList = res.data;
                 });
             },
             SearchBrandBlur(){
                 let item=this.selectProductList[0]
+                if(!item){
+                    return;
+                }
                 this.ruleForm.goods_name = item.productno;
                 this.ruleForm.goods_id = item.id;
                 this.selectProductObj = item;
@@ -758,7 +756,7 @@
             },
             // 添加到阶梯价格
             addSteppedPrice() {
-                if (this.SteppedPriceList.length < 3) {
+                if (this.SteppedPriceList && this.SteppedPriceList.length < 3) {
                     this.SteppedPriceList.push({
                         num: "",
                         price: ""
