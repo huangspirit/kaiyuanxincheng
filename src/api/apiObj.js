@@ -12,6 +12,7 @@ const home = {
     SearchData: {
         url: "api-g/gods-anon/searchIndex"
     },
+
     GetHotSearch: {
         url: `api-g/gods-anon/querySummaryHome`
     },
@@ -22,6 +23,11 @@ const home = {
     findBrandList: {
         url: `api-g/gods-anon/findBrand`
     },
+    // 品牌列表
+    queryBrandHomePage: {
+        url: "api-g/gods-anon/queryBrandHomePage"
+    }
+
 }
 const buyerOrderCenter = {
     //确认更改交期
@@ -130,19 +136,33 @@ const siderInquiryList = {
     }
 
 }
-const BrandDetail={
+const BrandDetail = {
     //导航搜索
-    findGoodsBaseInfoAndExInfo:{url:"api-g/gods-anon/findGoodsBaseInfoAndExInfo"},
+    findGoodsBaseInfoAndExInfo: {
+        url: "api-g/gods-anon/findGoodsBaseInfoAndExInfo"
+    },
     //获取品类
-    queryCatergoryByParentId:{url:"api-g/gods-anon/queryCatergoryByParentId"},
+    queryCatergoryByParentId: {
+        url: "api-g/gods-anon/queryCatergoryByParentId"
+    },
     //input搜索结果获取
-    searchResult:{url:"api-g/gods-anon/searchResult"},
+    searchResult: {
+        url: "api-g/gods-anon/searchResult"
+    },
     //获取筛选项
-    queryPropertyByParentId:{url:"api-g/gods-anon/queryPropertyByParentId"},
+    queryPropertyByParentId: {
+        url: "api-g/gods-anon/queryPropertyByParentId"
+    },
     //根据筛选条件筛选产品
-    queryByProperty:{url:"api-g/gods-anon/queryByProperty",method:"post"},
+    queryByProperty: {
+        url: "api-g/gods-anon/queryByProperty",
+        method: "post"
+    },
     //根据筛选条件筛选数量
-    queryMatchCount:{url:"api-g/gods-anon/queryMatchCount",method:"post"}
+    queryMatchCount: {
+        url: "api-g/gods-anon/queryMatchCount",
+        method: "post"
+    }
 
 }
 export {

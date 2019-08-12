@@ -3,8 +3,44 @@ body {
 }
 
 #brand {
+  .siderList {
+    position: fixed;
+    transition: 1s;
+    transform: translateX(-100px);
+    top: 160px;
+    background: rgba(74, 90, 106, 1);
 
+    >ul {
+      overflow-y: scroll;
+      height: 500px;
+      padding: 10px 0;
+
+      li {
+        width: 70px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+      }
+    }
+
+    >ul::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    >li {
+      width: 70px;
+      line-height: 30px;
+      text-align: center;
+      color: #fff;
+    }
+  }
+
+  .siderActive {
+    transition: 1s;
+    transform: translateX(0)
+  }
 }
+
 .brand {
   width: 100%;
   overflow: hidden;
@@ -105,6 +141,7 @@ body {
       display: none;
       z-index: 10;
     }
+
     .swiper-container {
       width: 100%;
       padding: 20px 0;
@@ -116,6 +153,18 @@ body {
     .swiper-slide {
       width: 300px;
       height: 130px;
+
+      margin: 0 20px;
+      box-sizing: border-box;
+      box-shadow: 0px 0px 10px 2px rgba(0,0,0,1);
+      >img {
+        height: 100%;
+        width: 100%;
+
+        &:hover {
+          box-shadow: 0px 5px 5px rgba(74, 90, 106, .8);
+        }
+      }
     }
 
     // ul {
@@ -136,11 +185,11 @@ body {
   // 全部品牌
   .all-brands {
     // width: 1350px;
-    width:100%;
-    max-width:1350px;
+    width: 100%;
+    max-width: 1350px;
     min-width: 1080px;
     padding: 40px 50px;
-    margin:40px auto;
+    margin: 40px auto;
     margin-bottom: 20px;
     background: #fff;
 
@@ -158,11 +207,13 @@ body {
       margin-top: 20px;
       padding-left: 10px;
       margin-bottom: 10px;
-      &:after{
-        content:'';
+
+      &:after {
+        content: '';
         display: block;
         clear: both;
       }
+
       .china-xin {
         float: left;
         color: #fff;
@@ -171,26 +222,28 @@ body {
         background: #4A5A6A;
         font-weight: bold;
         cursor: pointer;
-        padding:8px 20px 10px;
+        padding: 8px 20px 10px;
 
         &:hover {
           color: #3da8f5;
         }
-        span{
+
+        span {
           display: inline-block;
           vertical-align: middle;
         }
+
         img {
           width: 28px;
           height: 28px;
-          margin-right:10px;
+          margin-right: 10px;
           vertical-align: middle;
         }
       }
 
       .settledin {
         float: right;
-        padding:8px 20px 10px;
+        padding: 8px 20px 10px;
         text-align: center;
         font-size: 20px;
         color: #4A5A6A;
@@ -205,9 +258,10 @@ body {
       width: 100%;
       padding-left: 10px;
       display: flex;
+
       li {
-        width:3%;
-        flex:1;
+        width: 3%;
+        flex: 1;
         background: #4A5A6A;
         font-size: 20px;
         color: #fff;
@@ -217,6 +271,7 @@ body {
         margin-right: 12px;
         margin-bottom: 5px;
         cursor: pointer;
+
         &:hover {
           color: peru;
         }
@@ -242,16 +297,26 @@ body {
       ul {
         width: 100%;
         overflow: hidden;
+
+        >h3 {
+          width: 100%;
+          height: 55px;
+          line-height: 55px;
+          padding: 0 30px;
+          background-color: rgba(210, 217, 223, 1);
+        }
+
         li {
           width: 25%;
           font-size: 18px;
           color: #6b6b6b;
           float: left;
-          margin-bottom: 15px;
+          line-height: 44px;
           cursor: pointer;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+
           &:hover {
             color: #3da8f5;
           }

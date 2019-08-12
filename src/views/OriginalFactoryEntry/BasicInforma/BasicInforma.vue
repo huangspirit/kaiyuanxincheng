@@ -107,8 +107,6 @@ export default {
       FindBrandList: [],
       // 选择品牌展示的模态框
       selectBrandFlag: false,
-      // 模糊查询到的品牌列表
-      FindBrandList: [],
       //最后选择的品牌列表
       EndselectBrandList: [],
       // 要搜索的品牌name
@@ -259,7 +257,6 @@ export default {
         start: 0,
         length: 10,
         name: this.searchBrandValue
-        // type:this.searchBrandValue
       }).then(res => {
         this.FindBrandList = res;
       });
