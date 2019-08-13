@@ -658,8 +658,9 @@
                         this.ruleForm.access_token = this.access_token;
                         if(this.UserInforma.userTagMap.tag==1){
                             this.ruleForm.brand = this.UserInforma.userTagMap.brand;
-                            this.ruleForm.brand_id=this.UserInforma.userTagMap.brand
+
                         }
+                        this.ruleForm.brand_id=this.selectProductObj.brand;
                         if(this.needImg){
                             if(!this.ruleForm.image_urls){
                                 this.$message.error("现货必须上传实物图片");
@@ -667,7 +668,6 @@
                             }
                         }
                         if (flag2) {
-                            console.log(this.ruleForm)
                             this.GetPublishGoods(this.ruleForm)
                                 .then(res => {
                                     this.$message({

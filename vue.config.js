@@ -7,6 +7,12 @@ const BASE_URL = process.env.NODE_ENV === 'production' ? '/' : '/'
 module.exports = {
   lintOnSave: false,
   baseUrl: BASE_URL,
+  pluginOptions: {
+        'style-resources-loader': {
+            preProcessor: 'less',
+            patterns: [path.resolve(__dirname, 'src/assets/css/reset.less')]
+        }
+    },
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))
@@ -16,5 +22,6 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     // proxy: 'http://localhost:3000'
-  }
+  },
+
 }

@@ -72,7 +72,7 @@
             <div class="item">
                 <div class="title">品牌</div>
                 <ul class="listwrap">
-                    <li  v-for="(item0,index0) in brandList" @click="getTypeByBrandId(index0)" :class="query.brandId==item0.id?'active':''">
+                    <li  v-for="(item0,index0) in brandList" @click="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
                         {{item0.brand}}
                     </li>
                 </ul>
@@ -88,7 +88,7 @@
         </div>
         <div class="selected clear">
               <div class="showSelectedScreen">
-                  <span v-for="(item,k) in selectedScreen" :key="k">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
+                  <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
               </div>
             <ul class="fl">
                 <li>
@@ -299,7 +299,6 @@ export default {
               delete  this.selectedGoods.special_price;
               this.queryMatchCount()
           }
-
       },
       cancleChecked(e){
           if(e===this.selectedGoods.create_tag){
@@ -318,7 +317,6 @@ export default {
       },
       // 获取热搜的值
       hotSearchValue(val) {
-          console.log("val:",val)
           this.valueName = val;
           this.currentPage=1;
           this.hasHotResearch=true;
@@ -339,6 +337,7 @@ export default {
       },
       //筛选总数
       queryMatchCount(){
+          this.$loading(this.$store.state.loading);
           let obj={
               parent_id:this.query.documentid
                   ? this.query.documentid:this.query.parentId,
@@ -351,7 +350,7 @@ export default {
               obj.brand_id=this.query.brandId
           }
           axios.request({...BrandDetail.queryMatchCount,data:obj}).then(res=>{
-              console.log(res)
+              this.$loading(this.$store.state.loading).close();
               this.ScreenProductTotal=res.data
           })
       },
@@ -361,20 +360,20 @@ export default {
       this.searchType=1;
       this.$loading(this.$store.state.loading);
       this.currentPage = 1;
-      this.getChangeTypeGoodsList()
+      this.getChangeTypeGoodsList();
     },
       getChangeTypeGoodsList(){
           let obj={
               parent_id:this.query.documentid? this.query.documentid:this.query.parentId,
               start:this.start,
               length:this.pageSize,
-              ...this.selectedScreen
+              ...this.selectedScreen,
+              ...this.selectedGoods
           };
           if(this.query.brandId){
               obj.brand_id=this.query.brandId
           }
           axios.request({...BrandDetail.queryByProperty,data:obj}).then(res=>{
-              console.log(res)
               this.$loading(this.$store.state.loading).close();
               if(res.data.data){
                   this.ProductnformaList=res.data.data;
@@ -392,9 +391,11 @@ export default {
     // },
       //根据brandId获取产品参数
       getTypeByBrandId(index0){
-          this.$set(this.query,'brandId',this.brandList[index0].id);
-          this.getPropertyByParentId();
           this.selectedScreen={}
+          this.$set(this.selectedScreen,'brand_id',this.brandList[index0].id);
+          this.getPropertyByParentId();
+
+
       },
       //获取筛选条件列表
       getPropertyByParentId(){

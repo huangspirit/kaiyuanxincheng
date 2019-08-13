@@ -131,7 +131,7 @@ export default {
               icon: require("@/assets/image/PersonalCenter/u38134.png")
             },
             {
-              title: "提升等级(月结)",
+              title: "申请月结",
               index: "2-7",
               path: "/PersonalCenter/UpgradeLevel",
               icon: require("@/assets/image/PersonalCenter/u44756.png")
@@ -168,7 +168,13 @@ export default {
               index: "3-4",
               path: "/PersonalCenter/ShippingAddress",
               icon: require("@/assets/image/PersonalCenter/u37960.png")
-            }
+            },
+              {
+                    title: "申请结果",
+                    index: "3-5",
+                    path: "/PersonalCenter/GetVipApplyDetail",
+                    icon: require("@/assets/image/PersonalCenter/u38134.png")
+              }
             // {
             //   title: "个人发票",
             //   index: "3-5",

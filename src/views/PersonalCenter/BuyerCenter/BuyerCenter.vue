@@ -106,9 +106,9 @@
 
       </ul>
       <!-- 品牌入驻 -->
-      <div class="brands">
-        <span>品牌入驻</span>
-      </div>
+<!--      <div class="brands">-->
+<!--        <span>品牌入驻</span>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -163,7 +163,12 @@ export default {
         }
       ]
     }
-  }
+  },
+    methods:{
+          init(){
+
+          }
+    }
 };
 </script>
 

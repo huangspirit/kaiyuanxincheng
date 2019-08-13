@@ -24,7 +24,6 @@
             ></el-option>
           </el-select>
         </ul>
-
         <router-view></router-view>
       </div>
     </div>

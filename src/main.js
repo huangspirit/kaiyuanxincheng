@@ -30,6 +30,7 @@ Vue.component('CountTime', CountTime)
 Vue.component('SetTankuang', SetTankuang)
 Vue.component('Purchase', Purchase)
 import filters from "./lib/filters";
+import "./assets/css/reset.less";
 window.eventBus = new Vue;
 Object.keys(filters).forEach((key) => {
     Vue.filter(key, filters[key][key])

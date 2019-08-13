@@ -3,7 +3,7 @@
     <div id="container" class="clear">
       <headTop id="HeaderBar" ></headTop>
       <div id="content" class="clear">
-        <router-view v-if="isRouterAlive"/>
+            <router-view v-if="isRouterAlive"/>
       </div>
       <Footer></Footer>
       <Sidebar></Sidebar>
@@ -60,14 +60,18 @@ export default {
         //this.UserInforma = res;
       });
     } else {
-      // this.$store.state.loginState = false;
        this.setloginState(false)
-      // this.$store.dispatch("setloginState",false)
     }
   }
 };
 </script>
 <style lang="less" >
+    .color{
+        color:#df3f2f;
+    }
+    .bgColor{
+        background: #4f4f4f;
+    }
     a{
         cursor: pointer;
         color:#0d94fb;

@@ -179,8 +179,8 @@ const FactoryEntry = {
         url: "api-b/vipApply/saveData"
     },
     //获取用户月结申请单
-    queryDetail: {
-        url: "api-b/vipApply/queryDetail"
+    getApplyList: {
+        url: "api-b/apply/getApplyList"
     }
 }
 export {

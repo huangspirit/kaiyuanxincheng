@@ -1,4 +1,5 @@
 import Home from '@/views/Home'
+import Index from "@/views/Index"
 export default [
 
     // 首页
@@ -8,6 +9,14 @@ export default [
         component: Home,
         meta: {
             title: '首页'
+        }
+    },
+    {
+        path: '/index',
+        name: 'index',
+        component: Index,
+        meta: {
+            title: '新首页'
         }
     },
     // 品牌
