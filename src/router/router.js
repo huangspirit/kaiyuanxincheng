@@ -340,7 +340,7 @@ export default [
     },
     // 个人中心
     {
-        path: '/PersonalCenter/',
+        path: '/PersonalCenter',
         component: () => import('@/views/PersonalCenter'),
         meta: {
             requireAuth: true,
@@ -637,6 +637,16 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '账户余额'
+                }
+            },
+            // 申请结果
+            {
+                path: 'GetVipApplyDetail',
+                name: 'GetVipApplyDetail',
+                component: () => import('@/views/PersonalCenter/GetVipApplyDetail'),
+                meta: {
+                    requireAuth: true,
+                    title: '申请列表'
                 }
             },
             // 信誉额

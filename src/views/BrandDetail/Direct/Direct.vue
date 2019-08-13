@@ -303,14 +303,15 @@ export default {
       },
       cancleChecked(e){
           if(e===this.selectedGoods.create_tag){
-              this.$set(this.selectedGoods,"create_tag",'')
+              this.$set(this.selectedGoods,"create_tag",undefined)
+              //delete this.selectedGoods.create_tag
           }else{
               this.$set(this.selectedGoods,"create_tag",e)
           }
       },
       cancleChecked1(e){
           if(e===this.selectedGoods.goods_type){
-              this.$set(this.selectedGoods,"goods_type",'')
+              this.$set(this.selectedGoods,"goods_type",undefined)
           }else{
               this.$set(this.selectedGoods,"goods_type",e)
           }

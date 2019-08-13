@@ -265,7 +265,6 @@ export default {
       checkboxChangeValue: false,
       checkboxChangeValue2: false,
       dialogImageUrl: "",
-
       // 示例图
       exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
       // 预览图片
