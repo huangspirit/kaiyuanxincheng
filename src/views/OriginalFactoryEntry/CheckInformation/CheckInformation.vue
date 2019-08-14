@@ -62,7 +62,7 @@
                 value-format="yyyy/MM/dd"
                 format="yyyy/MM/dd"
               ></el-date-picker>
-             
+
               <el-date-picker
                 v-model="ruleForm.businesshoursend"
                 value-format="yyyy/MM/dd"
@@ -503,7 +503,7 @@ export default {
     url() {
       return (
         baseURL +
-        `api-f/files/uploadWithCloud?access_token=${this.access_token}&fileSource=QINIUYUN&type=1&id=1`
+        `api-b/vipApply/uploadPicture?access_token=${this.access_token}&fileSource=QINIUYUN&type=5&id=1`
       );
     },
     ...mapState("OriginalFactoryEntry", ["joinForm"])
