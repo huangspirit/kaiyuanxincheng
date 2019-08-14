@@ -1,319 +1,312 @@
 <template>
-  <div>
-    <!-- 入驻信息 -->
-    <div class="CheckInformation">
-      <div class="CheckInformation-con">
-        <p class="title">
-          <span>详细信息</span>
-        </p>
-        <div>
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="270px"
-            class="demo-ruleForm"
-          >
-            <h3 class="tit-h3">企业基本信息</h3>
-            <el-form-item label="统一社会信用代码：">
-              <div class="recode">
-                <el-input
-                  v-model="ruleForm.creditCode"
-                  type="text"
-                  @input="handleInput"
-                  maxlength="18"
-                  show-word-limit
-                ></el-input>
-                <el-button v-if="showRequireBtn" @click="getCompanyInfo" type="primary">获取企业信息</el-button>
-              </div>
-              <p class="small">请严格按照营业执照填写统一社会信用代码</p>
-            </el-form-item>
+  <!-- 入驻信息 -->
+  <div class="CheckInformation">
+    <div class="CheckInformation-con">
+      <p class="title">
+        <span>详细信息</span>
+      </p>
+      <div>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+          <h3 class="tit-h3">企业基本信息</h3>
+          <el-form-item label="统一社会信用代码：">
+            <div class="recode">
+              <el-input
+                v-model="ruleForm.creditCode"
+                type="text"
+                @input="handleInput"
+                maxlength="18"
+                show-word-limit
+              ></el-input>
+              <el-button v-if="showRequireBtn" @click="getCompanyInfo" type="primary">获取企业信息</el-button>
+            </div>
+            <p class="small">请严格按照营业执照填写统一社会信用代码</p>
+          </el-form-item>
+          <el-form-item label="公司注册名称：" prop="companyname">
+            <el-input v-model="ruleForm.companyname"></el-input>
+            <p class="small">请按照营业执照上登记的完整名称填写</p>
+          </el-form-item>
+          <el-form-item label="工商营业执照注册号：" prop="businesslicensenum">
+            <el-input v-model="ruleForm.businesslicensenum"></el-input>
+          </el-form-item>
+          <el-form-item label="法定代表人：" prop="legalagent">
+            <el-input v-model="ruleForm.legalagent"></el-input>
+            <p class="small">确保与营业执照一致</p>
+          </el-form-item>
+          <el-form-item label="公司成立日期：" prop="establishmenttime">
+            <el-date-picker
+              v-model="ruleForm.establishmenttime"
+              value-format="yyyy-MM-dd"
+              format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="注册资本：" prop="registeredcapital">
+            <el-input v-model="ruleForm.registeredcapital"></el-input>
+            <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
+          </el-form-item>
+          <el-form-item label="营业期限：" prop="businesshoursstart">
+            <el-date-picker
+              v-model="ruleForm.businesshoursstart"
+              type="date"
+              placeholder="营业开始日期"
+              style="margin-right:10px"
+              value-format="yyyy/MM/dd"
+              format="yyyy/MM/dd"
+            ></el-date-picker>
+            <div>至</div>
+            <el-date-picker
+              v-model="ruleForm.businesshoursend"
+              value-format="yyyy/MM/dd"
+              format="yyyy/MM/dd"
+              type="date"
+              style="margin-left:10px"
+              placeholder="营业结束日期"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="公司注册地址：" prop="companyaddress">
+            <div>
+              <v-distpicker :province="province" :city="city" :area="area" @selected="distpicker"></v-distpicker>
+            </div>
+          </el-form-item>
+          <el-form-item label="公司详细地址：" prop="companydetailaddress">
+            <el-input v-model="ruleForm.companydetailaddress"></el-input>
+            <p class="small">填写与营业执照一致的地址</p>
+          </el-form-item>
+          <h3 class="tit-h3">企业资质上传（所有资质需要加盖红章）</h3>
+          <div class="form2-item">
+            <div class="title-up">
+              <h3>
+                <span>*</span>
+                企业营业执照
+              </h3>
+              <p class="small">最新版营业执照，需加盖公司红章</p>
+            </div>
+            <div class="form-item-con">
+              <el-form-item label="有效期：" prop="businesslicensestarttime">
+                <el-date-picker
+                  v-model="ruleForm.businesslicensestarttime"
+                  type="date"
+                  placeholder="开始日期"
+                  style="margin-right:10px"
+                  value-format="yyyy/MM/dd"
+                  format="yyyy/MM/dd"
+                ></el-date-picker>
+                <span>至</span>
+                <el-date-picker
+                  v-model="ruleForm.businesslicenseendtime"
+                  type="date"
+                  style="margin-left:10px"
+                  placeholder="结束日期"
+                  value-format="yyyy/MM/dd"
+                  format="yyyy/MM/dd"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="资质图上传：" prop="qualificationmapimg" class="qualificationmapimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload1"
+                  :on-preview="handlePictureCardPreview"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+            </div>
+          </div>
+          <div class="form2-item">
+            <div class="title-up">
+              <h3>
+                <span>*</span>
+                企平台负责人身份证正反面
+              </h3>
+              <p class="small">需加盖公司红章</p>
+            </div>
+            <div class="form-item-con">
+              <el-form-item label="身份证：" prop="enterpriseplatformidentity">
+                <el-input v-model="ruleForm.enterpriseplatformidentity"></el-input>
+              </el-form-item>
+              <el-form-item label="上传正面照片：" prop="identityposimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload2"
+                  :on-preview="handlePictureCardPreview"
+                  :limit="1"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+              <el-form-item label="上传反面照片：" prop="identitynegimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload3"
+                  :on-preview="handlePictureCardPreview"
+                  :limit="1"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
 
-            <el-form-item label="公司注册名称：" prop="companyname">
-              <el-input v-model="ruleForm.companyname"></el-input>
-              <p class="small">请按照营业执照上登记的完整名称填写</p>
-            </el-form-item>
-            <el-form-item label="工商营业执照注册号：" prop="businesslicensenum">
-              <el-input v-model="ruleForm.businesslicensenum"></el-input>
-            </el-form-item>
-            <el-form-item label="法定代表人：" prop="legalagent">
-              <el-input v-model="ruleForm.legalagent"></el-input>
-              <p class="small">确保与营业执照一致</p>
-            </el-form-item>
-            <el-form-item label="公司成立日期：" prop="establishmenttime">
-              <el-date-picker
-                v-model="ruleForm.establishmenttime"
-                value-format="yyyy-MM-dd"
-                format="yyyy-MM-dd"
-                type="date"
-                placeholder="选择日期"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="注册资本：" prop="registeredcapital">
-              <el-input v-model="ruleForm.registeredcapital"></el-input>
-              <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
-            </el-form-item>
-            <el-form-item label="营业期限：" prop="businesshoursstart">
-              <el-date-picker
-                v-model="ruleForm.businesshoursstart"
-                type="date"
-                placeholder="营业开始日期"
-                style="margin-right:100px"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
-              ></el-date-picker>
-             
-              <el-date-picker
-                v-model="ruleForm.businesshoursend"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
-                type="date"
-                style="margin-left:10px"
-                placeholder="营业结束日期"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="公司详细地址：" prop="companydetailaddress">
-              <el-input v-model="ruleForm.companydetailaddress"></el-input>
-              <p class="small">填写与营业执照一致的地址</p>
-            </el-form-item>
-            <h3 class="tit-h3">企业资质上传</h3>
-            <div class="form2-item">
-              <div class="title-up">
-                <h3>
-                  <span>*</span>
-                  企业营业执照
-                </h3>
-                <p class="small">最新版营业执照</p>
-              </div>
-              <div class="form-item-con">
-                <el-form-item label="有效期：" prop="businesslicensestarttime">
-                  <el-date-picker
-                    v-model="ruleForm.businesslicensestarttime"
-                    type="date"
-                    placeholder="开始日期"
-                    style="margin-right:10px"
-                    value-format="yyyy/MM/dd"
-                    format="yyyy/MM/dd"
-                  ></el-date-picker>
-                  <span>至</span>
-                  <el-date-picker
-                    v-model="ruleForm.businesslicenseendtime"
-                    type="date"
-                    style="margin-left:10px"
-                    placeholder="结束日期"
-                    value-format="yyyy/MM/dd"
-                    format="yyyy/MM/dd"
-                  ></el-date-picker>
-                </el-form-item>
-                <el-form-item label="资质图上传：" prop="qualificationmapimg" class="qualificationmapimg">
-                  <el-upload
-                    class="upload-demo"
-                    ref="upload"
-                    :action="url"
-                    :auto-upload="true"
-                    list-type="picture-card"
-                    :before-upload="beforeAvatarUpload"
-                    :on-success="successUpload1"
-                    :on-preview="handlePictureCardPreview"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <div
-                      slot="tip"
-                      class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
-                  </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
-                    <span>示例图</span>
-                  </span>
-                </el-form-item>
-              </div>
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
             </div>
-            <div class="form2-item">
-              <div class="title-up">
-                <h3>
-                  <span>*</span>
-                  企平台负责人身份证正反面
-                </h3>
-              </div>
-              <div class="form-item-con">
-                <el-form-item label="身份证：" prop="enterpriseplatformidentity">
-                  <el-input v-model="ruleForm.enterpriseplatformidentity"></el-input>
-                </el-form-item>
-                <el-form-item label="上传正面照片：" prop="identityposimg">
-                  <el-upload
-                    class="upload-demo"
-                    ref="upload"
-                    :action="url"
-                    :auto-upload="true"
-                    list-type="picture-card"
-                    :before-upload="beforeAvatarUpload"
-                    :on-success="successUpload2"
-                    :on-preview="handlePictureCardPreview"
-                    :limit="1"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <div
-                      slot="tip"
-                      class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
-                  </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
-                    <span>示例图</span>
-                  </span>
-                </el-form-item>
-                <el-form-item label="上传反面照片：" prop="identitynegimg">
-                  <el-upload
-                    class="upload-demo"
-                    ref="upload"
-                    :action="url"
-                    :auto-upload="true"
-                    list-type="picture-card"
-                    :before-upload="beforeAvatarUpload"
-                    :on-success="successUpload3"
-                    :on-preview="handlePictureCardPreview"
-                    :limit="1"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <div
-                      slot="tip"
-                      class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
-                  </el-upload>
+          </div>
+          <div class="form2-item">
+            <div class="title-up">
+              <h3>
+                <span>*</span>
+                一般纳税人资格证明
+              </h3>
+              <p class="small">1.一般纳税人证明（需加盖公司红章）</p>
+              <p class="small">2.提供近三个月内开票方为公司开具的增值税发票一张</p>
+              <p class="small">3.上述条件至少上传一项</p>
+            </div>
+            <div class="form-item-con">
+              <el-form-item label="资质图上传：" prop="taxpayerimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload4"
+                  :on-preview="handlePictureCardPreview"
+                  :limit="limitNum"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+            </div>
+          </div>
 
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
-                    <span>示例图</span>
-                  </span>
-                </el-form-item>
-              </div>
+          <div class="form2-item" v-if="AgentListFlag">
+            <h3 class="tit-h3">代理商资质上传（所有资质需要加盖红章）</h3>
+            <div class="title-up">
+              <h3>
+                <span>*</span>
+                品牌授权书
+              </h3>
+              <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
+              <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
+              <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
+              <p class="download">下载模板</p>
             </div>
-            <div class="form2-item">
-              <div class="title-up">
-                <h3>
-                  <span>*</span>
-                  一般纳税人资格证明
-                </h3>
-                <p class="small">1.一般纳税人证明</p>
-                <p class="small">2.提供近三个月内开票方为公司开具的增值税发票一张</p>
-                <p class="small">3.上述条件至少上传一项</p>
-              </div>
-              <div class="form-item-con">
-                <el-form-item label="资质图上传：" prop="taxpayerimg">
-                  <el-upload
-                    class="upload-demo"
-                    ref="upload"
-                    :action="url"
-                    :auto-upload="true"
-                    list-type="picture-card"
-                    :before-upload="beforeAvatarUpload"
-                    :on-success="successUpload4"
-                    :on-preview="handlePictureCardPreview"
-                    :limit="limitNum"
-                  >
-                    <i class="el-icon-plus"></i>
-                    <div
-                      slot="tip"
-                      class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
-                  </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
-                    <span>示例图</span>
-                  </span>
-                </el-form-item>
-              </div>
+            <div class="form-item-con Agent-con">
+              <ul>
+                <li v-for="item in AgentList" :key="item.id">
+                  <p class="brandName">
+                    品牌：
+                    <span>{{item.brand}}</span>
+                  </p>
+                  <el-form-item label="有效期：" prop="businesslicensestarttime">
+                    <el-date-picker
+                      v-model="item.qualificationstarttime"
+                      type="date"
+                      placeholder="开始日期"
+                      style="margin-right:100px"
+                      value-format="yyyy/MM/dd"
+                      format="yyyy/MM/dd"
+                    ></el-date-picker>
+                    <el-date-picker
+                      v-model="item.qualificationendtime"
+                      type="date"
+                      placeholder="结束日期"
+                      value-format="yyyy/MM/dd"
+                      format="yyyy/MM/dd"
+                    ></el-date-picker>
+                  </el-form-item>
+                  <el-form-item label="资质图上传：" prop="qualificationmapimg">
+                    <el-upload
+                      class="upload-demo"
+                      ref="upload"
+                      :action="url"
+                      :auto-upload="true"
+                      list-type="picture-card"
+                      :before-upload="beforeAvatarUpload"
+                      :on-success="successUploadAgency"
+                      :on-preview="handlePictureCardPreview"
+                      :limit="1"
+                    >
+                      <i class="el-icon-plus"></i>
+                    </el-upload>
+                  </el-form-item>
+                </li>
+              </ul>
             </div>
-
-            <div class="form2-item" v-if="AgentListFlag">
-              <h3 class="tit-h3">代理商资质上传</h3>
-              <div class="title-up">
-                <h3>
-                  <span>*</span>
-                  品牌授权书
-                </h3>
-                <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
-                <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
-                <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
-                <p class="download">下载模板</p>
-              </div>
-              <div class="form-item-con Agent-con">
-                <ul>
-                  <li v-for="item in AgentList" :key="item.id">
-                    <p class="brandName">
-                      品牌：
-                      <span>{{item.brand}}</span>
-                    </p>
-                    <el-form-item label="有效期：" prop="businesslicensestarttime">
-                      <el-date-picker
-                        v-model="item.qualificationstarttime"
-                        type="date"
-                        placeholder="开始日期"
-                        style="margin-right:100px"
-                        value-format="yyyy/MM/dd"
-                        format="yyyy/MM/dd"
-                      ></el-date-picker>
-                      <el-date-picker
-                        v-model="item.qualificationendtime"
-                        type="date"
-                        placeholder="结束日期"
-                        value-format="yyyy/MM/dd"
-                        format="yyyy/MM/dd"
-                      ></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="资质图上传：" prop="qualificationmapimg">
-                      <el-upload
-                        class="upload-demo"
-                        ref="upload"
-                        :action="url"
-                        :auto-upload="true"
-                        list-type="picture-card"
-                        :before-upload="beforeAvatarUpload"
-                        :on-success="successUploadAgency"
-                        :on-preview="handlePictureCardPreview"
-                        :limit="1"
-                      >
-                        <i class="el-icon-plus"></i>
-                      </el-upload>
-                    </el-form-item>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </el-form>
-        </div>
-        <span class="dialog-footer">
-          <span class="sure" @click="submitForm('ruleForm')">
-            <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
-            确认提交
-          </span>
-          <span @click="back" class="back sure">
-            <img src="@/assets/image/OriginalFactoryEntry/u197292.png" alt />
-            返回上一步
-          </span>
-        </span>
+          </div>
+        </el-form>
       </div>
-      <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt />
-      </el-dialog>
+      <span class="dialog-footer">
+        <span class="sure" @click="submitForm('ruleForm')">
+          <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
+          确认提交
+        </span>
+        <span @click="back" class="back sure">
+          <img src="@/assets/image/OriginalFactoryEntry/u197292.png" alt />
+          返回上一步
+        </span>
+      </span>
     </div>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt />
+    </el-dialog>
   </div>
 </template>
-<style lang="less" scoped>
-@import "./CheckInformation.less";
-</style>
 
 <script>
-// import "@/assets/css/ele-form.less";
 // import "@/assets/css/label-checkbox.less";
 import { baseURL } from "@/config";
+import VDistpicker from "v-distpicker";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { formatDateTime } from "@/lib/utils";
-import VDistpicker from "v-distpicker";
-import { axios, FactoryEntry } from "../../../api/apiObj";
+import { axios, FactoryEntry } from "@/api/apiObj";
 export default {
-  name: "UpgradeLevel",
+  name: "CheckInformation",
   data() {
     return {
       count: 0,
@@ -328,6 +321,9 @@ export default {
       exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
       // 预览图片
       dialogVisible: false,
+      province: "",
+      city: "",
+      area: "",
       // 代理商的上传图片
       AgentList: [],
       // 基本信息
@@ -771,4 +767,25 @@ export default {
   }
 };
 </script>
+<style lang="less" scoped>
+@import "./CheckInformation.less";
+</style>
+<style scoped>
+.demo-ruleForm >>> .el-form-item {
+  display: flex;
+}
+.demo-ruleForm >>> .el-form-item .el-form-item__label {
+  width: 200px;
+  font-size: 16px;
+}
+.demo-ruleForm >>> .el-form-item__content {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.demo-ruleForm >>> .el-form-item__content .el-input {
+  font-size: 14px;
+}
+</style>
+
 
