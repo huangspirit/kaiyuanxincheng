@@ -2,7 +2,7 @@
   <div class="OriginalFactoryEntry">
     <div class="tit">
       <div class="wrap">
-        <div class="text">商家入驻</div>
+        <div class="text" @click="$router.push('/PersonalCenter/PersonalSet')">商家入驻</div>
         <div class="ShoppingCart-steps">
           <el-steps :active="this.$store.state.OriginalFactoryEntry.active" align-center>
             <el-step title="基本信息" description></el-step>

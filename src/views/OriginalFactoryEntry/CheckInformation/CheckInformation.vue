@@ -6,7 +6,7 @@
         <p class="title">
           <span>详细信息</span>
         </p>
-        <div>
+        <div v-if="$route.query.residencetype != '3'">
           <el-form
             :model="ruleForm"
             :rules="rules"
@@ -52,25 +52,6 @@
             <el-form-item label="注册资本：" prop="registeredcapital">
               <el-input v-model="ruleForm.registeredcapital"></el-input>
               <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
-            </el-form-item>
-            <el-form-item label="营业期限：" prop="businesshoursstart">
-              <el-date-picker
-                v-model="ruleForm.businesshoursstart"
-                type="date"
-                placeholder="营业开始日期"
-                style="margin-right:100px"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
-              ></el-date-picker>
-
-              <el-date-picker
-                v-model="ruleForm.businesshoursend"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
-                type="date"
-                style="margin-left:10px"
-                placeholder="营业结束日期"
-              ></el-date-picker>
             </el-form-item>
             <el-form-item label="公司详细地址：" prop="companydetailaddress">
               <el-input v-model="ruleForm.companydetailaddress"></el-input>
@@ -283,6 +264,68 @@
             </div>
           </el-form>
         </div>
+        <div v-if="$route.query.residencetype == '3'">
+          <el-form
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="270px"
+            class="demo-ruleForm"
+          >
+            <div class="form-item-con">
+              <el-form-item label="身份证：" prop="enterpriseplatformidentity">
+                <el-input v-model="ruleForm.enterpriseplatformidentity"></el-input>
+              </el-form-item>
+              <el-form-item label="上传正面照片：" prop="identityposimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload2"
+                  :on-preview="handlePictureCardPreview"
+                  :limit="1"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+              <el-form-item label="上传反面照片：" prop="identitynegimg">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload3"
+                  :on-preview="handlePictureCardPreview"
+                  :limit="1"
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                </el-upload>
+
+                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
+                  <img :src="exampleDiagram" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+            </div>
+          </el-form>
+        </div>
         <span class="dialog-footer">
           <span class="sure" @click="submitForm('ruleForm')">
             <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
@@ -301,8 +344,8 @@
   </div>
 </template>
 <style lang="less">
-.recode{
-  .el-input__suffix{
+.recode {
+  .el-input__suffix {
     .el-input__count-inner {
       background: none;
     }
@@ -353,10 +396,6 @@ export default {
         establishmenttime: "",
         // 注册资本
         registeredcapital: "",
-        // 营业开始时间
-        businesshoursstart: "",
-        // 营业结束时间
-        businesshoursend: "",
         // 公司所在地
         companyaddress: "",
         // 公司详细地址
@@ -417,22 +456,6 @@ export default {
           { required: true, message: "请输入注册资本", trigger: "blur" },
           { min: 1, message: "注册资本最小为1个字符", trigger: "blur" }
         ],
-        businesshoursstart: [
-          {
-            type: "string",
-            required: true,
-            message: "请选择营业开始时间",
-            trigger: "change"
-          }
-        ],
-        // businesshoursend: [
-        //   {
-        //     type: "string",
-        //     required: true,
-        //     message: "请选择营业结束时间",
-        //     trigger: "change"
-        //   }
-        // ],
         companydetailaddress: [
           { required: true, message: "请选择公司注册地址", trigger: "blur" }
         ],
@@ -557,11 +580,15 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data) {
-            this.ruleForm = {
-              ...this.ruleForm,
-              ...res.data,
-              creditCode: creditCode
-            };
+            this.ruleForm.creditCode = creditCode;
+            this.ruleForm.companyname = res.data.companyName;
+            this.ruleForm.businesslicensenum = res.data.no;
+            this.ruleForm.legalagent = res.data.operName;
+            this.ruleForm.establishmenttime = res.data.startDate;
+            this.ruleForm.registeredcapital = res.data.registCapi;
+            this.ruleForm.companydetailaddress = res.data.address;
+            this.ruleForm.businesslicensestarttime = res.data.tremsStart;
+            this.ruleForm.businesslicenseendtime = res.data.termsEnd;
           }
           this.count++;
           this.showRequireBtn = false;
@@ -682,7 +709,7 @@ export default {
     },
     // 身份证反面
     successUpload3(response) {
-      console.log(response)
+      console.log(response);
       this.ruleForm.identitynegimg = response.data;
       this.$message({
         message: "上传成功!",

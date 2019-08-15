@@ -48,7 +48,7 @@
               <!-- <el-option label="区域一" value="shanghai"></el-option> -->
             </el-select>
           </el-form-item>
-          <el-form-item label="选择品牌：" prop="brandName">
+          <el-form-item v-if="residencetype!='3'" label="选择品牌：" prop="brandName">
             <el-select
             style="display:block"
               v-model="ruleForm.brandName"
@@ -225,6 +225,7 @@ export default {
             query:{
               // ruleForm:this.ruleForm,
                newBrand:this.$route.query.brand,
+               residencetype:this.ruleForm.residencetype
             }
           });
         } else {
