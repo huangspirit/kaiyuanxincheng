@@ -14,7 +14,7 @@ import {
 } from '@/api/Login'
 
 const state = {
-  "UserInforma": sessionStorage.getItem("UserInforma")?JSON.parse(sessionStorage.getItem("UserInforma")):{}
+  "UserInforma": sessionStorage.getItem("UserInforma") && sessionStorage.getItem("UserInforma")!="undefined" ?JSON.parse(sessionStorage.getItem("UserInforma")):{}
 }
 const getter = {
 

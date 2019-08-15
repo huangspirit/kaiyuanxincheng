@@ -2,16 +2,11 @@
 .HeaderSearch {
     width:100%;
     .search {
-        // width: 1321px;
         width:100%;
-        margin: 0 auto;
         position: relative;
-        max-height: 470px;
-        border: 1px solid #4A5A6A;
-        position: relative;
-        box-sizing: border-box;
+        line-height: 80px;
+        height:80px;
         .list {
-            // width: 1320px;
             width:100%;
             max-height: 400px;
             margin: 0 auto;
@@ -22,80 +17,61 @@
             // top: 64px;
             left: 0;
             li {
-                float: left;
-                // width: 1300px;
-                width:100%;
-                height: 40px;
                 line-height: 40px;
                 font-size: 22px;
                 padding-left: 20px;
                 color: #4A5A6A;
                 background: #fff;
                 cursor: pointer;
-
                 &:hover {
                     background: #4A5A6A;
                     color: #fff;
                 }
             }
         }
-
         .ipt {
-            // width: 1285px;
             width:100%;
-            box-sizing:border-box;
-            height: 75px;
-            margin: 0 auto;
-            // padding: 15px;
-            border: 2px solid #fff;
-            background: #505050;
+            height:100%;
+            background: #fff;
             position: relative;
             display:flex;
             input {
-                // width: 1148px;
-                font-size: 24px;
+                font-size: 18px;
                 height:100%;
-                // line-height: 75px;
-                float: left;
-                color: #fff;
                 border: none;
-                background: #505050;
                 outline: none;
                 padding-left: 15px;
-                width:100%;
-                box-sizing:border-box;
-
+                flex:1;
                 &::placeholder {
-                    color: #fff;
+                    //color: #fff;
                 }
 
             }
 
             .btn {
-                width: 73px;
-                height: 71px;
-                background: #174EBD;
-                position: absolute;
-                border-left: 2px solid #fff;
-                right: 0;
-                top: 0;
+                width: 180px;
+                height: 100%;
+                background: #df3f2f;
                 cursor: pointer;
                 text-align: center;
-                img {
-                    width: 35px;
-                    height: 35px;
-                    vertical-align: middle;
-                    margin-top:20px;
-                    // position: absolute;
-                    // top: 50%;
-                    // left: 50%;
-                    // margin-top: -32px;
-                    // margin-left: -32px;
-
+                .el-icon-search{
+                    color:#fff;
+                    font-size:35px;
                 }
             }
         }
-
-
+    }
+    &.mini{
+        .search{
+            height:40px;
+            line-height:40px;
+            .btn {
+                width: 90px;
+                height: 100%;
+                .el-icon-search{
+                    font-size:25px;
+                }
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@
             path:'/BrandDetail',
             query:{
               tag:'brand',
-              id:query.brandId,
+              documentid:query.brandId,
               name:query.name
             }
           }"

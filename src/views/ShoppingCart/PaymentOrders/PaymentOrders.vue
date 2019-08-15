@@ -16,17 +16,17 @@
             @click="changePayTab(val)"
           >
             <img :src="val.imgUrl" alt class="bgs" v-if="val.id === 0 || val.id === 1" />
-            <div class="bgf bgs" v-if="val.id === 2 || val.id === 3"> 
+            <div class="bgf bgs" v-if="val.id === 2 || val.id === 3">
                 <img :src="val.imgUrl" alt   />
                 <div v-if="val.name" class="nameDesc">{{val.name}}</div>
             </div>
-            
+
           </li>
         </ul>
       </div>
-      
+
         <div>
-          
+
       </div>
 
       <div class="pay-price">
@@ -36,7 +36,10 @@
             <span>{{orderInfo.payType | payTypeFilter}}</span>
             <span class="price">￥ {{totalPrice}}</span>
           </p>
-          <p class="submit" @click="submit">立即支付</p>
+            <div>
+                <span class="goCenter submit" @click="goCenter">返回订单中心</span>
+                <span class="submit" @click="submit">立即支付</span>
+            </div>
           <p>我有疑问，需要反馈？</p>
         </div>
       </div>
@@ -79,7 +82,7 @@
       </div>
       <div slot="footer" class="dialog-footer fr">
            <el-button @click="showDialog = false">取 消</el-button>
-           <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> 
+           <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button>
             <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
@@ -158,7 +161,7 @@ export default {
   mounted() {
     console.log(this.$route.query);
     //根据订单号获取订单的详细信息及付款金额
-  
+
     //this.payType = this.$route.query.payType;
     this.$store.state.shoppingCart.active = 4;
     this.orderNumber = this.$route.query.orderNumber;
@@ -168,7 +171,7 @@ export default {
   methods: {
     ...mapActions("SignContract",["submitBankPayNumber"]),
     getOrderType(){
-      let countime=2000
+      let countime=1000
       var _this = this;
       const loading = this.$loading({
           lock: true,
@@ -176,7 +179,7 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-      let count=20
+      let count=30
       this.timer=setInterval(function(){
         count--;
         if(count<0){
@@ -189,15 +192,15 @@ export default {
         }).then(res=>{
           _this.orderInfo=res
           if( _this.orderInfo.money){
-            
+
             _this.totalPrice = _this.orderInfo.money;
-            _this.payType =_this.orderInfo.payType; 
+            _this.payType =_this.orderInfo.payType;
             loading.close()
             clearInterval(_this.timer)
           }
         })
       },countime)
-      
+
     },
     changePayTab(item) {
       this.payTabFlag = item.id;
@@ -254,6 +257,9 @@ export default {
           this.$message.error(err.message);
         });
     },
+    goCenter(){
+        this.$router.push("/PersonalCenter/BuyerOrderManagement")
+      },
     submit() {
       if (this.payTabFlag === 1) {
         this.paymentWe();

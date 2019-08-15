@@ -12,7 +12,6 @@ const home = {
     SearchData: {
         url: "api-g/gods-anon/searchIndex"
     },
-
     GetHotSearch: {
         url: `api-g/gods-anon/querySummaryHome`
     },

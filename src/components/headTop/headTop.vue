@@ -4,9 +4,9 @@
       <router-link to="/" tag="div" class="logo">
        <h1 class="logoText">芯手网</h1>
         <img src="@/assets/logo.png" alt>
-      </router-link>-->
+      </router-link>
       <div class="searchInputWrap">
-          <HeaderSearch v-if="headerFxed" ref="HeaderSearch"></HeaderSearch>
+          <HeaderSearch v-if="headerFxed" ref="HeaderSearch" :mini="true"></HeaderSearch>
       </div>
       <div class="nav">
         <router-link to="/">首页</router-link>

@@ -41,7 +41,7 @@ export default {
       this.$nextTick(function () {
         this.isRouterAlive = true
       })
-    }
+    },
   },
   computed:{
     ...mapState({
@@ -66,11 +66,25 @@ export default {
 };
 </script>
 <style lang="less" >
+    html{
+        height:100%;
+        overflow-y: scroll;
+    }
+    body{
+        overflow-y: auto;
+        background: #fff!important;
+    }
+    .allWidth{
+        min-width:800px;
+        max-width:1200px;
+        margin:0 auto;
+    }
     .color{
         color:#df3f2f;
     }
     .bgColor{
-        background: #4f4f4f;
+        background: #df3f2f;
+        color:#fff;
     }
     a{
         cursor: pointer;
@@ -86,7 +100,10 @@ export default {
         vertical-align: middle;
     }
 #app {
-background:#f4f4f4;
+    img{
+        vertical-align: middle;
+    }
+    color:#999;
 .defaultradioSquare .el-radio__inner{
   border-radius: 0;
   width:20px;

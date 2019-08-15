@@ -3,7 +3,10 @@
     <p v-if="msTime.show">
       <!--<span v-if="tipShow">{{tipText}}:</span>-->
       <span v-if="!tipShow">{{tipTextEnd}}</span>
-      <span v-if="msTime.day>0"><span class="day timeStr">{{msTime.day}}</span><i>{{dayTxt}}</i></span>
+      <span v-if="msTime.day>0">
+          <span class="day timeStr">{{msTime.day}}</span>
+          <i>{{dayTxt}}</i>
+      </span>
       <span class="hour timeStr">{{msTime.hour}}</span><i>{{hourTxt}}</i>
       <span class="minutes timeStr">{{msTime.minutes}}</span><i>{{minutesTxt}}</i>
       <span class="seconds timeStr">{{msTime.seconds}}</span><i>{{secondsTxt}}</i>
@@ -190,7 +193,7 @@
         if (this.currentTime <= 0) {
           return;
         }
-        
+
         this.$emit('end_callback', this.msTime.show);
       }
     }

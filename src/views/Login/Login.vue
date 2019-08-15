@@ -427,7 +427,7 @@ export default {
                   //this.$store.state.loginState = true;
                 });
               } else if (res.type === 3) {
-                if (cont2 > 11) {
+                if (cont2 > 59) {
                   // this.$message.error("二维码失效，请重新扫码!");
                   this.dialogVisible = false;
                   clearInterval(this.timer);
@@ -436,7 +436,7 @@ export default {
                 }
               }
             });
-          }, 5000);
+          }, 1000);
         });
       } else {
         this.loginFlag = true;

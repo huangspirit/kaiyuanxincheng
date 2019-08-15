@@ -72,12 +72,12 @@
             <div class="item">
                 <div class="title">品牌</div>
                 <ul class="listwrap">
-                    <li  v-for="(item0,index0) in brandList" @click="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
+                    <li  v-for="(item0,index0) in brandList" @click.stop="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
                         {{item0.brand}}
                     </li>
                 </ul>
             </div>
-            <div v-for="(item,k) in screenTypeList" :key="k" class="item">
+            <div v-for="(item,k) in screenTypeList" :key="k" class="item" v-if="item.childList && item.childList.length">
                 <div class="title">{{item.propertyName}}</div>
                 <ul class="listwrap">
                     <li  v-for="(item0,index0) in item.childList" @click="selected(k,index0)" :class="item.selected==index0?'active':''">
@@ -108,17 +108,16 @@
             </ul>
             <ul class="fl">
                 <li>
-                        <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
+                    <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
                     <br>
-                        <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
+                     <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
                 </li>
             </ul>
             <ul class="fr">
                 <li>
                     <el-button type="info" plain class="fl"  @click="resetScreen" size="mini">清除已选参数</el-button>
-                    <el-button type="primary" class="fl" plain @click="changeType" size="mini">应用已选参数</el-button>
+                    <el-button type="primary" class="fl" plain @click="changeType" size="mini" v-if="propertyCount>0">应用已选参数</el-button>
                 </li>
-
             </ul>
             <ul class="number fr">
                 <li>
@@ -227,6 +226,8 @@ export default {
       total:0,
       query:{},
       screenTypeList:[],
+        propertyCount:0,
+        //
       limitNum:12,
       showScreenList:true,
       selectedScreen:{},
@@ -239,16 +240,17 @@ export default {
     };
   },
   watch: {
+      propertyCount(val){
+          console.log(val)
+      },
        "selectedGoods.goods_type":{
            handler: function(val, oldVal){
-               console.log(val);
                delete this.selectedGoods.is_old_product
            },
        },
       $route: {
           // val是改变之后的路由，oldVal是改变之前的val
           handler: function(val, oldVal){
-              console.log(val);
               this.init()
           },
           // 深度观察监听
@@ -263,7 +265,7 @@ export default {
       selectedGoods:{
           deep:true,
           handler: function(val, oldVal){
-              console.log("val")
+
               this.queryMatchCount()
           },
       }
@@ -277,25 +279,26 @@ export default {
       return (this.currentPage - 1) * this.pageSize;
     },
     ...mapState({
-      directJOSN:state => state.Direct.directJOSN,
-    })
+    directJOSN:state => state.Direct.directJOSN,
+    }),
   },
   methods: {
-      changeGoodsType(){
-          console.log(this.goods_type);
-      },
       changeIsOldProduct(e){
           if(e){
+              this.propertyCount++;
               this.$set(this.selectedGoods,"is_old_product",true)
           }else{
+              this.propertyCount--;
               delete  this.selectedGoods.is_old_product;
               this.queryMatchCount()
           }
       },
       changeSpecialPrice(e){
           if(e){
+              this.propertyCount++;
               this.$set(this.selectedGoods,"special_price",false)
           }else{
+              this.propertyCount--;
               delete  this.selectedGoods.special_price;
               this.queryMatchCount()
           }
@@ -303,15 +306,23 @@ export default {
       cancleChecked(e){
           if(e===this.selectedGoods.create_tag){
               this.$set(this.selectedGoods,"create_tag",undefined)
+              this.propertyCount--;
               //delete this.selectedGoods.create_tag
           }else{
+              if(this.selectedGoods.create_tag===undefined){
+                  this.propertyCount++
+              }
               this.$set(this.selectedGoods,"create_tag",e)
           }
       },
       cancleChecked1(e){
           if(e===this.selectedGoods.goods_type){
               this.$set(this.selectedGoods,"goods_type",undefined)
+              this.propertyCount--;
           }else{
+              if(this.selectedGoods.goods_type===undefined){
+                  this.propertyCount++
+              }
               this.$set(this.selectedGoods,"goods_type",e)
           }
       },
@@ -333,11 +344,15 @@ export default {
      //改变筛选条件
       selected(k,index0){
           this.$set(this.screenTypeList[k],"selected",index0)
+          if(!this.selectedScreen[this.screenTypeList[k].propertyId]){
+              this.propertyCount++
+          }
           this.$set(this.selectedScreen,this.screenTypeList[k].propertyId,this.screenTypeList[k].childList[index0])
+
       },
       //筛选总数
       queryMatchCount(){
-          this.$loading(this.$store.state.loading);
+           this.$loading(this.$store.state.loading);
           let obj={
               parent_id:this.query.documentid
                   ? this.query.documentid:this.query.parentId,
@@ -350,7 +365,7 @@ export default {
               obj.brand_id=this.query.brandId
           }
           axios.request({...BrandDetail.queryMatchCount,data:obj}).then(res=>{
-              this.$loading(this.$store.state.loading).close();
+             this.$loading(this.$store.state.loading).close();
               this.ScreenProductTotal=res.data
           })
       },
@@ -391,17 +406,21 @@ export default {
     // },
       //根据brandId获取产品参数
       getTypeByBrandId(index0){
+          if(!this.selectedScreen.brand_id){
+              this.propertyCount++;
+          }
           this.selectedScreen={}
           this.$set(this.selectedScreen,'brand_id',this.brandList[index0].id);
           this.getPropertyByParentId();
-
-
       },
       //获取筛选条件列表
       getPropertyByParentId(){
           let data={
               catergoryId:this.query.documentid?this.query.documentid:this.query.parentId,
-              brandId: this.query.brandId
+              brandId: this.query.brandId?this.query.brandId:this.selectedScreen.brand_id
+          }
+          if(this.query.brandId){
+              this.selectedScreen.brand_id=this.query.brandId
           }
           //筛查类型
           axios.request({...BrandDetail.queryPropertyByParentId,params:data}).then(res=>{
@@ -422,11 +441,13 @@ export default {
         this.selectedScreen={};
         this.selectedGoods={};
         this.SpecialPrice=false;
-        this.isOLdProduct=false
+        this.isOLdProduct=false;
+        this.propertyCount=0;
     },
       delselectedScreenItem(k){
           let obj=this.selectedScreen;
           delete obj[k];
+          this.propertyCount--;
           this.selectedScreen={...obj};
           this.screenTypeList=this.screenTypeList.map(item=>{
               if(item.propertyId==k){

@@ -1,10 +1,10 @@
 <template>
-  <div class="HeaderSearch" @click="noSearch()">
+  <div class="HeaderSearch" @click="noSearch()" :class="mini?'mini':''">
     <div class="search">
       <div class="ipt" @click.stop>
         <input type="text" placeholder="请输入你要搜索的商品" @focus.stop="focus" v-model="searchValue">
         <div class="btn">
-          <img src="@/assets/image/home/u26.png" alt>
+          <i class="el-icon-search"></i>
         </div>
       </div>
       <ul class="list" v-if="SearchData.length">
@@ -18,13 +18,22 @@
     </div>
   </div>
 </template>
-
+<style lang="less" scoped>
+    @import "./HeaderSearch.less";
+</style>
 <script>
-import "./HeaderSearch.less";
 import { SearchData } from "@/api/home";
 import { SearchJump } from "@/lib/utils";
 export default {
   name: "HeaderSearch",
+    props:
+        {
+            mini:{
+                type:Boolean,
+                default:false
+            }
+        }
+    ,
   data() {
     return {
       // 搜索输入框的值

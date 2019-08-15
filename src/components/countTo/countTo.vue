@@ -5,10 +5,16 @@
     <slot name="right"></slot>
   </span>
 </template>
-
+ <style scoped lang="less">
+     .countTo-color{
+         span{
+             margin:0 10px ;
+         }
+     }
+ </style>
 <script>
 import CountUp from "countup";
-import "./countTo.less";
+// import "./countTo.less";
 // target = 目标元素的 ID；
 // startVal = 开始值；
 // endVal = 结束值；
