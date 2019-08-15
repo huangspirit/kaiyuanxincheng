@@ -300,6 +300,15 @@
     </div>
   </div>
 </template>
+<style lang="less">
+.recode{
+  .el-input__suffix{
+    .el-input__count-inner {
+      background: none;
+    }
+  }
+}
+</style>
 <style lang="less" scoped>
 @import "./CheckInformation.less";
 </style>
@@ -636,12 +645,12 @@ export default {
     successUpload1(response, file, fileList) {
       let ret = this.ruleForm.qualificationmapimg instanceof Array;
       if (ret) {
-        this.ruleForm.qualificationmapimg.push(response.name);
+        this.ruleForm.qualificationmapimg.push(response.data);
       } else {
         this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.split(
           "@"
         );
-        this.ruleForm.qualificationmapimg.push(response.name);
+        this.ruleForm.qualificationmapimg.push(response.data);
       }
 
       this.$message({
@@ -653,10 +662,10 @@ export default {
     successUploadAgency(response, file, fileList) {
       let ret = this.ruleForm.qualification instanceof Array;
       if (ret) {
-        this.ruleForm.qualification.push(response.name);
+        this.ruleForm.qualification.push(response.data);
       } else {
         this.ruleForm.qualification = this.ruleForm.qualification.split("@");
-        this.ruleForm.qualification.push(response.name);
+        this.ruleForm.qualification.push(response.data);
       }
       this.$message({
         message: "上传成功!",
@@ -665,7 +674,7 @@ export default {
     },
     // 身份证正面
     successUpload2(response) {
-      this.ruleForm.identityposimg = response.name;
+      this.ruleForm.identityposimg = response.data;
       this.$message({
         message: "上传成功!",
         type: "success"
@@ -673,7 +682,8 @@ export default {
     },
     // 身份证反面
     successUpload3(response) {
-      this.ruleForm.identitynegimg = response.name;
+      console.log(response)
+      this.ruleForm.identitynegimg = response.data;
       this.$message({
         message: "上传成功!",
         type: "success"
@@ -683,10 +693,10 @@ export default {
     successUpload4(response) {
       let ret = this.ruleForm.taxpayerimg instanceof Array;
       if (ret) {
-        this.ruleForm.taxpayerimg.push(response.name);
+        this.ruleForm.taxpayerimg.push(response.data);
       } else {
         this.ruleForm.taxpayerimg = this.ruleForm.taxpayerimg.split("@");
-        this.ruleForm.taxpayerimg.push(response.name);
+        this.ruleForm.taxpayerimg.push(response.data);
       }
       this.$message({
         message: "上传成功!",
