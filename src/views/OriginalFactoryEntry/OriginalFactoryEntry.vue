@@ -14,16 +14,18 @@
       </div>
     </div>
     <div class="FactoryEntry-con">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: "OriginalFactoryEntry",
-}
+  name: "OriginalFactoryEntry"
+};
 </script>
 <style lang="less" scoped>
 @import "./OriginalFactoryEntry.less";

@@ -182,6 +182,26 @@ const FactoryEntry = {
         url: "api-b/apply/getApplyList"
     }
 }
+const presonalAdress = {
+    // 获取地址列表
+    getAllAdress: {
+        url: "api-u/address/queryAllReceivingAddress"
+    },
+    // 编辑地址
+    editAdress: {
+        url: "api-u/address/updateReceivingAddress"
+    },
+    // 添加收货地址
+    AddAddress:{
+        url:"api-u/address/saveReceivingAddress"
+    },
+    // 删除地址
+    DeleteAddress:{
+        url:"api-u/address/deleteReceivingAddressById"
+    }
+    
+    
+}
 export {
     axios,
     common,
@@ -193,5 +213,6 @@ export {
     shoppingCar,
     siderInquiryList,
     BrandDetail,
-    FactoryEntry
+    FactoryEntry,
+    presonalAdress
 }

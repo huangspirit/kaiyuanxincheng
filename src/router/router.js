@@ -173,7 +173,8 @@ export default [
                 component: () => import('@/views/OriginalFactoryEntry/BasicInforma'),
                 meta: {
                     requireAuth: true,
-                    title: '平台入驻（基本信息）'
+                    title: '平台入驻（基本信息）',
+                    keepAlive: true // 需要被缓存
                 }
             },
             {

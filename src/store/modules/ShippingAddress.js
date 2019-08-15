@@ -12,6 +12,7 @@ const state = {
 
 const getters = {}
 
+
 const actions = {
     // 获取地址列表
     GetAllReceivingAddress({
