@@ -1,5 +1,19 @@
 <template>
-    <div class="index">
+    <div class="index " >
+        <div class="message" :class="headerFxed?'headerFxed':''">
+            <el-carousel
+                height="28px"
+                class="bgColor"
+                :interval="5000"
+                v-if="messageList.length"
+                direction="vertical"
+                loop="true"
+            >
+                <el-carousel-item v-for="item in messageList" :key="item">
+                    <h3 class="small allWidth"><img src="@/assets/image/home/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>
+                </el-carousel-item>
+            </el-carousel>
+        </div>
         <div class="banner">
             <!-- <p class="tit">用芯链接世界</p> -->
             <el-carousel>
@@ -7,7 +21,7 @@
                     <img :src="item.url" alt="">
                 </el-carousel-item>
             </el-carousel>
-            <div class="wrapSearch">
+            <div class="wrapSearch allWidth">
                 <p class="tit">
                     <countTo :endVal="brandTotal" :duration="4"></countTo>个厂商
                     <countTo :endVal="catergoryTotal" :duration="4"></countTo>种产品
@@ -25,10 +39,10 @@
             </div>
         </div>
         <div class="specialGoods allWidth">
-            <div class="title">特价直通车</div>
+            <router-link tag="div" class="title" to="/specialPrice">特价直通车</router-link>
             <div class="desc color">跟着特价买，越来越便宜</div>
             <ul class="list">
-                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''">
+                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k">
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/home/tag.png" alt="">
                     </span>
@@ -39,7 +53,7 @@
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
                     </div>
                     <div class="info">
-                        <div class="time clear" v-if="item.expireTime">
+                        <div class="time clear" v-if="!item.seller_always && item.expireTime">
                             <span class="fl">
                                 <img src="@/assets/image/home/timer.png" alt="">
                                 距离特价结束：
@@ -59,18 +73,7 @@
                                 :secondsTxt="'秒'"></CountTime>
                         </div>
                         <div v-if="item.seller_always" class="time">长期售卖</div>
-                            <router-link
-                                :to="{
-                                    path:'/BrandDetail/GoodsDetails',
-                                    query:{
-                                      tag:'goodsinfo',
-                                      name:item.goods_name,
-                                      documentid:item.goods_id
-                                    }
-                                  }"
-                                tag="div"
-                                class="goodsName"
-                            >{{item.goods_name}}</router-link>
+                        <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
                         <div>
                             <div class="sellerInfo fr">
                                 <p class="img"><img :src="item.userImgeUrl" alt=""></p>
@@ -101,24 +104,13 @@
                             <span>当前剩余{{item.goodsStockCount}}</span>
                             <strong class="color fr">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}</strong>
                         </div>
-                        <router-link
-                            :to="{
-                                    path:'/BrandDetail/GoodsDetails',
-                                    query:{
-                                      tag:'goodsinfo',
-                                      name:item.goods_name,
-                                      documentid:item.goods_id
-                                    }
-                                  }"
-                            tag="div"
-                            class="btn bgColor"
-                        >立即跟单</router-link>
+                        <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="origin specialGoods">
-            <div class="title">原厂直供</div>
+            <router-link tag="div" class="title" to="/brand">原厂直供</router-link>
             <div class="desc color">原厂直购、正品保障</div>
             <div class="cont clear allWidth">
                     <div class="fl left">
@@ -138,18 +130,7 @@
                                 <ImgE :src="item.goodsImageUrl" :W="250" :H="150">
                                 </ImgE>
                                 <div class="goodsInfo">
-                                    <router-link
-                                        :to="{
-                                    path:'/BrandDetail/GoodsDetails',
-                                    query:{
-                                      tag:'goodsinfo',
-                                      name:item.goods_name,
-                                      documentid:item.goods_id
-                                    }
-                                  }"
-                                        tag="div"
-                                        class="goodsName"
-                                    >{{item.goods_name}}</router-link>
+                                    <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
                                     <div class="desc">{{item.goodsDesc}}</div>
                                     <div class="count"><span>MOQ:&nbsp;{{item.moq}}</span><span>MPQ:&nbsp;{{item.mpq}}</span></div>
                                     <div class="marking">
@@ -176,10 +157,10 @@
                 </div>
             </div>
         <div class="specialGoods origin oldProduct">
-            <div class="title">呆料掘金</div>
+            <router-link tag="div" class="title" to="/oldGoods">呆料掘金</router-link>
             <div class="desc color">呆料里也有宝贝，库里的呆料本身已没有价值，卖了换钱吧......</div>
             <div class="allWidth clear">
-                <span class="fr dailiao">我有呆料</span>
+                <span class="fr dailiao bgColor" @click="pulish">我有呆料</span>
             </div>
             <div class="cont clear allWidth">
                 <div class="fl left">
@@ -196,7 +177,7 @@
                     </ul>
                     <ol>
                         <li v-for="item in oldProductList">
-                            <p :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
+                            <div  @click="chipSellerGoodsDetal(item)"   :title="item.goods_name" class="goodsName">{{item.goods_name}}</div>
                             <div>{{item.brandName}}</div>
                             <div>{{item.goodsStockCount}}</div>
                             <div>{{item.diliverPlace}}</div>
@@ -208,18 +189,7 @@
                                      {{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}
                                 </span>
                             </div>
-                            <router-link
-                                :to="{
-                                    path:'/BrandDetail/GoodsDetails',
-                                    query:{
-                                      tag:'goodsinfo',
-                                      name:item.goods_name,
-                                      documentid:item.goods_id
-                                    }
-                                  }"
-                                tag="div"
-                                class="color"
-                            >购买</router-link>
+                            <div  @click="chipSellerGoodsDetal(item)"   class="color">购买</div>
                         </li>
                     </ol>
                 </div>
@@ -228,8 +198,8 @@
         <!-- 已入驻原厂 -->
         <div class="settledIn">
             <div class="title allWidth clear">
-                <div class="fr ruzhu">
-                    <span class="bgColor">立即入驻</span>
+                <div class="fr ruzhu" v-if="!isSeller">
+                    <span class="bgColor" @click="settle">立即入驻</span>
                 </div>
                 <div class="fl left clear">
                     <div class="count color fl"><countTo :endVal="1000" :duration="4"></countTo><span class="jia">+</span></div>
@@ -243,12 +213,12 @@
                 <template  v-for="(item,index) in originFactoryList">
                     <router-link
                         :to="{
-                                    path:'/BrandDetail/GoodsDetails',
-                                    query:{
-                                      tag:'goodsinfo',
-                                      name:item.goods_name,
-                                      documentid:item.goods_id
-                                    }
+                               path:'/BrandDetail',
+                                query:{
+                                  tag:'brand',
+                                  name:item.brand,
+                                  documentid:item.id
+                                }
                                   }"
                         tag="li"
                         :key="`BrandList_${item.id}`"
@@ -307,7 +277,8 @@
     </div>
 </template>
 <script>
-    import {axios,home,shoppingCar} from "../../api/apiObj";
+    import {mapState} from 'vuex';
+    import {axios,home,shoppingCar,common} from "../../api/apiObj";
     import HeaderSearch from "_c/HeaderSearch";
     import { SearchJump } from "@/lib/utils";
     import countTo from "_c/countTo";
@@ -328,6 +299,7 @@
                         url:require("@/assets/image/banner/3.jpg")
                     }
                 ],
+                messageList:[],
                 HotSearchList:[],
                 searchValue:"",
                 specialList:[],
@@ -342,7 +314,18 @@
                 catergoryBrandList:[],
                 selected:0,
                 secondCategory:[],
+                brandTotal:0,
+                catergoryTotal:0,
+                productTotal:0,
+                screenHeight:0,
+                isSeller:false
             }
+        },
+        computed:{
+            ...mapState({
+                headerFxed: state => state.headerFxed,
+                loginState:state=>state.loginState,
+            })
         },
         watch: {
             selected(k){
@@ -356,14 +339,28 @@
             }
         },
         methods:{
-            init(){
-                this.getHotSearchList();
-                this.getSpecialOfferList();
-                this.getOriginGoodsList();
-                this.getoldProductList();
-                this.getOriginFactoryList();
+            async init(){
+                await this.querySysMessage()
+                await this.getHotSearchList();
+                 await this.getSpecialOfferList();
+                 await this.getOriginGoodsList();
+                 await this.getoldProductList();
+                 await this.getOriginFactoryList();
                 //获取分类
-                this.queryCatergoryHomePage(0)
+                 await this.queryCatergoryHomePage(0)
+            },
+            querySysMessage(){
+                axios.request({...common.querySysMessage,params:{
+                    length:10,
+                        start:0,
+                        is_enable:true
+                    }}).then(res=>{
+                     if(res.data.total==1){
+                        this.messageList=[...res.data.data,...res.data.data]
+                    }else if(res.data.total>1){
+                        this.messageList=res.data.data
+                    }
+                })
             },
             getHotSearchList(){
                 axios.request(home.GetHotSearch).then(res=>{
@@ -377,10 +374,10 @@
                 let obj={
                     start:0,
                     length:6,
-                    special_price:false
+                    special_price:false,
+                    status:1
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
-                    console.log(res)
                     this.specialList=res.data.data.map(item=>{
                         if(item.priceType){
                             //标识阶梯价
@@ -401,7 +398,8 @@
                 let obj={
                     start:0,
                     length:3,
-                    create_tag:true
+                    create_tag:true,
+                    status:1
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
                     this.originGoodsList=res.data.data.map(item=>{
@@ -416,8 +414,9 @@
             getoldProductList(){
                 let obj={
                     start:0,
-                    length:3,
-                    is_old_product:true
+                    length:100,
+                    is_old_product:true,
+                    status:1
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
                     this.oldProductList=res.data.data.map(item=>{
@@ -450,7 +449,6 @@
                     flag:true
                 }
                 axios.request({...home.queryCatergoryHomePage,params:obj}).then(res=>{
-                    console.log(res)
                     this.CatergoryList=res.data;
                     this.catergoryBrandList=res.data[0].list;
                     this.interval=setInterval(this.scroll,5000)
@@ -463,14 +461,12 @@
                     flag:false
                 }
                 axios.request({...home.queryCatergoryHomePage,params:obj}).then(res=>{
-                    console.log(res)
                     this.secondCategory=res.data;
                 })
             },
             //二级分类跳转
             chipUndirect(k){
                 let obj = this.secondCategory[k];
-                //  /BrandDetail/Direct?tag=direct&documentid=7&name=FPGA
                 this.$router.push({
                     path:"/BrandDetail/Direct",
                     query:{
@@ -483,7 +479,6 @@
             //厂商跳转
             chipBrand(k){
                 let obj=this.catergoryBrandList[k]
-                console.log(obj)
                 //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
                 this.$router.push({
                     path:"/BrandDetail",
@@ -498,7 +493,7 @@
                     window.pageYOffset ||
                     document.documentElement.scrollTop ||
                     document.body.scrollTop;
-                if (scrollTop > 200) {
+                if (scrollTop > this.screenHeight/2) {
                     this.$store.state.headerFxed = true;
                 } else {
                     this.$store.state.headerFxed = false;
@@ -511,7 +506,6 @@
                 this.interval=setInterval(this.scroll,5000)
             },
             scroll(){
-                console.log("gundong")
                 this.animate=true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
                 setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
                     this.catergoryBrandList.push(this.catergoryBrandList[0]);  // 将数组的第一个元素添加到数组的
@@ -533,11 +527,47 @@
                 })
             },
             countDownE_cb(){
-                console.log('刷新倒计时')
+                console.log("计时器回调")
+               //重新获取特价商品//
+                //this.getSpecialOfferList();
+            },
+            pulish(){
+                //发布呆料
+                if(this.loginState){
+                    if(this.isSeller){
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct")
+                    }else{
+                        this.$router.push("/OriginalFactoryEntry")
+                    }
+
+                }else{
+                    this.$router.push("/Login")
+                }
+            },
+            settle(){
+                //商家入驻
+                if(this.loginState){
+                    this.$router.push("/OriginalFactoryEntry")
+                }else{
+                    this.$router.push("/Login")
+                }
+            },
+            chipSellerGoodsDetal(item){
+                //跳转商品详情
+                console.log("tiaopu")
+                console.log(item)
+                sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))
+                this.$router.push("/sellerGoodsDetail")
             }
 
         },
         mounted(){
+            this.UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
+            if(this.UserInforma){
+                this.isSeller=this.UserInforma.userTagMap.seller
+            }
+
+            this.screenHeight=window.screen.height;
             this.$store.state.headerFxed = false;
             // 滚动监听
             window.addEventListener("scroll", this.handleScroll);

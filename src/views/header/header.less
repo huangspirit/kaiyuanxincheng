@@ -1,0 +1,161 @@
+.header{
+  height:80px;
+  line-height: 80px;
+  position: absolute;
+  width:100%;
+  top:0;
+  left:0;
+  border-bottom:1px solid #393d4d;
+  z-index:100;
+  &.headerFxed {
+    position: fixed;
+    top: 0;
+    z-index: 500;
+    background: #4f4f4f;
+  }
+  .header-c{
+    position: relative;
+    height:100%;
+    white-space: nowrap;
+    .logo{
+      position: relative;
+        h1{
+          height: 80px;
+          position: absolute;
+          top:0;
+          left:0;
+          opacity: 0;
+        }
+        img{
+          height:60px;
+        }
+    }
+    .searchInputWrap{
+      padding-top:20px;
+      margin-left:20px;
+      width:30%;
+      max-width:450px;
+    }
+      .wrap{
+        white-space: nowrap;
+          color:#fff;
+          position: relative;
+          padding:0 10px;
+        a{
+          color:#fff;
+          font-size:14px;
+          line-height:1;
+          position: relative;
+          z-index:1;
+          &:hover{
+            color:#df3f2f;
+          }
+          .mess{
+              position: absolute;
+              left:95%;
+              top:-10px;
+              background:#F22E2E;
+              color:#fff;
+              padding:2px 5px;
+              line-height: 1;
+              border-radius:20px;
+              font-size:12px;
+          }
+        }
+        &:after{
+          content:"";
+          display:block ;
+          width:100%;
+          background:#fff;
+          opacity: 0.1;
+          height:40px;
+          position: absolute;
+          top:20px;
+          left:0;
+          z-index:0;
+          border-radius: 5px;
+        }
+      }
+    .nav{
+      a{
+        color:#fff;
+        margin-right:10px;
+        font-size:16px;
+        &:hover{
+          color: #df3f2f;
+        }
+      }
+    }
+    .person-center{
+      height:80px;
+      &:hover {
+        .PersonalCenter-con{
+          display:block;
+        }
+      }
+      .userImg{
+        height:45px;
+        width:45px;
+        border-radius: 100%;
+        overflow: hidden;
+        margin-left:10px;
+      }
+      // 个人中心
+      .PersonalCenter-con {
+        display:none;
+        width: 260px;
+        overflow: hidden;
+        padding: 20px;
+        background: #4A5A6A;
+        color: #fff;
+        font-size: 18px;
+        position: absolute;
+        top:100%;
+        right: 0px;
+        z-index: 10;
+        padding-top:0;
+        line-height:1;
+        .account-number{
+          span{
+            margin-right:15px;
+            cursor: pointer;
+            img{
+              height:25px;
+            }
+          }
+
+        }
+        .personInfo{
+          margin:30px 0 10px;
+          .name {
+            font-size: 24px;
+            font-weight: bold;
+          }
+          .tel {
+            font-size: 18px;
+            color: #ff6600;
+          }
+        }
+
+        .identity {
+          width: 100%;
+          display: flex;
+          white-space: nowrap;
+          line-height: 1;
+          margin-bottom: 20px;
+
+          & > div {
+            flex: 1;
+          }
+
+          .type {
+            font-size: 12px;
+            background: #aeaeae;
+            padding: 3px 5px 5px;
+            vertical-align: top;
+            border-radius: 3px;
+            background: #ff6600;
+          }
+        }}}
+  }
+}

@@ -6,6 +6,9 @@ const common = {
     },
     GetCenterChangeAddress: {
         url: 'api-g/goods-center/queryWarehouseList'
+    },
+    querySysMessage:{
+        url:"api-n/notification-anon/querySysMessage"
     }
 }
 const home = {
@@ -199,8 +202,8 @@ const presonalAdress = {
     DeleteAddress:{
         url:"api-u/address/deleteReceivingAddressById"
     }
-    
-    
+
+
 }
 export {
     axios,

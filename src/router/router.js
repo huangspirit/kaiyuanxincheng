@@ -19,13 +19,49 @@ export default [
             title: '新首页'
         }
     },
-    // 品牌
+    //商品详情
+    {
+        path: '/sellerGoodsDetail',
+        name: 'sellerGoodsDetail',
+        component: () => import('@/views/sellerGoodsDetail'),
+        meta: {
+            title: '商品详情'
+        }
+    },
+    //现货特价
+    {
+        path: '/specialPrice',
+        name: 'specialPrice',
+        component: () => import('@/views/specialPrice'),
+        meta: {
+            title: '现货特价'
+        }
+    },
+    //订货拼单
+    {
+        path: '/order',
+        name: 'order',
+        component: () => import('@/views/specialPrice'),
+        meta: {
+            title: '订货拼单'
+        }
+    },
+    //呆料掘金
+    {
+        path: '/oldGoods',
+        name: 'oldGoods',
+        component: () => import('@/views/specialPrice'),
+        meta: {
+            title: '呆料掘金'
+        }
+    },
+    // 原厂直销
     {
         path: '/Brand',
         name: 'Brand',
         component: () => import('@/views/Brand'),
         meta: {
-            title: '品牌'
+            title: '原厂直销'
         }
     },
     // 询价篮
@@ -160,7 +196,7 @@ export default [
     },
     // 原厂入驻
     {
-        path: '/OriginalFactoryEntry/',
+        path: '/OriginalFactoryEntry',
         name: 'OriginalFactoryEntry',
         component: () => import('@/views/OriginalFactoryEntry'),
         meta: {
@@ -297,7 +333,6 @@ export default [
         // name: 'BrandDetail',
         component: () => import('@/views/BrandDetail'),
         meta: {
-
             title: '品牌详情'
         },
         // 全部品牌详情
@@ -332,8 +367,7 @@ export default [
                 name: 'GoodsDetails',
                 component: () => import('@/views/BrandDetail/GoodsDetails'),
                 meta: {
-
-                    title: '商品详情页'
+                    title: '产品详情'
                 }
             },
             // 大搜索内容页面
