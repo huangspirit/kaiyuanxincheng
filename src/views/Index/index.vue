@@ -279,7 +279,7 @@
     </div>
 </template>
 <script>
-    import {mapState} from 'vuex';
+    import {mapState,mapActions,mapMutations} from 'vuex';
     import {axios,home,shoppingCar,common} from "../../api/apiObj";
     import HeaderSearch from "_c/HeaderSearch";
     import { SearchJump } from "@/lib/utils";
@@ -341,6 +341,8 @@
             }
         },
         methods:{
+            ...mapActions("Login", ["GetUserInforma"]),
+            ...mapMutations(['setloginState']),
             async init(){
                 await this.querySysMessage()
                 await this.getHotSearchList();
@@ -564,7 +566,19 @@
 
         },
         mounted(){
-            this.UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
+            if (sessionStorage.getItem("access_token")) {
+                // this.$store.state.loginState = true;
+                this.setloginState(true)
+                //  this.$store.dispatch("setloginState",true)
+                this.GetUserInforma({
+                    access_token: sessionStorage.getItem("access_token")
+                }).then(res => {
+                     this.UserInforma = res;
+                });
+            } else {
+                this.setloginState(false)
+            }
+
             if(this.UserInforma){
                 this.isSeller=this.UserInforma.userTagMap.seller
             }

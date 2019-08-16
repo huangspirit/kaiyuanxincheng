@@ -59,7 +59,7 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
-          // console.log("根據access_token獲取用戶信息")
+           console.log("根據access_token獲取用戶信息:",res)
           //   this.UserInforma = res;
       });
     } else {
