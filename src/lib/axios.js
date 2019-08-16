@@ -44,6 +44,8 @@ class HttpRequest {
         // 可以直接跳转到登录页面，重新登录获取 token
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('refresh_token')
+          sessionStorage.removeItem("loginState")
+          sessionStorage.removeItem("UserInforma")
         Router.push({
           path: '/login'
         })

@@ -83,6 +83,8 @@
             signOut() {
                 sessionStorage.removeItem("access_token");
                 sessionStorage.removeItem("refresh_token");
+                sessionStorage.removeItem("UserInforma");
+                sessionStorage.removeItem("loginState")
                 this.$router.push({
                     path: "/"
                 });

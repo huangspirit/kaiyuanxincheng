@@ -90,6 +90,7 @@ export default {
     signOut() {
       sessionStorage.removeItem("access_token");
       sessionStorage.removeItem("refresh_token");
+      sessionStorage.removeItem("UserInforma")
       this.$router.push({
         path: "/"
       });

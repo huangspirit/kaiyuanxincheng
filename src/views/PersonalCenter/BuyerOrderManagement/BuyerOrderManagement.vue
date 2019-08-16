@@ -90,9 +90,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-
 import BuyerOrderItem from "_c/BuyerOrderItem";
-
 export default {
   name: "BuyerOrderManagement",
   data() {
@@ -348,6 +346,10 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route.query)
+      if(this.$route.query.code=="success"){
+          this.$message.success("订单支付成功")
+      }
     this.orderParams = {
       start: this.start,
       length: this.pageSize

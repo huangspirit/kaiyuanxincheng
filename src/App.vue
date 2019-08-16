@@ -59,8 +59,8 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
-          console.log("根據access_token獲取用戶信息")
-        //this.UserInforma = res;
+          // console.log("根據access_token獲取用戶信息")
+          //   this.UserInforma = res;
       });
     } else {
        this.setloginState(false)
