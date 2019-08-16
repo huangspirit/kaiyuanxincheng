@@ -157,12 +157,12 @@ export default {
             //   path: "/PersonalCenter/AccountBalance",
             //   icon: require("@/assets/image/PersonalCenter/u28045.png")
             // },
-            {
-              title: "我的信誉额",
-              index: "3-3",
-              path: "/PersonalCenter/CredibiliForehead",
-              icon: require("@/assets/image/PersonalCenter/u10011.png")
-            },
+            // {
+            //   title: "我的信誉额",
+            //   index: "3-3",
+            //   path: "/PersonalCenter/CredibiliForehead",
+            //   icon: require("@/assets/image/PersonalCenter/u10011.png")
+            // },
             {
               title: "收货地址",
               index: "3-4",

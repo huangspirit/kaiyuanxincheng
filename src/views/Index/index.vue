@@ -7,7 +7,7 @@
                 :interval="5000"
                 v-if="messageList.length"
                 direction="vertical"
-                loop="true"
+                :loop="true"
             >
                 <el-carousel-item v-for="item in messageList" :key="item">
                     <h3 class="small allWidth"><img src="@/assets/image/home/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>

@@ -122,7 +122,7 @@
         <el-button class="default" style="width:100%;" @click="submitCodePhone">{{newFlagbtn}}</el-button>
       </div>
     </SetTankuang>
-    <!-- <el-dialog 
+    <!-- <el-dialog
       :visible.sync="dialogVisibleCode"
       width="600px"
       class="dialog-code-phone"
@@ -338,7 +338,7 @@ export default {
             this.GetCheckBind({
               access_token: this.access_token
             }).then(res => {
-             
+
               if (res) {
                 clearInterval(timeBindWechat);
                 this.dialogVisibleWeChatBind = false;

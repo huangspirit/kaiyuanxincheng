@@ -43,13 +43,13 @@
                         </div>
                     </div>
                     <div class="icon">
-                        <span><i class="el-icon-star-off"></i>关注</span>
-                        <span><i class="el-icon-circle-plus-outline"></i>询价蓝</span>
+                        <span><i class="el-icon-star-off" @click="focus"></i>关注</span>
+                        <span><i class="el-icon-circle-plus-outline" @click="addInquiry"></i>询价蓝</span>
                     </div>
                     <div class="btnwrap">
-                        <span class=" btn bgColor">立即购买</span>
-                        <span class="btn orange">申请特价</span>
-                        <span class="btn gray">申请特价</span>
+                        <span class=" btn bgColor" @click="purchase">立即购买</span>
+                        <span class="btn orange" @click="specialPrice">申请特价</span>
+                        <span class="btn gray" @click="addShopingCar">加入购物车</span>
                     </div>
                     <div class="mark">
                         * 标注现货字样的商品需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准
@@ -104,6 +104,7 @@
         data(){
             return{
                 sellerGoodsInfo:{},
+                goodsinfo:{},
                 purchaseObj:{},
                 // 技术参数
                 parameterList:[],
@@ -112,12 +113,34 @@
                 downDatasheet: "",
                 // loading
                 loading: true,
+                showPurchase:false
             }
         },
         created(){
            let obj=sessionStorage.getItem('sellerGoodsDetail')
             if(obj){
                 this.sellerGoodsInfo=JSON.parse(obj)
+                this.purchaseObj={
+                    goods_id: this.sellerGoodsInfo.goods_id,
+                    goods_name: this.sellerGoodsInfo.goods_name,
+                    goodsDesc: this.sellerGoodsInfo.goodsDesc,
+                    goodsImage: this.sellerGoodsInfo.goodsImageUrl,
+                    clude_bill: this.sellerGoodsInfo.includBill,
+                    price_unit: this.sellerGoodsInfo.priceUnit,
+                    seckill_goods_id:this.sellerGoodsInfo.id,
+                    goods_type:this.sellerGoodsInfo.goods_type,
+                    diliver_place: this.sellerGoodsInfo.diliverPlace,
+                    moq:Number(this.sellerGoodsInfo.moq),
+                    mpq:Number(this.sellerGoodsInfo.mpq),
+                    stockcount:this.sellerGoodsInfo.goodsStockCount,
+                    price_type:this.sellerGoodsInfo.priceType,
+                    priceList:this.sellerGoodsInfo.priceList,
+                    seckil_price:this.sellerGoodsInfo.goodsPrice,
+                    sellerName: this.sellerGoodsInfo.sellerName,
+                    sellerHeader:this.sellerGoodsInfo.userImgeUrl,
+                    seller_id: this.sellerGoodsInfo.sellerId,
+                    tag:this.sellerGoodsInfo.tag,
+                }
             }
 
         },
@@ -133,114 +156,92 @@
                     name:this.sellerGoodsInfo.goods_name
                 }
                 axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
-                    console.log(result)
                     this.parameterList=result.data.goodsinfo.list;
-                    // this.purchaseObj={
-                    //     goods_id: res.id,
-                    //     goods_name: res.productno,
-                    //     goodsDesc: res.productdesc,
-                    //     goodsImage: res.imageUrl,
-                    //     clude_bill: res.factorySellerInfo.clude_bill,
-                    //     price_unit: res.factorySellerInfo.priceunit,
-                    //     seckill_goods_id: res.factorySellerInfo.seller_goods_id,
-                    //     goods_type:res.factorySellerInfo.goods_type,
-                    //     diliver_place: res.factorySellerInfo.diliver_place,
-                    //     moq:Number(res.factorySellerInfo.moq),
-                    //     mpq:Number(res.factorySellerInfo.mpq),
-                    //     stockcount:res.factorySellerInfo.stockcount,
-                    //     price_type:res.factorySellerInfo.price_type,
-                    //     priceList:res.factorySellerInfo.priceList,
-                    //     seckil_price:res.factorySellerInfo.seckil_price,
-                    //     sellerName: res.factorySellerInfo.seller_name,
-                    //     sellerHeader: res.factorySellerInfo.seller_header,
-                    //     seller_id: res.factorySellerInfo.seller_id,
-                    //     tag: 1,
-                    // }
-
+                    this.goodsinfo=result.data.goodsinfo
                 })
             },
-            // addInquiry() {
-            //     if(!this.loginState){
-            //         this.$router.push('/Login')
-            //         return;
-            //     }
-            //     var obj = {
-            //         sellerGoodsId: this.sellerGoodsInfo.id,
-            //         goodsId:this.sellerGoodsInfo.id,
-            //         sellerId:this.sellerGoodsInfo.brandId,
-            //         goodsSource: "2",
-            //         goodsName: this.sellerGoodsInfo.productno,
-            //     };
-            //     axios
-            //         .request({ ...shoppingCar.insertShoppingCar, params: obj })
-            //         .then(res => {
-            //             this.$message.success("添加成功");
-            //         });
-            // },
-            // addFocus(){
-            //     if(!this.loginState){
-            //         this.$router.push('/Login')
-            //         return;
-            //     }
-            //     let obj={
-            //         goods_id:this.sellerGoodsInfo.id,
-            //         catergory_id :this.sellerGoodsInfo.classificationId,
-            //         favour_type: "1",
-            //     };
-            //     axios
-            //         .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
-            //         .then(res => {
-            //             this.$set(this.sellerGoodsInfo,"focus",true)
-            //             // this.$message.success("已关注");
-            //         });
-            //
-            // },
-            // addShopingCar(){
-            //     if(!this.loginState){
-            //         this.$router.push('/Login')
-            //         return;
-            //     };
-            //     var obj = {
-            //         sellerGoodsId: this.sellerGoodsInfo.factorySellerInfo.seller_goods_id,
-            //         sellerId:this.sellerGoodsInfo.factorySellerInfo.seller_id,
-            //         goodsSource: "1",
-            //         goodsName:this.sellerGoodsInfo.productno
-            //     };
-            //     axios
-            //         .request({ ...shoppingCar.insertShoppingCar, params: obj })
-            //         .then(res => {
-            //             this.$message.success("添加成功");
-            //         });
-            // },
-            // purchase(){
-            //     if(!this.loginState){
-            //         this.$router.push('/Login')
-            //         return;
-            //     }
-            //     this.showPurchase=true
-            // },
-            // specialPrice(){
-            //     if(!this.loginState){
-            //         this.$router.push('/Login')
-            //         return;
-            //     }
-            //     let factorySellerInfo=this.sellerGoodsInfo.factorySellerInfo
-            //     factorySellerInfo.priceType=factorySellerInfo.price_type
-            //     factorySellerInfo.priceLevel=factorySellerInfo.price_level
-            //     this.$store.dispatch("promation", {...this.sellerGoodsInfo,factorySellerInfo:factorySellerInfo});
-            //     this.$router.push("/InquiryBasket/ApplySpecialPrice");
-            // },
-            // searchDatasheet(id) {
-            //     let ret = baseURL + "api-g/gods-anon/queryGoodsDatesheet?id=" + id;
-            //     this.downDatasheet = ret;
-            //     let resp =
-            //         baseURL2 + "static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
-            //     this.datasheet = resp;
-            //     const self = this;
-            //     setTimeout(() => {
-            //         this.loading = false;
-            //     }, 5000);
-            // },
+            addInquiry() {
+                if(!this.loginState){
+                    this.$router.push('/Login')
+                    return;
+                }
+                var obj = {
+                    sellerGoodsId: this.sellerGoodsInfo.id,
+                    goodsId:this.sellerGoodsInfo.goods_id,
+                    sellerId:this.sellerGoodsInfo.brandId,
+                    goodsSource: "2",
+                    goodsName: this.sellerGoodsInfo.goods_name,
+                };
+                axios
+                    .request({ ...shoppingCar.insertShoppingCar, params: obj })
+                    .then(res => {
+                        this.$message.success("添加成功");
+                    });
+            },
+            addFocus(){
+                if(!this.loginState){
+                    this.$router.push('/Login')
+                    return;
+                }
+                let obj={
+                    goods_id:this.sellerGoodsInfo.goods_id,
+                    catergory_id :this.sellerGoodsInfo.catergoryId,
+                    favour_type: "1",
+                };
+                axios
+                    .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
+                    .then(res => {
+                        this.$set(this.sellerGoodsInfo,"focus",true)
+                        // this.$message.success("已关注");
+                    });
+
+            },
+            addShopingCar(){
+                if(!this.loginState){
+                    this.$router.push('/Login')
+                    return;
+                };
+                var obj = {
+                    sellerGoodsId: this.sellerGoodsInfo.id,
+                    sellerId:this.sellerGoodsInfo.sellerId,
+                    goodsSource: "1",
+                    goodsName:this.sellerGoodsInfo.goods_name
+                };
+                axios
+                    .request({ ...shoppingCar.insertShoppingCar, params: obj })
+                    .then(res => {
+                        this.$message.success("添加成功");
+                    });
+            },
+            purchase(){
+                if(!this.loginState){
+                    this.$router.push('/Login')
+                    return;
+                }
+                this.showPurchase=true
+            },
+            specialPrice(){
+                if(!this.loginState){
+                    this.$router.push('/Login')
+                    return;
+                }
+                let factorySellerInfo=this.goodsinfo.factorySellerInfo
+                factorySellerInfo.priceType=factorySellerInfo.price_type
+                factorySellerInfo.priceLevel=factorySellerInfo.price_level
+                this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
+                this.$router.push("/InquiryBasket/ApplySpecialPrice");
+            },
+            searchDatasheet(id) {
+                let ret = baseURL + "api-g/gods-anon/queryGoodsDatesheet?id=" + id;
+                this.downDatasheet = ret;
+                let resp =
+                    baseURL2 + "static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
+                this.datasheet = resp;
+                const self = this;
+                setTimeout(() => {
+                    this.loading = false;
+                }, 5000);
+            },
         },
         computed: {
             loginState(){

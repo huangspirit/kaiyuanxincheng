@@ -80,6 +80,12 @@ const sellerCenter = {
         url: "/api-order/sellerCenter/queryAccountDetail"
     }
 }
+const personCenter={
+    //买家中心汇总页面
+    queryCustomerCenterSummary:{
+        url:"api-u/users-anon/queryCustomerCenterSummary"
+    }
+}
 const message = {
     queryMessageCatergory: {
         url: "/api-n/notification/queryMessageCatergory"
@@ -217,5 +223,6 @@ export {
     siderInquiryList,
     BrandDetail,
     FactoryEntry,
-    presonalAdress
+    presonalAdress,
+    personCenter
 }
