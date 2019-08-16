@@ -56,8 +56,8 @@
         ></li>
       </ul>
       <p v-else class="zw">
-        <span>暂无数据,你可以添加新品牌</span>
-        <span class="add-brand" @click="addNewBrand">添加新品牌</span>
+        <span>暂无数据</span>
+        <!-- <span class="add-brand" @click="addNewBrand">添加新品牌</span> -->
       </p>
     </div>
   </div>

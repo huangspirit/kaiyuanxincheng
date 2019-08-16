@@ -188,8 +188,13 @@ const FactoryEntry = {
     },
     //获取用户月结申请单
     getApplyList: {
-        url: "api-b/apply/getApplyList"
+        url: "api-b/customerCenter/getApplyList"
+    },
+    // 获取申请单详情
+    getApplyDetail:{
+        url:"api-b/customerCenter/getApplyDetail"
     }
+   
 }
 const presonalAdress = {
     // 获取地址列表

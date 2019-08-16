@@ -10,6 +10,7 @@ const state = {
   loginState: (sessionStorage.getItem("loginState")=='false' || sessionStorage.getItem("loginState")=='true')?Boolean(sessionStorage.getItem("loginState")):false,
   // 滚动
   headerFxed: true,
-  proInformation:{}
+  proInformation:{},
+  applyDetailEdit:{}
 }
 export default state

@@ -8,14 +8,14 @@
       <div>
         <!-- 选择品牌 -->
         <div class="selectbrandWrap" v-if="selectBrandFlag">
-            <SelectBrand
-                      @select="SureSelectBrand"
-                      :addBrandUrl="addBrandUrl"
-                      :EndselectBrandList="EndselectBrandList"
-                      @cancel="cancelBrandFlag"
-                      :maxBrandNum='maxBrandNum'
-                      :residencetype='ruleForm.residencetype'
-                    ></SelectBrand>
+          <SelectBrand
+            @select="SureSelectBrand"
+            :addBrandUrl="addBrandUrl"
+            :EndselectBrandList="EndselectBrandList"
+            @cancel="cancelBrandFlag"
+            :maxBrandNum="maxBrandNum"
+            :residencetype="ruleForm.residencetype"
+          ></SelectBrand>
         </div>
         <el-form
           :model="ruleForm"
@@ -23,34 +23,26 @@
           ref="ruleForm"
           label-width="200px"
           class="demo-ruleForm"
-         
         >
-          <!-- <div class="form-item">
-            <label for>入驻类型：</label>
-            <div>
-              <select name id v-model="ruleForm.residencetype">
-                <option
-                  :value="item.id"
-                  v-for="item in typeresidenceList"
-                  :key="item.id"
-                >{{item.name }}</option>
-              </select>
-            </div>
-          </div> -->
           <el-form-item label="入驻类型：">
-            <el-select v-model="residencetype" placeholder="请选择入驻类型"  prop="residencetype">
+            <el-select
+              v-model="residencetype"
+              placeholder="请选择入驻类型"
+              @change="regisType(val)"
+              prop="residencetype"
+            >
               <el-option
-                  v-for="item in typeresidenceList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
+                v-for="item in typeresidenceList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
               <!-- <el-option label="区域一" value="shanghai"></el-option> -->
             </el-select>
           </el-form-item>
           <el-form-item v-if="residencetype!='3'" label="选择品牌：" prop="brandName">
             <el-select
-            style="display:block"
+              style="display:block"
               v-model="ruleForm.brandName"
               multiple
               placeholder="请选择"
@@ -71,7 +63,7 @@
         <div class="BasicInforma-footer">
           <div @click="submitForm('ruleForm')" class="sure">
             确定，下一步
-            <img src="@/assets/image/OriginalFactoryEntry/u197170.png" alt>
+            <img src="@/assets/image/OriginalFactoryEntry/u197170.png" alt />
           </div>
         </div>
       </div>
@@ -80,9 +72,8 @@
 </template>
 
 <script>
-
 //  import "@/assets/css/label-checkbox.less";
-import { mapState, mapActions,mapMutations} from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import SelectBrand from "_c/SelectBrand";
 export default {
   name: "BasicInforma",
@@ -91,7 +82,7 @@ export default {
       // 选择品牌的最大数量
       maxBrandNum: 3,
       //入住类型
-      residencetype:"",
+      residencetype: "",
       // 基本信息
       ruleForm: {
         residencetype: "",
@@ -148,7 +139,9 @@ export default {
       typeresidenceList: [],
       // 基本信息验证
       rules: {
-        residencetype:[{required: true, message: "选择入驻类型", trigger: "blur" }],
+        residencetype: [
+          { required: true, message: "选择入驻类型", trigger: "blur" }
+        ],
         contactname: [
           { required: true, message: "请输入联系人姓名", trigger: "blur" },
           { min: 1, max: 15, message: "长度在 1 到 15 个字符", trigger: "blur" }
@@ -171,36 +164,22 @@ export default {
     };
   },
   computed: {
-    ...mapState("OriginalFactoryEntry",[
-      "joinForm"
-    ]),
+    ...mapState("OriginalFactoryEntry", ["joinForm"]),
     access_token() {
       return localStorage.getItem("access_token");
     }
   },
   watch: {
-    residencetype(newval,oldval){
-  
-      this.ruleForm={...this.ruleForm,"residencetype":newval}
-        if(newval === 1){
-          this.maxBrandNum = 1
-          this.ruleForm.brandName = []
-          this.EndselectBrandList = []
-        } else {
-          this.maxBrandNum = 3
-        }
-    },
-    // "ruleForm.residencetype": {
-    //   handler() {
-    //     if(this.ruleForm.residencetype === 1){
-    //       this.maxBrandNum = 1
-    //       this.ruleForm.brandName = []
-    //       this.EndselectBrandList = []
-    //     } else {
-    //       this.maxBrandNum = 3
-    //     }
-    //   }
-    // }
+    residencetype(newval, oldval) {
+      this.ruleForm = { ...this.ruleForm, residencetype: newval };
+      if (newval === 1) {
+        this.maxBrandNum = 1;
+        this.ruleForm.brandName = [];
+        this.EndselectBrandList = [];
+      } else {
+        this.maxBrandNum = 3;
+      }
+    }
   },
   components: {
     SelectBrand
@@ -208,24 +187,20 @@ export default {
   methods: {
     ...mapActions("OriginalFactoryEntry", [
       "GetQueryDictionarieList",
-      "GetFindBrand",
-      
+      "GetFindBrand"
     ]),
-    ...mapMutations("OriginalFactoryEntry",[
-        "setJoinForm" 
-    ]),
+    ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     // 平台入驻的确定
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //将数据保存到store
-          this.setJoinForm(this.ruleForm)
+          this.setJoinForm(this.ruleForm);
           this.$router.push({
             path: "/OriginalFactoryEntry/CheckInformation",
-            query:{
-              // ruleForm:this.ruleForm,
-               newBrand:this.$route.query.brand,
-               residencetype:this.ruleForm.residencetype
+            query: {
+              newBrand: this.$route.query.brand,
+              residencetype: this.ruleForm.residencetype
             }
           });
         } else {
@@ -234,22 +209,18 @@ export default {
       });
     },
     FindBrand(x) {
-      // console.log(this.ruleForm)
-      // console.log(this.ruleForm.residencetype)
-      if(this.ruleForm.residencetype){
+      if (this.ruleForm.residencetype) {
         this.selectBrandFlag = true;
-      }else{
-        this.$message("请选择入驻类型")
+      } else {
+        this.$message("请选择入驻类型");
       }
-      
+    },
+    regisType(val) {
+      this.ruleForm.brandName = [];
     },
     selectBrand(item) {
       this.ruleForm.name = item.brand;
       this.FindBrandList = [];
-    },
-    // 点击要选择的品牌
-    selectBrandTitle(item) {
-      this.selectBrandSearchTitle = item;
     },
     // 品牌搜索输入框
     brandInputChange(x) {
@@ -272,10 +243,10 @@ export default {
         arrName.push(item.brand);
       });
       this.ruleForm.brandName = arrName;
-     // console.log(arr)
-     // arr.splice(arr.findIndex(item => item === this.$route.query.id),1)
+      // console.log(arr)
+      // arr.splice(arr.findIndex(item => item === this.$route.query.id),1)
       this.ruleForm.brand = arr.join("@");
-      console.log(this.ruleForm)
+      console.log(this.ruleForm);
     },
     // 取消选择品牌模态框
     cancelBrandFlag() {
@@ -296,15 +267,13 @@ export default {
       this.typeresidenceList = res;
       this.$nextTick(() => {
         this.ruleForm.residencetype = res[0].id;
-        this.residencetype=res[0].id
+        this.residencetype = res[0].id;
       });
     });
     this.$store.state.OriginalFactoryEntry.active = 1;
-    this.ruleForm={...this.joinForm,...this.ruleForm};
-    this.residencetype=this.ruleForm.residencetype
+    this.ruleForm = { ...this.joinForm, ...this.ruleForm };
+    this.residencetype = this.ruleForm.residencetype;
     let addBrandName = this.$route.query;
-    console.log(addBrandName)
-    console.log(this.ruleForm)
     if (addBrandName.brand) {
       this.ruleForm.brandName.push(addBrandName.brand);
       this.EndselectBrandList.push(addBrandName);
@@ -313,6 +282,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
- @import "./BasicInforma.less";
+@import "./BasicInforma.less";
 </style>
 

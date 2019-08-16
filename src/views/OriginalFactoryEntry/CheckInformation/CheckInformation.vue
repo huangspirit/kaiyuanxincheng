@@ -96,6 +96,7 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload1"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="qualificationmapList"
                   >
                     <i class="el-icon-plus"></i>
                     <div
@@ -131,6 +132,7 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload2"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="identityposList"
                     :limit="1"
                   >
                     <i class="el-icon-plus"></i>
@@ -154,6 +156,7 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload3"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="identitynegList"
                     :limit="1"
                   >
                     <i class="el-icon-plus"></i>
@@ -191,6 +194,7 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload4"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="taxpayerList"
                     :limit="limitNum"
                   >
                     <i class="el-icon-plus"></i>
@@ -221,7 +225,7 @@
               </div>
               <div class="form-item-con Agent-con">
                 <ul>
-                  <li v-for="item in AgentList" :key="item.id">
+                  <li v-for="(item,index) in AgentList" :key="index">
                     <p class="brandName">
                       品牌：
                       <span>{{item.brand}}</span>
@@ -253,6 +257,7 @@
                         :before-upload="beforeAvatarUpload"
                         :on-success="successUploadAgency"
                         :on-preview="handlePictureCardPreview"
+                        :file-list="item.brandmapList"
                         :limit="1"
                       >
                         <i class="el-icon-plus"></i>
@@ -382,6 +387,11 @@ export default {
       dialogVisible: false,
       // 代理商的上传图片
       AgentList: [],
+      //营业执照图片回显
+      qualificationmapList: [],
+      identityposList: [],
+      identitynegList: [],
+      taxpayerList: [],
       // 基本信息
       ruleForm: {
         // 信用代码
@@ -538,7 +548,7 @@ export default {
         `api-b/vipApply/uploadPicture?access_token=${this.access_token}&fileSource=QINIUYUN&type=5&id=1`
       );
     },
-    ...mapState("OriginalFactoryEntry", ["joinForm"])
+    ...mapState("OriginalFactoryEntry", ["joinForm", "applyDetailEdit"])
   },
   watch: {
     // area(newval){
@@ -603,6 +613,7 @@ export default {
           this.ruleForm.businesshours = this.checkboxChangeValue2;
           this.ruleForm.review = "0";
           // 转换日期格式
+          this.ruleForm.qualificationtime = [];
           this.AgentList.forEach((item, index) => {
             console.log(item);
             this.ruleForm.qualificationtime[index] =
@@ -632,15 +643,12 @@ export default {
               "@"
             );
           }
+          // if (this.applyDetailEdit.id) {
+          //   this.ruleForm["id"] = id;
+          // }
           console.log(this.ruleForm);
-
-          //   localStorage.setItem("ruleForm",JSON.stringify(this.ruleForm))
           this.GetInsertBrandReview(this.ruleForm)
             .then(res => {
-              // this.$message({
-              //   type: "success",
-              //   message: res
-              // });
               this.setJoinForm({});
               localStorage.removeItem("joinForm");
               this.$router.push({
@@ -649,9 +657,6 @@ export default {
             })
             .catch(err => {
               this.$message.error(err);
-              //  this.$router.push({
-              //   path: "/OriginalFactoryEntry"
-              // });
             });
         } else {
           this.$message.error("请完善信息!");
@@ -755,14 +760,10 @@ export default {
     }
   },
   mounted() {
-    // if(localStorage.getItem("ruleForm")){
-    //     this.ruleForm=Object.assign(JSON.parse(localStorage.getItem("ruleForm")),this.joinForm);
-    // }
-
-    if (this.joinForm.residencetype === 2) {
-      this.AgentListFlag = true;
-    } else {
+    if (this.joinForm.residencetype == 3) {
       this.AgentListFlag = false;
+    } else {
+      this.AgentListFlag = true;
     }
     this.$store.state.OriginalFactoryEntry.active = 2;
     // this.ruleForm = Object.assign(this.joinForm,this.ruleForm);
@@ -782,12 +783,6 @@ export default {
     var index = this.AgentList.findIndex(
       item => item.brand === this.$route.query.newBrand
     );
-    // this.AgentList.splice(
-    //   this.AgentList.findIndex(
-    //     item => item.brand === this.$route.query.newBrand
-    //   ),
-    //   1
-    // );
     var index0 = this.AgentList.findIndex(
       item => item.brand === this.$route.query.newBrand
     );
@@ -803,8 +798,10 @@ export default {
       }
     });
     this.AgentList = newArr;
+    this.AgentList.map(item => {
+      item["brandmapList"] = [];
+    });
     this.ruleForm.brandName = this.AgentList.map(item => item.brand);
-    console.log(this.ruleForm);
   }
 };
 </script>

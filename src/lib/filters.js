@@ -16,9 +16,19 @@ Vue.filter('formatDate', value => {
     var minute = date.getMinutes()
     var second = date.getSeconds()
     return year + "-" + month + "-" + day + " " + hour + ':' + minute + ':' + second
-
 })
-Vue.filter('effective', (val,value1) => {
+Vue.filter('applyStatus', value => {
+    if (value == '1') {
+        return '原厂'
+    } else if (value == '2') {
+        return '代理商'
+    } else if (value == '3') {
+        return '商城卖家'
+    } else if (value == '4') {
+        return '月结'
+    }
+})
+Vue.filter('effective', (val, value1) => {
     if (val == true) {
         if (value1 == true) {
             return '已批复'
