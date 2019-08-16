@@ -9,7 +9,7 @@
           <p class="name">{{UserInforma.nickname}}</p>
           <p class="type" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</p>
             <p class="type" v-if="!UserInforma.userTagMap.seller">
-                <router-link to="/OriginalFactoryEntry" tag="span">平台入驻 ></router-link>
+                <router-link to="/OriginalFactoryEntry" tag="span">申请入驻</router-link>
             </p>
         </div>
       </div>
@@ -124,9 +124,7 @@
           </span>
                 <span>信用额度：</span>
                 <span class="color">￥{{amount}}</span>&nbsp;
-                <span>=</span>&nbsp;
-                <span class="color">￥{{UserInforma.userTagMap.wallet}}&nbsp;</span>
-                <span>x&nbsp;10&nbsp;+</span>&nbsp;
+                <span>=</span>&nbsp;&nbsp;
                 <span class="color">￥{{UserInforma.userTagMap.deposit}}&nbsp;</span>
                 <span>x&nbsp;10&nbsp;+</span>&nbsp;
                 <span class="color">￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</span>
@@ -443,8 +441,8 @@ export default {
               access_token: this.access_token
           }).then(res => {
               this.UserInforma=res;
-              let baseCredit=res.userTagMap.baseCredit?res.userTagMap.baseCredit:0
-              this.amount=(res.userTagMap.wallet*10)+(res.userTagMap.deposit*10)+baseCredit
+              let baseCredit=res.userTagMap.baseCredit?res.userTagMap.baseCredit:0;
+             this.amount=baseCredit+(res.userTagMap.deposit*10).toFixed(4)
           });
       },
       // 发送验证码
