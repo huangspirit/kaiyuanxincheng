@@ -539,6 +539,8 @@ export default {
             })
             .then(res => {
               console.log(res);
+              this.$message.success("提交成功");
+              this.$router.push('/PersonalCenter/GetVipApplyDetail')
             });
         } else {
           this.$message.error("请完善信息！");
@@ -619,7 +621,7 @@ export default {
     },
     handleRemove4(file) {
       //将要删除的文件
-      console.log(file.response.data);
+      console.log(file);
       this.ruleForm.taxUrl = "";
     },
     distpicker(x) {

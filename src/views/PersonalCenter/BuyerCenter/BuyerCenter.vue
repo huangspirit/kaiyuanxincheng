@@ -52,7 +52,7 @@
       </div>
       <!-- 商品状态 -->
         <ul class="goods-state">
-            <router-link tag="li" :to="item.path" v-for="item in messageCount">
+            <router-link tag="li" :to="item.path" v-for="(item,index) in messageCount" :key="index">
                 <div class="img">
                     <img :src="item.imgUrl" alt>
                 </div>

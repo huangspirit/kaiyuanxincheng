@@ -643,10 +643,9 @@ export default {
               "@"
             );
           }
-          // if (this.applyDetailEdit.id) {
-          //   this.ruleForm["id"] = id;
-          // }
-          console.log(this.ruleForm);
+          if (this.applyDetailEdit.id) {
+            this.ruleForm["id"] = this.applyDetailEdit.id;
+          }
           this.GetInsertBrandReview(this.ruleForm)
             .then(res => {
               this.setJoinForm({});

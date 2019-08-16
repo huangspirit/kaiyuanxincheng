@@ -663,6 +663,16 @@ export default [
                     title: '个人设置'
                 }
             },
+            // 个人设置
+            {
+                path: 'deposit',
+                name: 'deposit',
+                component: () => import('@/views/PersonalCenter/Deposit/Deposit.vue'),
+                meta: {
+                    requireAuth: true,
+                    title: '充值'
+                }
+            },
             // 个人资料
             {
                 path: 'PersonalData',

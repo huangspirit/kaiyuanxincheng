@@ -26,13 +26,13 @@
         <template slot-scope="scope">
           <el-button @click="handleDetail(scope.row)" type="text" size="small">详情</el-button>
           <el-button
-            v-if="scope.row.applyType=='4'"
+            v-if="scope.row.applyType=='4'&& scope.row.updateBuuton"
             type="text"
             size="small"
             @click="headleEdit(scope.row)"
           >编辑</el-button>
           <el-button
-            v-if="scope.row.applyType!='4'"
+            v-if="scope.row.applyType!='4'&& scope.row.updateBuuton"
             type="text"
             size="small"
             @click="headleEdit(scope.row)"
@@ -287,8 +287,8 @@ export default {
           if (res.resultCode == "200") {
             if (res.data) {
               if (obj.applyType != "4") {
-                // this.editApply = res.data.baseInfo;
-                // this.$store.state.OriginalFactoryEntry.applyDetailEdit = this.editApply;
+                this.editApply = res.data.baseInfo;
+                this.$store.state.OriginalFactoryEntry.applyDetailEdit = this.editApply;
                 this.$router.push({
                   path: "/OriginalFactoryEntry"
                 });

@@ -7,8 +7,8 @@ const common = {
     GetCenterChangeAddress: {
         url: 'api-g/goods-center/queryWarehouseList'
     },
-    querySysMessage:{
-        url:"api-n/notification-anon/querySysMessage"
+    querySysMessage: {
+        url: "api-n/notification-anon/querySysMessage"
     }
 }
 const home = {
@@ -80,10 +80,10 @@ const sellerCenter = {
         url: "/api-order/sellerCenter/queryAccountDetail"
     }
 }
-const personCenter={
+const personCenter = {
     //买家中心汇总页面
-    queryCustomerCenterSummary:{
-        url:"api-u/users-anon/queryCustomerCenterSummary"
+    queryCustomerCenterSummary: {
+        url: "api-u/users-anon/queryCustomerCenterSummary"
     }
 }
 const message = {
@@ -191,10 +191,10 @@ const FactoryEntry = {
         url: "api-b/customerCenter/getApplyList"
     },
     // 获取申请单详情
-    getApplyDetail:{
-        url:"api-b/customerCenter/getApplyDetail"
+    getApplyDetail: {
+        url: "api-b/customerCenter/getApplyDetail"
     }
-   
+
 }
 const presonalAdress = {
     // 获取地址列表
@@ -206,13 +206,33 @@ const presonalAdress = {
         url: "api-u/address/updateReceivingAddress"
     },
     // 添加收货地址
-    AddAddress:{
-        url:"api-u/address/saveReceivingAddress"
+    AddAddress: {
+        url: "api-u/address/saveReceivingAddress"
     },
     // 删除地址
-    DeleteAddress:{
-        url:"api-u/address/deleteReceivingAddressById"
+    DeleteAddress: {
+        url: "api-u/address/deleteReceivingAddressById"
     }
+}
+const topupDeposit = {
+    //获取用户充值保证金的金额列表
+    getDepositList: {
+        url: 'api-b/customerCenter/getDepositList'
+    },
+    //充值保证金调用微信支付的方法
+    getWechatPayVip: {
+        url: 'api-order/wechat/getWechatPayVip'
+    },
+    //微信扫码成功后调用轮训的接口
+    queryUserVipConsumeDetail: {
+        url: 'api-u/users/queryUserVipConsumeDetail',
+
+    },
+    //阿里支付的方法
+    pagePayDeposit: {
+        url: 'api-order/alipay/pagePayDeposit'
+    }
+
 
 
 }
@@ -229,5 +249,6 @@ export {
     BrandDetail,
     FactoryEntry,
     presonalAdress,
-    personCenter
+    personCenter,
+    topupDeposit
 }
