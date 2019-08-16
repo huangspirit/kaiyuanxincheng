@@ -14,13 +14,13 @@
                 </div>
             </li>
         </ul>
-        <IndexPagination
+        <Pagination
             v-if="total>pageSize"
-            @changecallback="handleCurrentChange"
+            @current-change="handleCurrentChange"
             :pageIndex.sync="currentPage"
             :pageSize="pageSize"
             :total="total">
-        </IndexPagination>
+        </Pagination>
         <div class="nocontent" v-if="list.length==0">暂无消息通知</div>
     </div>
 

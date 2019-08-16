@@ -6,6 +6,9 @@ const common = {
     },
     GetCenterChangeAddress: {
         url: 'api-g/goods-center/queryWarehouseList'
+    },
+    querySysMessage:{
+        url:"api-n/notification-anon/querySysMessage"
     }
 }
 const home = {
@@ -75,6 +78,12 @@ const sellerCenter = {
     //卖家账单中心查询
     queryAccountDetail: {
         url: "/api-order/sellerCenter/queryAccountDetail"
+    }
+}
+const personCenter={
+    //买家中心汇总页面
+    queryCustomerCenterSummary:{
+        url:"api-u/users-anon/queryCustomerCenterSummary"
     }
 }
 const message = {
@@ -204,8 +213,8 @@ const presonalAdress = {
     DeleteAddress:{
         url:"api-u/address/deleteReceivingAddressById"
     }
-    
-    
+
+
 }
 export {
     axios,
@@ -219,5 +228,6 @@ export {
     siderInquiryList,
     BrandDetail,
     FactoryEntry,
-    presonalAdress
+    presonalAdress,
+    personCenter
 }

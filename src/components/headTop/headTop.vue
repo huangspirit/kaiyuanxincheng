@@ -13,7 +13,9 @@
         <router-link to="/Brand">品牌</router-link>
         <router-link to="/InquiryBasket">询价篮</router-link>
         <router-link to="/ShoppingCart">购物车</router-link>
-          <router-link to="/News" v-if="loginState" class="messageCountWrap">消息 <span v-if="UserInforma.messageCount" class="messageCount">{{UserInforma.messageCount}}</span></router-link>
+          <router-link to="/News" v-if="loginState" class="messageCountWrap">消息
+              <span v-if="UserInforma.messageCount" class="messageCount">{{UserInforma.messageCount}}</span>
+          </router-link>
 
       </div>
       <router-link class="login" tag="div" to="/Login" v-if="!loginState">
@@ -34,41 +36,7 @@
                       <span class="type type2" v-if="UserInforma.userTagMap.tag === 2">代理商</span>
                       <span class="type type3" v-if="UserInforma.userTagMap.tag === 3">普通商户</span>
                   </div>
-
-                  <!-- <template  v-if="UserInforma.userTagMap.vip">
-                    <div class="num">
-                    白条额度
-                    <span>
-                      ￥{{UserInforma.userTagMap['credit-vip']}}
-                      </span>
-                  </div>
-                  <div class="num">
-                    剩余额度
-                    <span>￥{{UserInforma.userTagMap['restcredit-vip']}}</span>
-                  </div>
-                  </template>
-                  <template  v-if="UserInforma.userTagMap.seller">
-                    <div class="num">
-                    售卖额度
-                    <span>
-                      ￥{{UserInforma.userTagMap['credit-seller']}}
-                      </span>
-                  </div>
-                  <div class="num">
-                    剩余额度
-                    <span>￥{{UserInforma.userTagMap['restcredit-seller']}}</span>
-                  </div>
-                  </template> -->
-
               </div>
-              <!-- <ul>
-                <router-link
-                  v-for="item in list"
-                  :to="item.router"
-                  :key="`${item.name}`"
-                  tag="li"
-                >{{item.name}}</router-link>
-              </ul>-->
               <p class="account-number">
                   <router-link to="/PersonalCenter/PersonalData" tag="span">
                       <img src="@/assets/image/Login/u2031.png" alt>
@@ -93,44 +61,6 @@ export default {
   data() {
     return {
      // flag: false,
-      list: [
-        {
-          router: "/InquiryBasket",
-          name: "我的询价单"
-        },
-        {
-          router: "/ShoppingCart",
-          name: "购物车"
-        },
-        {
-          router: "/PersonalCenter/BuyerOrderManagement",
-          name: "我的订单"
-        },
-        {
-          router: "/PersonalCenter/CommoditiesInterest",
-          name: "关注的商品"
-        },
-        {
-          router: "/PersonalCenter/MerchantsConcerned",
-          name: "关注的商家"
-        },
-        {
-          router: "/PersonalCenter/PersonalSet",
-          name: "个人中心"
-        }
-        // {
-        //   router: "/PersonalCenter/PersonalSet",
-        //   name: "帮助中心"
-        // },
-        // {
-        //   router: "/PersonalCenter/PersonalSet",
-        //   name: "成为商家"
-        // },
-        // {
-        //   router: "/PersonalCenter/PersonalSet",
-        //   name: "品牌入驻"
-        // }
-      ]
     };
   },
   computed: {

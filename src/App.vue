@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <div id="container" class="clear">
-      <headTop id="HeaderBar" ></headTop>
-      <div id="content" class="clear">
+    <headTop id="HeaderBar" ></headTop>
+
+      <div id="content" class="clear" :class="headerFxed?'headerFxed':''">
             <router-view v-if="isRouterAlive"/>
       </div>
       <Footer></Footer>
@@ -13,7 +14,8 @@
 <script>
 import Footer from "_c/Footer";
 import Sidebar from "_c/Sidebar";
-import headTop from "_c/headTop";
+//import headTop from "_c/headTop";
+import headTop from "@/views/header"
 import { mapActions,mapState,mapMutations} from "vuex";
 export default {
   name: "app",
@@ -31,7 +33,7 @@ export default {
   components: {
     Footer,
     Sidebar,
-    headTop
+    headTop,
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
@@ -45,7 +47,8 @@ export default {
   },
   computed:{
     ...mapState({
-      UserInforma:state=>state.UserInforma
+      UserInforma:state=>state.UserInforma,
+      headerFxed: state => state.headerFxed,
     })
   },
   mounted() {
@@ -73,6 +76,8 @@ export default {
     body{
         overflow-y: auto;
         background: #fff!important;
+        min-width:1080px;
+
     }
     .allWidth{
         min-width:800px;
@@ -89,6 +94,7 @@ export default {
     a{
         cursor: pointer;
         color:#0d94fb;
+        text-decoration: none;
         &:hover{
             color:peru;
         }
@@ -104,6 +110,7 @@ export default {
         vertical-align: middle;
     }
     color:#999;
+    font-family:"Microsoft YaHei"!important;
 .defaultradioSquare .el-radio__inner{
   border-radius: 0;
   width:20px;
@@ -274,11 +281,11 @@ export default {
     width:100%;
     margin: 0 auto;
   }
-    #content{
-        margin-top:60px;
+    #content.headerFxed{
+        margin-top:80px;
     }
   .router-link-exact-active {
-    color: #3da8f5;
+    color: #df3f2f;
     font-weight:bold;
   }
 }

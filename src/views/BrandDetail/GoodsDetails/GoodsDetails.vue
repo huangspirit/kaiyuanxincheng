@@ -182,7 +182,6 @@
 import {TimeForma2,ladderPrice} from "../../../lib/utils";
 import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
-import {mapActions} from "vuex";
 import { baseURL, baseURL2 } from "@/config";
 import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
 
@@ -190,7 +189,6 @@ export default {
   name: "GoodsDetails",
   data() {
     return {
-      loading: false,
       goodsinfo: {},
       purchaseObj:{},
       // 技术参数
@@ -207,7 +205,6 @@ export default {
     SubstituModelList
   },
   methods: {
-    ...mapActions("GoodsDetails", ["GetQueryGoodsDatesheet"]),
     // 查看产品手册
     searchDatasheet(id) {
       let ret = baseURL + "api-g/gods-anon/queryGoodsDatesheet?id=" + id;
