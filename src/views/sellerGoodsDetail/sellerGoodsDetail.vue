@@ -30,7 +30,13 @@
                             </div>
                             <div ><p class="line"></p></div>
                             <div class="fl">
-                                <p>预计交期：{{sellerGoodsInfo.deliverTime | formatDate}}</p>
+                                <p>币种：{{sellerGoodsInfo.priceUnit?'美元':'人民币'}}</p>
+                                <p>库存：{{sellerGoodsInfo.goodsStockCount}}</p>
+                            </div>
+                            <div ><p class="line"></p></div>
+                            <div class="fl">
+                                <p v-if="sellerGoodsInfo.deliverTime ">预计交期：{{sellerGoodsInfo.deliverTime | formatDate}}</p>
+                                <p v-if="sellerGoodsInfo.day_interval ">预计交期：{{sellerGoodsInfo.day_interval}}天后交货</p>
                                 <p>交货地址：{{sellerGoodsInfo.diliverPlace}}</p>
                             </div>
                         </div>
@@ -43,7 +49,7 @@
                         </div>
                     </div>
                     <div class="icon">
-                        <span><i class="el-icon-star-off" @click="focus"></i>关注</span>
+                        <span><i class="el-icon-star-off" @click="addFocus"></i>关注</span>
                         <span><i class="el-icon-circle-plus-outline" @click="addInquiry"></i>询价蓝</span>
                     </div>
                     <div class="btnwrap">

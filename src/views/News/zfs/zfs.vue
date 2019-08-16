@@ -14,13 +14,13 @@
                 </div>
             </li>
         </ul>
-        <IndexPagination
+        <Pagination
             v-if="total>pageSize"
-            @changecallback="handleCurrentChange"
+            @current-change="handleCurrentChange"
             :pageIndex.sync="currentPage"
             :pageSize="pageSize"
             :total="total">
-        </IndexPagination>
+        </Pagination>
     </div>
 
 </template>
@@ -52,7 +52,6 @@
         },
         methods:{
             handleCurrentChange(x){
-                console.log(x)
                 this.currentPage=x;
                 this.init();
             },

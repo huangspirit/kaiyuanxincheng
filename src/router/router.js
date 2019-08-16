@@ -3,20 +3,20 @@ import Index from "@/views/Index"
 export default [
 
     // 首页
+    // {
+    //     path: '/',
+    //     name: 'home',
+    //     component: Home,
+    //     meta: {
+    //         title: '首页'
+    //     }
+    // },
     {
         path: '/',
-        name: 'home',
-        component: Home,
-        meta: {
-            title: '首页'
-        }
-    },
-    {
-        path: '/index',
         name: 'index',
         component: Index,
         meta: {
-            title: '新首页'
+            title: '首页'
         }
     },
     //商品详情

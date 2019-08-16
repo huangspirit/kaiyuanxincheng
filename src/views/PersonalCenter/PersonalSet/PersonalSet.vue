@@ -23,6 +23,7 @@
         </div>
         <router-link to="/PersonalCenter/UpgradeLevel" tag="span">提升等级</router-link>
       </li>
+
       <li>
         <div>
           <span>
@@ -67,16 +68,52 @@
 
         <router-link to="/PersonalCenter/CredibiliForehead" tag="span">详情</router-link>
       </li>
-      <li>
-        <div>
+        <li>
+            <div>
+          <span>
+            <img src="@/assets/image/PersonalCenter/u65597.png" alt />
+          </span>
+                <span>钱包余额：</span>
+                <span class="red">￥{{UserInforma.userTagMap.wallet}}</span>
+            </div>
+            <router-link to="/PersonalCenter/UpgradeLevel" tag="span">充值</router-link>
+        </li>
+        <li>
+            <div>
           <span>
             <img src="@/assets/image/PersonalCenter/u133700.png" alt />
           </span>
-          <span>押&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</span>
-          <span class="red">￥0</span>
-        </div>
-         <router-link to="/PersonalCenter/CredibiliForehead" tag="span">充值</router-link>
-      </li>
+                <span>押&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</span>
+                <span class="red">￥{{UserInforma.userTagMap.deposit}}</span>
+            </div>
+            <router-link to="/PersonalCenter/CredibiliForehead" tag="span">充值</router-link>
+        </li>
+        <li>
+            <div>
+          <span>
+            <img src="@/assets/image/PersonalCenter/u65597.png" alt />
+          </span>
+                <span>基础额度：</span>
+                <span class="num ">￥{{UserInforma.userTagMap.totalcredit}}</span>
+            </div>
+            <router-link to="/PersonalCenter/UpgradeLevel" tag="span" v-if="!UserInforma.userTagMap.seller">原厂入驻</router-link>
+        </li>
+        <li>
+            <div>
+          <span>
+            <img src="@/assets/image/PersonalCenter/u65597.png" alt />
+          </span>
+                <span>我的信用额度：</span>
+                <span class="num">￥190000</span>
+                <span>=</span>
+                <span class="num">￥13000</span>
+                <span>x10+</span>
+                <span class="num">￥5000</span>
+                <span>x10+</span>
+                <span class="num">￥10000</span>
+            </div>
+        </li>
+
       <li>
         <div>
           <span>
@@ -93,93 +130,94 @@
         </div>
         <router-link tag="span" to="/PersonalCenter/ShippingAddress">管理收货地址</router-link>
       </li>
-    </ul>
-      <div class="PersonalData">
-          <div class="GradeCredit">
-              <p class="title">
-                  等级及信誉额度
-                  <span class="btn">查看信誉额说明及详情</span>
-              </p>
-              <ul>
-                  <li>
-                      <span>当前用户等级：</span>
-                      <span class="num">{{UserInforma.userTagMap.userLevel}}</span>
-                      <span class="operation btn">提升用户等级</span>
-                  </li>
-                  <li>
-                      <span>钱包余额 :</span>
-                      <span class="num">￥13000</span>
-                  </li>
-                  <li>
-                      <span>保证金：</span>
-                      <span class="num">￥0</span>
-                      <!-- <span class="operation btn">保证金充值</span> -->
-                  </li>
-                  <li>
-                      <span>基础额度：</span>
-                      <span class="num">￥{{UserInforma.userTagMap.totalcredit}}</span>
-                      <span class="typr-s" >{{UserInforma.userTagMap.tag | typeFilter}}</span>
-                      <span class="operation btn">原厂入驻</span>
-                  </li>
-                  <li>
-                      <span>我的信用额度：</span>
-                      <span class="num">￥190000</span>
-                      <span>=</span>
-                      <span class="num">￥13000</span>
-                      <span>x10+</span>
-                      <span class="num">￥5000</span>
-                      <span>x10+</span>
-                      <span class="num">￥10000</span>
-                  </li>
-              </ul>
-          </div>
-          <div class="PersonalData-form GradeCredit">
-              <p class="title">网站信息</p>
-              <el-form
-                  :model="ruleForm"
-                  :rules="rules"
-                  ref="ruleForm"
-                  label-width="200px"
-                  class="demo-ruleForm"
-              >
-                  <!-- <el-form-item label="头像：" prop="headImgUrl">
-                    <uploadImg
-                      @successUpload="successUpload"
-                      :imageUrl.sync="ruleForm.headImgUrl"
-                      :tip="'图片横宽比例1：1，文件大小在1MB以内，支持png、jpg、gif格式'"
-                    ></uploadImg>
 
-                  </el-form-item>
-                  <el-form-item label="昵称：" prop="nickname">
-                    <el-input v-model="ruleForm.nickname"></el-input>
-                  </el-form-item>-->
-                  <ul>
-                      <li>
-                          <img src="@/assets/image/PersonalCenter/u133711.png" alt>
-                          <span>手机号：</span>
-                          <span>{{UserInforma.phone}}</span>
-                          <span :class="{noBan:UserInforma.phone}" @click="dialogVisibleCode = true" class="operation btn">更换手机号</span>
-                      </li>
-                      <li>
-                          <img src="@/assets/image/PersonalCenter/u146525.png" alt>
-                          <span>微信号</span>
-                          <span class="operation btn">{{UserInforma.bindWeChat ? '已绑定' : '未绑定'}}</span>
-                          <!-- <span
-                            class="noBan"
-                            @click="dialogVisibleWeChat = true"
-                            v-if="UserInforma.bindWeChat"
-                          >解绑</span>-->
-                          <span
-                              class="ban"
-                              v-if="!UserInforma.bindWeChat"
-                              @click="dialogVisibleWeChatBindHandle"
-                          >绑定</span>
-                      </li>
-                  </ul>
-                  <div class="submit" @click="submitForm('ruleForm')">保存并提交</div>
-              </el-form>
-          </div>
-      </div>
+    </ul>
+<!--      <div class="PersonalData">-->
+<!--          <div class="GradeCredit">-->
+<!--              <p class="title">-->
+<!--                  等级及信誉额度-->
+<!--                  <span class="btn">查看信誉额说明及详情</span>-->
+<!--              </p>-->
+<!--              <ul>-->
+<!--                  <li>-->
+<!--                      <span>当前用户等级：</span>-->
+<!--                      <span class="num">{{UserInforma.userTagMap.userLevel}}</span>-->
+<!--                      <span class="operation btn">提升用户等级</span>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                      <span>钱包余额 :</span>-->
+<!--                      <span class="num">￥13000</span>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                      <span>保证金：</span>-->
+<!--                      <span class="num">￥0</span>-->
+<!--                      &lt;!&ndash; <span class="operation btn">保证金充值</span> &ndash;&gt;-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                      <span>基础额度：</span>-->
+<!--                      <span class="num">￥{{UserInforma.userTagMap.totalcredit}}</span>-->
+<!--                      <span class="typr-s" >{{UserInforma.userTagMap.tag | typeFilter}}</span>-->
+<!--                      <span class="operation btn">原厂入驻</span>-->
+<!--                  </li>-->
+<!--                  <li>-->
+<!--                      <span>我的信用额度：</span>-->
+<!--                      <span class="num">￥190000</span>-->
+<!--                      <span>=</span>-->
+<!--                      <span class="num">￥13000</span>-->
+<!--                      <span>x10+</span>-->
+<!--                      <span class="num">￥5000</span>-->
+<!--                      <span>x10+</span>-->
+<!--                      <span class="num">￥10000</span>-->
+<!--                  </li>-->
+<!--              </ul>-->
+<!--          </div>-->
+<!--          <div class="PersonalData-form GradeCredit">-->
+<!--              <p class="title">网站信息</p>-->
+<!--              <el-form-->
+<!--                  :model="ruleForm"-->
+<!--                  :rules="rules"-->
+<!--                  ref="ruleForm"-->
+<!--                  label-width="200px"-->
+<!--                  class="demo-ruleForm"-->
+<!--              >-->
+<!--                  &lt;!&ndash; <el-form-item label="头像：" prop="headImgUrl">-->
+<!--                    <uploadImg-->
+<!--                      @successUpload="successUpload"-->
+<!--                      :imageUrl.sync="ruleForm.headImgUrl"-->
+<!--                      :tip="'图片横宽比例1：1，文件大小在1MB以内，支持png、jpg、gif格式'"-->
+<!--                    ></uploadImg>-->
+
+<!--                  </el-form-item>-->
+<!--                  <el-form-item label="昵称：" prop="nickname">-->
+<!--                    <el-input v-model="ruleForm.nickname"></el-input>-->
+<!--                  </el-form-item>&ndash;&gt;-->
+<!--                  <ul>-->
+<!--                      <li>-->
+<!--                          <img src="@/assets/image/PersonalCenter/u133711.png" alt>-->
+<!--                          <span>手机号：</span>-->
+<!--                          <span>{{UserInforma.phone}}</span>-->
+<!--                          <span :class="{noBan:UserInforma.phone}" @click="dialogVisibleCode = true" class="operation btn">更换手机号</span>-->
+<!--                      </li>-->
+<!--                      <li>-->
+<!--                          <img src="@/assets/image/PersonalCenter/u146525.png" alt>-->
+<!--                          <span>微信号</span>-->
+<!--                          <span class="operation btn">{{UserInforma.bindWeChat ? '已绑定' : '未绑定'}}</span>-->
+<!--                          &lt;!&ndash; <span-->
+<!--                            class="noBan"-->
+<!--                            @click="dialogVisibleWeChat = true"-->
+<!--                            v-if="UserInforma.bindWeChat"-->
+<!--                          >解绑</span>&ndash;&gt;-->
+<!--                          <span-->
+<!--                              class="ban"-->
+<!--                              v-if="!UserInforma.bindWeChat"-->
+<!--                              @click="dialogVisibleWeChatBindHandle"-->
+<!--                          >绑定</span>-->
+<!--                      </li>-->
+<!--                  </ul>-->
+<!--                  <div class="submit" @click="submitForm('ruleForm')">保存并提交</div>-->
+<!--              </el-form>-->
+<!--          </div>-->
+<!--      </div>-->
       <!-- 修改手机号的模态框 -->
       <SetTankuang :title="newFlagTitle" v-if="dialogVisibleCode" @closeDialogCallBack="closeDialogCallBack">
           <div class="dialog-body" slot="dialog-body">
@@ -301,9 +339,6 @@ export default {
     };
   },
   computed: {
-    // ...mapState({
-    //   UserInforma: state => state.Login.UserInforma
-    // }),
       access_token() {
           return sessionStorage.getItem("access_token");
       },

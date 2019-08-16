@@ -308,7 +308,6 @@ export default {
     ...mapActions("Login",[
       "GetUserInforma"
     ]),
-
     ...mapActions("PersonalData", [
       "GetPersonalData",
       "GetRefreshToken",

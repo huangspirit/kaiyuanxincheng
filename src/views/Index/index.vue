@@ -9,7 +9,7 @@
                 direction="vertical"
                 :loop="true"
             >
-                <el-carousel-item v-for="item in messageList" :key="item">
+                <el-carousel-item v-for="(item,k) in messageList" :key="k">
                     <h3 class="small allWidth"><img src="@/assets/image/home/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>
                 </el-carousel-item>
             </el-carousel>

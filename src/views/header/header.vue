@@ -9,7 +9,7 @@
                 <HeaderSearch v-if="headerFxed" ref="HeaderSearch" :mini="true"></HeaderSearch>
             </div>
             <router-link class="login fr" tag="div" to="/Login" v-if="!loginState">
-                登录
+                快速登录
 <!--                <img src="@/assets/image/home/u1874.png" alt>-->
             </router-link>
             <div class="person-center fr" @click="PersonalCenter" v-if="loginState">
