@@ -16,67 +16,72 @@
             class="demo-ruleForm"
           >
             <h3 class="tit-h3">企业基本信息</h3>
-              <el-form-item label="统一社会信用代码：" >
-                  <div class="recode">
-                      <el-input v-model="ruleForm.creditCode" type="text" @input="handleInput"  maxlength="18"
-                                show-word-limit></el-input>
-                      <el-button v-if="showRequireBtn" @click="getCompanyInfo" type="primary">获取企业信息</el-button>
-                  </div>
-                  <p class="small">请严格按照营业执照填写统一社会信用代码</p>
-              </el-form-item>
+            <el-form-item label="统一社会信用代码：">
+              <div class="recode">
+                <el-input
+                  v-model="ruleForm.creditCode"
+                  type="text"
+                  @input="handleInput"
+                  maxlength="18"
+                  show-word-limit
+                ></el-input>
+                <el-button v-if="showRequireBtn" @click="getCompanyInfo" type="primary">获取企业信息</el-button>
+              </div>
+              <p class="small">请严格按照营业执照填写统一社会信用代码</p>
+            </el-form-item>
 
-                    <el-form-item label="公司注册名称：" prop="companyname">
-                      <el-input v-model="ruleForm.companyName"></el-input>
-                      <p class="small">请按照营业执照上登记的完整名称填写</p>
-                    </el-form-item>
-                    <el-form-item label="工商注册号：" prop="no">
-                      <el-input v-model="ruleForm.no"></el-input>
-                        <p class="small">确保与营业执照一致</p>
-                    </el-form-item>
-                    <el-form-item label="法定代表人：" prop="operName">
-                      <el-input v-model="ruleForm.operName"></el-input>
-                      <p class="small">确保与营业执照一致</p>
-                    </el-form-item>
-                    <el-form-item label="公司成立日期：" prop="startDate">
-                      <el-date-picker
-                        value-format="yyyy/MM/dd"
-                        format="yyyy/MM/dd"
-                        v-model="ruleForm.startDate"
-                        type="date"
-                        placeholder="选择日期"
-                      ></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="注册资本：" prop="registCapi">
-                      <el-input v-model="ruleForm.registCapi"></el-input>
-                      <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
-                    </el-form-item>
-                    <el-form-item label="营业期限：" prop="termsEnd">
-                      <el-date-picker
-                        v-model="ruleForm.tremsStart"
-                        type="date"
-                        placeholder="营业开始日期"
-                        style="margin-right:100px"
-                        value-format="yyyy/MM/dd"
-                        format="yyyy/MM/dd"
-                      ></el-date-picker>
-                      <el-date-picker
-                        v-model="ruleForm.termsEnd"
-                        value-format="yyyy/MM/dd"
-                        format="yyyy/MM/dd"
-                        type="date"
-                        placeholder="营业结束日期"
-                      ></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="公司详细地址：" prop="address">
-                        <el-input v-model="ruleForm.address"></el-input>
-                        <p class="small">填写与营业执照一致的地址</p>
-                    </el-form-item>
-              <el-form-item label="联系人：" prop="conName">
-                  <el-input v-model="ruleForm.conName"></el-input>
-              </el-form-item>
-              <el-form-item label="联系人手机号：" prop="telephone">
-                  <el-input v-model="ruleForm.telephone"></el-input>
-              </el-form-item>
+            <el-form-item label="公司注册名称：" prop="companyname">
+              <el-input v-model="ruleForm.companyName"></el-input>
+              <p class="small">请按照营业执照上登记的完整名称填写</p>
+            </el-form-item>
+            <el-form-item label="工商注册号：" prop="no">
+              <el-input v-model="ruleForm.no"></el-input>
+              <p class="small">确保与营业执照一致</p>
+            </el-form-item>
+            <el-form-item label="法定代表人：" prop="operName">
+              <el-input v-model="ruleForm.operName"></el-input>
+              <p class="small">确保与营业执照一致</p>
+            </el-form-item>
+            <el-form-item label="公司成立日期：" prop="startDate">
+              <el-date-picker
+                value-format="yyyy/MM/dd"
+                format="yyyy/MM/dd"
+                v-model="ruleForm.startDate"
+                type="date"
+                placeholder="选择日期"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="注册资本：" prop="registCapi">
+              <el-input v-model="ruleForm.registCapi"></el-input>
+              <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
+            </el-form-item>
+            <el-form-item label="营业期限：" prop="termsEnd">
+              <el-date-picker
+                v-model="ruleForm.tremsStart"
+                type="date"
+                placeholder="营业开始日期"
+                style="margin-right:100px"
+                value-format="yyyy/MM/dd"
+                format="yyyy/MM/dd"
+              ></el-date-picker>
+              <el-date-picker
+                v-model="ruleForm.termsEnd"
+                value-format="yyyy/MM/dd"
+                format="yyyy/MM/dd"
+                type="date"
+                placeholder="营业结束日期"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="公司详细地址：" prop="address">
+              <el-input v-model="ruleForm.address"></el-input>
+              <p class="small">填写与营业执照一致的地址</p>
+            </el-form-item>
+            <el-form-item label="联系人：" prop="conName">
+              <el-input v-model="ruleForm.conName"></el-input>
+            </el-form-item>
+            <el-form-item label="联系人手机号：" prop="telephone">
+              <el-input v-model="ruleForm.telephone"></el-input>
+            </el-form-item>
             <h3 class="tit-h3">企业资质上传（所有资质需要加盖红章）</h3>
             <div class="form2-item">
               <div class="title-up">
@@ -87,23 +92,6 @@
                 <p class="small">最新版营业执照，需加盖公司红章</p>
               </div>
               <div class="form-item-con">
-<!--                <el-form-item label="有效期：" prop="businesslicensestarttime">-->
-<!--                  <el-date-picker-->
-<!--                    v-model="ruleForm.businesslicensestarttime"-->
-<!--                    type="date"-->
-<!--                    placeholder="开始日期"-->
-<!--                    style="margin-right:100px"-->
-<!--                    value-format="yyyy/MM/dd"-->
-<!--                    format="yyyy/MM/dd"-->
-<!--                  ></el-date-picker>-->
-<!--                  <el-date-picker-->
-<!--                    v-model="ruleForm.businesslicenseendtime"-->
-<!--                    type="date"-->
-<!--                    placeholder="结束日期"-->
-<!--                    value-format="yyyy/MM/dd"-->
-<!--                    format="yyyy/MM/dd"-->
-<!--                  ></el-date-picker>-->
-<!--                </el-form-item>-->
                 <el-form-item label="营业执照上传：" prop="url">
                   <el-upload
                     class="upload-demo"
@@ -116,6 +104,7 @@
                     :on-success="successUpload1"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove1"
+                    :file-list="businessList"
                   >
                     <i class="el-icon-plus"></i>
                     <div
@@ -124,7 +113,7 @@
                     >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt>
+                    <img :src="exampleDiagram" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -140,7 +129,12 @@
               </div>
               <div class="form-item-con">
                 <el-form-item label="身份证：" prop="peopleId">
-                  <el-input v-model="ruleForm.peopleId" @input="handleInputNum"  maxlength="18" show-word-limit></el-input>
+                  <el-input
+                    v-model="ruleForm.peopleId"
+                    @input="handleInputNum"
+                    maxlength="18"
+                    show-word-limit
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="上传正面照片：" prop="idUrlA">
                   <el-upload
@@ -152,13 +146,14 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload2"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="idUrlAList"
                     :limit="1"
                     :on-remove="handleRemove2"
                   >
                     <i class="el-icon-plus"></i>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt>
+                    <img :src="exampleDiagram" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -172,6 +167,7 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload3"
                     :on-preview="handlePictureCardPreview"
+                    :file-list="idUrlBList"
                     :limit="1"
                     :on-remove="handleRemove3"
                   >
@@ -183,7 +179,7 @@
                   </el-upload>
 
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt>
+                    <img :src="exampleDiagram" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -211,6 +207,7 @@
                     :on-success="successUpload4"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove4"
+                    :file-list="taxUrlList"
                     :limit="1"
                   >
                     <i class="el-icon-plus"></i>
@@ -220,7 +217,7 @@
                     >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt>
+                    <img :src="exampleDiagram" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -230,13 +227,13 @@
         </div>
         <span class="dialog-footer">
           <span class="sure" @click="submitForm('ruleForm')">
-            <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt>
+            <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
             提交资料
           </span>
         </span>
       </div>
       <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt>
+        <img width="100%" :src="dialogImageUrl" alt />
       </el-dialog>
     </div>
   </div>
@@ -246,22 +243,21 @@
 </style>
 
 <script>
-
 // import "@/assets/css/ele-form.less";
 // import "@/assets/css/label-checkbox.less";
 import { baseURL } from "@/config";
 import { mapState, mapActions } from "vuex";
 import { formatDateTime } from "@/lib/utils";
 import VDistpicker from "v-distpicker";
-import {axios,FactoryEntry} from "../../../api/apiObj";
+import { axios, FactoryEntry } from "../../../api/apiObj";
 export default {
   name: "UpgradeLevel",
   data() {
     return {
-      count:0,
-      showRequireBtn:false,
-        showSetForm:false,
-      reCompanyInfo:{},
+      count: 0,
+      showRequireBtn: false,
+      showSetForm: false,
+      reCompanyInfo: {},
       checkboxChangeValue: false,
       checkboxChangeValue2: false,
       dialogImageUrl: "",
@@ -272,6 +268,10 @@ export default {
       province: "",
       city: "",
       area: "",
+      taxUrlList: [],
+      idUrlBList: [],
+      idUrlAList: [],
+      businessList: [],
       // 基本信息
       ruleForm: {
         // // 公司注册名称
@@ -318,7 +318,9 @@ export default {
 
       // 基本信息验证
       rules: {
-         address:[{required: true, message: "请输入公司注册地址", trigger: "blur" }],
+        address: [
+          { required: true, message: "请输入公司注册地址", trigger: "blur" }
+        ],
         companyName: [
           { required: true, message: "请输入公司名称", trigger: "blur" },
           {
@@ -328,14 +330,12 @@ export default {
           }
         ],
         no: [
-          { required: true, message: "请输入社会统一信用代码", trigger: "blur" },
+          { required: true, message: "请输入社会统一信用代码", trigger: "blur" }
         ],
         operName: [
           { required: true, message: "请输入法定代表人", trigger: "blur" }
         ],
-          conName: [
-              { required: true, message: "请输入联系人", trigger: "blur" }
-          ],
+        conName: [{ required: true, message: "请输入联系人", trigger: "blur" }],
         startDate: [
           {
             type: "string",
@@ -344,8 +344,8 @@ export default {
             trigger: "change"
           }
         ],
-          registCapi: [
-          { required: true, message: "请输入注册资本", trigger: "blur" },
+        registCapi: [
+          { required: true, message: "请输入注册资本", trigger: "blur" }
         ],
         tremsStart: [
           {
@@ -388,7 +388,7 @@ export default {
         //   { min: 2, message: "公司所在地最小为2个字符", trigger: "blur" }
         // ],
         address: [
-          { required: true, message: "请输入公司详细地址", trigger: "blur" },
+          { required: true, message: "请输入公司详细地址", trigger: "blur" }
         ],
         // businesslicensestarttime: [
         //   {
@@ -445,17 +445,37 @@ export default {
     };
   },
   components: { VDistpicker },
+  mounted() {
+    if (this.applyDetailEdit.id) {
+      console.log(this.applyDetailEdit, "编辑申请");
+      this.ruleForm = this.applyDetailEdit;
+      this.taxUrlList.push({
+        url: "http://auth.113ic.com/" + this.applyDetailEdit.url
+      });
+      this.idUrlBList.push({
+        url: "http://auth.113ic.com/" + this.applyDetailEdit.idUrlB
+      });
+      this.idUrlAList.push({
+        url: "http://auth.113ic.com/" + this.applyDetailEdit.idUrlA
+      });
+      this.businessList.push({
+        url: "http://auth.113ic.com/" + this.applyDetailEdit.url
+      });
+      console.log(this.taxUrlList);
+    }
+    this.ruleForm["residencetype"] = "4";
+    this.ruleForm = Object.assign({}, this.ruleForm);
+  },
   computed: {
+    ...mapState(["applyDetailEdit"]),
     access_token() {
       return sessionStorage.getItem("access_token");
     },
-      requestUrl() {
-          return (
-            baseURL +
-            `api-b/vipApply/uploadPicture?access_token=${
-              this.access_token
-            }&fileSource=QINIUYUN&type=5&id=1`
-          );
+    requestUrl() {
+      return (
+        baseURL +
+        `api-b/vipApply/uploadPicture?access_token=${this.access_token}&fileSource=QINIUYUN&type=5&id=1`
+      );
       // return (
       //   baseURL +
       //   `api-f/files/uploadWithCloud?access_token=${
@@ -467,81 +487,60 @@ export default {
 
   methods: {
     ...mapActions("OriginalFactoryEntry", ["GetInsertBrandReview"]),
-      handleInput(){
-          let obj =this.ruleForm.creditCode;
-          obj = obj.replace(/[\W]/g,'').toUpperCase();
-          this.$set(this.ruleForm,"creditCode",obj)
-          if(obj.length==18){
-              if(this.count<1 ){
-                  console.log("shixian")
-                  this.showRequireBtn=true;
-              }else {
-                  this.showSetForm=true;
-              }
+    handleInput() {
+      let obj = this.ruleForm.creditCode;
+      obj = obj.replace(/[\W]/g, "").toUpperCase();
+      this.$set(this.ruleForm, "creditCode", obj);
+      if (obj.length == 18) {
+        if (this.count < 1) {
+          console.log("shixian");
+          this.showRequireBtn = true;
+        } else {
+          this.showSetForm = true;
+        }
+      }
+    },
+    handleInputNum() {
+      let obj = this.ruleForm.peopleId;
+      obj = obj.replace(/[\W]/g, "");
+      this.$set(this.ruleForm, "peopleId", obj);
+    },
+    getCompanyInfo() {
+      let creditCode = this.ruleForm.creditCode;
+      axios
+        .request({
+          ...FactoryEntry.queryCompnayInfo,
+          params: {
+            creditNo: this.ruleForm.creditCode
           }
-
-      },
-      handleInputNum(){
-          let obj =this.ruleForm.peopleId;
-          obj = obj.replace(/[\W]/g,'');
-          this.$set(this.ruleForm,"peopleId",obj)
-      },
-      getCompanyInfo(){
-            let creditCode=this.ruleForm.creditCode
-        axios.request({...FactoryEntry.queryCompnayInfo,params:{
-                creditNo:this.ruleForm.creditCode
-            }}).then(res=>{
-                console.log(res)
-                if(res.data){
-                    this.ruleForm={
-                        ...this.ruleForm,
-                        ...res.data,
-                        creditCode:creditCode
-                    };
-                }
-                this.count++;
-                this.showRequireBtn=false;
         })
-      },
+        .then(res => {
+          console.log(res);
+          if (res.data) {
+            this.ruleForm = {
+              ...this.ruleForm,
+              ...res.data,
+              creditCode: creditCode
+            };
+          }
+          this.count++;
+          this.showRequireBtn = false;
+        });
+    },
     // 平台入驻的确定
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // this.ruleForm.access_token = this.access_token;
-          // this.ruleForm.isbusinesslicenseend = this.checkboxChangeValue;
-          // this.ruleForm.businesshours = this.checkboxChangeValue2;
-          // this.ruleForm.review = "0";
-          // // // 对上传多张图片的处理
-          // let ret = this.ruleForm.qualificationmapimg instanceof Array;
-          // if (ret) {
-          //   this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.join(
-          //     "@"
-          //   );
-          // }
-          // let ret2 = this.ruleForm.taxUrl instanceof Array;
-          // if (ret2) {
-          //   this.ruleForm.taxUrl = this.ruleForm.taxUrl.join("@");
-          // }
-            axios.request({...FactoryEntry.vipApply,method:"post",data:this.ruleForm}).then(res=>{
-                console.log(res)
+          axios
+            .request({
+              ...FactoryEntry.vipApply,
+              method: "post",
+              data: this.ruleForm
             })
-            return ;
-          this.GetInsertBrandReview(this.ruleForm)
             .then(res => {
-              this.$message({
-                type: "success",
-                message: res
-              });
-              this.$router.push({
-                path: "/OriginalFactoryEntry/WaitingAudit"
-              });
-            })
-            .catch(err => {
-
-              this.$message.error(err);
+              console.log(res);
             });
         } else {
-
           this.$message.error("请完善信息！");
           return false;
         }
@@ -557,9 +556,9 @@ export default {
     },
     // 资质上传图
     successUpload1(res) {
-        console.log(res)
-        console.log(this.ruleForm)
-        this.ruleForm.url=res.data;
+      console.log(res);
+      console.log(this.ruleForm);
+      this.ruleForm.url = res.data;
       // let ret = this.ruleForm.qualificationmapimg instanceof Array;
       // if (ret) {
       //   this.ruleForm.qualificationmapimg.push(response.name);
@@ -594,8 +593,8 @@ export default {
     },
     // 纳税资格人上传
     successUpload4(res) {
-        console.log(res)
-        this.ruleForm.taxUrl=res.data;
+      console.log(res);
+      this.ruleForm.taxUrl = res.data;
       //   return;
       // let ret = this.ruleForm.taxUrl instanceof Array;
       // if (ret) {
@@ -609,25 +608,22 @@ export default {
         type: "success"
       });
     },
-      handleRemove1(){
-        this.ruleForm.url=""
-      },
-      handleRemove2(){
-            this.ruleForm.idUrlA=""
-      },
-      handleRemove3(){
-            this.ruleForm.idUrlB=""
-      },
-      handleRemove4(file){
-        //将要删除的文件
-        console.log(file.response.data)
-          this.ruleForm.taxUrl=""
-
-      },
+    handleRemove1() {
+      this.ruleForm.url = "";
+    },
+    handleRemove2() {
+      this.ruleForm.idUrlA = "";
+    },
+    handleRemove3() {
+      this.ruleForm.idUrlB = "";
+    },
+    handleRemove4(file) {
+      //将要删除的文件
+      console.log(file.response.data);
+      this.ruleForm.taxUrl = "";
+    },
     distpicker(x) {
-      this.ruleForm.companyaddress = `${x.province.value}/${x.city.value}/${
-        x.area.value
-      }`;
+      this.ruleForm.companyaddress = `${x.province.value}/${x.city.value}/${x.area.value}`;
     },
     dateChange(x) {},
     // 预览图片
@@ -640,8 +636,7 @@ export default {
       this.dialogImageUrl = x;
       this.dialogVisible = true;
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 

@@ -6,6 +6,7 @@ import {
 } from '@/api/OriginalFactoryEntry'
 const state = {
   active: 1,
+  applyDetailEdit:{},
   //入驻的详细信息
   joinForm:localStorage.getItem('joinForm') ? JSON.parse(localStorage.getItem('joinForm')):{}
 }
