@@ -76,7 +76,7 @@
                 <span>钱包余额：</span>
                 <span class="red">￥{{UserInforma.userTagMap.wallet}}</span>
             </div>
-            <router-link to="/PersonalCenter/UpgradeLevel" tag="span">充值</router-link>
+            <router-link to="/PersonalCenter/deposit" tag="span">充值</router-link>
         </li>
         <li>
             <div>
@@ -86,7 +86,7 @@
                 <span>押&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</span>
                 <span class="red">￥{{UserInforma.userTagMap.deposit}}</span>
             </div>
-            <router-link to="/PersonalCenter/CredibiliForehead" tag="span">充值</router-link>
+            <router-link to="/PersonalCenter/deposit" tag="span">充值</router-link>
         </li>
         <li>
             <div>
@@ -103,7 +103,7 @@
           <span>
             <img src="@/assets/image/PersonalCenter/u65597.png" alt />
           </span>
-                <span>我的信用额度：</span>
+                <span>信用额度：</span>
                 <span class="num">￥190000</span>
                 <span>=</span>
                 <span class="num">￥13000</span>
@@ -112,6 +112,7 @@
                 <span>x10+</span>
                 <span class="num">￥10000</span>
             </div>
+            <router-link to="/PersonalCenter/CredibiliForehead" tag="span">详情</router-link>
         </li>
 
       <li>
