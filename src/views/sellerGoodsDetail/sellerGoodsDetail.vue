@@ -49,13 +49,14 @@
                         </div>
                     </div>
                     <div class="icon">
-                        <span><i class="el-icon-star-off" @click="addFocus"></i>关注</span>
-                        <span><i class="el-icon-circle-plus-outline" @click="addInquiry"></i>询价蓝</span>
+                        <span @click="addFocus" v-if="!sellerGoodsInfo.focus"><i class="el-icon-star-off" ></i>关注</span>
+                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>
                     </div>
                     <div class="btnwrap">
                         <span class=" btn bgColor" @click="purchase">立即购买</span>
                         <span class="btn orange" @click="specialPrice">申请特价</span>
                         <span class="btn gray" @click="addShopingCar">加入购物车</span>
+                        <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>
                     </div>
                     <div class="mark">
                         * 标注现货字样的商品需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准
@@ -105,7 +106,6 @@
     import { baseURL, baseURL2 } from "@/config";
     import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
     import {TimeForma2} from "../../lib/utils";
-
     export default {
         data(){
             return{
@@ -123,7 +123,7 @@
             }
         },
         created(){
-           let obj=sessionStorage.getItem('sellerGoodsDetail')
+           let obj=sessionStorage.getItem('sellerGoodsDetail');
             if(obj){
                 this.sellerGoodsInfo=JSON.parse(obj)
                 this.purchaseObj={
@@ -164,6 +164,7 @@
                 axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
                     this.parameterList=result.data.goodsinfo.list;
                     this.goodsinfo=result.data.goodsinfo
+                    this.sellerGoodsInfo.focus=result.data.goodsinfo.focus
                 })
             },
             addInquiry() {
@@ -191,7 +192,7 @@
                 }
                 let obj={
                     goods_id:this.sellerGoodsInfo.goods_id,
-                    catergory_id :this.sellerGoodsInfo.catergoryId,
+                    catergory_id :this.goodsinfo.classificationId,
                     favour_type: "1",
                 };
                 axios

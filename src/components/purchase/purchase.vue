@@ -1,8 +1,8 @@
 <template>
     <transition name="el-zoom-in-bottom">
-        <div class="transition-box purchase" @mouseleave="callback">
+        <div class="transition-box purchase" @mouseleave="callback" :class="mini?'min':''">
             <span class="close fr" @click="callback">&times;</span>
-            <div>
+            <div v-if="!mini">
                 <div class="info">
                     <p class="goodsName">{{item.goods_name}}</p>
                     <p>库存:{{item.stockcount}}</p>
@@ -13,6 +13,22 @@
                 <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
                 <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
                 <div class="btnWrap"><span class="btn" @click="submitPurchase">提交结算</span></div>
+            </div>
+            <div v-if="mini" class="mini">
+                <div class="top">
+                    <div>购买量</div>
+                    <div>单价</div>
+                    <div>总计</div>
+                    <div>操作</div>
+                </div>
+                <div class="bottom">
+                    <div>
+                        <el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
+                    </div>
+                    <div> <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
+                    <div><strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
+                    <div class="btnWrap"><span class="btn bgColor" @click="submitPurchase">提交结算</span></div>
+                </div>
             </div>
         </div>
     </transition>
@@ -31,6 +47,10 @@
             }
         },
         props:{
+            mini:{
+                type:Boolean,
+                default: false
+            },
             item:{
                 type:Object,
                 default:{
@@ -135,14 +155,6 @@
                     order_channe: 1,
                     pay_channe: 1,
                 }
-                if(!item.goods_type){
-                    //标识期货
-                    // obj={...obj,
-                    //     complete_date: item.complete_date,
-                    //     diliver_date: item.diliver_date,
-                    //     end_date: item.end_date
-                    // }
-                }
                 orderJson.push(obj)
                 let billObj = {
                     billtype: "1",
@@ -226,13 +238,49 @@
             .btnWrap{
                 margin-top:0;
                 .btn{
-                    background:#F22E2E;
-                    color:#fff;
                     line-height:45px;
                     padding:0 22px;
                     cursor: pointer;
                 }
             }
+        }
+        &.min{
+            min-width:auto;
+            top:100%;
+            height:100px;
+            padding:0;
+            .close{
+                position: absolute;
+                right:15px;
+                top:10px;
+            }
+            .mini{
+                display: block;
+                .top,.bottom{
+                    margin-top:0;
+                text-align: center;
+                    display: flex;
+                    width:100%;
+                    align-items: center;
+                    &>div{
+                        flex:1;
+                    }
+                }
+                .top{
+                    height:40px;
+                    line-height:40px;
+                    background:#f4f4f4;
+                }
+                .bottom{
+                    padding:15px 0;
+                    .btn{
+                        line-height:30px;
+                        border-radius: 3px;
+                        padding:0 15px;
+                    }
+                }
+            }
+
         }
     }
 </style>
