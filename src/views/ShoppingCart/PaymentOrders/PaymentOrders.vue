@@ -20,15 +20,11 @@
                 <img :src="val.imgUrl" alt   />
                 <div v-if="val.name" class="nameDesc">{{val.name}}</div>
             </div>
-
           </li>
         </ul>
       </div>
-
         <div>
-
       </div>
-
       <div class="pay-price">
         <span class="pay-price-l">*请在 23小时59分钟 以内支付完成，如未完成此订单将自动关闭。需重新购买！</span>
         <div class="pay-price-r">

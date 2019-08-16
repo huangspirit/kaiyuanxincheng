@@ -210,7 +210,7 @@
                 </div>
             </div>
             <ul class="clear allWidth">
-                <template  v-for="(item,index) in originFactoryList">
+                <template  v-for="(item,index) in originFactoryList" >
                     <router-link
                         :to="{
                                path:'/BrandDetail',
@@ -221,13 +221,15 @@
                                 }
                                   }"
                         tag="li"
-                        :key="`BrandList_${item.id}`"
+                        :key="index"
                         @click="sendLink(item)"
                         :class="(index+1)%5==0?'rightCoverFlag':'leftCoverFlag'"
-                        @mouseleave="item.show=false"
-                        @mouseenter="item.show=true"
+
                     >
-                        <div class="wrap">
+                        <div class="wrap"
+                             @mouseleave="item.show=false"
+                             @mouseenter="item.show=true"
+                        >
                             <ImgE :src="item.imgurl" :W="300" :H="150"></ImgE>
                             <transition name="el-zoom-in-left">
                                 <div class="coverFlag clear bgColor" v-show="item.show">

@@ -197,10 +197,9 @@
 </style>
 
 <script>
-
 import { mapState, mapActions } from "vuex";
-import "@/assets/css/ele-form.less";
-import "@/assets/css/label-checkbox.less";
+// import "@/assets/css/ele-form.less";
+// import "@/assets/css/label-checkbox.less";
 import { setInterval, clearInterval } from "timers";
 import { baseURL } from "@/config";
 export default {

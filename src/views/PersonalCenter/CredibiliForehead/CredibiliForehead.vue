@@ -83,9 +83,19 @@
 </template>
 
 <script>
-
 export default {
-  name: "CredibiliForehead"
+  name: "CredibiliForehead",
+    data(){
+      return{
+          UserInforma:{
+
+          }
+      }
+    },
+    created() {
+
+    }
+
 };
 </script>
 <style lang="less" scoped>

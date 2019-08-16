@@ -1,6 +1,6 @@
 
 <template>
-  <div id="Footer">
+  <div id="Footer" class="bgGray">
     <div class="footer-con">
       <div class="footer-t">
         <ul>

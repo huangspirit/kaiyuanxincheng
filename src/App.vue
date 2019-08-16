@@ -91,6 +91,9 @@ export default {
         background: #df3f2f;
         color:#fff;
     }
+    .bgGray{
+        background:#4f4f4f ;
+    }
     a{
         cursor: pointer;
         color:#0d94fb;

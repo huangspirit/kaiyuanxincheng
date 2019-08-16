@@ -1,5 +1,5 @@
 <template>
-  <div class="PersonalCenter" id="PersonalCenter">
+  <div class="PersonalCenter bgGray" id="PersonalCenter">
     <div class="sideMenu">
       <SideMenu :list="list"></SideMenu>
     </div>
@@ -148,7 +148,7 @@ export default {
             {
               title: "个人资料",
               index: "3-1",
-              path: "/PersonalCenter/PersonalData",
+              path: "/PersonalCenter/PersonalSet",
               icon: require("@/assets/image/PersonalCenter/u37980.png")
             },
             // {

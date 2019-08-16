@@ -4,7 +4,7 @@
       default-active="1"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#4A5A6A"
+      background-color="#4f4f4f"
       text-color="#fff"
       active-text-color="#3da8f5"
       :unique-opened='true'
@@ -44,7 +44,7 @@
         <p></p>
       </div>
       <span slot="footer" class="dialog-footer ruzhu">
-        
+
         <span @click="dialogVisible = false" class="close">取消</span>
         <span @click="ensure" class="ensure">立刻进行商家入驻</span>
       </span>
@@ -109,7 +109,7 @@ export default {
   color:#fff;
   font-size:16px;
   .ensure{
-    
+
     background: #4a5a6a;
     padding: 6px 15px;
     margin-bottom:20px;
