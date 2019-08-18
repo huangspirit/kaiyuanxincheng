@@ -320,7 +320,8 @@
                 catergoryTotal:0,
                 productTotal:0,
                 screenHeight:0,
-                isSeller:false
+                isSeller:false,
+                str:'<form name=\"punchout_form\" method=\"post\" action=\"https://openapi.alipay.com/gateway.do?charset=utf-8&method=alipay.trade.page.pay&sign=H6XVJfabXfPY5k3j2rTgqVm2Hzriu9APD%2FLUhrSKAnhHvZ7kV9Ojw%2FKpdeoXCT7%2BzkFxuMijaqaof1WvcOA8GfPEW%2BWHXrmyxJ7cI0MAFnDa0OsagJgFf7EI1sw%2BgMVhD6ECKQbIS7ijgzwcbF%2FGMMUwYx2zmPnZaXJqdyMR%2FHjzIPNrLQ%2F96n8%2FTNTeWo19m2Gj3NtOT6WiHIhlg6TbNAO68JB4NwBM6Q1JwzNdWwCrTaSJQXk7uNpxYO4H8SC%2B4Zc1RsvXXB%2FMtcSDfGBciRNa%2BoX0cUuFAbWouVHaF2EGT6huKy8eK0HrJXcW%2B3ioTRyLXzPwYbLV59awgpgGaQ%3D%3D&return_url=https%3A%2F%2Fapi.113ic.com%2Fapi-order%2Falipay%2FsycNotisfy&notify_url=https%3A%2F%2Fapi.113ic.com%2Fapi-order%2Falipay%2Fnotisfy&version=1.0&app_id=2019062965765189&sign_type=RSA2&timestamp=2019-08-16+19%3A56%3A31&alipay_sdk=alipay-sdk-java-dynamicVersionNo&format=json\">↵<input type=\"hidden\" name=\"biz_content\" value=\"{&quot;out_trade_no&quot;:&quot;JY-71201908161900&quot;,&quot;total_amount&quot;:&quot;33.90&quot;,&quot;subject&quot;:&quot;订单JY-71201908161900共1种商品&quot;,&quot;timeout_express&quot;:&quot;5m&quot;,&quot;product_code&quot;:&quot;FAST_INSTANT_TRADE_PAY&quot;}\">↵<input type=\"submit\" value=\"立即支付\" style=\"display:none\" >↵</form>↵<script>document.forms[0].submit();</script>'
             }
         },
         computed:{
