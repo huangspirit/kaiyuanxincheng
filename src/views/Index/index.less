@@ -5,6 +5,33 @@
     left:0;
     z-index:99;
     width:100%;
+    ul{
+      height:28px;
+      overflow: hidden;
+      li{
+        float:left;
+        position: relative;
+        h3{
+          float: left;
+          white-space: nowrap;
+          position: absolute;
+          height:28px;
+          font-size:16px;
+          line-height: 28px;
+        }
+      }
+      &.animFalse{
+        h3{
+          right:-100%;
+        }
+      }
+      &.anim{
+          h3{
+            right:100%;
+            transition: all 20s linear 0s;
+          }
+      }
+    }
     /deep/.el-carousel__indicators{
       display:none;
     }
@@ -592,10 +619,11 @@
         }
       }
       .prodclass-m {
-        background: #fff;
         float: left;
         padding: 0 60px;
         flex:1;
+        background:url("../../assets/image/banner/bg_2.png") 0 0 no-repeat;
+        background-size: 100% 100%;
         .wrap{
           border-bottom:1px solid #d5d5d5;
           width:100%;

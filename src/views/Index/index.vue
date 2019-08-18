@@ -1,18 +1,23 @@
 <template>
     <div class="index " >
-        <div class="message" :class="headerFxed?'headerFxed':''">
+        <div class="message bgColor" :class="headerFxed?'headerFxed':''" v-if="messageList.length">
             <el-carousel
                 height="28px"
                 class="bgColor"
-                :interval="5000"
+                :interval="100000"
                 v-if="messageList.length"
-                direction="vertical"
                 :loop="true"
             >
                 <el-carousel-item v-for="(item,k) in messageList" :key="k">
-                    <h3 class="small allWidth"><img src="@/assets/image/home/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>
+                    <ul class="clear" :class="animate1?'anim':'animFalse'" >
+                        <li :style="'width:'+screenWidth+'px'" class="clear">
+                            <h3 class="small"><img src="@/assets/image/index/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>
+                        </li>
+                    </ul>
+<!--                    <h3 class="small"><img src="@/assets/image/index/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>-->
                 </el-carousel-item>
             </el-carousel>
+
         </div>
         <div class="banner">
             <!-- <p class="tit">用芯链接世界</p> -->
@@ -44,7 +49,7 @@
             <ul class="list">
                 <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k">
                     <span class="mark" v-if="item.tag==1">
-                        <img src="@/assets/image/home/tag.png" alt="">
+                        <img src="@/assets/image/index/tag.png" alt="">
                     </span>
                     <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
                     <div class="wrapImg">
@@ -55,7 +60,7 @@
                     <div class="info">
                         <div class="time clear" v-if="!item.seller_always && item.expireTime">
                             <span class="fl">
-                                <img src="@/assets/image/home/timer.png" alt="">
+                                <img src="@/assets/image/index/timer.png" alt="">
                                 距离特价结束：
                             </span>
                             <CountTime
@@ -248,7 +253,7 @@
             <div class="prodclass-con clear allWidth">
                 <div class="prodclass-l bgColor">
                     <p>
-                        <img src="@/assets/image/home/u1491.png" alt>
+                        <img src="@/assets/image/index/u1491.png" alt>
                         产品分类
                     </p>
                     <ul>
@@ -311,6 +316,7 @@
                 //
                 interval:null,
                 animate:false,
+                animate1:false,
                 //分类
                 CatergoryList:[],
                 catergoryBrandList:[],
@@ -320,6 +326,7 @@
                 catergoryTotal:0,
                 productTotal:0,
                 screenHeight:0,
+                screenWidth:0,
                 isSeller:false
             }
         },
@@ -354,15 +361,32 @@
                  await this.queryCatergoryHomePage(0)
             },
             querySysMessage(){
+                var _this=this;
                 axios.request({...common.querySysMessage,params:{
-                    length:10,
+                        length:10,
                         start:0,
                         is_enable:true
                     }}).then(res=>{
+
                      if(res.data.total==1){
                         this.messageList=[...res.data.data,...res.data.data]
                     }else if(res.data.total>1){
                         this.messageList=res.data.data
+                    }
+                    if(res.data.total){
+                        setTimeout(()=>{
+                            _this.animate1=true;
+                        },0)
+                        setInterval(function(){
+                            _this.animate1=false;
+                         // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+                           setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+                                _this.messageList.push(_this.messageList[0]);  // 将数组的第一个元素添加到数组的
+                                _this.messageList.shift();               //删除数组的第一个元素
+                               // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+                               _this.animate1=true;
+                            },0)
+                        },20200)
                     }
                 })
             },
@@ -517,6 +541,15 @@
                     this.animate=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
                 },500)
             },
+
+            scroll1(){
+                this.animate1=true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+                setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+                    this.messageList.push(this.messageList[0]);  // 将数组的第一个元素添加到数组的
+                    this.messageList.shift();               //删除数组的第一个元素
+                    this.animate1=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+                },4999)
+            },
             //加入购物车
             addCar(item){
                 let obj={
@@ -533,7 +566,7 @@
             countDownE_cb(){
                 console.log("计时器回调")
                //重新获取特价商品//
-                //this.getSpecialOfferList();
+                this.getSpecialOfferList();
             },
             pulish(){
                 //发布呆料
@@ -558,8 +591,6 @@
             },
             chipSellerGoodsDetal(item){
                 //跳转商品详情
-                console.log("tiaopu")
-                console.log(item)
                 sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))
                 this.$router.push("/sellerGoodsDetail")
             }
@@ -567,9 +598,8 @@
         },
         mounted(){
             if (sessionStorage.getItem("access_token")) {
-                // this.$store.state.loginState = true;
+
                 this.setloginState(true)
-                //  this.$store.dispatch("setloginState",true)
                 this.GetUserInforma({
                     access_token: sessionStorage.getItem("access_token")
                 }).then(res => {
@@ -584,6 +614,7 @@
             }
 
             this.screenHeight=window.screen.height;
+            this.screenWidth=window.screen.width;
             this.$store.state.headerFxed = false;
             // 滚动监听
             window.addEventListener("scroll", this.handleScroll);
