@@ -79,7 +79,6 @@
       <div slot="footer" class="dialog-footer fr">
            <el-button @click="showDialog = false">取 消</el-button>
            <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button>
-            <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
   </div>
