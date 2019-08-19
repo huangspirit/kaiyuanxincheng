@@ -16,7 +16,7 @@
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/home/tag.png" alt="">
                     </span>
-                        <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
+<!--                        <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>-->
                         <div class="wrapImg" @click="chipSellerGoodsDetal(item)" >
                             <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
                             </ImgE>
@@ -74,7 +74,7 @@
                                 <span>当前剩余{{item.goodsStockCount}}</span>
                                 <strong class="color fr">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}</strong>
                             </div>
-                            <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
+<!--                            <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>-->
                         </div>
                     </li>
                 </ul>

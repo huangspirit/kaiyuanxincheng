@@ -25,7 +25,7 @@
               共有
               <span class="num">{{oneData.map.totalSeller}}</span>
               个供应商报价
-              <span v-if="oneData.map.totalSeller != 0" class="num">￥2.5——￥4.0</span>
+              <span v-if="oneData.map.totalSeller != 0" class="num">{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
             </p>
           </div>
           <div v-if="oneData.factorySellerInfo.priceType== undefined " class="LadderPrice">

@@ -31,7 +31,7 @@
                           </div>
                           <div ><p class="line"></p></div>
                           <div class="fl">
-                              <p v-if="goodsinfo.factorySellerInfo.deliverTime ">预计交期：{{goodsinfo.factorySellerInfo.deliverTime | formatDate}}</p>
+                              <p v-if="goodsinfo.factorySellerInfo.complete_date ">预计交期：{{goodsinfo.factorySellerInfo.complete_date | formatDate}}</p>
                               <p v-if="goodsinfo.factorySellerInfo.day_interval ">预计交期：{{goodsinfo.factorySellerInfo.day_interval}}天后交货</p>
                               <p>交货地址：{{goodsinfo.factorySellerInfo.diliver_place}}</p>
                           </div>
@@ -49,9 +49,9 @@
                       <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>
                   </div>
                   <div class="btnwrap">
-                      <span class=" btn bgColor" @click="purchase" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.day_interval">立即购买</span>
+                      <span class=" btn bgColor" @click="purchase" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place">立即购买</span>
                       <span class="btn orange" @click="specialPrice">申请特价</span>
-                      <span class="btn gray" @click="addShopingCar"  v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.day_interval">加入购物车</span>
+                      <span class="btn gray" @click="addShopingCar"  v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place">加入购物车</span>
                       <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>
                   </div>
                   <div class="mark">
@@ -350,7 +350,8 @@ export default {
               sellerGoodsId: this.goodsinfo.factorySellerInfo.seller_goods_id,
               sellerId:this.goodsinfo.factorySellerInfo.seller_id,
               goodsSource: "1",
-              goodsName:this.goodsinfo.productno
+              goodsName:this.goodsinfo.productno,
+              goodsId:this.goodsinfo.id
           };
           axios
               .request({ ...shoppingCar.insertShoppingCar, params: obj })
@@ -373,6 +374,7 @@ export default {
           let factorySellerInfo=this.goodsinfo.factorySellerInfo
           factorySellerInfo.priceType=factorySellerInfo.price_type
           factorySellerInfo.priceLevel=factorySellerInfo.price_level
+          factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
           this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
           this.$router.push("/InquiryBasket/ApplySpecialPrice");
       }

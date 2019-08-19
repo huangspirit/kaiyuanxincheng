@@ -3,7 +3,7 @@
         <div class="message bgColor" :class="headerFxed?'headerFxed':''" v-if="messageList.length">
             <el-carousel
                 height="28px"
-                :interval="100000"
+                :interval="200000"
                 v-if="messageList.length"
                 :loop="true"
             >

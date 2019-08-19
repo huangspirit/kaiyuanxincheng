@@ -191,8 +191,10 @@
                     name:this.sellerGoodsInfo.goods_name
                 }
                 axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
+
                     this.parameterList=result.data.goodsinfo.list;
-                    this.goodsinfo=result.data.goodsinfo
+                    this.goodsinfo=result.data.goodsinfo;
+                    console.log( this.goodsinfo)
                     this.sellerGoodsInfo.focus=result.data.goodsinfo.focus
                 })
             },
@@ -241,7 +243,8 @@
                     sellerGoodsId: this.sellerGoodsInfo.id,
                     sellerId:this.sellerGoodsInfo.sellerId,
                     goodsSource: "1",
-                    goodsName:this.sellerGoodsInfo.goods_name
+                    goodsName:this.sellerGoodsInfo.goods_name,
+                    goodsId:this.goodsinfo.id
                 };
                 axios
                     .request({ ...shoppingCar.insertShoppingCar, params: obj })
@@ -263,7 +266,8 @@
                 }
                 let factorySellerInfo=this.goodsinfo.factorySellerInfo
                 factorySellerInfo.priceType=factorySellerInfo.price_type
-                factorySellerInfo.priceLevel=factorySellerInfo.price_level
+                factorySellerInfo.priceLevel=factorySellerInfo.price_level;
+                factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
                 this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
                 this.$router.push("/InquiryBasket/ApplySpecialPrice");
             },
