@@ -344,8 +344,12 @@ export default {
           message: "充值失败"
         });
       }
+      let path = this.$route.path;
+      this.$router.push({
+        path: path
+      });
     }
-    this.GetAllAddress();
+    this.GetAllAddress(); 
     this.all();
   },
   methods: {

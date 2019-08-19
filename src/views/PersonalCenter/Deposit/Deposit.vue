@@ -97,7 +97,7 @@ export default {
     getWechatPayVip() {
       console.log(this.amount);
       var obj = {
-        amount: 1
+        amount: this.amount
       };
       axios
         .request({ ...topupDeposit.getWechatPayVip, params: obj })
@@ -116,7 +116,7 @@ export default {
     },
     pagePayDeposit() {
       var obj = {
-        amount: 1
+        amount: this.amount
       };
 
       console.log(this.$refs);
