@@ -346,14 +346,13 @@ export default {
     }
   },
   mounted() {
-      if(this.$route.query.code=="success"){
-          let path=this.$route.path
-          this.$message.success("订单支付成功")
-          this.$router.push({
-              path:path,
-
-          })
-      }
+    if (this.$route.query.code == "success") {
+      let path = this.$route.path;
+      this.$message.success("订单支付成功");
+      this.$router.push({
+        path: path
+      });
+    }
     this.orderParams = {
       start: this.start,
       length: this.pageSize

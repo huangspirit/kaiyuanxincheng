@@ -2,211 +2,96 @@
     min-height: 800px;
     background: #fff;
     padding: 20px;
-    margin:30px auto;
+    margin: 30px auto;
     position: relative;
+
     .Additional-con {
         overflow: hidden;
-        width:80%;
-        margin:0 auto;
-        h3{
-            font-size:18px;
-            margin-bottom:20px;
+        width: 70%;
+        margin: 0 auto;
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
         }
-        h4{
-            font-weight:bolder;
-            margin-bottom:10px;
+
+        h4 {
+            font-weight: bolder;
+            margin-bottom: 10px;
         }
-        .brand-authorization{
-            padding-left:40px;
-            margin-bottom:20px;
-            .small{
-                font-size:14px;
-                padding-left:20px;
-                margin-bottom:10px;
+
+        .brand-authorization {
+            padding-left: 40px;
+            margin-bottom: 20px;
+
+            .small {
+                font-size: 14px;
+                padding-left: 20px;
+                margin-bottom: 10px;
             }
         }
     }
-    .uploadImg{
-        /deep/ .el-form-item__content{
-            display:flex;
-            .upload-demo{
-                flex:1;
+
+    /deep/ .el-form-item__content {
+        display: flex;
+
+        .upload-demo {
+            flex: 1;
+        }
+
+        .example-diagram {
+            height: 150px;
+            position: relative;
+
+            &:after {
+                display: block;
+                content: "示例图";
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                color: #fff;
+                line-height: 150px;
+                text-align: center;
+                top: 0;
+                left: 0;
             }
-            .example-diagram{
-                height:150px;
-                position:relative;
-                &:after{
-                    display: block;
-                    content:"示例图";
-                    position:absolute;
-                    height: 100%;
-                    width:100%;
-                    background:rgba(0,0,0,0.5);
-                    color:#fff;
-                    line-height: 150px;
-                    text-align: center;
-                    top:0;
-                    left:0;
-                }
-                img{
-                    height:100%;
-                }
+
+            img {
+                height: 100%;
             }
         }
     }
-    .Add-footer{
-        width:50%;
-        max-width:400px;
-        margin:0 auto;
+
+    .Add-footer {
+        width: 50%;
+        max-width: 400px;
+        margin: 0 auto;
         line-height: 50px;
         text-align: center;
-        color:#fff;
-        .ensure{
-            background:#0068db;
+        color: #fff;
+
+        .ensure {
+            background: #0068db;
             cursor: pointer;
-            margin-bottom:15px;
-            &:hover{
-                color:peru;
+            margin-bottom: 15px;
+
+            &:hover {
+                color: peru;
                 font-weight: bold;
                 transition: all 0.2s;
             }
         }
-        .cancle{
+
+        .cancle {
             background: #aeaeae;
             cursor: pointer;
-            &:hover{
-                color:peru;
+
+            &:hover {
+                color: peru;
                 font-weight: bold;
                 transition: all 0.2s;
             }
         }
     }
-    //.small{
-    //  font-size: 14px;
-    //  color: #aeaeae;
-    //  height: 20px;
-    //  line-height: 20px;
-    //
-    //}
-    //.h-sp {
-    //    font-size: 28px;
-    //    color: rgba(0, 0, 0, 0.7);
-    //    margin-bottom: 30px;
-    //
-    //}
-    //
-    //.red-sp {
-    //    color: #cc0000;
-    //}
-    //
-    //.long-time {
-    //    width: 100px;
-    //    float: right;
-    //    height: 60px;
-    //    line-height: 60px;
-    //    display: flex;
-    //    justify-content: space-between;
-    //    align-items: center;
-    //
-    //    span {
-    //        font-size: 28px;
-    //        color: #4A5A6A;
-    //    }
-    //}
-    //
-    //.download-template {
-    //    padding: 20px 0;
-    //
-    //    span {
-    //        color: #0068db;
-    //    }
-    //}
-    //
-    //.el-upload--picture-card {
-    //    width: 102px;
-    //    height: 102px;
-    //    line-height: 102px;
-    //}
-    //
-    //.el-upload-list--picture-card .el-upload-list__item  {
-    //    width: 102px;
-    //    height: 102px;
-    //    font-size: 12px;
-    //    color: #aeaeae;
-    //}
-    //.el-input__inner{
-    //    height: 60px;
-    //    line-height: 60px;
-    //}
-    //
-    //.brand-authorization {
-    //    padding-left: 100px;
-    //    width: 880px;
-    //}
-    //
-    //// 示例图
-    //.example-diagram {
-    //    width: 102px;
-    //    height: 102px;
-    //    position: relative;
-    //    float: right;
-    //
-    //    &>img {
-    //        width: 102px;
-    //        height: 102px;
-    //        position: absolute;
-    //        top: 0;
-    //        left: 0;
-    //    }
-    //
-    //    &>span {
-    //        width: 102px;
-    //        height: 102px;
-    //        line-height: 102px;
-    //        text-align: center;
-    //        background: rgba(0, 0, 0, 0.5);
-    //        position: absolute;
-    //        top: 0;
-    //        left: 0;
-    //        z-index: 10;
-    //        color: #fff;
-    //        cursor: pointer;
-    //    }
-    //}
-    //
-    //.form-sp-item {
-    //    padding-bottom: 40px;
-    //    border-bottom: 1px solid #ddd;
-    //    margin-bottom: 40px;
-    //}
-    //
-    //.Add-footer {
-    //    width: 100%;
-    //    overflow: hidden;
-    //    float: left;
-    //    display: flex;
-    //    justify-content: space-around;
-    //    flex-direction: column;
-    //    align-items: center;
-    //
-    //    span {
-    //        width: 700px;
-    //        height: 90px;
-    //        line-height: 90px;
-    //        text-align: center;
-    //        color: #fff;
-    //        font-size: 28px;
-    //        margin-bottom: 20px;
-    //        cursor: pointer;
-    //        background: #0068db;
-    //
-    //        &:hover {
-    //            font-size: 30px;
-    //        }
-    //    }
-    //
-    //    .cancel {
-    //        background: #aeaeae;
-    //    }
-    //}
 }

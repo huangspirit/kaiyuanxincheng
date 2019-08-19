@@ -10,7 +10,8 @@ const router = new Router({
     routes
 })
 router.beforeEach((to, from, next) => {
-    if (from.path != '/PersonalCenter/GetVipApplyDetail') {
+    if (from.path == '/PersonalCenter/GetVipApplyDetail' || from.path == '/PersonalCenter/AgencyQualification') {
+    } else {
         store.dispatch("applyEdit", {});
     }
     if (from.path == '/PersonalCenter/GetVipApplyDetail' && to.path == "/OriginalFactoryEntry" ||

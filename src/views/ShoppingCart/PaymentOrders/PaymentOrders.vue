@@ -65,6 +65,26 @@
         <el-form  label-width="80px">
           <el-form-item label="汇款编号">
             <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input>
+            <el-upload
+              class="upload-demo"
+              ref="upload"
+              :limit="1"
+              :action="requestUrl"
+              :auto-upload="true"
+              list-type="picture-card"
+              :before-upload="beforeAvatarUpload"
+              :on-success="handleAvatarSuccess"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :file-list="businessList"
+            >
+              <i class="el-icon-plus"></i>
+              <div
+                slot="tip"
+                class="el-upload__tip"
+              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+            </el-upload>
+
           </el-form-item>
           </el-form>
         <div class="desc">
@@ -77,8 +97,8 @@
       </div>
       </div>
       <div slot="footer" class="dialog-footer fr">
-           <el-button @click="showDialog = false">取 消</el-button>
-           <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button>
+           <!-- <el-button @click="showDialog = false">取 消</el-button>
+           <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
       </div>
     </SetTankuang>
   </div>
@@ -89,6 +109,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { baseURL } from "@/config";
 import { setInterval, clearInterval } from 'timers';
 export default {
   name: "PaymentOrders",
@@ -133,13 +154,20 @@ export default {
         //   name: "我的余额",
         //   id: 3
         // }
-      ]
+      ],
+      businessList:[]
     };
   },
   computed: {
     access_token() {
-      return localStorage.getItem("access_token");
-    }
+      return sessionStorage.getItem("access_token");
+    },
+     requestUrl() {
+        return (
+          baseURL +
+          `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.orderNumber}`
+        );
+      },
   },
   filters:{
     payTypeFilter(val){
@@ -284,21 +312,49 @@ export default {
       }
     },
     //上传银行
-    submitBankPayNumberbtn(){
-      if(!this.bankPayNumber){
-        this.$message("请填写好汇款编号")
-        return;
-      }
-        this.submitBankPayNumber({
-          bank_transfer_no:this.bankPayNumber,
-          order_no:this.orderNumber
-        }).then(res=>{
-          this.showDialog=false
+    // submitBankPayNumberbtn(){
+    //   if(!this.bankPayNumber){
+    //     this.$message("请填写好汇款编号")
+    //     return;
+    //   }
+    //     this.submitBankPayNumber({
+    //       order_no:this.orderNumber
+    //     }).then(res=>{
+    //       this.showDialog=false
+    //       this.$router.push("/PersonalCenter/BuyerOrderManagement")
+    //     })
+    // },
+    handleAvatarSuccess(res, file) {
+      console.log(res, file)
+        if(res.resuiltCode =='200'){
+            this.$message({
+              type:'success',
+              message:'上传成功，等待审核'
+            })
+            this.showDialog=false
           this.$router.push("/PersonalCenter/BuyerOrderManagement")
-        })
-    },
+        }
+      },
+      beforeAvatarUpload(file) {
+        // const isJPG = file.type === 'image/jpeg';
+        // const isLt2M = file.size / 1024 / 1024 < 2;
+
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        // }
+        // return isJPG && isLt2M;
+      },
+       handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+       handlePictureCardPreview(file) {
+        console.log(file);
+      },
+     
     closeDialogCallBack(){
-      console.log("guanbi")
        this.showDialog=false
     }
   }

@@ -232,9 +232,24 @@ const topupDeposit = {
     pagePayDeposit: {
         url: 'api-order/alipay/pagePayDeposit'
     }
-
-
-
+}
+const agentFication = {
+    // 获取资质图列表
+    getQualificationList: {
+        url: "api-b/customerCenter/getQualificationList"
+    },
+    // 新增资质图
+    saveQualificationList: {
+        url: "api-b/customerCenter/saveQualificationList"
+    },
+    // 编辑资质图
+    updateQualificationList: {
+        url: "api-b/customerCenter/updateQualificationList"
+    },
+    // 删除资质图
+    delQualificationList: {
+        url: 'api-b/customerCenter/delQualificationList'
+    }
 }
 export {
     axios,
@@ -250,5 +265,6 @@ export {
     FactoryEntry,
     presonalAdress,
     personCenter,
-    topupDeposit
+    topupDeposit,
+    agentFication
 }

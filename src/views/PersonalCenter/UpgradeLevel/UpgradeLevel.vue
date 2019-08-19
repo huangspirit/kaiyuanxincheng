@@ -450,16 +450,16 @@ export default {
       console.log(this.applyDetailEdit, "编辑申请");
       this.ruleForm = this.applyDetailEdit;
       this.taxUrlList.push({
-        url: "http://auth.113ic.com/" + this.applyDetailEdit.url
+        url: baseURL + this.applyDetailEdit.url
       });
       this.idUrlBList.push({
-        url: "http://auth.113ic.com/" + this.applyDetailEdit.idUrlB
+        url: baseURL + this.applyDetailEdit.idUrlB
       });
       this.idUrlAList.push({
-        url: "http://auth.113ic.com/" + this.applyDetailEdit.idUrlA
+        url: baseURL + this.applyDetailEdit.idUrlA
       });
       this.businessList.push({
-        url: "http://auth.113ic.com/" + this.applyDetailEdit.url
+        url: baseURL + this.applyDetailEdit.url
       });
       console.log(this.taxUrlList);
     }
@@ -476,12 +476,6 @@ export default {
         baseURL +
         `api-b/vipApply/uploadPicture?access_token=${this.access_token}&fileSource=QINIUYUN&type=5&id=1`
       );
-      // return (
-      //   baseURL +
-      //   `api-f/files/uploadWithCloud?access_token=${
-      //     this.access_token
-      //   }&fileSource=QINIUYUN&type=5&id=1`
-      // );
     }
   },
 
@@ -540,7 +534,7 @@ export default {
             .then(res => {
               console.log(res);
               this.$message.success("提交成功");
-              this.$router.push('/PersonalCenter/GetVipApplyDetail')
+              this.$router.push("/PersonalCenter/GetVipApplyDetail");
             });
         } else {
           this.$message.error("请完善信息！");

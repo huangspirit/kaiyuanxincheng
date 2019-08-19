@@ -21,8 +21,11 @@
           />
         </span>
         <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo!=item.lastPayNo">
-          <strong>预付款编号:</strong>
-          {{item.orderVo.firtPayNo}}
+          <strong>预付款凭证:</strong>
+          <img
+            @click="PrvExampleDiagram(item.orderVo.firtPayNo)"
+            :src="item.orderVo.firtPayNo + '?imageView2/2/w/80/h/80'"
+          />
           <img
             :src="payTypeMark[item.orderVo.prePayChannel]['imgurl']"
             class="payTypeMark"
@@ -30,8 +33,11 @@
           />
         </span>
         <span v-if="item.orderVo.lastPayNo && item.orderVo.firtPayNo!=item.orderVo.lastPayNo">
-          <strong>尾款款编号:</strong>
-          {{item.orderVo.lastPayNo}}
+          <strong>尾款凭证:</strong>
+          <img
+            @click="PrvExampleDiagram(item.orderVo.lastPayNo)"
+            :src="item.orderVo.lastPayNo + '?imageView2/2/w/80/h/80'"
+          />
           <img
             :src="payTypeMark[item.orderVo.lastPayChannel]['imgurl']"
             class="payTypeMark"
@@ -147,10 +153,16 @@
               <div class="wrapbtn" v-if="item.orderVo.finalPayButton">
                 <span @click="payment(1)">去付尾款</span>
               </div>
-              <div class="wrapbtn" v-if="item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">
+              <div
+                class="wrapbtn"
+                v-if="item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
+              >
                 <span @click="vipPayment">全额付款</span>
               </div>
-              <div class="wrapbtn" v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">
+              <div
+                class="wrapbtn"
+                v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
+              >
                 <span @click="payment(2)">全额付款</span>
               </div>
               <div class="wrapbtn cancleBtn" v-if="item.orderVo.cancelButton">
@@ -462,6 +474,9 @@
         <iframe :src="downloadUrl2" frameborder="0" width="100%" height="600px"></iframe>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="imgDialogVisible">
+      <img height="600" width="100%;" :src="dialogImageUrl" alt />
+    </el-dialog>
   </div>
 </template>
 
@@ -519,7 +534,9 @@ export default {
       currentStatus: 0,
       //物流列表
       expressList: [],
-      currentSecondOrder: {}
+      currentSecondOrder: {},
+      dialogImageUrl: "",
+      imgDialogVisible: false
     };
   },
   props: {
@@ -711,7 +728,7 @@ export default {
         type: "success",
         message: "上传成功"
       });
-      this.$parent.all()
+      this.$parent.all();
       // this.$emit("successFlagHandel");
     },
     // 上传合同之前的验证
@@ -771,6 +788,11 @@ export default {
           return (item.createtime = TimeForma(item.createtime));
         });
       });
+    },
+    // 展开示例图图片
+    PrvExampleDiagram(src) {
+      this.dialogImageUrl = src;
+      this.imgDialogVisible = true;
     }
   },
   computed: {
@@ -845,7 +867,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.item,'1111')
+    console.log(this.item, "1111");
   }
 };
 </script>

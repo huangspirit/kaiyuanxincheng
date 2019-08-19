@@ -23,7 +23,7 @@
           label-width="150px"
           class="demo-ruleForm"
         >
-          <el-form-item label="选择品牌：" prop="brand">
+          <el-form-item label="选择品牌：" prop="brandName">
             <el-select
               v-model="ruleForm.brandName"
               multiple
@@ -32,28 +32,21 @@
               @focus="FindBrand"
             ></el-select>
           </el-form-item>
-        </el-form>
-        <div class="form-sp-item">
-          <h3 class="h-sp">代理商资质上传（所有资质需要加盖红章）</h3>
-          <div class="brand-authorization">
-            <h4 class="h-sp">
-              <span class="red-sp">*</span>
-              品牌授权书
-            </h4>
-            <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
-            <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
-            <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
-            <p class="download-template">
-              <a>下载模板</a>
-            </p>
-          </div>
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="200px"
-            class="demo-ruleForm"
-          >
+
+          <div class="form-sp-item">
+            <h3 class="h-sp">代理商资质上传（所有资质需要加盖红章）</h3>
+            <div class="brand-authorization">
+              <h4 class="h-sp">
+                <span class="red-sp">*</span>
+                品牌授权书
+              </h4>
+              <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
+              <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
+              <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
+              <p class="download-template">
+                <a>下载模板</a>
+              </p>
+            </div>
             <el-form-item label="有效期：" prop="timeStart">
               <el-date-picker
                 v-model="ruleForm.timeStart"
@@ -63,7 +56,7 @@
               ></el-date-picker>
               <el-date-picker v-model="ruleForm.timeEnd" type="date" placeholder="结束日期"></el-date-picker>
             </el-form-item>
-            <el-form-item label="资质图上传：" class="uploadImg">
+            <el-form-item label="资质图上传：" class="qualificationMap">
               <el-upload
                 class="upload-demo"
                 ref="upload"
@@ -73,6 +66,8 @@
                 :before-upload="beforeAvatarUpload"
                 :on-success="successUpload"
                 :on-preview="handlePictureCardPreview"
+                :file-list="qualificationMapList"
+                :limit="1"
               >
                 <i class="el-icon-plus"></i>
                 <div
@@ -81,12 +76,11 @@
                 >图片迟训请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
               </el-upload>
               <div class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                <img :src="exampleDiagram" alt>
+                <img :src="exampleDiagram" alt />
               </div>
             </el-form-item>
-          </el-form>
-        </div>
-
+          </div>
+        </el-form>
         <div class="Add-footer">
           <p @click="submitForm('ruleForm')" class="ensure">保存并提交</p>
           <p @click="cancelBack" class="cancle">取消，返回上一步</p>
@@ -94,7 +88,7 @@
       </div>
     </div>
     <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt>
+      <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
     <router-view></router-view>
   </div>
@@ -103,11 +97,9 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
-
 import SelectBrand from "_c/SelectBrand";
-
 import { baseURL } from "@/config";
+import { axios, agentFication } from "@/api/apiObj";
 export default {
   name: "AdditionalQualifications",
   data() {
@@ -122,6 +114,7 @@ export default {
       exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
       // 预览图片
       dialogVisible: false,
+      qualificationMapList: [],
       ruleForm: {
         // 选择品牌的名字
         brandName: [],
@@ -135,9 +128,12 @@ export default {
         qualificationMap: ""
       },
       rules: {
-        brand: [{ required: true, message: "请选择品牌", trigger: "blur" }],
-        termValidity: [
-          { required: true, message: "请选择有效期", trigger: "blur" }
+        brandName: [{ required: true, message: "请选择品牌", trigger: "blur" }],
+        timeStart: [
+          { required: true, message: "请选择开始日期", trigger: "blur" }
+        ],
+        timeEnd: [
+          { required: true, message: "请选择结束日期", trigger: "blur" }
         ],
         qualificationMap: [
           { required: true, message: "请上传资质图", trigger: "blur" }
@@ -149,15 +145,14 @@ export default {
     SelectBrand
   },
   computed: {
+    ...mapState(["applyDetailEdit"]),
     access_token() {
       return sessionStorage.getItem("access_token");
     },
     url() {
       return (
         baseURL +
-        `api-f/files/uploadWithCloud?access_token=${
-          this.access_token
-        }&fileSource=QINIUYUN&type=6&id=1`
+        `api-b/vipApply/uploadPicture?access_token=${this.access_token}&fileSource=QINIUYUN&type=5&id=1`
       );
     }
   },
@@ -171,11 +166,14 @@ export default {
       let arr = [];
       let arrName = [];
       EndselectBrandList.forEach(item => {
-        arr.push(item.id);
-        arrName.push(item.brand);
+        if (item.id) {
+          arr.push(item.id);
+          arrName.push(item.brand);
+        }
       });
       this.ruleForm.brandName = arrName;
-      this.ruleForm.brand = arr.join(",");
+      this.ruleForm.brand = arr.join("@");
+      console.log(this.ruleForm);
     },
     // 取消选择的品牌
     CancelBrand() {
@@ -191,6 +189,8 @@ export default {
     },
     // 资质上传图
     successUpload(response) {
+      console.log(response);
+      this.ruleForm.qualificationMap = response.data;
       this.$message({
         message: "上传成功!",
         type: "success"
@@ -206,16 +206,61 @@ export default {
       this.dialogImageUrl = x;
       this.dialogVisible = true;
     },
+    formatDate(date) {
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      var hour = date.getHours();
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      return year + "-" + month + "-" + day;
+    },
     // 保存并提交
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
+        console.log(valid);
+        var brandNameInfo = this.ruleForm.brandName.join("@");
         if (valid) {
-
-          this.$router.push({
-            path: "/PersonalCenter/SuccessfulAddiQualifica"
-          });
+          var obj = {
+            brandId: this.ruleForm.brand,
+            brandName: brandNameInfo,
+            qualificationImg: this.ruleForm.qualificationMap,
+            startTime: this.ruleForm.timeStart,
+            endTime: this.ruleForm.timeEnd
+          };
+          console.log(obj);
+          if (this.applyDetailEdit.id) {
+            obj['id'] = this.applyDetailEdit.id
+            axios
+              .request({
+                ...agentFication.updateQualificationList,
+                params: obj
+              })
+              .then(res => {
+                console.log(res);
+                if (res.resultCode == "200") {
+                  this.$router.push({
+                    path: "/PersonalCenter/AgencyQualification"
+                  });
+                }
+              });
+          } else {
+            axios
+              .request({
+                ...agentFication.saveQualificationList,
+                params: obj
+              })
+              .then(res => {
+                console.log(res);
+                if (res.resultCode == "200") {
+                  this.$router.push({
+                    path: "/PersonalCenter/AgencyQualification"
+                  });
+                }
+              });
+          }
         } else {
-          this.$message.error('请完善信息!')
+          this.$message.error("请完善信息!");
           return false;
         }
       });
@@ -226,17 +271,18 @@ export default {
     }
   },
   mounted() {
-    let addBrandName = this.$route.query;
-    if (addBrandName) {
-      this.ruleForm.brandName.push(addBrandName.brand);
-      this.EndselectBrandList.push(addBrandName);
-    }
+    console.log(this.ruleForm, this.applyDetailEdit, baseURL);
+    this.ruleForm.brand = this.applyDetailEdit.brandId;
+    this.ruleForm.brandName = this.applyDetailEdit.brandName.split(",");
+    this.ruleForm.timeStart = this.applyDetailEdit.startTime;
+    this.ruleForm.timeEnd = this.applyDetailEdit.endTime;
+    var qualificationImgUrl = this.applyDetailEdit.qualificationImg;
   }
 };
 </script>
 
 <style lang="less" scoped>
-  @import "./AdditionalQualifications.less";
-  @import "../../../assets/css/ele-form.less";
+@import "./AdditionalQualifications.less";
+@import "../../../assets/css/ele-form.less";
 </style>
 
