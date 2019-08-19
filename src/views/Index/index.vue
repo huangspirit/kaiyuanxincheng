@@ -3,7 +3,6 @@
         <div class="message bgColor" :class="headerFxed?'headerFxed':''" v-if="messageList.length">
             <el-carousel
                 height="28px"
-                class="bgColor"
                 :interval="100000"
                 v-if="messageList.length"
                 :loop="true"
@@ -52,7 +51,7 @@
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
                     <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
-                    <div class="wrapImg">
+                    <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
                         <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
@@ -132,7 +131,7 @@
                     </div>
                         <ul class="originGoodsList fl">
                             <li v-for="item in originGoodsList">
-                                <ImgE :src="item.goodsImageUrl" :W="250" :H="150">
+                                <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  @click="chipSellerGoodsDetal(item)">
                                 </ImgE>
                                 <div class="goodsInfo">
                                     <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
@@ -182,7 +181,7 @@
                     </ul>
                     <ol>
                         <li v-for="item in oldProductList">
-                            <div  @click="chipSellerGoodsDetal(item)"   :title="item.goods_name" class="goodsName">{{item.goods_name}}</div>
+                            <p  @click="chipSellerGoodsDetal(item)"   :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
                             <div>{{item.brandName}}</div>
                             <div>{{item.goodsStockCount}}</div>
                             <div>{{item.diliverPlace}}</div>

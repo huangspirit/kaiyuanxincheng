@@ -124,20 +124,18 @@
             },
             getCategroy(){
                 axios.request({...home.queryDirectC,params:{
-                        "special_price":"false",
-                        "goods_type":"true",
+                        goods_type:"false",
                         start:0,
                         length:10
                     }}).then(res=>{
-                        this.categoryList=res.data.list;
+                    this.categoryList=res.data.list;
                 })
             },
             getSpecialOfferList(categoryId){
                 let obj={
                     start:this.start,
                     length:this.pageSize,
-                    special_price:false,
-                    goods_type:true,
+                    goods_type:false,
                     status:1,
                     catergory_id:categoryId
                 }
@@ -168,5 +166,5 @@
     }
 </script>
 <style scoped lang="less">
-    @import "./specialPrice.less";
+    @import "./futures.less";
 </style>

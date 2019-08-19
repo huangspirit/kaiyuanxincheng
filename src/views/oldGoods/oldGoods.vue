@@ -11,23 +11,32 @@
                 </ul>
             </div>
             <div class="goodsList" >
-                <ul class="list">
-                    <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k">
-                    <span class="mark" v-if="item.tag==1">
-                        <img src="@/assets/image/home/tag.png" alt="">
-                    </span>
-                        <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
-                        <div class="wrapImg" @click="chipSellerGoodsDetal(item)" >
-                            <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
+                <ul class="list clear">
+                    <li v-for="(item,k) in specialList" class="item clear" :class="(k+1)%2==0?'noMargin':''" :key="k">
+                        <div class="wrapImg fl" @click="chipSellerGoodsDetal(item)">
+                            <ImgE :src="item.goodsImageUrl" :W="300" :H="300">
                             </ImgE>
-                            <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
                         </div>
-                        <div class="info">
+                        <div class="info fl" @click="chipSellerGoodsDetal(item)">
+                            <div  class="goodsName">{{item.goods_name}}</div>
+                            <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
+                            <div>
+                                <div class="count">
+                                    <span>MOQ :&nbsp;{{item.moq}}</span>
+                                    <span>MPQ :&nbsp;{{item.mpq}}</span>
+                                    <span>剩 : {{item.goodsStockCount}}</span>
+                                </div>
+                            </div>
+                            <div class="mark">
+                                <span class="mark" v-if="item.tag==1">原厂</span>
+                                <span>{{item.diliverPlace}}交货</span>
+                                <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
+                            </div>
                             <div class="time clear" v-if="!item.seller_always && item.expireTime">
-                            <span class="fl">
-                                <img src="@/assets/image/home/timer.png" alt="">
-                                距离特价结束：
-                            </span>
+                                <span class="fl">
+                                    <img src="@/assets/image/home/timer.png" alt="">
+                                    距离特价结束：
+                                </span>
                                 <CountTime
                                     class="fl"
                                     v-on:end_callback="countDownE_cb()"
@@ -43,38 +52,7 @@
                                     :secondsTxt="'秒'"></CountTime>
                             </div>
                             <div v-if="item.seller_always" class="time">长期售卖</div>
-                            <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
-                            <div>
-                                <div class="sellerInfo fr">
-                                    <p class="img"><img :src="item.userImgeUrl" alt=""></p>
-                                    <p>{{item.sellerName}}</p>
-                                </div>
-                                <router-link
-                                    :to="{
-                                path:'/BrandDetail',
-                                query:{
-                                  tag:'brand',
-                                  name:item.brandName,
-                                  documentid:item.brandId
-                                }
-                              }"
-                                    tag="div"
-                                    class="brand"
-                                >
-                                    {{item.brandName}}
-                                </router-link>
-                                <div class="count"><span>MOQ:&nbsp;{{item.moq}}</span><span>MPQ:&nbsp;{{item.mpq}}</span></div>
-                                <div class="place">
-                                    <span v-if="item.deliverTime">预计于{{item.deliverTime | formatDate}}</span>
-                                    <span v-if="item.day_interval">{{item.day_interval}}天后</span>
-                                    &nbsp;{{item.diliverPlace}}交货
-                                </div>
-                            </div>
-                            <div class="stockCount">
-                                <span>当前剩余{{item.goodsStockCount}}</span>
-                                <strong class="color fr">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}</strong>
-                            </div>
-                            <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
+                            <div @click.stop="addCar(item)" class="btn bgColor">加入购物车</div>
                         </div>
                     </li>
                 </ul>
@@ -85,13 +63,13 @@
 </template>
 <script>
     import {ladderPrice} from "../../lib/utils";
-    import {axios,home} from "../../api/apiObj";
+    import {axios,home,shoppingCar} from "../../api/apiObj";
     export default {
         data(){
             return {
                 specialList:[],
                 categoryList:[],
-                pageSize:9,
+                pageSize:6,
                 currentPage:1,
                 selectedK:-1,
                 showGetMore:true
@@ -124,20 +102,18 @@
             },
             getCategroy(){
                 axios.request({...home.queryDirectC,params:{
-                        "special_price":"false",
-                        "goods_type":"true",
+                        is_old_product:"true",
                         start:0,
                         length:10
                     }}).then(res=>{
-                        this.categoryList=res.data.list;
+                    this.categoryList=res.data.list;
                 })
             },
             getSpecialOfferList(categoryId){
                 let obj={
                     start:this.start,
                     length:this.pageSize,
-                    special_price:false,
-                    goods_type:true,
+                    is_old_product:true,
                     status:1,
                     catergory_id:categoryId
                 }
@@ -163,10 +139,23 @@
                     category=this.categoryList[this.selectedK].id
                 }
                 this.getSpecialOfferList(category)
-            }
+            },
+            //加入购物车
+            addCar(item){
+                let obj={
+                    sellerId:item.sellerId,
+                    sellerGoodsId:item.id,
+                    goodsSource:1,
+                    goodsName:item.goods_name,
+                    goodsId:item.goods_id
+                }
+                axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
+                    this.$message.success("已加入购物车")
+                })
+            },
         }
     }
 </script>
 <style scoped lang="less">
-    @import "./specialPrice.less";
+    @import "./oldGoods.less";
 </style>
