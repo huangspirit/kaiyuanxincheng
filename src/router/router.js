@@ -1,7 +1,6 @@
 import Home from '@/views/Home'
 import Index from "@/views/Index"
 export default [
-
     // 首页
     // {
     //     path: '/',
@@ -41,7 +40,7 @@ export default [
     {
         path: '/order',
         name: 'order',
-        component: () => import('@/views/specialPrice'),
+        component: () => import('@/views/futures'),
         meta: {
             title: '订货拼单'
         }
@@ -50,7 +49,7 @@ export default [
     {
         path: '/oldGoods',
         name: 'oldGoods',
-        component: () => import('@/views/specialPrice'),
+        component: () => import('@/views/oldGoods'),
         meta: {
             title: '呆料掘金'
         }

@@ -2,25 +2,7 @@
   <div class="brand" id="brand">
     <!-- banner -->
     <div class="banner">
-      <img src="@/assets/image/brand/u3555.jpg" alt class="bg" />
-      <div class="text">
-        <p>1800+知名品牌的选择</p>
-        <ul>
-          <li>
-            <img src="@/assets/image/brand/u3561.png" alt />
-            <span>可靠</span>
-          </li>
-          <li>
-            <img src="@/assets/image/brand/u3563.png" alt />
-            <span>可信</span>
-          </li>
-          <li>
-            <img src="@/assets/image/brand/u3565.png" alt />
-            <span>安全</span>
-          </li>
-        </ul>
-      </div>
-      <div class="mask"></div>
+      <img src="@/assets/image/brand/bg.jpg" alt class="bg" @click="joinOriginFactory"/>
     </div>
     <!-- 最新入驻 -->
     <div class="prodclass-r">
@@ -37,7 +19,7 @@
     <div class="all-brands">
       <p class="tit">全部品牌</p>
       <div class="china-settledin">
-        <span class="settledin">我是原厂，现在入驻</span>
+<!--        <span class="settledin">我是原厂，现在入驻</span>-->
         <div class="china-xin">
           <img src="@/assets/image/brand/u3748.png" alt />
           <span>中国芯</span>
@@ -56,7 +38,21 @@
         <p v-if="!findBrandList">暂无数据</p>
         <ul v-if="findBrandList" v-for="(item,index) in findBrandListKey" :key="index">
           <h3 :id="item">{{item}}</h3>
-          <li v-for="(subitem,k) in findBrandList[item]" :key="k">{{subitem.brand}}</li>
+            <router-link
+                tag="li"
+                v-for="(subitem,k) in findBrandList[item]"
+                :key="k"
+                :to="{
+                path:'/BrandDetail',
+                query:{
+                tag:'brand',
+                documentid:subitem.id,
+                name:subitem.brand
+                }
+                }"
+            >
+                {{subitem.brand}}
+            </router-link>
         </ul>
       </div>
     </div>
@@ -78,8 +74,8 @@
 </style>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import Swiper from "swiper";
+// import { mapState, mapGetters, mapActions } from "vuex";
+// import Swiper from "swiper";
 import { axios, home } from "@/api/apiObj";
 import "../../../node_modules/swiper/dist/css/swiper.css";
 export default {
@@ -94,7 +90,8 @@ export default {
       siderListShow: false
     };
   },
-  computed: {},
+  computed: {
+  },
   mounted() {
     this.getBrandList();
     window.addEventListener("scroll", this.handleScroll);
@@ -103,7 +100,21 @@ export default {
     window.removeEventListener("scroll", this.handleScroll); //  离开页面清除（移除）滚轮滚动事件
   },
   methods: {
-    handleScroll() {
+      joinOriginFactory(){
+          //入驻原厂
+          let UserInforma=sessionStorage.getItem("UserInforma")
+          if(UserInforma){
+              UserInforma=JSON.parse(UserInforma)
+              if(UserInforma.userTagMap.seller){
+                  this.$message.success("您已入驻！")
+              }else{
+                  this.$router.push("/OriginalFactoryEntry")
+              }
+          }else{
+              this.$router.push("/Login")
+          }
+      },
+      handleScroll() {
       let scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||

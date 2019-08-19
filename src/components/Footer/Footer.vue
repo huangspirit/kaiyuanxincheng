@@ -79,10 +79,10 @@
           </ul>
         </div>
         <div class="item code">
-          <p>小程序</p>
           <img src="@/assets/image/home/u1697.png" alt>
-          <p>公众号</p>
+            <p>小程序</p>
           <img src="@/assets/image/home/u1697.png" alt>
+            <p>公众号</p>
         </div>
       </div>
       <div class="friendslink ">

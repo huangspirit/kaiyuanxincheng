@@ -70,7 +70,7 @@
                 <div class="detail-informan-con">
                     <p class="tit">
                         <span>技术参数</span>
-                        <span>产品手册</span>
+                        <span>产品手册<i class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></i></span>
                     </p>
                     <ul class="parameter clear">
                         <li>
@@ -100,6 +100,26 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            title=""
+            :visible.sync="dialogVisible"
+            width="70%"
+        >
+            <div
+                v-loading="loading"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.8)">
+                <iframe
+                    id="ifra1"
+                    :src="datasheet"
+                    frameborder="0"
+                    width="100%"
+                    height="600px"
+                    v-if="datasheet"
+                ></iframe>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -119,7 +139,8 @@
                 downDatasheet: "",
                 // loading
                 loading: true,
-                showPurchase:false
+                showPurchase:false,
+                dialogVisible:false
             }
         },
         created(){
@@ -155,6 +176,14 @@
             this.searchDatasheet(this.sellerGoodsInfo.goods_id)
         },
         methods:{
+            openBig(){
+                this.loading=true;
+                this.dialogVisible=true;
+                var _this=this;
+                setTimeout(function(){
+                    _this.loading=false
+                },3000)
+            },
             getDetail(){
                 let obj={
                     id:this.sellerGoodsInfo.goods_id,

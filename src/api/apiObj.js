@@ -34,7 +34,12 @@ const home = {
     //获取分类
     queryCatergoryHomePage: {
         url: "api-g/gods-anon/queryCatergoryHomePage"
+    },
+    //获取特价直供的分类
+    queryDirectC:{
+        url:"api-g/gods-anon/queryDirectC"
     }
+
 }
 const buyerOrderCenter = {
     //确认更改交期

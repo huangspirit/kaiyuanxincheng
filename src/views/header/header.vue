@@ -1,6 +1,6 @@
 <template>
     <div class="header" :class="headerFxed?'headerFxed':''">
-        <div class="header-c allWidth clear">
+        <div class="header-c clear">
             <router-link to="/" tag="div" class="logo fl">
                 <h1 class="logoText">芯手网</h1>
                 <img src="@/assets/logo.png" alt>

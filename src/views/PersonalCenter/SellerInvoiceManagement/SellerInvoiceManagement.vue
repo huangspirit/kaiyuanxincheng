@@ -40,7 +40,10 @@
             <span style="width:8%">当前状态</span>
             <span style="width:20%">{{currentModule.val?'发票信息':'操作'}}</span>
         </p>
-          <div class="list-item" v-for="item in list" :key="item.id">
+            <div v-if="list.length==0" class="nocontent">
+                暂无内容
+            </div>
+          <div class="list-item" v-for="item in list" :key="item.id" >
             <div class="list-item-tit">
               <span class="phon">批次号：<strong>{{item.goods_seller_no}}</strong></span>
 <!--              <span class="inform fr">-->
@@ -184,7 +187,7 @@ export default {
           val:true
       },
       currentPage:1,
-      pageSize:1,
+      pageSize:5,
       total:0,
         list:[],
         //开发票
