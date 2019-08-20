@@ -76,7 +76,7 @@
                 <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                 <span
                   v-if="listItem.map.totalSeller != 0"
-                >￥{{listItem.map.minPrice}} ------ ￥{{listItem.map.maxPrice}}</span>
+                >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
               </p>
             </div>
             <div class="goodPrice">

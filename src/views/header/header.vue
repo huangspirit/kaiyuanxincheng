@@ -97,7 +97,7 @@
             },
             PersonalCenter() {
                 this.$router.push({
-                    path: "/PersonalCenter/SellerCenter"
+                    path: "/PersonalCenter"
                 });
             },
         }

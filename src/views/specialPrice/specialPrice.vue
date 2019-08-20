@@ -14,7 +14,7 @@
                 <ul class="list">
                     <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k">
                     <span class="mark" v-if="item.tag==1">
-                        <img src="@/assets/image/home/tag.png" alt="">
+                        <img src="@/assets/image/index/tag.png" alt="">
                     </span>
 <!--                        <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>-->
                         <div class="wrapImg" @click="chipSellerGoodsDetal(item)" >
@@ -25,7 +25,7 @@
                         <div class="info">
                             <div class="time clear" v-if="!item.seller_always && item.expireTime">
                             <span class="fl">
-                                <img src="@/assets/image/home/timer.png" alt="">
+                                <img src="@/assets/image/index/timer.png" alt="">
                                 距离特价结束：
                             </span>
                                 <CountTime

@@ -79,9 +79,9 @@
           </ul>
         </div>
         <div class="item code">
-          <img src="@/assets/image/home/u1697.png" alt>
+          <img src="@/assets/image/footer/u1697.png" alt>
             <p>小程序</p>
-          <img src="@/assets/image/home/u1697.png" alt>
+          <img src="@/assets/image/footer/u1697.png" alt>
             <p>公众号</p>
         </div>
       </div>

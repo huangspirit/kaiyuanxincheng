@@ -131,7 +131,6 @@ const actions = {
   }, data) {
     return new Promise((resolve, reject) => {
       UserInforma(data).then(res => {
-          console.log("通过token拿用户信息：",res)
         sessionStorage.setItem("UserInforma",JSON.stringify(res))
         commit('GetUserInforma', res)
        resolve(res)

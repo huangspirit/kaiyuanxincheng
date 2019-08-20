@@ -15,7 +15,7 @@
         >
           <span class="text">{{item.catergoryId | catergoryIdFilter}} <span class="num">({{item.summaryTotal}})</span>      </span>
           <div class="select">
-            <img src="@/assets/image/home/u1076.png" alt>
+            <img src="@/assets/image/index/u1076.png" alt>
           </div>
         </li>
       </ul>

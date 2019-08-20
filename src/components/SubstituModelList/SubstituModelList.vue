@@ -8,10 +8,7 @@
                     <img src="@/assets/image/brandDetail/u4504.png" alt />
                     申请特价
                 </ButtonIcon>
-<!--                <ButtonIcon :width="100" :height="40" @click="focus(k)" v-if="!item.focus">-->
-<!--                    <img src="@/assets/image/brandDetail/_u4510.png" alt />-->
-<!--                    +关注-->
-<!--                </ButtonIcon>-->
+
 
 <!--                <ButtonIcon :width="145" :height="50">-->
 <!--                    <img src="@/assets/image/brandDetail/u4504.png" alt />-->
@@ -163,7 +160,9 @@ export default {
           }else if(factorySellerInfo.priceLevel){
               factorySellerInfo.priceList=ladderPrice(factorySellerInfo.priceLevel)
           }
-          console.log({...item,factorySellerInfo:factorySellerInfo})
+          if(factorySellerInfo.seckil_price){
+              factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
+          }
           let obj={goodsbaseIno:{...item,factorySellerInfo:factorySellerInfo}}
           this.$store.dispatch("promation", obj);
           this.$router.push("/InquiryBasket/ApplySpecialPrice");

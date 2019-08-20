@@ -185,7 +185,7 @@
           <div class="add-car" @click="addCar">+加购物车</div>
         </div>
         <span class="close" @click="colse">
-          <img src="@/assets/image/home/u172.png" alt>
+         <i class="el-icon-circle-close"></i>
         </span>
       </div>
     </li>
