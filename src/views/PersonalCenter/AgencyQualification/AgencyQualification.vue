@@ -26,9 +26,9 @@
             </td>
             <td>
               <div>
-                {{item.startTime}}
+                {{item.startTime | formatDate(item.startTime)}}
                 至
-                {{item.endTime}}
+                {{item.endTime | formatDate(item.endTime)}}
               </div>
             </td>
             <td>
@@ -51,6 +51,17 @@
           </tr>
         </tbody>
       </table>
+      <p style="text-align:center;line-height:45px;" v-if="qualificationList.length<=0">暂无数据</p>
+      <div class="Pagination" v-if="qualificationList.length>0">
+        <!-- 分页 -->
+        <el-pagination
+          layout="prev, pager, next, jumper"
+          :page-size="pageSize"
+          :total="total"
+          background
+          @current-change="change"
+        ></el-pagination>
+      </div>
     </div>
     <!-- 撤销资质模态框 -->
     <SetTankuang :title="'撤销资质提示'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
@@ -82,23 +93,34 @@ export default {
       ViewMapUrl: require("@/assets/image/PersonalCenter/u118165.png"),
       dialogImageUrl: "",
       qualificationList: [],
-      deleteFicationId: ""
+      deleteFicationId: "",
+      total: 0,
+      pageSize: 10,
+      currentPage: 0,
+      start: 0
     };
   },
   mounted() {
     this.getQualificationList();
+  },
+  filters: {
+   
   },
   methods: {
     getQualificationList() {
       axios
         .request({
           ...agentFication.getQualificationList,
-          params: { start: 0, length: 10 }
+          params: { start: this.start, length: this.pageSize }
         })
         .then(res => {
           console.log(res);
           if (res.resultCode == "200") {
-            this.qualificationList = res.data.data;
+            this.qualificationList = [];
+            if (res.data != null) {
+              this.qualificationList = res.data.data;
+              this.total = res.data.total;
+            }
           }
         });
     },
@@ -116,12 +138,14 @@ export default {
           console.log(res);
           if (res.resultCode == "200") {
             this.dialogVisible = false;
+            this.$message.success("撤销成功");
+            this.getQualificationList();
           }
         });
     },
     EditQualifica(item) {
       console.log(item, "编辑");
-      this.$store.dispatch('applyEdit',item)
+      this.$store.dispatch("applyEdit", item);
       this.$router.push({
         path: "/PersonalCenter/AdditionalQualifications"
       });
@@ -130,6 +154,11 @@ export default {
     ViewMap(item) {
       this.dialogVisible2 = true;
       this.dialogImageUrl = item;
+    },
+    change(val) {
+      console.log(val);
+      this.start = (val - 1) * this.pageSize;
+      this.getQualificationList()
     }
   },
   destroyed() {

@@ -475,7 +475,7 @@
       </div>
     </el-dialog>
     <el-dialog :visible.sync="imgDialogVisible">
-      <img height="600" width="100%;" :src="dialogImageUrl" alt />
+      <img width="100%;" :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
 </template>

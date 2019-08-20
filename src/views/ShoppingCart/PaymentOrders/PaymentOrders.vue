@@ -63,8 +63,8 @@
       <div class="dialog-body" slot="dialog-body">
         <div v-if="payTabFlag==2" class="RemittancNotes" >
         <el-form  label-width="80px">
-          <el-form-item label="汇款编号">
-            <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input>
+          <el-form-item label="汇款凭证">
+            <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
             <el-upload
               class="upload-demo"
               ref="upload"
@@ -326,7 +326,7 @@ export default {
     // },
     handleAvatarSuccess(res, file) {
       console.log(res, file)
-        if(res.resuiltCode =='200'){
+        if(res.resultCode =='200'){
             this.$message({
               type:'success',
               message:'上传成功，等待审核'

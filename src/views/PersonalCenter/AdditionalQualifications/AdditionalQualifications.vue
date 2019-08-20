@@ -28,7 +28,7 @@
               v-model="ruleForm.brandName"
               multiple
               placeholder="请选择"
-              :multiple-limit="3"
+              :multiple-limit="1"
               @focus="FindBrand"
             ></el-select>
           </el-form-item>
@@ -165,14 +165,31 @@ export default {
       this.selectBrandFlag = false;
       let arr = [];
       let arrName = [];
-      EndselectBrandList.forEach(item => {
-        if (item.id) {
-          arr.push(item.id);
-          arrName.push(item.brand);
-        }
-      });
-      this.ruleForm.brandName = arrName;
-      this.ruleForm.brand = arr.join("@");
+      if (EndselectBrandList.length > 1) {
+        this.$message({
+          type: "warning",
+          message: "新增资质只能选择一个品牌"
+        });
+        EndselectBrandList.splice(0, 1);
+        EndselectBrandList.forEach(item => {
+          if (item.id) {
+            arr.push(item.id);
+            arrName.push(item.brand);
+          }
+        });
+        this.ruleForm.brandName = arrName;
+        this.ruleForm.brand = arr.join("@");
+      } else {
+        EndselectBrandList.forEach(item => {
+          if (item.id) {
+            arr.push(item.id);
+            arrName.push(item.brand);
+          }
+        });
+        this.ruleForm.brandName = arrName;
+        this.ruleForm.brand = arr.join("@");
+      }
+
       console.log(this.ruleForm);
     },
     // 取消选择的品牌
@@ -206,15 +223,6 @@ export default {
       this.dialogImageUrl = x;
       this.dialogVisible = true;
     },
-    formatDate(date) {
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
-      var hour = date.getHours();
-      var minute = date.getMinutes();
-      var second = date.getSeconds();
-      return year + "-" + month + "-" + day;
-    },
     // 保存并提交
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -230,7 +238,7 @@ export default {
           };
           console.log(obj);
           if (this.applyDetailEdit.id) {
-            obj['id'] = this.applyDetailEdit.id
+            obj["id"] = this.applyDetailEdit.id;
             axios
               .request({
                 ...agentFication.updateQualificationList,
@@ -272,11 +280,17 @@ export default {
   },
   mounted() {
     console.log(this.ruleForm, this.applyDetailEdit, baseURL);
-    this.ruleForm.brand = this.applyDetailEdit.brandId;
-    this.ruleForm.brandName = this.applyDetailEdit.brandName.split(",");
-    this.ruleForm.timeStart = this.applyDetailEdit.startTime;
-    this.ruleForm.timeEnd = this.applyDetailEdit.endTime;
-    var qualificationImgUrl = this.applyDetailEdit.qualificationImg;
+    if (this.applyDetailEdit.id) {
+      this.ruleForm.brand = this.applyDetailEdit.brandId;
+      this.ruleForm.brandName = this.applyDetailEdit.brandName.split(",");
+      this.ruleForm.timeStart = this.applyDetailEdit.startTime;
+      this.ruleForm.timeEnd = this.applyDetailEdit.endTime;
+      this.qualificationMapList = [
+        {
+          url: this.applyDetailEdit.qualificationImg
+        }
+      ];
+    }
   }
 };
 </script>
