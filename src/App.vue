@@ -59,7 +59,6 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
-
           //   this.UserInforma = res;
       });
     } else {
@@ -110,11 +109,8 @@ export default {
         vertical-align: middle;
     }
 #app {
-    img{
-        vertical-align: middle;
-    }
     color:#999;
-
+    background: #f5f5f5;
 .defaultradioSquare .el-radio__inner{
   border-radius: 0;
   width:20px;

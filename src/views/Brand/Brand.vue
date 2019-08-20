@@ -5,8 +5,8 @@
       <img src="@/assets/image/brand/bg.jpg" alt class="bg" @click="joinOriginFactory"/>
     </div>
     <!-- 最新入驻 -->
-    <div class="prodclass-r">
-      <span>最新入驻</span>
+    <div class="prodclass-r allWidth">
+      <div class="title">最新入驻</div>
       <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
         <ul :class="{anim:animate==true}">
           <li v-for="(item,k) in imgList" :key="k">
@@ -16,17 +16,11 @@
       </div>
     </div>
     <!-- 全部品牌 -->
-    <div class="all-brands">
+    <div class="all-brands allWidth">
       <p class="tit">全部品牌</p>
-      <div class="china-settledin">
-<!--        <span class="settledin">我是原厂，现在入驻</span>-->
-        <div class="china-xin">
-          <img src="@/assets/image/brand/u3748.png" alt />
-          <span>中国芯</span>
-        </div>
-      </div>
       <!-- 品牌列表 -->
       <ul class="list" id="topList">
+          <li>中国芯</li>
         <li
           v-for="(item,index) in findBrandListKey"
           :key="index"
