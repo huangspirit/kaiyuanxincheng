@@ -158,6 +158,7 @@ export default {
               if (res.data == "1") {
                 this.$message.success("充值成功");
                 clearInterval(time);
+                this.$router.push('/PersonalCenter/PersonalSet')
               }
             }
           });
