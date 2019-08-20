@@ -12,7 +12,7 @@
                 </div>
                 <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
                 <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
-                <div class="btnWrap"><span class="btn" @click="submitPurchase">提交结算</span></div>
+                <div class="btnWrap"><span class="btn bgColor" @click="submitPurchase">提交结算</span></div>
             </div>
             <div v-if="mini" class="mini">
                 <div class="top">
@@ -81,7 +81,6 @@
             }
         },
         mounted(){
-            console.log(this.item);
             this.count=this.item.moq;
             if(this.item.price_type){
                 this.price=parseFloat(this.item.priceList[0].price);
@@ -192,10 +191,10 @@
 <style scoped lang="less">
     .purchase{
         position: absolute;
-        bottom:0;
+        bottom:5px;
         width:100%;
-        min-width:1200px;
-        right:0;
+        min-width:1390px;
+        right:5px;
         background: #f4f4f4;
         padding:15px;
         box-sizing:border-box;

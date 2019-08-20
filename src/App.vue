@@ -78,6 +78,7 @@ export default {
         background: #fff!important;
         min-width:1080px;
 
+
     }
     .allWidth{
         min-width:1080px;
@@ -113,7 +114,7 @@ export default {
         vertical-align: middle;
     }
     color:#999;
-    font-family:"Microsoft YaHei"!important;
+
 .defaultradioSquare .el-radio__inner{
   border-radius: 0;
   width:20px;

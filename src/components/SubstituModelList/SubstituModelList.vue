@@ -163,7 +163,9 @@ export default {
           }else if(factorySellerInfo.priceLevel){
               factorySellerInfo.priceList=ladderPrice(factorySellerInfo.priceLevel)
           }
-          console.log({...item,factorySellerInfo:factorySellerInfo})
+          if(factorySellerInfo.seckil_price){
+              factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
+          }
           let obj={goodsbaseIno:{...item,factorySellerInfo:factorySellerInfo}}
           this.$store.dispatch("promation", obj);
           this.$router.push("/InquiryBasket/ApplySpecialPrice");
