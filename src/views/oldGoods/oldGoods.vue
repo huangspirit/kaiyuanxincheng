@@ -34,7 +34,7 @@
                             </div>
                             <div class="time clear" v-if="!item.seller_always && item.expireTime">
                                 <span class="fl">
-                                    <img src="@/assets/image/home/timer.png" alt="">
+                                    <img src="@/assets/image/index/timer.png" alt="">
                                     距离特价结束：
                                 </span>
                                 <CountTime

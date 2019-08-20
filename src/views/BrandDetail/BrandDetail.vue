@@ -12,7 +12,8 @@
 <!--      </div>-->
 <!--      <div class="bg"></div>-->
 <!--    </div>-->
-      <router-view />
+
+
   </div>
 </template>
 <style lang="less" scoped>

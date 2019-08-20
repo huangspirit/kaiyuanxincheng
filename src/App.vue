@@ -7,13 +7,13 @@
             <router-view v-if="isRouterAlive"/>
       </div>
       <Footer></Footer>
-      <Sidebar></Sidebar>
+<!--      <Sidebar></Sidebar>-->
     </div>
   </div>
 </template>
 <script>
 import Footer from "_c/Footer";
-import Sidebar from "_c/Sidebar";
+// import Sidebar from "_c/Sidebar";
 //import headTop from "_c/headTop";
 import headTop from "@/views/header"
 import { mapActions,mapState,mapMutations} from "vuex";
@@ -32,7 +32,7 @@ export default {
   },
   components: {
     Footer,
-    Sidebar,
+    // Sidebar,
     headTop,
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
-           console.log("根據access_token獲取用戶信息:",res)
+
           //   this.UserInforma = res;
       });
     } else {

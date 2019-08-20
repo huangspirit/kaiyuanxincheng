@@ -16,7 +16,7 @@
           <img :src="item.catergoryUrl" alt class="img-1">
           <span class="text">{{item.catergoryName}} <span class="num">（{{item.summaryTotal}}）</span>     </span>
           <div class="select">
-            <img src="@/assets/image/home/u1076.png" alt>
+            <img src="@/assets/image/index/u1076.png" alt>
           </div>
         </li>
       </ul>
@@ -102,7 +102,7 @@ export default {
       tabList: [
         {
             catergoryName: "全部",
-            catergoryUrl: require("@/assets/image/home/u1086.png"),
+            catergoryUrl: require("@/assets/image/index/u1086.png"),
             summaryTotal: 1,
             catergoryId:-1
         },

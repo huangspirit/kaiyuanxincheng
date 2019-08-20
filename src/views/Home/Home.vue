@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <!-- banner -->
-    <img src="../../assets/image/home/u12.gif" alt="" class="bannerbg">
-    <img src="../../assets/image/home/u12.gif" alt="" class="bannerbg">
+    <img src="" alt="" class="bannerbg">
+    <img src="" alt="" class="bannerbg">
     <div class="banner">
       <!-- <p class="tit">用芯链接世界</p> -->
       <p class="tit">
@@ -32,7 +32,7 @@
           <span>猜你喜欢</span>
           <div class="change" @click="tabChange">
             <span>换一批</span>
-            <img src="@/assets/image/home/_u1118.png" alt>
+            <img src="" alt>
           </div>
         </div>
         <ul class="tab-con">
@@ -85,13 +85,6 @@
       <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
       <ul>
         <li>
-          <img src="@/assets/image/home/1_u1472.jpg" alt>
-        </li>
-        <li>
-          <img src="@/assets/image/home/1_u1475.jpg" alt>
-        </li>
-        <li>
-          <img src="@/assets/image/home/1_u1478.jpg" alt>
         </li>
       </ul>
     </div>
@@ -101,7 +94,6 @@
       <div class="prodclass-con clear">
         <div class="prodclass-l">
           <p>
-            <img src="@/assets/image/home/u1491.png" alt>
             产品分类
           </p>
           <ul>

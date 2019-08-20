@@ -36,7 +36,7 @@
       </div>
       <div class="bind-phone form" v-else>
         <span class="close-span" @click="loginFlagClose">
-          <img src="@/assets/image/home/u172.png" alt />
+          <i class="el-icon-circle-close"></i>
         </span>
         <p class="title">绑定手机号</p>
         <p class="type">

@@ -1,4 +1,4 @@
-import Home from '@/views/Home'
+//import Home from '@/views/Home'
 import Index from "@/views/Index"
 export default [
     // 首页
