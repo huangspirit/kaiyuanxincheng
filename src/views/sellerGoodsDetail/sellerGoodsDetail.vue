@@ -41,10 +41,25 @@
                             </div>
                         </div>
                         <div>
-                            <p class="brandName">
+                            <router-link
+                            tag="p"
+                            class="brandName"
+                            :to="{
+                            path:'/BrandDetail',
+                             query:{
+                                tag:'brand',
+                                documentid:sellerGoodsInfo.brandId,
+                                name:sellerGoodsInfo.brandName
+                                }
+                            }"
+                            >
                                 品牌：{{sellerGoodsInfo.brandName}}
                                 <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>
-                            </p>
+                            </router-link>
+<!--                            <p class="brandName">-->
+<!--                                品牌：{{sellerGoodsInfo.brandName}}-->
+<!--                                <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
+<!--                            </p>-->
                             <p class="brandDesc">功能描述：{{sellerGoodsInfo.goodsDesc}}</p>
                         </div>
                     </div>
