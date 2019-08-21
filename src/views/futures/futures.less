@@ -1,14 +1,16 @@
 .specialPrice{
   min-height:500px;
   text-align: center;
-  padding-top:360px;
   color:#333;
-  background:  url("../../assets/image/specialPrice/futures.jpg") #f5f5f5;
-  background-repeat: no-repeat;
-  background-position: left top;
+  background:  url("../../assets/image/specialPrice/futures.png") 0 0 no-repeat;
   background-size: 100% auto;
+  .banner{
+    height:300px;
+    line-height: 300px;
+  }
   .cont{
-
+    position: relative;
+    z-index:1;
     .title{
       background:#fff;
       padding:15px 25px;
@@ -175,6 +177,17 @@
             .place{
               font-size:14px;
               margin-bottom:15px;
+            }
+          }
+          .btn{
+            line-height: 40px;
+            margin-top:10px;
+            cursor: pointer;
+            text-align: center;
+            &:hover{
+              font-weight: bold;
+              font-size:18px;
+              transition: all 0.2s;
             }
           }
         }
