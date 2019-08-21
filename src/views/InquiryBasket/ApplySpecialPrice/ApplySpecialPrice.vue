@@ -65,7 +65,8 @@
           </div>
         </div>
         <div class="brans-msg">
-          <img :src="oneData.brandImageUrl" class="bd-img" alt />
+          <img v-if="oneData.brandImageUrl" :src="oneData.brandImageUrl" class="bd-img" alt />
+          <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" class="bd-img" alt />
           <p>{{oneData.brand}}</p>
           <p></p>
         </div>
@@ -521,6 +522,7 @@ export default {
 }
 // 记住操作
 .keep {
+  margin-top: 15px;
   .el-checkbox {
     width: 100%;
     text-align: center;

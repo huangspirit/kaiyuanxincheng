@@ -11,7 +11,7 @@
           <strong>订单号：</strong>
           {{item.orderVo.order_no}}
         </span>
-        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo==item.lastPayNo">
+        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo==item.orderVo.lastPayNo">
           <strong>付款编号:</strong>
           {{item.orderVo.firtPayNo}}
           <img
@@ -20,12 +20,15 @@
             :title="payTypeMark[item.orderVo.prePayChannel].title"
           />
         </span>
-        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo!=item.lastPayNo">
-          <strong>预付款凭证:</strong>
+        <span v-if="item.orderVo.firtPayNo && item.orderVo.firtPayNo!=item.orderVo.lastPayNo">
+          <strong v-if="item.orderVo.prePayChannel == 3">预付款凭证:</strong>
           <img
+            v-if="item.orderVo.prePayChannel == 3"
             @click="PrvExampleDiagram(item.orderVo.firtPayNo)"
-            :src="item.orderVo.firtPayNo + '?imageView2/2/w/80/h/80'"
+            :src="item.orderVo.firtPayNo + '?imageView2/2/w/80/h/46'"
           />
+          <strong v-if="item.orderVo.prePayChannel != 3">付款编号:</strong>
+          <span v-if="item.orderVo.prePayChannel != 3">{{item.orderVo.firtPayNo}}</span>
           <img
             :src="payTypeMark[item.orderVo.prePayChannel]['imgurl']"
             class="payTypeMark"
@@ -33,10 +36,13 @@
           />
         </span>
         <span v-if="item.orderVo.lastPayNo && item.orderVo.firtPayNo!=item.orderVo.lastPayNo">
-          <strong>尾款凭证:</strong>
+          <strong v-if="item.orderVo.lastPayChannel!=3">尾款编号:</strong>
+          <span v-if="item.orderVo.lastPayChannel!=3">{{item.orderVo.lastPayNo}}</span>
+          <strong v-if="item.orderVo.lastPayChannel==3">尾款凭证:</strong>
           <img
+            v-if="item.orderVo.lastPayChannel==3"
             @click="PrvExampleDiagram(item.orderVo.lastPayNo)"
-            :src="item.orderVo.lastPayNo + '?imageView2/2/w/80/h/80'"
+            :src="item.orderVo.lastPayNo + '?imageView2/2/w/80/h/46'"
           />
           <img
             :src="payTypeMark[item.orderVo.lastPayChannel]['imgurl']"

@@ -53,7 +53,8 @@
               />
             </div>
             <div>
-              <img :src="listItem.imageUrl " alt />
+              <img v-if="listItem.imageUrl" :src="listItem.imageUrl " alt />
+              <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
             </div>
           </div>
           <div class="goodsDetail">
@@ -127,7 +128,7 @@ import { ladderPrice } from "@/lib/utils";
 import { debuglog } from "util";
 import { constants } from "crypto";
 export default {
-  props:['waitMoney'],
+  props: ["waitMoney"],
   data() {
     return {
       waitInquiryList: [],
@@ -135,16 +136,16 @@ export default {
       baseListData: [],
       allNum: 0,
       disabled: true,
-      total:0,
-      start:0
+      total: 0,
+      start: 0
     };
   },
   inject: ["reload"],
   mounted() {
     this.getInquiry();
-    eventBus.$on('waitMoney',val=>{
-      console.log(val)
-    })
+    eventBus.$on("waitMoney", val => {
+      console.log(val);
+    });
   },
   beforeDestroy() {
     eventBus.$off("proInformation");
@@ -159,7 +160,7 @@ export default {
       axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
         if (res.resultCode == "200") {
           this.waitInquiryList = res.data.data;
-          this.total = res.data.total
+          this.total = res.data.total;
           this.factorySale = [];
           this.waitInquiryList["allCheck"] = false;
           for (var i = 0; i < this.waitInquiryList.length; i++) {
@@ -312,8 +313,8 @@ export default {
     },
     change(val) {
       console.log(val);
-      this.start = val -1
-      this.getInquiry()
+      this.start = val - 1;
+      this.getInquiry();
     },
     applySpecial(val) {
       console.log(val);
@@ -434,8 +435,8 @@ export default {
             border: none;
             height: 25px;
             margin-left: 12px;
-            >img{
-              height:100%;
+            > img {
+              height: 100%;
             }
           }
         }

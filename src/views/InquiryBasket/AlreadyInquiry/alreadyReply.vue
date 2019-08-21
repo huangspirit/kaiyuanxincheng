@@ -8,7 +8,8 @@
           <el-row class="content">
             <el-col :span="4">
               <div class="goodsImg">
-                <img :src="listItem.goodsImage " alt />
+                <img v-if="listItem.goodsImage" :src="listItem.goodsImage " alt />
+                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
             <el-col :span="8">
@@ -65,7 +66,8 @@
           <el-row v-if="listItem.replayStates == true" class="applyContent">
             <el-col :span="4">
               <div class="goodsImg">
-                <img :src="listItem.sellerInfoMap.headImgUrl" alt />
+                <img v-if="listItem.sellerInfoMap.headImgUrl" :src="listItem.sellerInfoMap.headImgUrl" alt />
+                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
             <el-col :span="8">

@@ -157,7 +157,6 @@ export default {
       this.interval = setInterval(this.scroll, 5000);
     },
     scroll() {
-      console.log("gundong");
       if (this.imgList.length > 6) {
         this.animate = true; // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
         setTimeout(() => {

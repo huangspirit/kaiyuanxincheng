@@ -8,7 +8,8 @@
           <el-row class="content">
             <el-col :span="4">
               <div class="goodsImg">
-                <img :src="listItem.goodsImage " alt />
+                <img v-if="listItem.goodsImage" :src="listItem.goodsImage " alt />
+                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
             <el-col :span="8">
@@ -125,8 +126,8 @@ export default {
   },
   filters: {
     insteadFilter(val) {
-      console.log(val)
-      return val.split('@')
+      console.log(val);
+      return val.split("@");
     }
   },
   methods: {
