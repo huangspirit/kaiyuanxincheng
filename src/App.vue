@@ -3,7 +3,11 @@
     <div id="container" class="clear">
     <headTop id="HeaderBar" ></headTop>
       <div id="content" class="clear" :class="headerFxed?'headerFxed':''">
-            <router-view v-if="isRouterAlive"/>
+          <keep-alive>
+              <router-view v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+<!--            <router-view v-if="isRouterAlive"/>-->
       </div>
       <Footer></Footer>
 <!--      <Sidebar></Sidebar>-->
@@ -110,11 +114,11 @@ export default {
 #app {
     color:#999;
     background: #f5f5f5;
-.defaultradioSquare .el-radio__inner{
-  border-radius: 0;
-  width:20px;
-  height:20px;
-}
+    .defaultradioSquare .el-radio__inner{
+      border-radius: 0;
+      width:20px;
+      height:20px;
+    }
     .defaultradioSquare .el-checkbox__inner{
         width:20px;
         height:20px;
@@ -131,18 +135,18 @@ export default {
         border-radius: 0;
         background:transparent;
     }
-.defaultradioSquare .el-radio__inner::after{
-  border:3px solid #fff;
-  width:13px;
-  height:4px;
-  border-top-color:transparent;
-  border-right-color: transparent;
-  transform:rotate(-45deg)!important;
-  left:0;
-  top:0px;
-  border-radius: 0;
-  background:transparent;
-}
+    .defaultradioSquare .el-radio__inner::after{
+      border:3px solid #fff;
+      width:13px;
+      height:4px;
+      border-top-color:transparent;
+      border-right-color: transparent;
+      transform:rotate(-45deg)!important;
+      left:0;
+      top:0px;
+      border-radius: 0;
+      background:transparent;
+    }
   .el-button.default{
    display:block;
    width:50%;

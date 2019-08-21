@@ -1,7 +1,7 @@
 <template>
   <div class="Undirect AllBrand">
     <div class="BrandDetail-tit">
-      <div class="wrapper">
+      <div class="wrapper allWidth">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item
@@ -18,7 +18,7 @@
         </el-breadcrumb>
       </div>
     </div>
-    <div class="all-brand">
+    <div class="all-brand allWidth">
       <!-- 经营品类 -->
       <div class="management-class brand-msg">
         <!-- <div class="tit">
@@ -29,7 +29,7 @@
             <span>查看全部</span>
           </div>
         </div>-->
-          <div class="tit">
+          <div class="tit bgGray">
               <img src="@/assets/image/brandDetail/u4675.png" alt>
               <span>品类</span>
           </div>
@@ -51,7 +51,7 @@
               </li>
             </ul>
           <div class="brand-hot brand-msg">
-              <div class="tit">
+              <div class="tit bgGray">
                   <img src="@/assets/image/brandDetail/u4832.png" alt>
                   <span>热卖</span>
                   <!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->

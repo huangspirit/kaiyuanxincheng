@@ -1,7 +1,7 @@
 <template>
   <div class="Direct AllBrand">
     <div class="BrandDetail-tit">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item v-if="query.brandName"
                               :to="{
@@ -13,11 +13,8 @@
             }
           }">
               {{query.brandName}}
-<!--            <span @click="$router.go(-2)" class="span_">{{query.brandName}}</span>-->
           </el-breadcrumb-item>
-<!--          <el-breadcrumb-item v-if="!query.tag">-->
-<!--            <span @click="AllSend()" class="span_">{{preName}}</span>-->
-<!--          </el-breadcrumb-item>-->
+
           <el-breadcrumb-item
               :to="{
             path:'/BrandDetail/Undirect',
@@ -34,158 +31,112 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>{{query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
-
     </div>
-    <div class="screen management-class">
-      <div class="tit">
-          <img src="@/assets/image/brandDetail/u8717.png" alt>
-          <span>筛选</span>
+      <div class="allWidth res">
+          符合条件的结果：
+          {{ScreenProductTotal}}
       </div>
-      <!-- 筛选条件列表 -->
-<!--        <transition name="el-zoom-in-top">-->
-<!--            <ul class="screen-list" v-show="showScreenList">-->
-<!--                <li v-for="(item,k) in screenTypeList" :key="k" class="item">-->
-<!--                    <div class="title"><p>{{item.propertyName}}</p></div>-->
-<!--                    <div class="itemList">-->
-<!--                        <template  v-for="(item0,index0) in item.childList">-->
-<!--                            <p  v-show="index0<limitNum || !item.showmore" :class="item.selected==index0?'active':''" @click="selected(k,index0)" :key="index0">-->
-<!--                                <a>{{item0}}</a>-->
-<!--                            </p>-->
-<!--                        </template>-->
-<!--                    </div>-->
-<!--                    <div class="showmore">-->
-<!--                        <a v-if="item.showmore" @click="item.showmore=!item.showmore"><span>更多</span> >></a>-->
-<!--                        <a v-if="!item.showmore && item.childList.length>limitNum" @click="item.showmore=!item.showmore"> << <span>收起</span></a>-->
-<!--                    </div>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            </transition >-->
-<!--      <div class="screen-bar">-->
-<!--          <p v-text="`${showScreenList ?'收起筛选项':'展开筛选项'}`"></p>-->
-<!--        <img-->
-<!--          :src="`${showScreenList ?require('@/assets/image/brandDetail/u4650.png') : require('@/assets/image/brandDetail/u4530.png')  }`"-->
-<!--          alt-->
-<!--          @click="showScreenList=!showScreenList"-->
-<!--        >-->
-<!--      </div>-->
-        <div class="ScreenList clear">
-            <div class="item">
-                <div class="title">品牌</div>
-                <ul class="listwrap">
-                    <li  v-for="(item0,index0) in brandList" @click.stop="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
-                        {{item0.brand}}
-                    </li>
-                </ul>
-            </div>
-            <div v-for="(item,k) in screenTypeList" :key="k" class="item" v-if="item.childList && item.childList.length">
-                <div class="title">{{item.propertyName}}</div>
-                <ul class="listwrap">
-                    <li  v-for="(item0,index0) in item.childList" @click="selected(k,index0)" :class="item.selected==index0?'active':''">
-                        {{item0}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="selected clear">
-              <div class="showSelectedScreen">
-                  <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
+      <div class="allWidth">
+          <div class="screen management-class">
+              <!--      <div class="tit">-->
+              <!--          <img src="@/assets/image/brandDetail/u8717.png" alt>-->
+              <!--          <span>筛选</span>-->
+              <!--      </div>-->
+              <div class="ScreenList clear">
+                  <div class="item">
+                      <div class="title">品牌</div>
+                      <ul class="listwrap">
+                          <li  v-for="(item0,index0) in brandList" @click.stop="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
+                              {{item0.brand}}
+                          </li>
+                      </ul>
+                  </div>
+                  <div v-for="(item,k) in screenTypeList" :key="k" class="item">
+                      <div class="title">{{item.propertyName}}</div>
+                      <div class="search" v-if="item.isSearch">
+                          <el-input
+                              placeholder="输入"
+                              v-model="item.search"
+                              @input="handleInput(k)"
+                              prefix-icon="el-icon-search"
+                              clearable>
+                          </el-input>
+                      </div>
+                      <ul class="listwrap" :class="item.isSearch?'hasSearch':''">
+                          <li  v-for="(item0,index0) in item.childList" @click="selected(k,index0)" :class="selectedScreen[item.propertyId]==item0?'active':''">
+                              {{item0}}
+                          </li>
+                      </ul>
+                  </div>
               </div>
-            <ul class="fl">
-                <li>
-                    <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
-                        <el-radio :label="true" :value="true" name="goods_type"  @click.native.prevent="cancleChecked1(true)">现货</el-radio><br>
-                        <el-radio :label="false" :value="false" name="goods_type"  @click.native.prevent="cancleChecked1(false)">订货</el-radio>
-                    </el-radio-group>
-                </li>
-            </ul>
-            <ul class="fl">
-                <li>
-                    <el-radio-group v-model="selectedGoods.create_tag" class="defaultradioSquare label editAddress">
-                        <el-radio :label="true" :value="true" name="create_tag"  @click.native.prevent="cancleChecked(true)">原厂直供</el-radio><br>
-                        <el-radio :label="false" :value="false" name="create_tag"  @click.native.prevent="cancleChecked(false)">代理商</el-radio>
-                    </el-radio-group>
-                </li>
-            </ul>
-            <ul class="fl">
-                <li>
-                    <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
-                    <br>
-                     <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
-                </li>
-            </ul>
-            <ul class="fr">
-                <li>
-                    <el-button type="info" plain class="fl"  @click="resetScreen" size="mini">清除已选参数</el-button>
-                    <el-button type="primary" class="fl" plain @click="changeType" size="mini" v-if="propertyCount>0">应用已选参数</el-button>
-                </li>
-            </ul>
-            <ul class="number fr">
-                <li>
-                    共筛选出
-                    <strong>{{ScreenProductTotal}}</strong>个结果
-                </li>
-            </ul>
-        </div>
-      <!-- 筛选数量 -->
-<!--      <div class="showSelectedScreen">-->
-<!--          <span v-for="(item,k) in selectedScreen" :key="k">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>-->
-<!--      </div>-->
-<!--      <div class="screenBtn clear">-->
-<!--        <div class="number">-->
-<!--          共筛选出-->
-<!--          <strong>{{ScreenProductTotal}}</strong>个结果-->
-<!--        </div>-->
-<!--        <div class="search btn" v-show="ScreenProductTotal">-->
-<!--            <span @click="changeType">筛选搜索</span></div>-->
-<!--        <div class="reset btn" v-show="showScreenList">-->
-<!--            <span @click="resetScreen">重置条件</span></div>-->
-<!--         <div class="screen-bar btn">-->
-<!--             <span  @click="showScreenList=!showScreenList">-->
-<!--                 <img-->
-<!--                     :src="`${showScreenList ?require('@/assets/image/brandDetail/u4650.png') : require('@/assets/image/brandDetail/u4530.png')  }`"-->
-<!--                     alt-->
-<!--                 >-->
-<!--                <span v-text="`${showScreenList ?'收起':'展开'}`"></span>-->
-<!--             </span>-->
-<!--             </div>-->
-<!--      </div>-->
-      <!-- 筛选结果商品列表 -->
-      <!-- <div class="screen-result">
-        <div class="result-tit">
-          <div class="wrapper">
-            <ul class="tabList">
-              <li class="active">综合排序</li>
-              <li>按综合销量</li>
-              <li>按原厂价格</li>
-              <li>按经销商价格</li>
-            </ul>
-            <SearchInput></SearchInput>
+              <div class="selected clear">
+                  <div class="showSelectedScreen">
+                      <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
+                  </div>
+                  <ul class="fl">
+                      <li>
+                          <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
+                              <el-radio :label="true" :value="true" name="goods_type"  @click.native.prevent="cancleChecked1(true)">现货</el-radio><br>
+                              <el-radio :label="false" :value="false" name="goods_type"  @click.native.prevent="cancleChecked1(false)">订货</el-radio>
+                          </el-radio-group>
+                      </li>
+                  </ul>
+                  <ul class="fl">
+                      <li>
+                          <el-radio-group v-model="selectedGoods.create_tag" class="defaultradioSquare label editAddress">
+                              <el-radio :label="true" :value="true" name="create_tag"  @click.native.prevent="cancleChecked(true)">原厂直供</el-radio><br>
+                              <el-radio :label="false" :value="false" name="create_tag"  @click.native.prevent="cancleChecked(false)">代理商</el-radio>
+                          </el-radio-group>
+                      </li>
+                  </ul>
+                  <ul class="fl">
+                      <li>
+                          <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
+                          <br>
+                          <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
+                      </li>
+                  </ul>
+
+                  <!--            <ul class="number fr">-->
+                  <!--                <li>-->
+                  <!--                    共筛选出-->
+                  <!--                    <strong>{{ScreenProductTotal}}</strong>个结果-->
+                  <!--                </li>-->
+                  <!--            </ul>-->
+              </div>
+<!--              <ul class="clear btn">-->
+<!--                  <li>-->
+<!--                      <el-button type="info" plain class="fl"  @click="resetScreen" size="mini">清除已选参数</el-button>-->
+<!--                      <el-button type="primary" class="fl" plain @click="changeType" size="mini" v-if="propertyCount>0">应用已选参数</el-button>-->
+<!--                  </li>-->
+<!--              </ul>-->
+              <div class="btnWrap">
+                  <span @click="resetScreen" class="gray btn">清除已选参数</span>
+                  <span @click="changeType"  v-if="propertyCount>0 && ScreenProductTotal" class="btn bgColor">应用已选参数</span>
+                  <span  v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
+              </div>
           </div>
-        </div>
-      </div> -->
-    </div>
-    <div class="all-brand">
+      </div>
+
+    <div class="all-brand allWidth">
       <!-- 经营品类 -->
       <div class="brand-hot brand-msg">
-            <div class="tit">
-                <img src="@/assets/image/brandDetail/u4832.png" alt>
-                <span>热卖</span>
-                <!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->
-                <!--            <span>查看全部</span>-->
-                <!-- 搜索热卖 -->
-                <SearchInput
-                    class="clear fr"
-                    :value="valueName"
-                    :width="350"
-                    :height="40"
-                    :placeholder="'搜索热卖产品'"
-                    :fontSize="14"
-                    :btnImgWidth="20"
-                    :btnWidth="40"
-                    :borderColor="'#fff'"
-                    @input="hotSearchValue"
-                    @submit="hotSearchsubmit"
-                ></SearchInput>
+            <div class="tit bgGray">
+<!--                <img src="@/assets/image/brandDetail/u4832.png" alt>-->
+                <span>商品列表</span>
+<!--                <SearchInput-->
+<!--                    class="clear fr"-->
+<!--                    :value="valueName"-->
+<!--                    :width="350"-->
+<!--                    :height="40"-->
+<!--                    :placeholder="'搜索热卖产品'"-->
+<!--                    :fontSize="14"-->
+<!--                    :btnImgWidth="20"-->
+<!--                    :btnWidth="40"-->
+<!--                    :borderColor="'#fff'"-->
+<!--                    @input="hotSearchValue"-->
+<!--                    @submit="hotSearchsubmit"-->
+<!--                ></SearchInput>-->
                 <!-- 品牌热卖 -->
             </div>
         </div>
@@ -283,6 +234,17 @@ export default {
     }),
   },
   methods: {
+      handleInput(k){
+          //搜索属性
+          let obj={
+              property_id:this.screenTypeList[k].propertyId,
+              value:this.screenTypeList[k].search,
+              brandId:this.selectedScreen.brand_id
+          }
+          axios.request({url:"api-g/goods-center/queryThirdProperty",params:obj}).then(res=>{
+              this.screenTypeList[k].childList=res.data
+          })
+      },
       changeIsOldProduct(e){
           if(e){
               this.propertyCount++;
@@ -348,7 +310,6 @@ export default {
               this.propertyCount++
           }
           this.$set(this.selectedScreen,this.screenTypeList[k].propertyId,this.screenTypeList[k].childList[index0])
-
       },
       //筛选总数
       queryMatchCount(){

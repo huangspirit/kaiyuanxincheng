@@ -1,98 +1,96 @@
 .SubstituModelList {
-    /deep/.purchase{
-        min-width:1140px!important;
-    }
+    ///deep/.purchase{
+    //    min-width:1140px!important;
+    //}
     .substitu-model-list {
+        display: flex;
+        flex-wrap:wrap;
         &>li {
-            border-bottom: 1px solid #ddd;
-            padding: 15px 30px;
+            padding: 25px;
             margin-top: 20px;
-            background: #fff;
+            width:50%;
+            float: left;
+            box-sizing:border-box;
+            &:hover{
+                box-shadow: 0 0 10px 2px #ddd;
+                transform: scale(1.002);
+                transition: all 0.2s;
+                .model-list-t {
+                    .text {
+                        .name {
+                            color: #df3f2f;
+                        }
+                    }
+                }
+            }
             .model-list-t {
                 position: relative;
+                display: flex;
                 .TabImage {
                     margin-right: 20px;
                     position: relative;
+                    justify-content: space-around;
+                    width:200px;
+                    text-align: center;
+                    overflow: hidden;
                     &:after{
                         content: "";
                         position: absolute;
                         width:100%;
                         height:100%;
-                        background: rgba(0,0,0,0.02);
+                        background: rgba(0,0,0,0.05);
                         z-index:1;
                         top:0;
                         left:0;
                     }
                     /deep/.ImgE{
                         img{
-                            width:140px;
+                            width:110px;
                         }
-
                     }
                 }
-                &>.text {
+                .text {
                     float: left;
+                    font-size:14px;
                     p{
                         margin-top:10px;
                         .nolist{
                             color:#999;
                         }
-                        .num{
-                            color:#f22e2e;
-                        }
                     }
                     .name {
                         white-space: nowrap;
-                        color: #CC0000;
-                        font-size: 28px;
+                        font-size: 24px;
                         font-weight: bold;
                         cursor: pointer;
-                        margin:0;
+                        color:#333;
                     }
-                }
-
-                //.quote {
-                //    min-width: 100px;
-                //    position: absolute;
-                //    top: 0;
-                //    right: 0px;
-                //
-                //    span {
-                //        width: 100%;
-                //        float: left;
-                //        font-size: 36px;
-                //        color: #CC0000;
-                //        margin-bottom: 10px;
-                //        font-weight: bold;
-                //        text-align: right;
-                //    }
-                //
-                //    &>:last-child {
-                //        font-size: 20px;
-                //        color: #4A5A6A;
-                //
-                //    }
-                //
-                //}
-            }
-
-            .model-list-b {
-                margin-top:50px;
-                /deep/.ButtonIcon {
-                    float: left;
-                    margin-right: 10px;
-                    img {
-                        width: 20px;
-                        height:20px;
-                        vertical-align: middle;
-                    }
-                }
-                &>span {
-                    img {
-                        width: 41px;
-                        height: 41px;
-                        margin: 0 12px;
-                        cursor: pointer;
+                    .btnWrap{
+                        display: inline-flex;
+                        width:100%;
+                        span{
+                            line-height:35px;
+                            text-align: center;
+                            margin-right:10px;
+                            border-radius: 3px;
+                            color:#fff;
+                            flex:1;
+                        }
+                        .orange{
+                            background-color: #f78822;
+                        }
+                        .gray{
+                            background: #ddd;
+                        }
+                        .btn:hover{
+                            font-size:16px;
+                            font-weight: bold;
+                            transition: all 0.2s;
+                            cursor: pointer;
+                            &.gray{
+                                background: #df3f2f;
+                            }
+                        }
                     }
                 }
             }

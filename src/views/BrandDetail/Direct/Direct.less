@@ -1,25 +1,51 @@
 // 全部品牌
 .Direct {
-  width: 100%;
-  overflow: hidden;
-
    //经营品类
+  .res{
+    font-size: 22px;
+    line-height: 60px;
+    color:#333;
+    font-weight: bolder;
+  }
+  .screen{
+    border:1px solid #dddd;
+    margin-bottom:20px;
+    .btnWrap{
+      margin:10px;
+      span{
+        margin-right: 10px;
+        line-height: 30px;
+        font-size:14px;
+        width:150px;
+        text-align: center;
+        border-radius: 3px;
+        &.gray{
+          background: #d5d5d5;
+          color:#fff;
+        }
+      }
+      .btn
+      {
+        cursor: pointer;
+        &:hover{
+          font-size:16px;
+          font-weight: bold;
+          transition: all 0.2s;
+        }
+      }
+    }
+  }
   .management-class {
-    //width: 100%;
-    //overflow: hidden;
-    border-bottom: 1px solid #ddd;
-    background: #fff;
     .nocontent{
       color:#d5d5d5;
       text-align: center;
      padding:80px;
     }
     &>.tit {
-    padding: 0 30px;
-    background: #4A5A6A;
-    color: #fff;
-    font-size: 22px;
-    line-height: 60px;
+      font-size: 22px;
+      line-height: 60px;
+      color:#333;
+      font-weight: bolder;
       img {
         width: 20px;
       }
@@ -31,7 +57,6 @@
       padding: 30px 60px;
       display: flex;
       flex-wrap: wrap;
-
       .avtive {
         border: 1px solid #4A5A6A;
       }
@@ -79,20 +104,50 @@
       background:#f5f5f5;
       overflow-x: scroll;
       white-space: nowrap;
+    color:#333;
       .item{
         float:left;
         max-width:300px;
         text-align: center;
-        margin:15px;
+        margin-left:10px;
         min-width:150px;
+        margin-top:10px;
+        position: relative;
+        .title{
+          margin-bottom:5px;
+          font-size:14px;
+        }
+        .search{
+          height:25px;
+          position: absolute;
+          left:0;
+          top:25px;
+          width:100%;
+          //padding-right:15px;
+          box-sizing: border-box;
+          /deep/.el-input{
+            height:100%;
+            .el-input__icon{
+              line-height: 25px;
+            }
+            input{
+              height:25px;
+              line-height:25px;
+            }
+          }
 
+        }
         .listwrap{
           text-align: left;
           max-height:200px;
           min-width:100px;
-          overflow-y: scroll;
+          overflow-y: auto;
           background:#fff;
           height:100%;
+          &.hasSearch{
+            padding-top:28px;
+            box-sizing: border-box;
+          }
           li{
             line-height:20px;
             font-size:12px;
@@ -103,7 +158,8 @@
               background:#d5d5d5;
             }
             &.active{
-              background: #d5d5d5;
+              background: #df3f2f;
+              color:#fff;
             }
           }
         }
@@ -123,65 +179,6 @@
       }
     }
   }
-  //.screen-list {
-  //  background: #fff;
-  //    .item{
-  //      display:flex;
-  //      text-align: center;
-  //      .title{
-  //        width:150px;
-  //        background: #8c939d;
-  //        color:#fff;
-  //        border-bottom:1px solid #fff;
-  //        display: flex;
-  //        flex-flow: column;
-  //        justify-content: space-around;
-  //      }
-  //      .showmore{
-  //        border-bottom:1px dashed #8c939d;
-  //        padding:10px 5px ;
-  //        display: inline-flex;
-  //        align-items: flex-end;
-  //        a{
-  //          span{
-  //            font-size:12px;
-  //          }
-  //        }
-  //      }
-  //      .itemList{
-  //        flex:1;
-  //        display:flex;
-  //        flex-wrap: wrap;
-  //        border-bottom:1px dashed #8c939d;
-  //        padding:10px 5px 0;
-  //        box-sizing: border-box;
-  //        p{
-  //          float: left;
-  //          margin-bottom:10px;
-  //          white-space: nowrap;
-  //          padding:0 8px;
-  //          box-sizing: border-box;
-  //          border:2px solid #fff;
-  //          line-height:20px;
-  //          min-width:16.5%;
-  //          &.active{
-  //            border-color:#0d94fb;
-  //            a{
-  //              color:#0d94fb;
-  //            }
-  //          }
-  //          &:hover{
-  //            border-color:peru;
-  //          }
-  //          a{
-  //            font-size:12px;
-  //            color:#4A5A6A;
-  //          }
-  //        }
-  //      }
-  //    }
-  //
-  //}
   .showSelectedScreen{
     padding:15px 30px;
     span{

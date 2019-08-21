@@ -21,8 +21,8 @@
         <div class="banner">
             <!-- <p class="tit">用芯链接世界</p> -->
             <el-carousel>
-                <el-carousel-item v-for="(item,k) in bannerList" :key="k">
-                    <img :src="item.url" alt="">
+                <el-carousel-item v-for="(item,k) in bannerList" :key="k" >
+                    <img :src="item.url" alt="" >
                 </el-carousel-item>
             </el-carousel>
             <div class="wrapSearch allWidth">
@@ -295,6 +295,7 @@
                         url:require("@/assets/image/banner/3.jpg")
                     }
                 ],
+                bannerHeight:"auto",
                 messageList:[],
                 HotSearchList:[],
                 searchValue:"",
@@ -599,6 +600,8 @@
 
         },
         mounted(){
+            console.log(window.innerHeight)
+            this.bannerHeight=window.innerHeight+'px'
             if (sessionStorage.getItem("access_token")) {
 
                 this.setloginState(true)

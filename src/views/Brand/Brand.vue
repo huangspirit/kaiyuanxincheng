@@ -9,9 +9,9 @@
     <!-- 最新入驻 -->
     <div class="prodclass-r allWidth">
       <div class="title">最新入驻</div>
-      <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
-        <ul :class="{anim:animate==true}" class="clear">
-            <router-link  v-for="(item,k) in imgList"  :key="k" tag="li" :to="{
+      <div class="slideWrap" >
+        <ul :class="{anim:animate==true}" class="clear" @mouseenter="handleEnter" @mouseleave="handleLeave">
+            <router-link  v-for="(item,k) in imgList"  :key="item.id" tag="li" :to="{
             path:'/BrandDetail',
             query:{
             tag:'brand',
@@ -19,7 +19,14 @@
             name:item.brand
             }
             }">
-                <ImgE :src="item.imgurl" :W="300" :H="100"></ImgE>
+<!--                <span class="ImgE" >-->
+<!--                    <img-->
+<!--                        :key="item.id"-->
+<!--                        :src="item.imgurl+'?imageView2/2/w/300/h/100'"-->
+<!--                        :onerror="'../../../static/img/error.jpg'" />-->
+<!--                </span>-->
+<!--                v-lazy="item.imgurl?item.imgurl+'?imageView2/2/w/300/h/100':'../../../static/img/error.jpg'"-->
+                <ImgE :src="item.imgurl" :W="300" :H="100" ></ImgE>
             </router-link>
         </ul>
       </div>
@@ -160,33 +167,34 @@ export default {
     },
     send(val) {
       this.imgList = this.findBrandList[val];
-      console.log(this.imgList)
       this.listKey = val;
       var _id = document.getElementById(val);
       window.scrollTo(0, _id.offsetTop - 65);
         if(this.imgList.length>5){
             this.animate = true;
-            this.interval = setInterval(this.scroll, 5200);
+            this.interval = setInterval(this.scroll, 5000);
         }else{
             clearInterval(this.interval)
         }
     },
     handleEnter() {
+        this.animate = false
       clearInterval(this.interval);
     },
     handleLeave() {
           if(this.imgList.length>5){
               this.animate = true;
-              this.interval = setInterval(this.scroll, 5020);
+              this.interval = setInterval(this.scroll,5000);
           }
     },
     scroll() {
         this.animate = false; // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+        let obj=this.imgList[0]
+        this.imgList.shift(); //删除数组的第一个元素
+        this.imgList.push(obj); // 将数组的第一个元素添加到数组的
         setTimeout(() => {
           //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
-          this.imgList.push(this.imgList[0]); // 将数组的第一个元素添加到数组的
-          this.imgList.shift(); //删除数组的第一个元素
-          this.animate = true; // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+            this.animate = true; // margin-top 为0 的时候取消过渡动画，实现无缝滚动
         },0);
       }
   }

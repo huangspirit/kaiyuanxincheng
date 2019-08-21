@@ -15,7 +15,8 @@ export default [
         name: 'index',
         component: Index,
         meta: {
-            title: '首页'
+            title: '首页',
+
         }
     },
     //商品详情

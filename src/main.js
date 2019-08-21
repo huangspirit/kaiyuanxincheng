@@ -32,6 +32,12 @@ Vue.component('Purchase', Purchase)
 import filters from "./lib/filters";
 import "./assets/css/reset.less";
 window.eventBus = new Vue;
+import Vuelazyload from 'vue-lazyload'
+
+Vue.use(Vuelazyload, {
+    error: require('../public/static/img/error.jpg'),
+    loading: require('../public/static/img/error.jpg')
+})
 Object.keys(filters).forEach((key) => {
     Vue.filter(key, filters[key][key])
 });

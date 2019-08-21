@@ -1,16 +1,16 @@
 <template>
   <div class="AllBrand">
     <div class="BrandDetail-tit">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item>{{brandInfo.name}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
     <!-- // 全部品牌 -->
-    <div class="all-brand">
+    <div class="all-brand allWidth">
       <!-- 品牌信息 -->
       <div class="brand-msg">
-        <div class="tit">
+        <div class="tit bgGray">
             <img src="@/assets/image/brandDetail/u5426.png" alt><span>品牌信息</span>
         </div>
         <div class="brand-msg-con clear">
@@ -28,10 +28,6 @@
             <div class="brand-msg-con-r">
               <div class="tit">
                 <span>{{brandInfo.name}}</span>
-<!--                <span class="tag">-->
-<!--                  <img src="@/assets/image/brandDetail/u4858.png" alt>-->
-<!--                  已入驻芯手网-->
-<!--                </span>-->
               </div>
               <p>
                 公司简介
@@ -43,7 +39,7 @@
       </div>
       <!-- 经营品类 -->
       <div class="management-class  brand-msg">
-        <div class="tit">
+        <div class="tit bgGray">
             <img src="@/assets/image/brandDetail/u4675.png" alt>
             <span>经营品类</span>
         </div>
@@ -66,9 +62,9 @@
         </ul>
       </div>
       <div class="brand-hot brand-msg">
-        <div class="tit">
+        <div class="tit bgGray">
             <img src="@/assets/image/brandDetail/u4832.png" alt>
-            <span>品牌热卖</span>
+            <span>商品列表</span>
 <!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->
 <!--            <span>查看全部</span>-->
             <!-- 搜索热卖 -->

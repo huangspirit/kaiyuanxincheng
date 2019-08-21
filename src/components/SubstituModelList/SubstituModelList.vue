@@ -1,27 +1,21 @@
 <template>
   <div class="SubstituModelList">
-    <ul class="substitu-model-list clear" v-if="modelList.length">
+    <ul class="substitu-model-list clear clear" v-if="modelList.length">
       <li v-for="(item,k) in modelList" :key="`list_${item.id}`" >
         <div class="product clear">
-            <div class="model-list-b fr">
-                <ButtonIcon :width="100" :height="40" @click="specialPrice(k)">
-                    <img src="@/assets/image/brandDetail/u4504.png" alt />
-                    申请特价
-                </ButtonIcon>
-
-
-<!--                <ButtonIcon :width="145" :height="50">-->
+<!--            <div class="model-list-b fr">-->
+<!--                <ButtonIcon :width="100" :height="40" @click="specialPrice(k)">-->
 <!--                    <img src="@/assets/image/brandDetail/u4504.png" alt />-->
-<!--                    我有特价-->
+<!--                    申请特价-->
 <!--                </ButtonIcon>-->
-                <span @click="addInquiry(k)">
-                  <img src="@/assets/image/brandDetail/_u4518.png" alt />
-                </span>
-                <span @click="focus(k)" v-if="!item.focus">
-                  <img src="@/assets/image/brandDetail/_u4510.png" alt />
-                </span>
-            </div>
-          <div class="model-list-t clear fl">
+<!--                <span @click="addInquiry(k)">-->
+<!--                  <img src="@/assets/image/brandDetail/_u4518.png" alt />-->
+<!--                </span>-->
+<!--                <span @click="focus(k)" v-if="!item.focus">-->
+<!--                  <img src="@/assets/image/brandDetail/_u4510.png" alt />-->
+<!--                </span>-->
+<!--            </div>-->
+          <div class="model-list-t clear">
             <div class="TabImage">
               <ImgE :src="item.imageUrl" :W="190" :H="190"></ImgE>
             </div>
@@ -42,23 +36,29 @@
                     <span>品牌：</span>
                     {{item.brand}}
                 </p>
-              <P>
+              <p>
                 <span>型号描述：</span>
                 {{item.productdesc}}
-              </P>
+              </p>
               <p v-if="item.map">
                 <span v-if="!item.map.totalSeller">
                   <span class="nolist">暂无供应商报价</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
-                  <span class="num">{{item.map.totalSeller}}</span>
+                  <span class="color">{{item.map.totalSeller}}</span>
                   <span>供应商报价</span>
                   <span
-                    class="num"
+                    class="color"
                   >{{ item.map.minPrice}} --- {{item.map.maxPrice}}</span>
                 </span>
               </p>
+                <p class="btnWrap">
+                    <span class="bgColor btn" @click="addInquiry(k)">询价篮</span>
+                    <span class="orange btn "  @click="specialPrice(k)">申请特价</span>
+                    <span v-if="!item.focus" class="gray btn" @click="focus(k)">收藏商品</span>
+                    <span v-if="item.focus" class="gray">已收藏</span>
+                </p>
             </div>
           </div>
         </div>
