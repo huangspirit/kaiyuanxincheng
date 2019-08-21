@@ -16,10 +16,10 @@
             >
                 <el-form-item label="选择商品：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
-                    <ul v-if="selectProductList && selectProductList.length">
+                    <ul class="selectProductList">
                         <li
-                            @click.stop="selectProduct(item)"
                             v-for="item in selectProductList"
+                            @click="selectProduct(item)"
                             :key="item.id"
                             v-html="item.nick_name"
                         ></li>
@@ -691,11 +691,13 @@
             },
             // 选择搜索出来的产品
             selectProduct(item) {
+                console.log(item)
                 this.ruleForm.goods_name = item.productno;
                 this.ruleForm.goods_id = item.id;
-                this.selectProductList = [];
+
                 this.selectProductObj = item;
                 this.ruleForm.catergory_id = item.parent_id;
+                this.selectProductList = [];
             },
             // 搜素品牌
             SearchBrand(x) {
@@ -721,7 +723,7 @@
                 this.ruleForm.goods_id = item.id;
                 this.selectProductObj = item;
                 this.ruleForm.catergory_id = item.parent_id;
-                this.selectProductList = [];
+                // this.selectProductList = [];
             },
             noSelect() {
                 this.selectProductList = [];

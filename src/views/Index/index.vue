@@ -603,20 +603,18 @@
             console.log(window.innerHeight)
             this.bannerHeight=window.innerHeight+'px'
             if (sessionStorage.getItem("access_token")) {
-
                 this.setloginState(true)
                 this.GetUserInforma({
                     access_token: sessionStorage.getItem("access_token")
                 }).then(res => {
                      this.UserInforma = res;
+                     this.isSeller=this.UserInforma.userTagMap.seller;
+
                 });
             } else {
                 this.setloginState(false)
             }
 
-            if(this.UserInforma){
-                this.isSeller=this.UserInforma.userTagMap.seller
-            }
 
             this.screenHeight=window.screen.height;
             this.screenWidth=window.screen.width;
