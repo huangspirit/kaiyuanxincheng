@@ -2,7 +2,6 @@
   <div id="app">
     <div id="container" class="clear">
     <headTop id="HeaderBar" ></headTop>
-
       <div id="content" class="clear" :class="headerFxed?'headerFxed':''">
             <router-view v-if="isRouterAlive"/>
       </div>
@@ -76,13 +75,13 @@ export default {
         overflow-y: auto;
         background: #fff!important;
         min-width:1080px;
-
-
     }
     .allWidth{
-        min-width:1080px;
-        max-width:1400px;
+        min-width:1024px;
+        max-width:1200px;
         margin:0 auto;
+        padding:0 30px;
+        width:80%;
     }
     .color{
         color:#df3f2f;

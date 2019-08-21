@@ -1,17 +1,26 @@
 <template>
   <div class="brand" id="brand">
     <!-- banner -->
-    <div class="banner">
-      <img src="@/assets/image/brand/bg.jpg" alt class="bg" @click="joinOriginFactory"/>
+    <div class="banner" @click="joinOriginFactory">
+        <div class="wrap allWidth">
+            <img src="@/assets/image/brand/cover.png" alt class="bg" />
+        </div>
     </div>
     <!-- 最新入驻 -->
     <div class="prodclass-r allWidth">
       <div class="title">最新入驻</div>
       <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
-        <ul :class="{anim:animate==true}">
-          <li v-for="(item,k) in imgList" :key="k">
-            <ImgE :src="item.imgurl" :W="300" :H="100"></ImgE>
-          </li>
+        <ul :class="{anim:animate==true}" class="clear">
+            <router-link  v-for="(item,k) in imgList"  :key="k" tag="li" :to="{
+            path:'/BrandDetail',
+            query:{
+            tag:'brand',
+            documentid:item.id,
+            name:item.brand
+            }
+            }">
+                <ImgE :src="item.imgurl" :W="300" :H="100"></ImgE>
+            </router-link>
         </ul>
       </div>
     </div>
@@ -24,6 +33,7 @@
         <li
           v-for="(item,index) in findBrandListKey"
           :key="index"
+          class="item"
           :class="{active:listKey == item}"
           @click="send(item)"
         >{{item}}</li>
@@ -92,6 +102,7 @@ export default {
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll); //  离开页面清除（移除）滚轮滚动事件
+      clearInterval(this.interval)
   },
   methods: {
       joinOriginFactory(){
@@ -133,40 +144,51 @@ export default {
           params: {}
         })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             this.findBrandList = res.data;
             this.findBrandListKey = Object.keys(this.findBrandList);
             this.listKey = this.findBrandListKey[0];
-            this.imgList = [];
-            this.imgList = this.findBrandList[this.listKey];
+            this.imgList = this.findBrandList[this.listKey]
+              if(this.imgList.length>5){
+                  this.animate = true;
+                  this.interval = setInterval(this.scroll, 5000);
+              }else{
+                  clearInterval(this.interval)
+              }
           }
         });
     },
     send(val) {
-      this.imgList = [];
       this.imgList = this.findBrandList[val];
+      console.log(this.imgList)
       this.listKey = val;
       var _id = document.getElementById(val);
       window.scrollTo(0, _id.offsetTop - 65);
+        if(this.imgList.length>5){
+            this.animate = true;
+            this.interval = setInterval(this.scroll, 5200);
+        }else{
+            clearInterval(this.interval)
+        }
     },
     handleEnter() {
       clearInterval(this.interval);
     },
     handleLeave() {
-      this.interval = setInterval(this.scroll, 5000);
+          if(this.imgList.length>5){
+              this.animate = true;
+              this.interval = setInterval(this.scroll, 5020);
+          }
     },
     scroll() {
-      if (this.imgList.length > 6) {
-        this.animate = true; // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+        this.animate = false; // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
         setTimeout(() => {
           //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
           this.imgList.push(this.imgList[0]); // 将数组的第一个元素添加到数组的
           this.imgList.shift(); //删除数组的第一个元素
-          this.animate = false; // margin-top 为0 的时候取消过渡动画，实现无缝滚动
-        }, 500);
+          this.animate = true; // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+        },0);
       }
-    }
   }
 };
 </script>

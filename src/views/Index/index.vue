@@ -46,12 +46,12 @@
             <router-link tag="div" class="title" to="/specialPrice">特价直通车</router-link>
             <div class="desc color">跟着特价买，越来越便宜</div>
             <ul class="list">
-                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k">
+                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" @click="chipSellerGoodsDetal(item)">
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
                     <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
-                    <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
+                    <div class="wrapImg" >
                         <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
@@ -83,20 +83,9 @@
                                 <p class="img"><img :src="item.userImgeUrl" alt=""></p>
                                 <p>{{item.sellerName}}</p>
                             </div>
-                        <router-link
-                            :to="{
-                                path:'/BrandDetail',
-                                query:{
-                                  tag:'brand',
-                                  name:item.brandName,
-                                  documentid:item.brandId
-                                }
-                              }"
-                            tag="div"
-                            class="brand"
-                        >
-                            {{item.brandName}}
-                        </router-link>
+                            <div  class="brand" @click.stop="chipbrand(k)">
+                                {{item.brandName}}
+                            </div>
                         <div class="count"><span>MOQ:&nbsp;{{item.moq}}</span><span>MPQ:&nbsp;{{item.mpq}}</span></div>
                         <div class="place">
                             <span v-if="item.deliverTime">预计于{{item.deliverTime | formatDate}}</span>
@@ -130,8 +119,8 @@
                         </div>
                     </div>
                         <ul class="originGoodsList fl">
-                            <li v-for="item in originGoodsList">
-                                <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  @click="chipSellerGoodsDetal(item)">
+                            <li v-for="item in originGoodsList" @click="chipSellerGoodsDetal(item)">
+                                <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  >
                                 </ImgE>
                                 <div class="goodsInfo">
                                     <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
@@ -153,7 +142,8 @@
                                         <p class="color" v-if="!item.priceType">
                                             {{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}({{item.includBill?'含税':'不含税'}})
                                         </p>
-                                        <p class="bgColor btn" @click="addCar(item)">加入购物车</p>
+<!--                                        <p class="bgColor btn" @click="addCar(item)">加入购物车</p>-->
+                                        <p class="bgColor btn">立即跟单</p>
                                     </div>
                                 </div>
                             </li>
@@ -180,9 +170,9 @@
                         <li class="item">购买</li>
                     </ul>
                     <ol>
-                        <li v-for="item in oldProductList">
-                            <p  @click="chipSellerGoodsDetal(item)"   :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
-                            <div>{{item.brandName}}</div>
+                        <li v-for="(item,k) in oldProductList"  @click="chipSellerGoodsDetal(item)"   >
+                            <p  :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
+                            <div @click.stop="chipbrand(k)">{{item.brandName}}</div>
                             <div>{{item.goodsStockCount}}</div>
                             <div>{{item.diliverPlace}}</div>
                             <div class="color">
@@ -503,6 +493,18 @@
                     }
                 })
             },
+            chipbrand(k){
+                let obj=this.specialList[k]
+                //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
+                this.$router.push({
+                    path:"/BrandDetail",
+                    query:{
+                        tag:'brand',
+                        documentid:obj.brandId,
+                        name:obj.brandName
+                    }
+                })
+            },
             //厂商跳转
             chipBrand(k){
                 let obj=this.catergoryBrandList[k]
@@ -512,7 +514,8 @@
                     query:{
                         tag:'brand',
                         documentid:obj.id,
-                        name:obj.brand}
+                        name:obj.brand
+                    }
                 })
             },
             handleScroll() {
@@ -592,7 +595,7 @@
                 //跳转商品详情
                 sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))
                 this.$router.push("/sellerGoodsDetail")
-            }
+            },
 
         },
         mounted(){

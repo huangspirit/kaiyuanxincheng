@@ -349,7 +349,7 @@ export default {
         path: path
       });
     }
-    this.GetAllAddress(); 
+    this.GetAllAddress();
     this.all();
   },
   methods: {
@@ -452,10 +452,10 @@ export default {
         sessionStorage.setItem("refresh_token", res.refresh_token);
         sessionStorage.setItem("access_token", res.access_token);
         this.$forceUpdate();
-        this.$message({
-          message: "保存成功!",
-          type: "success"
-        });
+        // this.$message({
+        //   message: "保存成功!",
+        //   type: "success"
+        // });
       });
     },
     all() {
@@ -534,7 +534,7 @@ export default {
             .then(res => {
               this.$message({
                 type: "success",
-                message: "绑定成功!"
+                message: "绑定成功，请重新登录！"
               });
               this.RefreshToken();
               this.dialogVisibleCode = false;

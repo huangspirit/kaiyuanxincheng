@@ -1,5 +1,8 @@
 <template>
     <div class="specialPrice">
+        <div class="banner" >
+            <img src="@/assets/image/specialPrice/cover.png" alt="">
+        </div>
         <div class="cont allWidth">
             <div class="title">
                 <div class="fr btn" v-if="showGetMore" @click="getMore">
@@ -52,7 +55,8 @@
                                     :secondsTxt="'秒'"></CountTime>
                             </div>
                             <div v-if="item.seller_always" class="time">长期售卖</div>
-                            <div @click.stop="addCar(item)" class="btn bgColor">加入购物车</div>
+<!--                            <div @click.stop="addCar(item)" class="btn bgColor">加入购物车</div>-->
+                            <div class="btn bgColor">立即跟单</div>
                         </div>
                     </li>
                 </ul>
