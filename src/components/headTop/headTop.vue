@@ -35,6 +35,7 @@
                       <span class="type type1" v-if="UserInforma.userTagMap.tag === 1">原厂</span>
                       <span class="type type2" v-if="UserInforma.userTagMap.tag === 2">代理商</span>
                       <span class="type type3" v-if="UserInforma.userTagMap.tag === 3">普通商户</span>
+
                   </div>
               </div>
               <p class="account-number">

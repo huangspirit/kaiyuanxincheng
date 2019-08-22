@@ -277,8 +277,22 @@ export default {
     },
     // 删除信息
     delInvoiceInforma(item) {
-      this.dialogVisible2 = true;
+     // this.dialogVisible2 = true;
+        var _this=this;
       this.currentItem = item;
+        this.$confirm('确认删除吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            _this.cancelDel()
+        }).catch(() => {
+            this.$message({
+                type: 'info',
+                message: '已取消'
+            });
+        });
+
     },
     // 编辑信息
     editInvoiceInforma(item) {

@@ -298,23 +298,23 @@ export default {
   }
 };
 </script>
-<style lang="less">
-.el-breadcrumb {
-  height: 80px;
-  line-height: 40px;
-  padding: 20px;
-  background: #fff;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  font-size: 28px;
+<!--<style lang="less">-->
+<!--.el-breadcrumb {-->
+<!--  height: 80px;-->
+<!--  line-height: 40px;-->
+<!--  padding: 20px;-->
+<!--  background: #fff;-->
+<!--  box-sizing: border-box;-->
+<!--  margin-bottom: 20px;-->
+<!--  font-size: 28px;-->
 
-  .el-breadcrumb__item:nth-child(2) {
-    > .el-breadcrumb__inner {
-      color: #0d98ff;
-    }
-  }
-}
-</style>
+<!--  .el-breadcrumb__item:nth-child(2) {-->
+<!--    > .el-breadcrumb__inner {-->
+<!--      color: #0d98ff;-->
+<!--    }-->
+<!--  }-->
+<!--}-->
+<!--</style>-->
 
 <style lang="less" scoped>
 @import "./ShippingAddress.less";

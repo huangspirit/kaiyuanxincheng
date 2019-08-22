@@ -1,37 +1,42 @@
 <template>
   <div class="AllBrand">
-    <div class="BrandDetail-tit">
-        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">
-          <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
-          <el-breadcrumb-item>{{brandInfo.name}}</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
+<!--    <div class="BrandDetail-tit">-->
+<!--        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">-->
+<!--          <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>-->
+<!--          <el-breadcrumb-item>{{brandInfo.name}}</el-breadcrumb-item>-->
+<!--        </el-breadcrumb>-->
+<!--    </div>-->
     <!-- // 全部品牌 -->
     <div class="all-brand allWidth">
       <!-- 品牌信息 -->
       <div class="brand-msg">
-        <div class="tit bgGray">
-            <img src="@/assets/image/brandDetail/u5426.png" alt><span>品牌信息</span>
-        </div>
+<!--        <div class="tit bgGray">-->
+<!--            <img src="@/assets/image/brandDetail/u5426.png" alt><span>品牌信息</span>-->
+<!--        </div>-->
+          <div class="top">
+              <p class="title">{{brandInfo.name}}</p>
+              <p v-if="brandInfo.brandWeb"><a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></p>
+              <p v-if="brandInfo.tel">电话：{{brandInfo.tel}}</p>
+              <p v-if="brandInfo.email">邮件：{{brandInfo.email}}</p>
+          </div>
         <div class="brand-msg-con clear">
           <!--  -->
             <!-- 图片信息 -->
             <div class="brand-msg-con-l">
               <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
-              <ul>
-                <li v-if="brandInfo.brandWeb">网址：<a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>
-                <li v-if="brandInfo.tel">电话：{{brandInfo.tel}}</li>
-                <li v-if="brandInfo.email">邮件：{{brandInfo.email}}</li>
-              </ul>
+<!--              <ul>-->
+<!--                <li v-if="brandInfo.brandWeb">网址：<a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></li>-->
+<!--                <li v-if="brandInfo.tel">电话：{{brandInfo.tel}}</li>-->
+<!--                <li v-if="brandInfo.email">邮件：{{brandInfo.email}}</li>-->
+<!--              </ul>-->
             </div>
             <!-- 文字信息 -->
             <div class="brand-msg-con-r">
               <div class="tit">
-                <span>{{brandInfo.name}}</span>
+                <span>{{brandInfo.name}}</span><span class="mark">品牌专场</span>
+<!--                  <span class="bgColor btn">收藏</span>-->
               </div>
               <p>
-                公司简介
-                <br>
                 {{brandInfo.brandDesc}}
               </p>
             </div>
@@ -40,14 +45,14 @@
       <!-- 经营品类 -->
       <div class="management-class  brand-msg">
         <div class="tit bgGray">
-            <img src="@/assets/image/brandDetail/u4675.png" alt>
+<!--            <img src="@/assets/image/brandDetail/u4675.png" alt>-->
             <span>经营品类</span>
         </div>
         <ul class="list">
           <li @click="AllSend(-1)" :class="{avtive:listFlag = -1}">
-            <img src="@/assets/image/brandDetail/u1086.png" alt>
-            <p>全部品类</p>
-            <p class="num">({{brandInfo.count}})</p>
+<!--            <img src="@/assets/image/brandDetail/u1086.png" alt>-->
+            <span>全部品类</span>
+            <span>({{brandInfo.count}})</span>
           </li>
           <li
             v-for="(item, k)  in brandInfo.childrenList"
@@ -55,32 +60,32 @@
             @click="send(k,item)"
             :class="{avtive:listFlag === k}"
           >
-            <ImgE :src="item.catergoryUrl" :W="60" :H="60"></ImgE>
-            <p>{{item.catergoryName}}</p>
-            <p class="num">({{item.summaryTotal}})</p>
+<!--            <ImgE :src="item.catergoryUrl" :W="60" :H="60"></ImgE>-->
+            <span>{{item.catergoryName}}</span>
+            <span>({{item.summaryTotal}})</span>
           </li>
         </ul>
       </div>
       <div class="brand-hot brand-msg">
-        <div class="tit bgGray">
-            <img src="@/assets/image/brandDetail/u4832.png" alt>
+        <div class="tit bg">
+<!--            <img src="@/assets/image/brandDetail/u4832.png" alt>-->
             <span>商品列表</span>
 <!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->
 <!--            <span>查看全部</span>-->
             <!-- 搜索热卖 -->
-            <SearchInput
-                class="clear fr"
-                :value="valueName"
-                :width="350"
-                :height="40"
-                :placeholder="'搜索热卖产品'"
-                :fontSize="14"
-                :btnImgWidth="20"
-                :btnWidth="40"
-                :borderColor="'#fff'"
-                @input="hotSearchValue"
-                @submit="hotSearchsubmit"
-            ></SearchInput>
+<!--            <SearchInput-->
+<!--                class="clear fr"-->
+<!--                :value="valueName"-->
+<!--                :width="350"-->
+<!--                :height="40"-->
+<!--                :placeholder="'搜索热卖产品'"-->
+<!--                :fontSize="14"-->
+<!--                :btnImgWidth="20"-->
+<!--                :btnWidth="40"-->
+<!--                :borderColor="'#fff'"-->
+<!--                @input="hotSearchValue"-->
+<!--                @submit="hotSearchsubmit"-->
+<!--            ></SearchInput>-->
             <!-- 品牌热卖 -->
         </div>
         <!--  排序-->

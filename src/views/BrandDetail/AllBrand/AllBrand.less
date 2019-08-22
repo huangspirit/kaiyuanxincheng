@@ -1,8 +1,8 @@
 // 全部品牌
 .AllBrand{
-  //width: 100%;
-  //max-width:1200px;
-  //margin:0 auto;
+  color:#333;
+  padding-top:160px;
+  background:url("../../../assets/image/brandDetail/bg.jpg") top center no-repeat;
   .BrandDetail-tit{
     margin:15px 0;
     background: #fff;
@@ -14,15 +14,29 @@
   }
   .all-brand {
   // 品牌信息
+
   .brand-msg {
+    .top{
+      color:#fff;
+      .title{
+        font-size:30px;
+        margin-bottom:55px;
+      }
+      a{
+        color:#fff;
+      }
+    }
     &>.tit {
+      &.bg{
+        color: #333;
+        background:#f5f5f5;
+        border:1px solid #d5d5d5;
+      }
+      font-weight:bolder;
+      color:#fff;
       padding:0 30px;
-      border-top-left-radius:10px;
-      border-top-right-radius:10px;
-      overflow: hidden;
-      color: #fff;
-      font-size: 22px;
-      line-height:60px;
+      font-size:18px;
+      line-height:55px;
       img {
         width: 20px;
         vertical-align: middle;
@@ -30,21 +44,24 @@
       }
     }
     .brand-msg-con {
-     padding:20px 30px;
+      margin-top:80px;
+      margin-bottom:20px;
+      padding:20px 30px;
       background: #fff;
-      border-bottom: 1px solid #ddd;
+      border-radius:10px;
       display:flex;
+      box-shadow: 0 0 2px 2px #ddd;
       // 图片信息
       .brand-msg-con-l {
-        float: left;
-        width:35%;
+        display: inline-block;
+        vertical-align: middle;
         padding-right:20px;
         box-sizing: border-box;
+        min-width:250px;
         .ImgE{
           position: relative;
           text-align: center;
-          max-width:100%;
-          min-width:70%;
+         width:100%;
           /deep/img{
             max-width:100%;
             max-height:100%;
@@ -75,24 +92,19 @@
       }
       // 文字信息
       .brand-msg-con-r {
-        float: left;
-        width:65%;
+          display:inline-block;
+          vertical-align: middle;
         &>.tit {
-          width: 100%;
-          font-size: 28px;
-          color: #4A5A6A;
+          font-size: 22px;
           margin-bottom: 10px;
-          .tag {
-            background: #0068D7;
-            text-align: center;
-            font-size: 16px;
-            color: #fff;
-            margin-left:20px;
-            padding:1px 15px;
-            img {
-              width: 15px;
-              vertical-align: middle;
-            }
+          font-weight: bold;
+          line-height: 1;
+          .btn{
+            padding:3px 12px;
+            border-radius: 3px;
+            font-size:14px;
+            margin-left:10px;
+            vertical-align: top;
           }
         }
         p {
@@ -109,7 +121,6 @@
   }
   // 经营品类
   .management-class {
-    border-bottom: 1px solid #ddd;
     .nocontent{
       color:#d5d5d5;
       padding:80px;
@@ -117,13 +128,12 @@
       background: #fff;
     }
     &>.list {
-      background: #fff;
       padding: 20px 30px;
       display: flex;
       flex-wrap: wrap;
       li {
         width:180px;
-        border:1px solid #fff;
+        border:1px solid #d5d5d5;
         padding: 10px 0;
         margin-right:10px;
         margin-bottom: 10px;
@@ -144,10 +154,12 @@
           }
         }
         &:hover {
-          box-shadow: 2px -2px 5px 1px rgba(0, 0, 0, 0.2)
+          box-shadow: 0 0 2px 2px #d5d5d5;
         }
         &.avtive{
-          border-color:#ddd;
+          border-color:#df3f2f;
+          color:#df3f2f;
+          background: #fff;
         }
       }
     }

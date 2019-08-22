@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import SideMenu from "./SideMenu";
+//import SideMenu from "./SideMenu";
 import SideMenuItem from "../SideMenuItem/SideMenuItem";
 // import '@/assets/css/dialog-delect.less'
 export default {
@@ -93,6 +93,9 @@ export default {
 
 <style lang='less' scoped>
 .SideMenu {
+    /deep/.el-menu{
+        border:none;
+    }
   width: auto;
   img {
     width: 30px;
@@ -109,7 +112,6 @@ export default {
   color:#fff;
   font-size:16px;
   .ensure{
-
     background: #4a5a6a;
     padding: 6px 15px;
     margin-bottom:20px;
@@ -132,7 +134,5 @@ export default {
   }
 }
 </style>
-<style scoped>
 
-</style>
 

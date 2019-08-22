@@ -87,6 +87,22 @@ export default {
         padding:0 30px;
         width:80%;
     }
+
+    a{
+        cursor: pointer;
+        color:#0d94fb;
+        text-decoration: none;
+        &:hover{
+            color:peru;
+        }
+    }
+    strong{
+        color:#df3f2f;
+    }
+    img{
+        vertical-align: middle;
+    }
+#app {
     .color{
         color:#df3f2f;
     }
@@ -97,21 +113,6 @@ export default {
     .bgGray{
         background:#4f4f4f ;
     }
-    a{
-        cursor: pointer;
-        color:#0d94fb;
-        text-decoration: none;
-        &:hover{
-            color:peru;
-        }
-    }
-    strong{
-        color:#f40;
-    }
-    img{
-        vertical-align: middle;
-    }
-#app {
     color:#999;
     background: #f5f5f5;
     .defaultradioSquare .el-radio__inner{

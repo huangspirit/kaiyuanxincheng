@@ -1,5 +1,9 @@
 <template>
   <div class="table">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>
+          <el-breadcrumb-item>申请记录</el-breadcrumb-item>
+      </el-breadcrumb>
     <el-table :data="list" border style="width: 100%">
       <el-table-column fixed prop="applyType" label="申报类型" width="150" align="center">
         <template slot-scope="scope">

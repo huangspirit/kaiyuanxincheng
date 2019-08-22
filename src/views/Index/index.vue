@@ -1,6 +1,6 @@
 <template>
     <div class="index " >
-        <div class="message bgColor" :class="headerFxed?'headerFxed':''" v-if="messageList.length">
+        <div class="message" :class="headerFxed?'headerFxed':''" v-if="messageList.length">
             <el-carousel
                 height="28px"
                 :interval="200000"

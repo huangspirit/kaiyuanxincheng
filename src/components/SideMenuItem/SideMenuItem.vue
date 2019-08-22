@@ -22,7 +22,7 @@
         </router-link>
       </template>
     </el-submenu>
-    
+
   </div>
 </template>
 
@@ -39,12 +39,11 @@ export default {
   },
   data() {
     return {
-     
+
     };
   },
   methods: {
     send(item) {
-      console.log(item)
       if (item.diabled) {
         // if (item.title == "卖家中心") {
         //   this.dialogVisible = true;
@@ -55,7 +54,7 @@ export default {
         });
       }
     },
-   
+
   }
 };
 </script>

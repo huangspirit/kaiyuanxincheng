@@ -7,25 +7,36 @@
         <img :src="UserInforma.headImgUrl" class="head-portrait" alt />
         <div class="info">
           <p class="name">{{UserInforma.nickname}}</p>
-          <p
-            class="type"
-            v-if="UserInforma.userTagMap.seller"
-          >{{UserInforma.userTagMap.tag | typeFilter}}</p>
-          <p class="type" v-if="!UserInforma.userTagMap.seller">
-            <router-link to="/OriginalFactoryEntry" tag="span">申请入驻</router-link>
-          </p>
+            <p>
+                <span  class="type" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                <router-link to="/OriginalFactoryEntry" tag="span"  class="type" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
+                <span  class="type"  v-if="UserInforma.userTagMap.vip">月结用户</span>
+            </p>
         </div>
       </div>
     </div>
     <!-- 个人信息设置 -->
     <ul class="informa-set">
       <li>
-        <div>
-          <span>
+        <div class="clear">
+          <span class=" fl">
             <img src="@/assets/image/PersonalCenter/u65597.png" alt />
           </span>
-          <span>我的等级：</span>
-          <span class="red">{{UserInforma.userTagMap.userLevel}}</span>
+          <span class=" fl">信用等级：</span>
+          <span class="red fl">{{UserInforma.userTagMap.userLevel}}</span>
+            <div class="mark fl">
+                <span class="bgColor">?</span>
+                <div class="cont">
+                    <p>
+                        <span>信用等级</span><span>预付款比列</span>
+                    </p>
+                    <p v-for="item in levelList" :class="item.level==UserInforma.userTagMap.userLevel ? 'color':''">
+                        <span>{{item.level}}</span><span>{{item.val}}</span>
+                    </p>
+                    <div class="color">提示：系统会根据您购买商品的能力进行等级的调整</div>
+                </div>
+            </div>
+<!--            <span>(预付款比例：{{UserInforma.userTagMap.credit_discount}})</span>-->
         </div>
         <!--        <router-link to="/PersonalCenter/UpgradeLevel" tag="span">提升等级</router-link>-->
       </li>
@@ -74,7 +85,7 @@
           <span>剩余售卖额度：</span>
           <span class="color">￥{{UserInforma.userTagMap['restcredit-seller']}}</span>
         </div>
-        <!-- <span>详情</span> -->
+          <router-link to="/PersonalCenter/sellerDetailList" tag="span">详细</router-link>
       </li>
       <li v-if="UserInforma.userTagMap.vip">
         <div>
@@ -86,7 +97,7 @@
           <span>剩余购买额度：</span>
           <span class="color">￥{{UserInforma.userTagMap['restcredit-vip']}}</span>
         </div>
-        <router-link to="/PersonalCenter/CredibiliForehead" tag="span">详情</router-link>
+        <router-link to="/PersonalCenter/vipDetailList" tag="span">详细</router-link>
       </li>
       <li>
         <div>
@@ -233,6 +244,18 @@ export default {
   name: "PersonalSet",
   data() {
     return {
+        levelList:[
+            {level:'AAA',val:'10%'},
+            {level:'AA',val:'20%'},
+            {level:'A',val:'30%'},
+            {level:'BBB',val:'40%'},
+            {level:'BB',val:'50%'},
+            {level:'B',val:'60%'},
+            {level:'CCC',val:'70%'},
+            {level:'CC',val:'80%'},
+            {level:'C',val:'90%'},
+            {level:'D',val:'100%'},
+        ],
       UserInforma: {
         userTagMap: {}
       },
@@ -333,7 +356,6 @@ export default {
   },
   mounted() {
     // this.$store.dispatch("Login/GetUserInforma");
-    console.log(this.$route.query);
     var queryAlign = this.$route.query;
     if (queryAlign.code) {
       if (queryAlign.code == "success") {
@@ -361,7 +383,6 @@ export default {
         start: 0,
         length: 10
       }).then(res => {
-        console.log(res);
         if (res != null) {
           if (res.total > 0) {
             let obj = res.data.find(item => item.isdefault);
@@ -370,7 +391,6 @@ export default {
             } else {
               this.defaultAddress = res.data[0];
             }
-            console.log(this.defaultAddress);
           }
         }
       });

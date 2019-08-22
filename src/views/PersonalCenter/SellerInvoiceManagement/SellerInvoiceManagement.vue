@@ -213,9 +213,9 @@ export default {
         payStatus(val){
             switch (val){
                 case 0:
-                    return "未支付";
+                    return "未发货";
                 case 1:
-                    return "已支付";
+                    return "已发货";
                 case 2:
                     return "取消中";
                 case 3:

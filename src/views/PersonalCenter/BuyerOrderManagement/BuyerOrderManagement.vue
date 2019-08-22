@@ -361,7 +361,7 @@ export default {
   }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @import "./BuyerOrderManagement.less";
 </style>
 

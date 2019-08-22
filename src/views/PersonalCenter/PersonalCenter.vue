@@ -13,7 +13,6 @@
 <style lang="less" scoped>
 @import "./PersonalCenter.less";
 </style>
-
 <script>
 import SideMenu from "_c/SideMenu";
 import { mapState } from "vuex";
@@ -161,7 +160,7 @@ export default {
             //   title: "我的信誉额",
             //   index: "3-3",
             //   path: "/PersonalCenter/CredibiliForehead",
-            //   icon: require("@/assets/image/PersonalCenter/u10011.png")
+            //   icon: require("")
             // },
             {
               title: "收货地址",
@@ -170,7 +169,7 @@ export default {
               icon: require("@/assets/image/PersonalCenter/u37960.png")
             },
               {
-                    title: "申请结果",
+                    title: "申请记录查询",
                     index: "3-5",
                     path: "/PersonalCenter/GetVipApplyDetail",
                     icon: require("@/assets/image/PersonalCenter/u38134.png")

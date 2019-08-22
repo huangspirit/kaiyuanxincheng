@@ -393,11 +393,30 @@ export default [
         children: [
             // 卖家中心
             {
-                path: '/',
+                path: '',
                 component: () => import('@/views/PersonalCenter/PersonalSet'),
                 meta: {
                     requireAuth: true,
                     title: '个人中心'
+                },
+
+            },
+            {
+                path: 'sellerDetailList',
+                name: 'sellerDetailList',
+                component: () => import('@/views/PersonalCenter/PersonalSet/sellerDetailList'),
+                meta: {
+                    requireAuth: true,
+                    title: '售卖明细'
+                }
+            },
+            {
+                path: 'vipDetailList',
+                name: 'vipDetailList',
+                component: () => import('@/views/PersonalCenter/PersonalSet/vipDetailList'),
+                meta: {
+                    requireAuth: true,
+                    title: '月结明细'
                 }
             },
             {
@@ -660,8 +679,19 @@ export default [
                 component: () => import('@/views/PersonalCenter/PersonalSet'),
                 meta: {
                     requireAuth: true,
-                    title: '个人设置'
-                }
+                    title: '个人资料'
+                },
+                children:[
+                    {
+                        path: 'sellerDetailList',
+                        name: 'sellerDetailList',
+                        component: () => import('@/views/PersonalCenter/PersonalSet/sellerDetailList'),
+                        meta: {
+                            requireAuth: true,
+                            title: '售卖明细'
+                        }
+                    },
+                ]
             },
             // 个人设置
             {

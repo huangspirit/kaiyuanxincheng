@@ -14,16 +14,17 @@
             </router-link>
             <div class="person-center fr" @click="PersonalCenter" v-if="loginState">
                 <img :src="UserInforma.headImgUrl" alt class="userImg">
-                <div class="PersonalCenter-con" v-if="UserInforma.userTagMap">
+                <div class="PersonalCenter-con bgGray" v-if="UserInforma.userTagMap">
                     <p class="personInfo">
-                        <span class="tel fr">{{UserInforma.phone}}</span>
+                        <span class="tel fr color">{{UserInforma.phone}}</span>
                         <span class="name">{{UserInforma.nickname}}</span>
                     </p>
                     <div v-if="UserInforma.userTagMap.tag" class="clear identity">
                         <div>
-                            <span class="type type1" v-if="UserInforma.userTagMap.tag === 1">原厂</span>
-                            <span class="type type2" v-if="UserInforma.userTagMap.tag === 2">代理商</span>
-                            <span class="type type3" v-if="UserInforma.userTagMap.tag === 3">普通商户</span>
+                            <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 1">原厂</span>
+                            <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 2">代理商</span>
+                            <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 3">普通商户</span>
+                            <span class="type bgColor"  v-if="UserInforma.userTagMap.vip">月结用户</span>
                         </div>
                     </div>
                     <p class="account-number">
