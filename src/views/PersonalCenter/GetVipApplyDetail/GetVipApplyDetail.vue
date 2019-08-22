@@ -77,7 +77,7 @@
           </li>
           <li>
             <span>营业执照有效期：</span>
-            <span>{{detailList.businesslicensestarttime}} 至 {{detailList.businesslicenseendtime}}</span>
+            <span>{{detailList.businesslicensestarttime | formatTime(detailList.businesslicensestarttime)}} 至 {{detailList.businesslicenseendtime | formatTime(detailList.businesslicenseendtime)}}</span>
           </li>
           <li>
             <span>营业执照：</span>
@@ -121,7 +121,7 @@
           </li>
           <li v-for="(item,index) in brandList" :key="index">
             <span>品牌：</span>
-            <span>{{brand[0]}}</span>
+            <span>{{brand[index]}}</span>
             <span>品牌LOGO：</span>
             <span>
               <img
@@ -131,7 +131,7 @@
             </span>
             <span>品牌有效期：</span>
             <span>
-              <span>{{brandTime[index]}}</span>
+              <span>{{brandTime[index].split('-')[0]}} - {{brandTime[index].split('-')[1]}}</span>
             </span>
           </li>
         </ul>
@@ -155,7 +155,7 @@
           </li>
           <li>
             <span>公司成立日期：</span>
-            <span>{{detailList.createTime| formatDate}}</span>
+            <span>{{detailList.createTime| formatTime}}</span>
           </li>
           <li>
             <span>企业负责人：</span>
@@ -171,7 +171,7 @@
           </li>
           <li>
             <span>营业执照有效期：</span>
-            <span>{{detailList.tremsStart}} - {{detailList.termsEnd}}</span>
+            <span>{{detailList.tremsStart | formatTime}} - {{detailList.termsEnd | formatTime}}</span>
           </li>
           <li>
             <span>营业执照：</span>
@@ -262,7 +262,6 @@ export default {
             this.brandList = this.detailList.qualification.split("@");
             this.brand = this.detailList.brand.split("@");
             this.brandTime = this.detailList.qualificationtime.split("@");
-            console.log(this.brandList);
           } else if (obj.applyType == "4") {
             this.detailList = res.data;
             this.detailList["applyType"] = obj.applyType;
@@ -317,6 +316,17 @@ export default {
         case 2:
           return "已驳回";
       }
+    },
+    formatTime(value) {
+      console.log("过滤器", value);
+      var date = new Date(value);
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      var hour = date.getHours();
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      return year + "/" + month + "/" + day;
     }
   }
 };
