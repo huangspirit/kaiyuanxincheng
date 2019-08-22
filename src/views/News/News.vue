@@ -61,7 +61,6 @@ export default {
             axios.request(message.queryMessageCatergory).then(res=>{
                 let list=[]
                 for(var p in res.data){
-                    console.log(`/News/${p}`)
                     list.push({
                         id:p,
                         num:res.data[p],
@@ -70,7 +69,6 @@ export default {
                     })
                 }
                 this.MenuTabList=list;
-                console.log(this.$route)
                 // if(this.$route.name='dg'){
                 //     this.updateUserMessageByTag(0)
                 // }
