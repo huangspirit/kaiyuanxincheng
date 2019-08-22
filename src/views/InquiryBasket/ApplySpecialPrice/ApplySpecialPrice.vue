@@ -7,8 +7,10 @@
       <div class="special-price" v-if="topShow">
         <div class="product-msg">
           <div class="product-msg-img">
-            <img src="@/assets/image/inquirybasket/_u11948.png" alt />
-            <span class="attention">-已关注</span>
+            <img v-if="oneData.imageUrl!='-'" :src="oneData.imageUrl" alt />
+            <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+            <span v-if="oneData.focus==false" class="attention">未关注</span>
+            <span v-if="oneData.focus==true" class="attention">已关注</span>
           </div>
           <div class="product-msg-text">
             <p class="name">{{oneData.productno}}</p>
@@ -25,7 +27,10 @@
               共有
               <span class="num">{{oneData.map.totalSeller}}</span>
               个供应商报价
-              <span v-if="oneData.map.totalSeller != 0" class="num">{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
+              <span
+                v-if="oneData.map.totalSeller != 0"
+                class="num"
+              >{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
             </p>
           </div>
           <div v-if="oneData.factorySellerInfo.priceType== undefined " class="LadderPrice">
@@ -65,8 +70,13 @@
           </div>
         </div>
         <div class="brans-msg">
-          <img v-if="oneData.brandImageUrl" :src="oneData.brandImageUrl" class="bd-img" alt />
-          <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" class="bd-img" alt />
+          <img v-if="oneData.brandImageUrl!='-'" :src="oneData.brandImageUrl" class="bd-img" alt />
+          <img
+            v-else
+            src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg"
+            class="bd-img"
+            alt
+          />
           <p>{{oneData.brand}}</p>
           <p></p>
         </div>
@@ -114,12 +124,12 @@
               placeholder="请输入竞争型号"
               v-model="formAlign.insteadData[k]"
             >
-              <el-button slot="append" @click="deleteInsteadNo(k)" icon="el-icon-delete"></el-button>
+              <el-button slot="append" @click="deleteInsteadNo(k,false)" icon="el-icon-delete"></el-button>
             </el-input>
             <el-input placeholder="请输入竞争型号" v-model="formAlign.insteadNo">
               <el-button
                 slot="append"
-                @click.native="addInsteadNo(formAlign.insteadNo)"
+                @click.native="addInsteadNo(formAlign.insteadNo,false)"
                 icon="el-icon-circle-plus"
               ></el-button>
             </el-input>
@@ -136,11 +146,11 @@
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="职位" class="contact" prop="position">
-            <el-input v-model="formAlign.position" placeholder="姓名"></el-input>
+            <el-input v-model="formAlign.position" placeholder="职位"></el-input>
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="电话" class="contact" prop="telphone">
-            <el-input v-model="formAlign.telphone" placeholder="请输入内容" type="number"></el-input>
+            <el-input v-model="formAlign.telphone" placeholder="请输入手机号" type="number"></el-input>
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="备注说明" class="contact" prop="remark">
@@ -155,7 +165,13 @@
             <li class="listContent" v-for="(listItem,index) in productData" :key="index">
               <div class="goodsImg">
                 <div>
-                  <img :src="listItem.imageUrl " alt />
+                  <img v-if="listItem.imageUrl!='-'" :src="listItem.imageUrl " alt />
+                  <img
+                    v-else
+                    src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg"
+                    class="bd-img"
+                    alt
+                  />
                 </div>
               </div>
               <div class="goodsDetail">
@@ -194,10 +210,10 @@
                   >
                     <span v-if="listItem.priceUnit ==true">$</span>
                     <span v-if="listItem.priceUnit ==false">￥</span>
-                    {{oneData.seckilPrice}}
+                    {{listItem.seckilPrice}}
                   </div>
                 </div>
-                <div class="edit">
+                <div class="edit" style="width:350px;">
                   <el-form
                     :model="listItem"
                     :rules="editPriceRules"
@@ -234,12 +250,28 @@
                     </el-form-item>
                     <el-form-item label="竞争型号" class="contact" prop="insteadNo">
                       <el-input
-                        @input="listChange"
-                        type="textarea"
-                        :rows="2"
-                        placeholder="多个型号时以@分割"
+                        v-for="(item,k) in listItem.insteadData"
+                        :key="k"
+                        placeholder="请输入竞争型号"
+                        v-model="listItem.insteadData[k]"
+                      >
+                        <el-button
+                          slot="append"
+                          @click="deleteInsteadNo(k,true,listItem)"
+                          icon="el-icon-delete"
+                        ></el-button>
+                      </el-input>
+                      <el-input
+                        placeholder="请输入竞争型号"
                         v-model="listItem.insteadNo"
-                      ></el-input>
+                        @input="listChange"
+                      >
+                        <el-button
+                          slot="append"
+                          @click.native="addInsteadNo(listItem,true)"
+                          icon="el-icon-circle-plus"
+                        ></el-button>
+                      </el-input>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -285,39 +317,39 @@ export default {
         insteadData: []
       },
       rules: {
-        // companyName: [
-        //   { required: true, message: "公司名称不能为空", trigger: "blur" }
-        // ],
-        // website: [{ required: true, message: "网址不能为空", trigger: "blur" }],
-        // projectName: [
-        //   { required: true, message: "项目名称不能为空", trigger: "blur" }
-        // ],
-        // projectProcess: [
-        //   { required: true, message: "产品不能为空", trigger: "blur" }
-        // ],
-        // contactName: [
-        //   { required: true, message: "联系人不能为空", trigger: "blur" }
-        // ],
-        // telphone: [
-        //   { required: true, message: "手机号不能为空", trigger: "blur" },
-        //   {
-        //     pattern: /^1[3456789]\d{9}$/,
-        //     message: "格式不正确",
-        //     trigger: "blur"
-        //   }
-        // ],
-        // acceptPrice: [
-        //   { required: true, message: "接受价格不能为空", trigger: "blur" }
-        // ],
-        // projectBeginTime: [
-        //   { required: true, message: "预计量产时间不能为空", trigger: "blur" }
-        // ],
-        // projectEau: [
-        //   { required: true, message: "年采购量不能为空", trigger: "blur" }
-        // ],
-        // position: [
-        //   { required: true, message: "职位不能不能为空", trigger: "blur" }
-        // ]
+        companyName: [
+          { required: true, message: "公司名称不能为空", trigger: "blur" }
+        ],
+        website: [{ required: true, message: "网址不能为空", trigger: "blur" }],
+        projectName: [
+          { required: true, message: "项目名称不能为空", trigger: "blur" }
+        ],
+        projectProcess: [
+          { required: true, message: "产品不能为空", trigger: "blur" }
+        ],
+        contactName: [
+          { required: true, message: "联系人不能为空", trigger: "blur" }
+        ],
+        telphone: [
+          { required: true, message: "手机号不能为空", trigger: "blur" },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: "格式不正确",
+            trigger: "blur"
+          }
+        ],
+        acceptPrice: [
+          { required: true, message: "接受价格不能为空", trigger: "blur" }
+        ],
+        projectBeginTime: [
+          { required: true, message: "预计量产时间不能为空", trigger: "blur" }
+        ],
+        projectEau: [
+          { required: true, message: "年采购量不能为空", trigger: "blur" }
+        ],
+        position: [
+          { required: true, message: "职位不能不能为空", trigger: "blur" }
+        ]
       },
       editPriceRules: {},
       topShow: false,
@@ -336,19 +368,21 @@ export default {
         this.proInformation[i]["priceType"] = "false";
         this.proInformation[i]["acceptPrice"] = "";
         this.proInformation[i]["projectEau"] = "";
-        this.proInformation[i]["insteadNo"] = [];
+        this.proInformation[i]["insteadNo"] = "";
+        this.proInformation[i]["insteadData"] = [];
       }
       this.productData = this.proInformation;
+      console.log(this.productData);
     } else {
       if (this.proInformation.goodsbaseIno) {
         this.oneData = this.proInformation.goodsbaseIno;
-        console.log(this.oneData)
         this.formAlign = this.proInformation;
+        this.formAlign.insteadData = this.proInformation.insteadNo.split("@");
       } else {
         this.oneData = this.proInformation;
       }
-
       this.topShow = true;
+      console.log(this.oneData, this.formAlign, "8888888888888");
     }
   },
   methods: {
@@ -358,6 +392,7 @@ export default {
         insteadNumber += this.formAlign.insteadData[i] + "@";
       }
       insteadNumber += this.formAlign.insteadNo;
+
       this.$refs.formAlign.validate(valid => {
         if (valid) {
           if (this.topShow) {
@@ -402,11 +437,12 @@ export default {
             console.log(this.proInformation);
             var infoData = [];
             this.proInformation.forEach(element => {
+              if(element.insteadData.push(element.insteadNo))
               infoData.push({
                 requestId: element.id,
                 acceptPrice: element.acceptPrice,
                 projectEau: element.projectEau,
-                insteadNo: element.insteadNo,
+                insteadNo: element.insteadData.join('@'),
                 goodsName: element.productno,
                 brandId: element.brandId,
                 bucketId: element.bucketId,
@@ -439,26 +475,58 @@ export default {
         }
       });
     },
-    addInsteadNo(val) {
-      console.log(val, "0000");
-      if (val == "") {
-        this.$message({
-          message: "请填写竞争型号",
-          type: "warning"
-        });
-      } else {
-        if (this.formAlign.insteadData.length >= 2) {
+    addInsteadNo(val, type) {
+      console.log(val, type, "0000");
+      if (!type) {
+        if (val == "") {
           this.$message({
-            message: "最多添加三个竞争型号",
+            message: "请填写竞争型号",
             type: "warning"
           });
         } else {
-          this.formAlign.insteadData.push(val);
+          if (this.formAlign.insteadData.length >= 2) {
+            this.$message({
+              message: "最多添加三个竞争型号",
+              type: "warning"
+            });
+          } else {
+            this.formAlign.insteadData.push(val);
+          }
+        }
+      } else {
+        if (val == "") {
+          this.$message({
+            message: "请填写竞争型号",
+            type: "warning"
+          });
+        } else {
+          for (var i = 0; i < this.productData.length; i++) {
+            if (this.productData[i].id == val.id) {
+              if (this.productData[i].insteadData.length >= 2) {
+                this.$message({
+                  message: "最多添加三个竞争型号",
+                  type: "warning"
+                });
+              } else {
+                this.productData[i].insteadData.push(val.insteadNo);
+              }
+            }
+          }
+          this.productData = Object.assign([], this.productData)
         }
       }
     },
-    deleteInsteadNo(index) {
-      this.formAlign.insteadData.splice(index, 1);
+    deleteInsteadNo(index, type, val) {
+      if (type) {
+        for (var i = 0; i < this.productData.length; i++) {
+          if (this.productData[i].id == val.id) {
+            this.productData[i].insteadData.splice(index, 1);
+          }
+        }
+        this.productData = Object.assign([], this.productData);
+      } else {
+        this.formAlign.insteadData.splice(index, 1);
+      }
     },
     selectChange(e) {
       console.log(this.formAlign);
@@ -522,7 +590,10 @@ export default {
 }
 // 记住操作
 .keep {
+  width: 100%;
   margin-top: 15px;
+  float: left;
+  text-align: center;
   .el-checkbox {
     width: 100%;
     text-align: center;

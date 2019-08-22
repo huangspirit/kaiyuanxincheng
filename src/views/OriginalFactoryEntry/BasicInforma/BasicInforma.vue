@@ -28,7 +28,7 @@
             <el-select
               v-model="residencetype"
               placeholder="请选择入驻类型"
-              @change="regisType(val)"
+              @change="regisType(residencetype)"
               prop="residencetype"
             >
               <el-option

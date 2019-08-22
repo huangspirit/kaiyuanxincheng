@@ -8,11 +8,11 @@
           <el-row class="content">
             <el-col :span="4">
               <div class="goodsImg">
-                <img v-if="listItem.goodsImage" :src="listItem.goodsImage " alt />
+                <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="7">
               <div class="goodsProdu">
                 <h3>{{listItem.goodsName}}</h3>
                 <p>
@@ -25,7 +25,7 @@
                 </p>
               </div>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="8">
               <div class="googsDesc">
                 <h3>
                   申请价格：
@@ -37,7 +37,7 @@
                 </p>
                 <p>
                   提交日期：
-                  <span>{{listItem.projectBeginTime | formatDate(listItem.projectBeginTime)}}</span>
+                  <span>{{listItem.sheetCreatime | formatDate(listItem.sheetCreatime)}}</span>
                 </p>
                 <p>
                   年采购量：
@@ -66,31 +66,38 @@
           <el-row v-if="listItem.replayStates == true" class="applyContent">
             <el-col :span="4">
               <div class="goodsImg">
-                <img v-if="listItem.sellerInfoMap.headImgUrl" :src="listItem.sellerInfoMap.headImgUrl" alt />
-                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+                <img
+                  v-if="listItem.sellerInfoMap.headImgUrl!='-'"
+                  :src="listItem.sellerInfoMap.headImgUrl"
+                  alt
+                />
+                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="7">
               <div class="goodsProdu">
                 <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span>
                 <div class="merchant">
                   <span v-if="listItem.sellerInfoMap.tag == 1">原厂商户</span>
                   <span v-if="listItem.sellerInfoMap.tag != 1">认证商户</span>
                 </div>
-
-                <p>{{listItem.position}}</p>
               </div>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="8">
               <div class="googsDesc">
-                <h3>
+                <h3 class="priceLevelTitle" v-if="listItem.priceType">
                   批复价格：
-                  <span>{{listItem.acceptPrice}}</span>
+                  <div class="priceLevelStyle">
+                    <div v-for="(item,index) in listItem.priceLevel.split('@')">
+                      <span>{{item.split('-')[0]}}+</span> --- &nbsp;&nbsp;
+                      <span>${{item.split('-')[1]}}</span>
+                    </div>
+                  </div>
                 </h3>
-                <p>
-                  商户名称：
-                  <span>{{listItem.brandName}}</span>
-                </p>
+                <h3 v-if="!listItem.priceType">
+                  批复价格：
+                  <span>￥{{listItem.seckilPrice}}</span>
+                </h3>
                 <p>
                   回复日期：
                   <span>{{listItem.replyTime | formatDate(listItem.priceExpireTime)}}</span>
@@ -114,7 +121,7 @@
                 <p>
                   <countTime
                     v-on:end_callback="getAllReplyList()"
-                    :startTime="listItem.projectBeginTime"
+                    :startTime="listItem.currentTime"
                     dayTxt="天"
                     hourTxt="时"
                     minutesTxt="分"
@@ -171,8 +178,8 @@ export default {
   },
   mounted() {
     this.getAllReplyList();
-     eventBus.$on("alreadyReply", val => {
-      this.$refs.pagination.internalCurrentPage = 1
+    eventBus.$on("alreadyReply", val => {
+      this.$refs.pagination.internalCurrentPage = 1;
       if (val != null) {
         this.allInquiryData = val.data;
         this.total = val.total;
@@ -213,15 +220,23 @@ export default {
     },
     againSpecial(val, val1) {
       console.log(val, val1);
-      axios
-        .request({ ...siderInquiryList.replyAgain, params: { id: val.id } })
-        .then(res => {
-          console.log(res);
-          if (res.resultCode == "200") {
-            this.$store.dispatch("promation", res.data);
-            this.$router.push("/InquiryBasket/ApplySpecialPrice");
-          }
-        });
+      this.$confirm("是否确认重新申请?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          axios
+            .request({ ...siderInquiryList.replyAgain, params: { id: val.id } })
+            .then(res => {
+              console.log(res);
+              if (res.resultCode == "200") {
+                this.$store.dispatch("promation", res.data);
+                this.$router.push("/InquiryBasket/ApplySpecialPrice");
+              }
+            });
+        })
+        .catch(() => {});
     },
     purchase(val, val1) {
       this.purshase = true;
@@ -363,10 +378,36 @@ export default {
           }
         }
         .googsDesc {
+          position: relative;
           h3 {
+            
             color: #4a5a6a;
             > span {
               color: #cc0000;
+            }
+          }
+          .priceLevelTitle {
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            color: #4a5a6a;
+            text-align: right;
+            > span {
+              color: #cc0000;
+            }
+            > .priceLevelStyle {
+              position: absolute;
+              right: 0;
+              top: 34px;
+              > div {
+                display: flex;
+                justify-content: space-between;
+                > span {
+                  min-width: 38px;
+                  text-align: left;
+                  color: #cc0000;
+                }
+              }
             }
           }
           p {

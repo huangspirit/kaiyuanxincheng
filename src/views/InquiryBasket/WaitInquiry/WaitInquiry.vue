@@ -53,7 +53,7 @@
               />
             </div>
             <div>
-              <img v-if="listItem.imageUrl" :src="listItem.imageUrl " alt />
+              <img v-if="listItem.imageUrl!='-'" :src="listItem.imageUrl " alt />
               <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
             </div>
           </div>
@@ -306,7 +306,6 @@ export default {
             this.getInquiry();
           }
         });
-      deleteSigletonShoppingCar;
     },
     currentPage(val) {
       console.log(val);
@@ -474,7 +473,7 @@ export default {
       .goodsImg {
         width: 265px;
         margin-right: 34px;
-        line-height: 158px;
+        display: flex;
         .itemCheck {
           width: 18px;
           height: 18px;

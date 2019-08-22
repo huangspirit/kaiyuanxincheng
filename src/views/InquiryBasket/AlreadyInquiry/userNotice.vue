@@ -8,7 +8,7 @@
           <el-row class="content">
             <el-col :span="4">
               <div class="goodsImg">
-                <img v-if="listItem.goodsImage" :src="listItem.goodsImage " alt />
+                <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
               </div>
             </el-col>
@@ -37,7 +37,7 @@
                 </p>
                 <p>
                   提交日期：
-                  <span>{{listItem.projectBeginTime | formatDate(listItem.projectBeginTime)}}</span>
+                  <span>{{listItem.sheetCreatime | formatDate(listItem.sheetCreatime)}}</span>
                 </p>
                 <p>
                   年采购量：
@@ -58,7 +58,7 @@
                 <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
                   <countTime
                     v-on:end_callback="getAllReplyList()"
-                    :startTime="listItem.projectBeginTime"
+                    :startTime="listItem.currentTime"
                     dayTxt="天"
                     hourTxt="时"
                     minutesTxt="分"

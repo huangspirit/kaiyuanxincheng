@@ -118,9 +118,18 @@
         </el-form-item>
 
         <el-form-item label="预计交期：" prop="complete_date">
-          <el-select v-model="ruleForm.complete_date" placeholder="请选择">
+          <el-select v-if="ruleForm.goods_type" v-model="ruleForm.complete_date" placeholder="请选择">
             <el-option
-              v-for="item in effectiveDate"
+              v-for="item in spotDate"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+
+           <el-select v-if="!ruleForm.goods_type" v-model="ruleForm.complete_date" placeholder="请选择">
+            <el-option
+              v-for="item in futuresDate"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -177,6 +186,66 @@ export default {
         {
           value: "365",
           label: "一年"
+        }
+      ],
+      spotDate:[
+        {
+          value: "1",
+          label: "一天"
+        },
+        {
+          value: "2",
+          label: "两天"
+        },
+        {
+          value: "3",
+          label: "三天"
+        },
+        {
+          value: "4",
+          label: "四天"
+        },
+        {
+          value: "5",
+          label: "五天"
+        },
+        {
+          value: "6",
+          label: "六天"
+        },
+        {
+          value: "7",
+          label: "七天"
+        }
+      ],
+      futuresDate:[
+        {
+          value: "7",
+          label: "一周"
+        },
+        {
+          value: "14",
+          label: "两周"
+        },
+        {
+          value: "21",
+          label: "三周"
+        },
+        {
+          value: "28",
+          label: "四周"
+        },
+        {
+          value: "35",
+          label: "五周"
+        },
+        {
+          value: "42",
+          label: "六周"
+        },
+        {
+          value: "49",
+          label: "七周"
         }
       ],
       //可设置库存
