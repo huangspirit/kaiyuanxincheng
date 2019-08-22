@@ -100,6 +100,7 @@ import { mapState, mapActions } from "vuex";
 import SelectBrand from "_c/SelectBrand";
 import { baseURL } from "@/config";
 import { axios, agentFication } from "@/api/apiObj";
+import { formatAllDate } from "@/lib/utils";
 export default {
   name: "AdditionalQualifications",
   data() {
@@ -233,10 +234,9 @@ export default {
             brandId: this.ruleForm.brand,
             brandName: brandNameInfo,
             qualificationImg: this.ruleForm.qualificationMap,
-            startTime: this.ruleForm.timeStart,
-            endTime: this.ruleForm.timeEnd
+            startTime: formatAllDate(this.ruleForm.timeStart, "/")[0],
+            endTime: formatAllDate(this.ruleForm.timeEnd, "/")[0]
           };
-          console.log(obj);
           if (this.applyDetailEdit.id) {
             obj["id"] = this.applyDetailEdit.id;
             axios

@@ -32,7 +32,7 @@
               </div>
             </td>
             <td>
-              <div @click="ViewMap(ViewMapUrl)" class="ViewMap">
+              <div @click="ViewMap(item.qualificationImg)" class="ViewMap">
                 <img :src="item.qualificationImg" alt />
               </div>
             </td>
@@ -75,8 +75,8 @@
         <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
-    <el-dialog :visible.sync="dialogVisible2">
-      <img width="100%" :src="dialogImageUrl" alt />
+    <el-dialog class="imgDialog" :visible.sync="dialogVisible2">
+      <img :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
 </template>
@@ -90,7 +90,6 @@ export default {
       dialogVisible: false,
       // 放大资质图片
       dialogVisible2: false,
-      ViewMapUrl: require("@/assets/image/PersonalCenter/u118165.png"),
       dialogImageUrl: "",
       qualificationList: [],
       deleteFicationId: "",
@@ -103,9 +102,7 @@ export default {
   mounted() {
     this.getQualificationList();
   },
-  filters: {
-   
-  },
+  filters: {},
   methods: {
     getQualificationList() {
       axios
@@ -152,13 +149,14 @@ export default {
     },
     // 查看资质图
     ViewMap(item) {
+      console.log(item);
       this.dialogVisible2 = true;
       this.dialogImageUrl = item;
     },
     change(val) {
       console.log(val);
       this.start = (val - 1) * this.pageSize;
-      this.getQualificationList()
+      this.getQualificationList();
     }
   },
   destroyed() {
@@ -166,6 +164,17 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.imgDialog {
+  .el-dialog__body {
+    > img {
+      max-height: 600px;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+}
+</style>
 <style lang="less" scoped>
 @import "./AgencyQualification.less";
 </style>
