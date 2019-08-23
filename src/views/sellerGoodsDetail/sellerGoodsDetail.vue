@@ -3,6 +3,15 @@
         <div class="BrandDetail-tit">
             <el-breadcrumb separator-class="el-icon-arrow-right " class="allWidth">
                 <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/BrandDetail',query:{tag:'brand',documentid:goodsinfo.brandId,name:goodsinfo.brand} }">{{goodsinfo.brand}}</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{
+                 path: '/BrandDetail/Direct',
+                 query:{
+                 tag:'direct',
+                 documentid:goodsinfo.classificationId,
+                 name:goodsinfo.classification,
+                 }
+                 }">{{goodsinfo.classification}}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{sellerGoodsInfo.goods_name}}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -10,28 +19,74 @@
             <div class="title">商品详情</div>
             <div class="cont clear ">
                 <div class="fl left">
-                    <ImgE :src="sellerGoodsInfo.goodsImageUrl" :W="200" :H="200"></ImgE>
+                    <div class="bigImg">
+                        <ImgE :src="bigImgstr" :W="200" :H="200"></ImgE>
+                    </div>
+                    <div class="imglistwrap">
+                        <span class=" icon" @click="prev">
+                            <i class="el-icon-arrow-left"></i>
+                        </span>
+                        <div class="imgList">
+                            <div @mouseenter="handleEnter(item)" v-for="(item,k) in list"  :key="k" class="imgewrap" :class="selectedstr==item ? 'active':''" >
+                                <ImgE :src="item" :W="200" :H="200"  ></ImgE>
+                            </div>
+
+                        </div>
+                        <span class=" icon" @click="next">
+                            <i class="el-icon-arrow-right"></i>
+                        </span>
+                    </div>
+                    <div class="icon">
+                        <span v-if="sellerGoodsInfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
+                        <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
+<!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
+                        <span class="btn"><i class="el-icon-position " ></i>&nbsp;分享给好友</span>
+                        <span class="btn"><i class="el-icon-plus "></i>&nbsp;我有特价</span>
+                    </div>
                 </div>
                 <div class="fl right">
                     <p class="goodsName">{{sellerGoodsInfo.goods_name}}</p>
-
-                    <span class="tag color">{{sellerGoodsInfo.tag | tagFilter}}</span>
-                    <div class="price color" v-if="sellerGoodsInfo.priceType">
-                        <p v-for="item in sellerGoodsInfo.priceList">{{item.num}}+ ~ {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{item.price}}</p>
-                    </div>
-                    <p class="price color" v-if="!sellerGoodsInfo.priceType">
-                        {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{sellerGoodsInfo.goodsPrice}}
+                    <p class="brandDesc">{{sellerGoodsInfo.goodsDesc}}</p>
+                    <p  class="brandDesc">
+                        <span>制造商：{{sellerGoodsInfo.brandName}}</span>
+                        <span>官方参考价：暂无</span>
+                        <span  @click="openBig">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
                     </p>
-                    <div class="cont1">
+                    <div class="time clear bgColor" v-if="!sellerGoodsInfo.seller_always">
+                        <img src="@/assets/image/index/timer.png" alt="" class="">
+                        <CountTime
+                            v-on:end_callback="countDownE_cb()"
+                            :currentTime="sellerGoodsInfo.currentTime"
+                            :startTime="sellerGoodsInfo.currentTime"
+                            :endTime="sellerGoodsInfo.expireTime"
+                            :tipText="'距离活动开始'"
+                            :tipTextEnd="'剩余跟单时间：'"
+                            :endText="'活动已失效'"
+                            :dayTxt="'天'"
+                            :hourTxt="'小时'"
+                            :minutesTxt="'分'"
+                            :secondsTxt="'秒'"></CountTime>
+                    </div>
+<!--                    <span class="tag color">{{sellerGoodsInfo.tag | tagFilter}}</span>-->
+
+                    <div class="cont1 clear">
+                        <div class="price color jieti clear" v-if="sellerGoodsInfo.priceType">
+                            <div class="priceList">
+                                <p v-for="item in sellerGoodsInfo.priceList">{{item.num}}+ ~ {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{item.price}}</p>
+                            </div>
+                            <span v-if="sellerGoodsInfo.includBill" class="includBill">(含税)</span>
+                            <span v-if="!sellerGoodsInfo.includBill" class="includBill">(不含税)</span>
+                        </div>
+                        <p class="price color" v-if="!sellerGoodsInfo.priceType">
+                            一口价：{{sellerGoodsInfo.priceUnit?'$':'￥'}}{{sellerGoodsInfo.goodsPrice}}
+                            <span v-if="sellerGoodsInfo.includBill" class="includBill">(含税)</span>
+                            <span v-if="!sellerGoodsInfo.includBill" class="includBill">(不含税)</span>
+                        </p>
+
                         <div class="mpq">
                             <div class="fl">
-                                <p>MOQ：{{sellerGoodsInfo.moq}}</p>
-                                <p>MPQ：{{sellerGoodsInfo.mpq}}</p>
-                            </div>
-                            <div ><p class="line"></p></div>
-                            <div class="fl">
-                                <p>币种：{{sellerGoodsInfo.priceUnit?'美元':'人民币'}}</p>
-                                <p>库存：{{sellerGoodsInfo.goodsStockCount}}</p>
+                                <p>已成单：暂无</p>
+                                <p>库存剩余：{{sellerGoodsInfo.goodsStockCount}}只</p>
                             </div>
                             <div ><p class="line"></p></div>
                             <div class="fl">
@@ -39,37 +94,41 @@
                                 <p v-if="sellerGoodsInfo.day_interval ">预计交期：{{sellerGoodsInfo.day_interval}}天后交货</p>
                                 <p>交货地址：{{sellerGoodsInfo.diliverPlace}}</p>
                             </div>
-                        </div>
-                        <div>
-                            <router-link
-                            tag="p"
-                            class="brandName"
-                            :to="{
-                            path:'/BrandDetail',
-                             query:{
-                                tag:'brand',
-                                documentid:sellerGoodsInfo.brandId,
-                                name:sellerGoodsInfo.brandName
-                                }
-                            }"
-                            >
-                                品牌：{{sellerGoodsInfo.brandName}}
-                                <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>
-                            </router-link>
-<!--                            <p class="brandName">-->
-<!--                                品牌：{{sellerGoodsInfo.brandName}}-->
-<!--                                <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
-<!--                            </p>-->
-                            <p class="brandDesc">功能描述：{{sellerGoodsInfo.goodsDesc}}</p>
+                            <div ><p class="line"></p></div>
+                            <div class="fl">
+                                <p>MOQ：{{sellerGoodsInfo.moq}}</p>
+                                <p>MPQ：{{sellerGoodsInfo.mpq}}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="icon">
-                        <span @click="addFocus" v-if="!sellerGoodsInfo.focus"><i class="el-icon-star-off" ></i>关注</span>
-                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>
+                    <div class="seller">
+                        此器件以下供应商提供：
+                        <img :src="sellerGoodsInfo.userImgeUrl" alt="">
+                        <span>{{sellerGoodsInfo.sellerName}}</span>
+<!--                        <router-link-->
+<!--                            tag="p"-->
+<!--                            class="brandName"-->
+<!--                            :to="{-->
+<!--                            path:'/BrandDetail',-->
+<!--                             query:{-->
+<!--                                tag:'brand',-->
+<!--                                documentid:sellerGoodsInfo.brandId,-->
+<!--                                name:sellerGoodsInfo.brandName-->
+<!--                                }-->
+<!--                            }"-->
+<!--                        >-->
+<!--                            品牌：{{sellerGoodsInfo.brandName}}-->
+<!--                            <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
+<!--                        </router-link>-->
+                    </div>
+                    <div class="count">
+                        数量：
+                        <el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="sellerGoodsInfo.moq"  :max="sellerGoodsInfo.goodsStockCount"  :step="sellerGoodsInfo.mpq"  step-strictly></el-input-number>
+                        <span>可买数量：{{sellerGoodsInfo.goodsStockCount}}只</span>
                     </div>
                     <div class="btnwrap">
-                        <span class=" btn bgColor" @click="purchase">立即购买</span>
-                        <span class="btn orange" @click="specialPrice">申请特价</span>
+                        <span class=" btn bgColor" @click="submitPurchase">立即购买</span>
+<!--                        <span class="btn orange" @click="specialPrice">申请特价</span>-->
                         <span class="btn gray" @click="addShopingCar">加入购物车</span>
                         <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>
                     </div>
@@ -85,7 +144,9 @@
                 <div class="detail-informan-con">
                     <p class="tit">
                         <span>技术参数</span>
-                        <span>产品手册<i class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></i></span>
+                        <span>产品手册
+<!--                            <i class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></i>-->
+                        </span>
                     </p>
                     <ul class="parameter clear">
                         <li>
@@ -138,6 +199,7 @@
     </div>
 </template>
 <script>
+    import {mapMutations} from 'vuex';
     import { baseURL, baseURL2 } from "@/config";
     import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
     import {TimeForma2} from "../../lib/utils";
@@ -155,13 +217,29 @@
                 // loading
                 loading: true,
                 showPurchase:false,
-                dialogVisible:false
+                //加载pdf
+                dialogVisible:false,
+                //购买量
+                count:0,
+                //对应的购买价格
+                price:0,
+                //对应的总价
+                money:0,
+                //详情图片
+                selectedstr:'',
+                bigImgstr:"",
+                list:[
+                    'http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg',
+                    'http://goodspicture.113ic.com/jy_1619_XC95288-15HQ208C.jpg',
+                    "http://brand.113ic.com/b03036313fd34836adfb0aa2f8066c45.jpg",
+                ]
             }
         },
         created(){
            let obj=sessionStorage.getItem('sellerGoodsDetail');
             if(obj){
                 this.sellerGoodsInfo=JSON.parse(obj)
+                this.bigImgstr=this.sellerGoodsInfo.goodsImageUrl;
                 this.purchaseObj={
                     goods_id: this.sellerGoodsInfo.goods_id,
                     goods_name: this.sellerGoodsInfo.goods_name,
@@ -191,6 +269,109 @@
             this.searchDatasheet(this.sellerGoodsInfo.goods_id)
         },
         methods:{
+            ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+            next(){
+                if(this.list.length>3){
+                    this.list.push(this.list[0])
+                    this.list.shift()
+                }
+            },
+            prev(){
+                if(this.list.length>3){
+                    this.list.unshift(this.list[this.length-1])
+                    this.list.pop()
+                }
+            },
+            handleEnter(k){
+                console.log(k)
+                this.selectedstr=k;
+               this.bigImgstr=k;
+            },
+            handleBlur(event){
+                let e=event.target.value
+                this.handleChange(e);
+            },
+            handleChange(e){
+                let obj = this.purchaseObj;
+                let currentPrice=0;
+                if(obj.price_type){
+                    if(obj.priceList.length==1){
+                        currentPrice=parseFloat(obj.priceList[0].price);
+                    }else if(obj.priceList.length==2){
+                        if(e<=Number(obj.priceList[1].num)){
+                            currentPrice=parseFloat(obj.priceList[0].price);
+                        }else{
+                            currentPrice=parseFloat(obj.priceList[1].price);
+                        }
+                    }else if(obj.priceList.length==3){
+                        if(e<=Number(obj.priceList[1].num)){
+                            currentPrice=parseFloat(obj.priceList[0].price);
+                        }else if(e<=Number(obj.priceList[2].num)){
+                            currentPrice=parseFloat(obj.priceList[1].price);
+
+                        }else{
+                            currentPrice=parseFloat(obj.priceList[2].price);
+                        }
+                    }
+                }else{
+                    currentPrice=obj.seckil_price
+                }
+                this.price=currentPrice;
+                this.count=e;
+                this.money=e*currentPrice
+            },
+            submitPurchase(){
+                let item=this.purchaseObj
+                let orderJson=[];
+                let obj={
+                    goods_id: item.goods_id,
+                    goodsDesc: item.goodsDesc,
+                    goodsImage: item.goodsImage,
+                    goods_name: item.goods_name,
+                    diliver_place: item.diliver_place,
+                    seckill_goods_id: item.seckill_goods_id,
+                    clude_bill: item.clude_bill,
+                    price_unit: item.price_unit,
+                    goods_type:item.goods_type,
+                    sellerName: item.sellerName,
+                    sellerHeader: item.sellerHeader,
+                    seller_id: item.seller_id,
+                    tag: item.tag,
+                    goods_count: this.count,
+                    goods_price: this.price,
+                    order_channe: 1,
+                    pay_channe: 1,
+                }
+                orderJson.push(obj)
+                let billObj = {
+                    billtype: "1",
+                    content_id: "1"
+                };
+                // 生成bill对象
+                let obj2 = {
+                    bill: JSON.stringify(billObj),
+                    dilivertype: "1",
+                    order: JSON.stringify(orderJson),
+                    add_id: 1,
+                    type: 0,
+                    orderSource: 1
+                };
+                this.$store
+                    .dispatch("MerchantList/GetOrder", obj2).then(res=>{
+                    localStorage.setItem("buyOneGoodsDetail",JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                    }))
+                    this.setBuyOneGoodsDetail(JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                    }));
+
+                    this.$router.push({
+                        path: "/ShoppingCart/ShoppingSettlement",
+                    });
+                })
+            },
             openBig(){
                 this.loading=true;
                 this.dialogVisible=true;
@@ -206,11 +387,9 @@
                     name:this.sellerGoodsInfo.goods_name
                 }
                 axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
-
                     this.parameterList=result.data.goodsinfo.list;
                     this.goodsinfo=result.data.goodsinfo;
-                    console.log( this.goodsinfo)
-                    this.sellerGoodsInfo.focus=result.data.goodsinfo.focus
+                    this.sellerGoodsInfo.focus=result.data.goodsinfo.focus;
                 })
             },
             addInquiry() {
@@ -241,11 +420,12 @@
                     catergory_id :this.goodsinfo.classificationId,
                     favour_type: "1",
                 };
+                var _this=this;
                 axios
                     .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
                     .then(res => {
-                        this.$set(this.sellerGoodsInfo,"focus",true)
-                        // this.$message.success("已关注");
+                        _this.$set(_this.sellerGoodsInfo,"focus",true)
+                        _this.$message.success("已关注");
                     });
 
             },

@@ -25,7 +25,7 @@
           v-for='(item, k) in goodsList'
           :key='k'
         >
-            <div class="wrap">
+            <div class="wrap" @click="open(item)">
                 <p class="price">{{item.currentPrice}}</p>
                 <ImgE :src="item.goodsImageUrl" class="prod-img" :W="150" :H="150"></ImgE>
                 <p class="goodsName">{{item.goods_name}}</p>
@@ -105,6 +105,11 @@ export default {
     },
   methods: {
       ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+      open(item){
+          //跳转商品详情
+          sessionStorage.setItem('sellerGoodsDetail',JSON.stringify({...this.item0,...item}))
+          this.$router.push("/sellerGoodsDetail")
+      },
       currentChange(x){
           this.currentPage=x;
           this.getGoodsList();

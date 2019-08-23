@@ -29,7 +29,7 @@
             <span class="focus-on" @click="deleteGoodsFavourite(item.id)">取消关注</span>
           </div>
           <!-- 关注商家产品列表 -->
-          <MerchantsConcernedImgTab :list="item.goodsListBySeller" :item0="{seller_id:item.seller_id,sellerName:item.sellerName,headUrl:item.headUrl,tag:item.user_tag}"></MerchantsConcernedImgTab>
+          <MerchantsConcernedImgTab :list="item.goodsListBySeller" :item0="{seller_id:item.seller_id,sellerName:item.sellerName,headUrl:item.headUrl,userImgeUrl:item.headUrl,tag:item.user_tag}"></MerchantsConcernedImgTab>
         </li>
       </ul>
         <Pagination

@@ -24,55 +24,115 @@
       <ul class="interes-list">
         <li v-for="(item,index) in goodsList" class="clear">
 <!--          <TabImage :width="146"></TabImage>-->
-            <div class="operation">
-                <div class="focus-collection">
-                    <img src="@/assets/image/PersonalCenter/_u4518.png" alt @click="addInquiry(index)">
-                    <img src="@/assets/image/PersonalCenter/_u4512.png" alt @click="canclePub(index)">
+            <div class="left">
+                <div class="imgwrap fl">
+                    <router-link
+                        :to="{
+                            path:'/BrandDetail/GoodsDetails',
+                            query:{
+                            tag:'goodsinfo',
+                            documentid:item.goodsBase.id,
+                            name:item.goodsBase.productno
+                            }
+                            }"
+                    >  <ImgE :src="item.goodsBase.imageUrl" :W="100" :H="100"></ImgE></router-link>
+
+                    <!--              <img :src="item.goodsBase.imageUrl" alt="">-->
                 </div>
-                <div class="buttonIcon">
-                    <div class="specialPrice" @click="specialPrice">
-                        <img src="@/assets/image/PersonalCenter/u4504.png" alt> 我有特价
-                    </div>
-                    <div class="purchase" v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">
-                        <router-link to="/BrandDetail/GoodsDetails" tag="p"> <img src="@/assets/image/PersonalCenter/u6221.png" alt>
-                            去采购</router-link>
-                    </div>
-                        <!--                    <ButtonIcon :width="175" :height="51">-->
-<!--                        <img src="@/assets/image/PersonalCenter/u4504.png" alt>-->
-<!--                        我有特价-->
-<!--                    </ButtonIcon>-->
-<!--                    <ButtonIcon :width="175" :height="51">-->
-<!--                        <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
-<!--                        去采购-->
-<!--                    </ButtonIcon>-->
+                <div class="text fl">
+                    <router-link
+                        :to="{
+                            path:'/BrandDetail/GoodsDetails',
+                            query:{
+                            tag:'goodsinfo',
+                            documentid:item.goodsBase.id,
+                            name:item.goodsBase.productno
+                            }
+                            }"
+                        tag="p"
+                        class="name"
+                    > {{item.goodsBase.productno}}</router-link>
+                    <!--              <p class="name">{{item.goodsBase.productno}}</p>-->
+                    <!--              <p class="brand">-->
+                    <!--                  <span>品牌：</span>{{item.goodsBase.brand}}-->
+                    <!--              </p>-->
+                    <!--            <router-link to="/BrandDetail/GoodsDetails" class="name" tag="p">{{item.goodsBase.productno}}</router-link>-->
+                    <router-link
+                        :to="{
+                path:'/BrandDetail',
+                query:{
+                        tag:'brand',
+                        documentid:item.goodsBase.brandId,
+                        name:item.goodsBase.brand
+                    }
+                }" class="brand" tag="p">
+                        <span>品牌：</span>
+                        {{item.goodsBase.brand}}
+                    </router-link>
+                    <P class="xh">
+                        <span>型号描述：</span>
+                        {{item.goodsBase.productdesc}}
+                    </P>
+                    <p  v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">
+                        共有
+                        <span class="num">{{item.goodsBase.map.totalSeller}}</span>
+                        个供应商报价
+                        <span class="num">{{item.goodsBase.map.minPrice }}——{{item.goodsBase.map.maxPrice}}</span>
+                    </p>
                 </div>
             </div>
-          <div class="imgwrap fl">
-              <ImgE :src="item.goodsBase.imageUrl" :W="100" :H="100"></ImgE>
-<!--              <img :src="item.goodsBase.imageUrl" alt="">-->
-          </div>
-          <div class="text fl">
-              <p class="name">{{item.goodsBase.productno}}</p>
-              <p class="brand">
-                  <span>品牌</span>{{item.goodsBase.brand}}
-              </p>
-<!--            <router-link to="/BrandDetail/GoodsDetails" class="name" tag="p">{{item.goodsBase.productno}}</router-link>-->
-<!--            <router-link to="/BrandDetail" class="brand" tag="p">-->
-<!--              <span>品牌：</span>-->
-<!--              {{item.goodsBase.brand}}-->
-<!--            </router-link>-->
-            <P class="xh">
-              <span>型号描述：</span>
-            {{item.goodsBase.productdesc}}
-            </P>
-            <p  v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">
-              共有
-              <span class="num">{{item.goodsBase.map.totalSeller}}</span>
-              个供应商报价
-              <span class="num">{{item.goodsBase.map.minPrice }}——{{item.goodsBase.map.maxPrice}}</span>
-            </p>
-          </div>
-
+            <div class="operation fr">
+                <span @click="addInquiry(index)" class="bgColor">
+                    <i class="el-icon-open"></i>加询价篮
+                </span>
+                <span @click="canclePub(index)" class="bgColor">
+                    <i class="el-icon-star-on"></i>取消关注
+                </span>
+                <span class="specialPrice bgColor" @click="specialPrice">
+                    <i class="el-icon-plus"></i> 我有特价
+                </span>
+                <router-link
+                    :to="{
+                            path:'/BrandDetail/GoodsDetails',
+                            query:{
+                            tag:'goodsinfo',
+                            documentid:item.goodsBase.id,
+                            name:item.goodsBase.productno
+                            }
+                            }"
+                    tag="span"
+                    class="bgColor"
+                    v-if="item.goodsBase.map && item.goodsBase.map.totalSeller"
+                >
+                    <i class="el-icon-s-promotion"></i>
+                    去采购
+                </router-link>
+                <!--                <div class="focus-collection buttonIcon" >-->
+                <!--                    <img src="@/assets/image/PersonalCenter/_u4518.png" alt @click="addInquiry(index)">-->
+                <!--                    <img src="@/assets/image/PersonalCenter/_u4512.png" alt @click="canclePub(index)">-->
+                <!--                </div>-->
+                <!--                <div class="buttonIcon">-->
+                <!--                    <div class="specialPrice" @click="specialPrice">-->
+                <!--                        <i class="el-icon-plus"></i> 我有特价-->
+                <!--                    </div>-->
+                <!--                    <div class="purchase" v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">-->
+                <!--                        <router-link-->
+                <!--                            :to="{-->
+                <!--                            path:'/BrandDetail/GoodsDetails',-->
+                <!--                            query:{-->
+                <!--                            tag:'goodsinfo',-->
+                <!--                            documentid:item.goodsBase.id,-->
+                <!--                            name:item.goodsBase.productno-->
+                <!--                            }-->
+                <!--                            }"-->
+                <!--                            tag="p"-->
+                <!--                        >-->
+                <!--                            <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
+                <!--                            去采购-->
+                <!--                        </router-link>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
         </li>
       </ul>
         <Pagination
@@ -142,7 +202,6 @@ export default {
             obj.catergory_id=this.catergoryId;
         }
         axios.request({...buyerOrderCenter.queryGoodsFavouriteList,params:obj}).then(res=>{
-            console.log(res)
             let count=0
             let arr=res.data.title.map(item=>{
                 count+=item.summaryTotal;

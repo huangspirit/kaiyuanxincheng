@@ -168,7 +168,6 @@
                     type: 0,
                     orderSource: 1
                 };
-                console.log(obj2)
                 this.$store
                     .dispatch("MerchantList/GetOrder", obj2).then(res=>{
                     localStorage.setItem("buyOneGoodsDetail",JSON.stringify({
