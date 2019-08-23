@@ -1,15 +1,9 @@
 <template>
   <div class="AllBrand">
-<!--    <div class="BrandDetail-tit">-->
-<!--        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">-->
-<!--          <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>-->
-<!--          <el-breadcrumb-item>{{brandInfo.name}}</el-breadcrumb-item>-->
-<!--        </el-breadcrumb>-->
-<!--    </div>-->
     <!-- // 全部品牌 -->
-    <div class="all-brand allWidth">
+    <div class="all-brand ">
       <!-- 品牌信息 -->
-      <div class="brand-msg">
+      <div class="brand-msg allWidth">
 <!--        <div class="tit bgGray">-->
 <!--            <img src="@/assets/image/brandDetail/u5426.png" alt><span>品牌信息</span>-->
 <!--        </div>-->
@@ -43,7 +37,7 @@
         </div>
       </div>
       <!-- 经营品类 -->
-      <div class="management-class  brand-msg">
+      <div class="management-class  brand-msg allWidth">
         <div class="tit bgGray">
 <!--            <img src="@/assets/image/brandDetail/u4675.png" alt>-->
             <span>经营品类</span>
@@ -66,7 +60,7 @@
           </li>
         </ul>
       </div>
-      <div class="brand-hot brand-msg">
+      <div class="brand-hot brand-msg allWidth">
         <div class="tit bg">
 <!--            <img src="@/assets/image/brandDetail/u4832.png" alt>-->
             <span>商品列表</span>

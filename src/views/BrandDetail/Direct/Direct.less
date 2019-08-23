@@ -1,6 +1,22 @@
 // 全部品牌
 .Direct {
    //经营品类
+  .BrandDetail-tit{
+    margin:15px 0;
+    background: #fff;
+    padding:15px 30px;
+    box-shadow: 0 0 2px 2px #dddd;
+    /deep/.el-breadcrumb{
+      font-size:14px;
+    }
+  }
+  .tit{
+    line-height:60px;
+    color:#fff;
+    padding-left:20px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
   .res{
     font-size: 22px;
     line-height: 60px;
@@ -121,7 +137,7 @@
           height:25px;
           position: absolute;
           left:0;
-          top:25px;
+          top:24px;
           width:100%;
           //padding-right:15px;
           box-sizing: border-box;
@@ -226,210 +242,6 @@
       }
     }
   }
-  //.screen-number {
-  //  width: 100%;
-  //  height: 100px;
-  //  line-height: 100px;
-  //  float: left;
-  //  background: #fff;
-  //  position: relative;
-  //  margin-bottom: 20px;
-  //
-  //  .number {
-  //    margin-left: 60px;
-  //    color: #4A5A6A;
-  //    font-size: 28px;
-  //
-  //    span {
-  //      color: #E84F47;
-  //    }
-  //  }
-  //
-  //  .reset {
-  //    width: 195px;
-  //    height: 53px;
-  //    line-height: 53px;
-  //    text-align: center;
-  //    color: #fff;
-  //    background: #0068D7;
-  //    font-size: 20px;
-  //    position: absolute;
-  //    top: 50%;
-  //    left: 50%;
-  //    margin-left: -98px;
-  //    margin-top: -26px;
-  //    cursor: pointer;
-  //
-  //    &:hover {
-  //      color: rgb(240, 147, 9);
-  //    }
-  //  }
-  //  .search {
-  //    width: 195px;
-  //    height: 53px;
-  //    line-height: 53px;
-  //    text-align: center;
-  //    color: #fff;
-  //    background: #0068D7;
-  //    font-size: 20px;
-  //    position: absolute;
-  //    top: 50%;
-  //    left: 50%;
-  //    margin-left: -396px;
-  //    margin-top: -26px;
-  //    cursor: pointer;
-  //
-  //    &:hover {
-  //      color: rgb(240, 147, 9);
-  //    }
-  //  }
-  //}
 
-  // 筛选结果商品列表
-  //.screen-result {
-  //  width: 100%;
-  //  overflow: hidden;
-  //
-  //  .result-tit {
-  //    width: 100%;
-  //    height: 52px;
-  //    padding-top: 40px;
-  //    background: #fff;
-  //
-  //    .tabList {
-  //      width: 773px;
-  //      height: 52px;
-  //      float: left;
-  //      border-right: 1px solid #000;
-  //
-  //      &>li {
-  //        float: left;
-  //        width: 192px;
-  //        height: 50px;
-  //        border: 1px solid #000;
-  //        border-right: none;
-  //        font-size: 20px;
-  //        color: #4A5A6A;
-  //        text-align: center;
-  //        line-height: 50px;
-  //        cursor: pointer;
-  //
-  //        &:hover {
-  //          color: #0068D7;
-  //        }
-  //
-  //      }
-  //
-  //      &>.active {
-  //        background: #0068D7;
-  //        color: #fff;
-  //      }
-  //    }
-  //
-  //    .SearchInput {
-  //      float: right;
-  //    }
-  //  }
-  //
-  //  // 筛选商品结果
-  //  .result-con {
-  //    width: 100%;
-  //    overflow: hidden;
-  //  }
-  //}
-
-  // 品牌热卖
-  //.brand-hot {
-  //  width: 100%;
-  //  overflow: hidden;
-  //  border-bottom: 1px solid #ddd;
-  //
-  //  .SubstituModelList {
-  //    float: left;
-  //  }
-  //
-  //  .Pagination {
-  //    float: left;
-  //  }
-  //
-  //  // 排序
-  //  .sort-type {
-  //    width: 100%;
-  //    overflow: hidden;
-  //    margin: 20px 0;
-  //
-  //    .active {
-  //      background: #0068B7;
-  //      color: #fff;
-  //    }
-  //
-  //    li {
-  //      width: 195px;
-  //      height: 52px;
-  //      line-height: 52px;
-  //      text-align: center;
-  //      font-size: 20px;
-  //      color: #4A5A6A;
-  //      float: left;
-  //      cursor: pointer;
-  //      position: relative;
-  //
-  //      &>span {
-  //        height: 52px;
-  //        line-height: 52px;
-  //        float: left;
-  //      }
-  //
-  //      .caret-wrapper {
-  //        position: absolute;
-  //        top: 0;
-  //        right: 20px;
-  //        width: 20px;
-  //        padding: 10px 0;
-  //        height: 32px;
-  //
-  //        &>span {
-  //          width: 20px;
-  //          height: 15px;
-  //          line-height: 15px;
-  //          color: #4a5a6a;
-  //          font-size: 20px;
-  //          float: left;
-  //          cursor: pointer;
-  //        }
-  //
-  //      }
-  //    }
-  //  }
-  //
-  //  &>.tit {
-  //    height: 34px;
-  //    padding: 18px 0;
-  //    background: #4A5A6A;
-  //    line-height: 34px;
-  //    color: #fff;
-  //    font-size: 28px;
-  //
-  //    span {
-  //      float: left;
-  //      margin-right: 20px;
-  //      cursor: pointer;
-  //
-  //      &:hover {
-  //        color: #0D98FF;
-  //      }
-  //    }
-  //
-  //    img {
-  //      float: left;
-  //      width: 30px;
-  //      height: 30px;
-  //      margin-right: 10px;
-  //      position: relative;
-  //      top: 3px;
-  //    }
-  //  }
-
- // }
 
 }

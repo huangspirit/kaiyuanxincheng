@@ -1,6 +1,21 @@
 <template>
   <!-- 商品详情页 -->
   <div class="GoodsDetails">
+      <div class="BrandDetail-tit">
+          <el-breadcrumb separator-class="el-icon-arrow-right " class="allWidth">
+              <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/BrandDetail',query:{tag:'brand',documentid:goodsinfo.brandId,name:goodsinfo.brand} }">{{goodsinfo.brand}}</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{
+                 path: '/BrandDetail/Direct',
+                 query:{
+                 tag:'direct',
+                 documentid:goodsinfo.classificationId,
+                 name:goodsinfo.classification,
+                 }
+                 }">{{goodsinfo.classification}}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{goodsinfo.productno}}</el-breadcrumb-item>
+          </el-breadcrumb>
+      </div>
     <!-- 商品详情 -->
       <div class="sellerGoodsInfo allWidth">
           <div class="title tit-h">商品详情</div>

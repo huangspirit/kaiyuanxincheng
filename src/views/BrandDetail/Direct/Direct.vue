@@ -1,5 +1,5 @@
 <template>
-  <div class="Direct AllBrand">
+  <div class="Direct">
     <div class="BrandDetail-tit">
         <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
@@ -118,7 +118,7 @@
           </div>
       </div>
 
-    <div class="all-brand allWidth">
+    <div class="allWidth">
       <!-- 经营品类 -->
       <div class="brand-hot brand-msg">
             <div class="tit bgGray">
@@ -155,7 +155,6 @@
   </div>
 </template>
 <style lang="less" scoped>
-@import "../AllBrand/AllBrand.less";
 @import "./Direct.less";
 </style>
 
