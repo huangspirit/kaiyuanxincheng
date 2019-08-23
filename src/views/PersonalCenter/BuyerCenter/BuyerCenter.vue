@@ -155,10 +155,8 @@ export default {
         },
         queryCustomerCenterSummary(){
           axios.request(personCenter.queryCustomerCenterSummary).then(res=>{
-              console.log(res)
               let obj=res.data;
               Object.keys(res.data).forEach(item=>{
-                    console.log(item)
                   this.$set(this.messageCount[item],'num',obj[item])
               })
           })

@@ -161,7 +161,6 @@ export default {
     },
     //设置为默认地址
     updateAddress(item) {
-      console.log("item:", item);
       let obj = {
         id: item.id,
         isdefault: true
@@ -279,7 +278,6 @@ export default {
           params: { start: 0, length: 10 }
         })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             this.AddressList = res.data.data;
           }
