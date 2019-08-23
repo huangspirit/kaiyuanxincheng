@@ -65,7 +65,13 @@
             </template>
           </el-table-column>
           <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
-          <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
+          <el-table-column prop="acceptPrice" label="接受价格T/P">
+            <template slot-scope="scope">
+              <span v-if="scope.row.acceptUnit">$</span>
+              <span v-else>￥</span>
+              <span>{{scope.row.acceptPrice}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop label="批复价格" width="300px">
             <template slot-scope="scope">
               <div>
@@ -235,7 +241,7 @@ export default {
       margin-bottom: 20px;
       border: 1px solid #dee3e9;
       > li {
-       min-width: 320px;
+        min-width: 320px;
         line-height: 45px;
         padding-left: 40px;
         font-size: 20px;

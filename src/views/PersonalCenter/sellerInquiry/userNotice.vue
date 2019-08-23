@@ -53,7 +53,7 @@
         <el-table :data="item.list" border stripe style="width: 100%">
           <el-table-column prop="goodsImage" label="图片" width="180">
             <template slot-scope="scope">
-               <img v-if="scope.row.goodsImage!='-'" :src="scope.row.goodsImage" width="120" alt />
+              <img v-if="scope.row.goodsImage!='-'" :src="scope.row.goodsImage" width="120" alt />
               <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
             </template>
           </el-table-column>
@@ -65,10 +65,20 @@
             </template>
           </el-table-column>
           <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
-          <el-table-column prop="acceptPrice" label="接受价格T/P"></el-table-column>
+          <el-table-column prop="acceptPrice" label="接受价格T/P">
+            <template slot-scope="scope">
+              <span v-if="scope.row.acceptUnit">$</span>
+              <span v-else>￥</span>
+              <span>{{scope.row.acceptPrice}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop label="操作">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="replyRequest(scope)" type="primary" size="small">批复请求</el-button>
+              <el-button
+                @click.native.prevent="replyRequest(scope)"
+                type="primary"
+                size="small"
+              >批复请求</el-button>
               <p
                 class="noApproved"
                 v-if="scope.row.sheetEffective == true&&scope.row.replayStates == false"
@@ -213,7 +223,7 @@ export default {
       margin-bottom: 20px;
       border: 1px solid #dee3e9;
       > li {
-       min-width: 320px;
+        min-width: 320px;
         line-height: 45px;
         padding-left: 40px;
         font-size: 20px;
