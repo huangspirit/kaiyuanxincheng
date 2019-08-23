@@ -14,7 +14,6 @@
           }">
               {{query.brandName}}
           </el-breadcrumb-item>
-
           <el-breadcrumb-item
               :to="{
             path:'/BrandDetail/Undirect',
