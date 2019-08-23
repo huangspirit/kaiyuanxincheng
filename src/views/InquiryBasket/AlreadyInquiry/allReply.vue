@@ -118,6 +118,7 @@
                   </div>
                 </h3>
                 <h3 v-if="!listItem.priceType">
+                  批复价格：
                   <span>￥{{listItem.seckilPrice}}</span>
                 </h3>
                 <p>
