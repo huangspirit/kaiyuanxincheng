@@ -1,87 +1,83 @@
 <template>
     <div class="detailList">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/PersonalCenter/PersonalSet' }">个人资料</el-breadcrumb-item>
+<!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>-->
+<!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter/PersonalSet' }">个人资料</el-breadcrumb-item>-->
             <el-breadcrumb-item>售卖明细</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="cont">
             <div class="search clear">
-                <el-input
-                        class=" searvhInput fr"
-                        placeholder="请输入内容"
-                        v-model="input"
-                        prefix-icon="el-icon-search"
-                        clearable>
-                </el-input>
-                <div class="fl">
-                    <span class="item" @click="changeItem(1)" :class="selected==1?'bgColor':''">在售</span>
-                    <span class="item" @click="changeItem(0)" :class="selected==0?'bgColor':''">售完</span>
-                </div>
+                <!--                <el-input-->
+                <!--                    class=" searvhInput fr"-->
+                <!--                    placeholder="请输入内容"-->
+                <!--                    v-model="input"-->
+                <!--                    prefix-icon="el-icon-search"-->
+                <!--                    clearable>-->
+                <!--                </el-input>-->
+                <!--                <div class="fl">-->
+                <!--                    <span class="item" @click="changeItem(1)" :class="selected==1?'bgColor':''">在售</span>-->
+                <!--                    <span class="item" @click="changeItem(0)" :class="selected==0?'bgColor':''">售完</span>-->
+                <!--                </div>-->
                 <el-date-picker
-                        class="fl time"
-                        v-model="value2"
-                        type="datetimerange"
-                        :picker-options="pickerOptions"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        align="left">
+                    class="fl time"
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @change="handleChangeTime"
+                    format="yyyy-MM-dd HH:mm:ss"
+                    align="left">
                 </el-date-picker>
             </div>
             <el-table
-                    :data="tableData"
-                    style="width: 100%">
-                <el-table-column
-                        prop="date"
-                        label="商品批次"
-                        align="center"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop=""
-                    label="商品名称"
+                :data="tableData"
+                style="width: 100%"
+                border
             >
-            </el-table-column>
                 <el-table-column
-                        prop=""
-                        label="售卖状态"
+                    prop="orderNo"
+                    label="单号"
+                    align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="售卖数量">
+                    prop="amount"
+                    label="金额"
+                    align="center"
+                >
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="价格">
-                </el-table-column>
-
-                <el-table-column
-                        prop="address"
-                        label="寄售库存">
+                    prop="payDesc"
+                    label="描述"
+                    align="center"
+                >
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="剩余库存">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="总计">
+                    prop="createTime"
+                    label="时间"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <span>{{scope.row.createTime | formatDate}}</span>
+                    </template>
                 </el-table-column>
             </el-table>
             <Pagination
-                    v-if="total"
-                    :currentPage.sync="currentPage"
-                    :page-size="pageSize"
-                    :total="total"
-                    @current-change="handleCurrentPageChange"
+                v-if="total"
+                :currentPage.sync="currentPage"
+                :page-size="pageSize"
+                :total="total"
+                @current-change="handleCurrentPageChange"
             ></Pagination>
         </div>
 
     </div>
 </template>
 <script>
+    import {axios,personCenter} from "../../../../api/apiObj";
+    import {TimeForma2} from "../../../../lib/utils";
     export default {
         data(){
             return{
@@ -118,18 +114,48 @@
                         }
                     }]
                 },
-                value2: ''
+                value2: '',
+                startTime:"",
+                endTime:""
+            }
+        },
+        filters:{
+            formatDate(val){
+                return TimeForma2(val)
             }
         },
         methods:{
-            handleCurrentPageChange(){
-
+            handleCurrentPageChange(x){
+                this.currentPage=x;
+                this.init();
+            },
+            handleChangeTime(){
+                this.startTime=TimeForma2(this.value2[0].getTime())+"";
+                this.endTime=TimeForma2(this.value2[1].getTime())+""
+                this.init()
             },
             init(){
-
+                axios.request({...personCenter.queryUserConsumeDetailList,params:{
+                        type:1,
+                        length:this.pageSize,
+                        start:this.start,
+                        startTime:this.startTime,
+                        endTime:this.endTime
+                    }}).then(res=>{
+                    this.tableData=res.data.data
+                    this.total=res.data.total
+                })
             },
             changeItem(k){
                 this.selected=k
+            }
+        },
+        mounted(){
+            this.init()
+        },
+        computed:{
+            start(){
+                return this.pageSize*(this.currentPage-1)
             }
         }
     }
@@ -144,9 +170,6 @@
                 padding-bottom:10px;
                 .searvhInput{
                     width:300px;
-                }
-                .time{
-                    margin-left:25px;
                 }
                 .item{
                     padding:0px 10px;

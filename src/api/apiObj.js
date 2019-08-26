@@ -9,7 +9,8 @@ const common = {
     },
     querySysMessage: {
         url: "api-n/notification-anon/querySysMessage"
-    }
+    },
+
 }
 const home = {
     SearchData: {
@@ -30,7 +31,6 @@ const home = {
     queryBrandHomePage: {
         url: "api-g/gods-anon/queryBrandHomePage"
     },
-
     //获取分类
     queryCatergoryHomePage: {
         url: "api-g/gods-anon/queryCatergoryHomePage"
@@ -89,6 +89,40 @@ const personCenter = {
     //买家中心汇总页面
     queryCustomerCenterSummary: {
         url: "api-u/users-anon/queryCustomerCenterSummary"
+    },
+    queryUserConsumeDetailList:{
+        url:"api-u/users/queryUserConsumeDetailList"
+    },
+    //提现的相关接口
+    saveBank:{
+        url:"api-b/draw/saveBank",method:'post'
+    },
+    getBankList:{
+        url:"api-b/draw/getBankList"
+    },
+    deleBank:{
+        url:"api-b/draw/deleBank"
+    },
+    checkSetPassword:{
+        url:'api-b/draw/checkSetPassword'
+    },
+    count:{
+        url:"api-b/draw/count"
+    },
+    saveDraw:{
+        url:"api-b/draw/saveDraw",method:"post"
+    },
+    savedrawPassword:{
+        url:"api-b/draw/savedrawPassword",method:"post"
+    },
+    updatedrawPassword:{
+        url:"api-b/draw/updatedrawPassword",method:"post"
+    },
+    checkdrawPassword:{
+        url:"api-b/draw/checkdrawPassword",method:'post'
+    },
+    getDrawList:{
+        url:"api-b/draw/getDrawList"
     }
 }
 const message = {
@@ -106,6 +140,9 @@ const message = {
     }
 }
 const shoppingCar = {
+    queryUserBill:{
+        url:"/api-u/userBill/queryUserBill"
+    },
     insertShoppingCar: {
         url: "/api-g/sc/insertShoppingCar"
     },

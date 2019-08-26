@@ -4,7 +4,7 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>个人中心</el-breadcrumb-item>
-      <el-breadcrumb-item>个人资料</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>个人资料</el-breadcrumb-item>-->
     </el-breadcrumb>
     <div class="PersonalData">
       <div class="GradeCredit">

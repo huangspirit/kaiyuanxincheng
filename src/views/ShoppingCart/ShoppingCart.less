@@ -1,56 +1,70 @@
 .ShoppingCart {
-    width:100%;
-    max-width:1200px;
-    min-width:1080px;
-    box-sizing: border-box;
-   padding-top:60px;
-    background: #fff;
-    margin:0 auto;
-    // 步骤
-    .ShoppingCart-steps {
-        display: flex;
+    background:#f5f5f5;
+    .shoppingCartWrap{
+        background:#fff;
+        box-sizing: border-box;
+        padding-top:60px;
+    }
+    .ShoppingCart-steps{
         width:70%;
         margin:0 auto;
-        .item{
-            width:25%;
-            position:relative;
-            text-align: center;
-            font-size:18px;
-            .dot{
-                height: 10px;
-                width:10px;
-                border-radius: 100%;
-                background:#999;
-                position:absolute;
-                left:50%;
-                transform: translateX(-50%);
-                z-index:2;
-            }
-            .line{
-                height:2px;
-                position:absolute;
-                top:4.5px;
-                left:50%;
-                right:-50%;
-                background:#999999;
-                z-index:1;
-            }
-            .txt{
-                margin-top:20px;
-                color:#999;
-            }
-            &.active{
-                .dot{
-                    background: #333;
-                }
-                .txt{
-                    color:#333;
-                }
-            }
+      /deep/.is-success{
+           color:#df3f2f;
+          border-color:#df3f2f;
+          .el-step__line{
+              background: #df3f2f;
+          }
         }
-        .el-steps {
-            width: 100%;
+        /deep/.is-process{
+            color:#df3f2f;
+            border-color:#df3f2f;
         }
     }
+    // 步骤
+    //.ShoppingCart-steps {
+    //    display: flex;
+    //    width:70%;
+    //    margin:0 auto;
+    //    .item{
+    //        width:25%;
+    //        position:relative;
+    //        text-align: center;
+    //        font-size:18px;
+    //        .dot{
+    //            height: 10px;
+    //            width:10px;
+    //            border-radius: 100%;
+    //            background:#999;
+    //            position:absolute;
+    //            left:50%;
+    //            transform: translateX(-50%);
+    //            z-index:2;
+    //        }
+    //        .line{
+    //            height:2px;
+    //            position:absolute;
+    //            top:4.5px;
+    //            left:50%;
+    //            right:-50%;
+    //            background:#999;
+    //            z-index:1;
+    //        }
+    //        .txt{
+    //            margin-top:20px;
+    //            color:#999;
+    //        }
+    //        &.active{
+    //            .dot{
+    //                background: #333;
+    //            }
+    //            .txt{
+    //                color:#333;
+    //            }
+    //        }
+    //    }
+    //    .el-steps {
+    //        width: 100%;
+    //    }
+    //}
 
 }

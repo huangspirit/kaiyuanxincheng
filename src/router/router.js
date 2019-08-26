@@ -391,7 +391,15 @@ export default [
             title: '个人中心'
         },
         children: [
-            // 卖家中心
+            // {
+            //     path: 'PersonalSet',
+            //     name: 'PersonalSet',
+            //     component: () => import('@/views/PersonalCenter/PersonalSet'),
+            //     meta: {
+            //         requireAuth: true,
+            //         title: '个人资料'
+            //     }
+            // },
             {
                 path: '',
                 component: () => import('@/views/PersonalCenter/PersonalSet'),
@@ -417,6 +425,33 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '月结明细'
+                }
+            },
+            {
+                path: 'buyerDetailList',
+                name: 'buyerDetailList',
+                component: () => import('@/views/PersonalCenter/PersonalSet/buyerDetailList'),
+                meta: {
+                    requireAuth: true,
+                    title: '消费明细'
+                }
+            },
+            {
+                path: 'depositDetailList',
+                name: 'depositDetailList',
+                component: () => import('@/views/PersonalCenter/PersonalSet/depositDetailList'),
+                meta: {
+                    requireAuth: true,
+                    title: '押金充值明细'
+                }
+            },
+            {
+                path: 'withdraw',
+                name: 'withdraw',
+                component: () => import('@/views/PersonalCenter/PersonalSet/withdraw'),
+                meta: {
+                    requireAuth: true,
+                    title: '提现'
                 }
             },
             {
@@ -672,27 +707,7 @@ export default [
                     title: '提升等级'
                 }
             },
-            // 个人设置
-            {
-                path: 'PersonalSet',
-                name: 'PersonalSet',
-                component: () => import('@/views/PersonalCenter/PersonalSet'),
-                meta: {
-                    requireAuth: true,
-                    title: '个人资料'
-                },
-                children:[
-                    {
-                        path: 'sellerDetailList',
-                        name: 'sellerDetailList',
-                        component: () => import('@/views/PersonalCenter/PersonalSet/sellerDetailList'),
-                        meta: {
-                            requireAuth: true,
-                            title: '售卖明细'
-                        }
-                    },
-                ]
-            },
+
             // 个人设置
             {
                 path: 'deposit',
@@ -704,15 +719,15 @@ export default [
                 }
             },
             // 个人资料
-            {
-                path: 'PersonalData',
-                name: 'PersonalData',
-                component: () => import('@/views/PersonalCenter/PersonalData'),
-                meta: {
-                    requireAuth: true,
-                    title: '个人资料'
-                }
-            },
+            // {
+            //     path: 'PersonalData',
+            //     name: 'PersonalData',
+            //     component: () => import('@/views/PersonalCenter/PersonalData'),
+            //     meta: {
+            //         requireAuth: true,
+            //         title: '个人资料'
+            //     }
+            // },
             // 账户余额
             {
                 path: 'AccountBalance',

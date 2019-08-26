@@ -141,15 +141,15 @@ export default {
           isShow: true,
           title: "个人中心",
           index: "3",
-          path: "/PersonalCenter/PersonalSet",
+          path: "/PersonalCenter",
           icon: require("@/assets/image/PersonalCenter/u1874.png"),
           children: [
-            {
-              title: "个人资料",
-              index: "3-1",
-              path: "/PersonalCenter/PersonalSet",
-              icon: require("@/assets/image/PersonalCenter/u37980.png")
-            },
+            // {
+            //   title: "个人资料",
+            //   index: "3-1",
+            //   path: "/PersonalCenter/PersonalSet",
+            //   icon: require("@/assets/image/PersonalCenter/u37980.png")
+            // },
             // {
             //   title: "账户余额",
             //   index: "3-2",
@@ -169,7 +169,7 @@ export default {
               icon: require("@/assets/image/PersonalCenter/u37960.png")
             },
               {
-                    title: "申请记录查询",
+                    title: "申请进度查询",
                     index: "3-5",
                     path: "/PersonalCenter/GetVipApplyDetail",
                     icon: require("@/assets/image/PersonalCenter/u38134.png")

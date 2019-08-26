@@ -4,7 +4,7 @@
       default-active="1"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#4f4f4f"
+      background-color="#3f3f3f"
       text-color="#fff"
       active-text-color="#3da8f5"
       :unique-opened='true'

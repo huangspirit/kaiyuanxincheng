@@ -1,57 +1,97 @@
 <template>
   <div class="ShoppingSettlement">
     <div class="Order-information">
-      <div class="Order-title">
-        <img src="@/assets/image/inquirybasket/u26965.png" alt />
-        <span>核对订单信息</span>
-      </div>
+<!--      <div class="Order-title">-->
+<!--        <img src="@/assets/image/inquirybasket/u26965.png" alt />-->
+<!--        <span>核对订单信息</span>-->
+<!--      </div>-->
       <!-- 配送地址 -->
-      <div class="delivery-address">
-        <p class="address-title">
-          <span>配送地址</span>
-          <span @click="addNewAdrress">{{addressText ? '新增配送地址' : '编辑配送地址'}}</span>
-          <router-link to="/PersonalCenter/ShippingAddress" tag="span">管理配送地址</router-link>
-        </p>
-         <div class="desc" v-if="!addressList || addressList.length==0">您还没有填写收货地址，请先新增配送地址</div>
-        <ul class="addressList">
-          <li :class="{active:addressValue === item.id}" v-for="item in addressList" :key="item.id">
-              <el-radio-group v-model="addressValue" class="defaultradioSquare label editAddress">
-                    <el-radio :label="item.id" :value="item.id" name="defaultInvoice">
-                      <span class="edit" @click="editAddress(item)">编辑该地址</span>
-                      <span class="defaultAddress" v-if="item.isdefault">默</span>
-                      <span>{{item.receivingName}}&nbsp;&nbsp; {{item.phone}}</span>&nbsp;&nbsp;
-                      <span>{{item.address}} {{item.detailedAddress}}</span>&nbsp;&nbsp;
+        <div class="address">
+            <div class="title">
+                <span class="fr" @click="showResetAddress=true" v-if="allAddress.length>1">选择</span>
+                <span>配送地址</span>
+            </div>
+            <div class="cont" v-if="allAddress.length">
+                  <span>{{defaultAddress.receivingName}}&nbsp;&nbsp; {{defaultAddress.phone}}</span>&nbsp;&nbsp;
+                  <span>{{defaultAddress.address}} {{defaultAddress.detailedAddress}}</span>&nbsp;&nbsp;
+            </div>
+            <div v-else>
+                暂无收货地址 &nbsp;&nbsp;<a href="javascript:;" class="btn bgColor" @click="addNewAdrress">添加</a>
+            </div>
+        </div>
+        <div class="setinvoice">
+            <div class="title">
+                <span class="fr" @click="showResetVoice=true" v-if="allInvoice.length>1">选择</span>
+                <span>发票信息</span>
+            </div>
+            <div class="cont">
+                <p>
+                    是否需要发票：
+                        <el-radio-group v-model="needInvoice">
+                            <el-radio :label="true" :value="true">是</el-radio>
+                            <el-radio :label="false" :value="false">否</el-radio>
+                        </el-radio-group>
+                   </p>
+                <div v-if="needInvoice">
+                    <p v-if="allInvoice.length" class="invoice">
+                        <span>发票类型：增值税发票</span>
+                        <span>发票抬头：{{DefaultInvoiceObject.corporatename}}</span>
+                        <span>统一信用代码：{{DefaultInvoiceObject.billno}}</span>
+                        <span>发票内容：商品明细</span>
+                    </p>
+                    <p v-else class="invoice">暂无开票信息 &nbsp;&nbsp; <a href="javascript:;" class="btn bgColor" @click="addInvoiceInforma">添加</a></p>
+                </div>
+                <p class="color">
+                    提醒：订单提交后不可更改！如有疑问或其他需求请先联系客服人员，否则相关损失由客户自行承担。
+                </p>
+            </div>
+        </div>
+<!--      <div class="delivery-address">-->
+<!--        <p class="address-title">-->
+<!--          <span>配送地址</span>-->
+<!--          <span @click="addNewAdrress">{{addressText ? '新增配送地址' : '编辑配送地址'}}</span>-->
+<!--          <router-link to="/PersonalCenter/ShippingAddress" tag="span">管理配送地址</router-link>-->
+<!--        </p>-->
+<!--         <div class="desc" v-if="!addressList || addressList.length==0">您还没有填写收货地址，请先新增配送地址</div>-->
+<!--        <ul class="addressList">-->
+<!--          <li :class="{active:addressValue === item.id}" v-for="item in addressList" :key="item.id">-->
+<!--              <el-radio-group v-model="addressValue" class="defaultradioSquare label editAddress">-->
+<!--                    <el-radio :label="item.id" :value="item.id" name="defaultInvoice">-->
+<!--                      <span class="edit" @click="editAddress(item)">编辑该地址</span>-->
+<!--                      <span class="defaultAddress" v-if="item.isdefault">默</span>-->
+<!--                      <span>{{item.receivingName}}&nbsp;&nbsp; {{item.phone}}</span>&nbsp;&nbsp;-->
+<!--                      <span>{{item.address}} {{item.detailedAddress}}</span>&nbsp;&nbsp;-->
 
-                      </el-radio>
-              </el-radio-group>
+<!--                      </el-radio>-->
+<!--              </el-radio-group>-->
 
-            <!-- </label> -->
-          </li>
-        </ul>
-      </div>
+<!--            &lt;!&ndash; </label> &ndash;&gt;-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
       <!-- 订单商品 -->
       <div class="order-product">
-        <p class="product-total">
+        <p class="title">
           <span>订单商品</span>
-          <span class="num">x {{goodsCount}}</span>
+          <span class="color">x{{goodsCount}}</span>
         </p>
         <ul>
           <ShoppingSettlementOItem v-for="(item,k) in DetaileData" :key="k" :item="item"></ShoppingSettlementOItem>
         </ul>
         <!-- 开具发票 -->
-        <div class="Invoice">
-          <span>发票信息</span>
-          <el-checkbox v-model="InvoiceFlag" class="invoiceFlag">开具发票</el-checkbox>
-          <span class="select-invoice" @click="selectInvoice">选择/管理开票信息</span>
-        </div>
-        <div class="Invoice-content" v-if="InvoiceFlag">
-          <p>
-            <span>发票类型：增值税发票</span>
-            <span>发票抬头：{{DefaultInvoiceObject.corporatename}}</span>
-            <span>纳税人识别号：{{DefaultInvoiceObject.billno}}</span>
-            <span>发票内容：商品明细</span>
-          </p>
-        </div>
+<!--        <div class="Invoice">-->
+<!--          <span>发票信息</span>-->
+<!--          <el-checkbox v-model="InvoiceFlag" class="invoiceFlag">开具发票</el-checkbox>-->
+<!--          <span class="select-invoice" @click="selectInvoice">选择/管理开票信息</span>-->
+<!--        </div>-->
+<!--        <div class="Invoice-content" v-if="InvoiceFlag">-->
+<!--          <p>-->
+<!--            <span>发票类型：增值税发票</span>-->
+<!--            <span>发票抬头：{{DefaultInvoiceObject.corporatename}}</span>-->
+<!--            <span>纳税人识别号：{{DefaultInvoiceObject.billno}}</span>-->
+<!--            <span>发票内容：商品明细</span>-->
+<!--          </p>-->
+<!--        </div>-->
         <!-- 结算金额明细 -->
         <div class="place-order">
           <div class="detail">
@@ -121,8 +161,12 @@
               <label for="">邮费方式：</label>
               <el-radio v-model="dilivertype" label="0" border>到付</el-radio>
               <el-radio v-model="dilivertype" label="1" border>垫付</el-radio>
-
             </div>
+        <div class="payWayList" v-if="!(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough)">
+                  <label for="">支付方式：</label>
+                  <el-radio v-model="paytype" label="0" border>在线支付</el-radio>
+                  <el-radio v-model="paytype" label="1" border>转账支付</el-radio>
+              </div>
           </div>
           <div class="information">
             <p>
@@ -195,57 +239,57 @@
       </span>
     </el-dialog>
     <!-- 选择管理发票 -->
+      <el-dialog
+          :visible.sync="dialogVisibleAddInvoice"
+          width="900px"
+          :lock-scroll="false"
+          class="Add-Invoice-shpoing"
+          top="10vh"
+          @close="handleClose2('ruleForm')"
+          append-to-body
+      >
+          <p slot="title" class="title">{{dialogTitleAddInvoice ? "新增开票信息" : '编辑开票信息'}}</p>
+          <div class="dialo-body">
+              <el-form
+                  :model="ruleFormAddInvoice"
+                  :rules="rulesAddInvoice"
+                  ref="ruleForm"
+                  label-width="200px"
+                  class="demo-ruleForm"
+              >
+                  <el-form-item label="公司名称：" prop="corporatename">
+                      <el-input v-model="ruleFormAddInvoice.corporatename"></el-input>
+                  </el-form-item>
+                  <el-form-item label="税号/统一信用代码证号：" prop="billno">
+                      <el-input v-model="ruleFormAddInvoice.billno"  maxlength="18"
+                                show-word-limit></el-input>
+                  </el-form-item>
+                  <el-form-item label="开户银行：" prop="openingbank">
+                      <el-input v-model="ruleFormAddInvoice.openingbank"></el-input>
+                  </el-form-item>
+                  <el-form-item label="银行账号：" prop="bankaccount">
+                      <el-input v-model="ruleFormAddInvoice.bankaccount"></el-input>
+                  </el-form-item>
+                  <el-form-item label="开票电话：" prop="registeredphone">
+                      <el-input v-model="ruleFormAddInvoice.registeredphone"
+                               ></el-input>
+                  </el-form-item>
+                  <el-form-item label="开票地址：" prop="registeredaddress">
+                      <el-input v-model="ruleFormAddInvoice.registeredaddress"></el-input>
+                  </el-form-item>
+                  <el-form-item label="设为默认">
+                      <el-switch v-model="ruleFormAddInvoice.isdefault"></el-switch>
+                  </el-form-item>
+              </el-form>
+          </div>
+          <div slot="footer" class="dialo-footer">
+              <span @click="dialogVisibleAddInvoice = false" class="cancel">取消</span>
+              <span @click="submitFormAddInvoice('ruleForm')" class="ensure">确认发票信息</span>
+          </div>
+      </el-dialog>
     <el-dialog :visible.sync="dialogInvoice" width="1000px" center class="dialog-ruleForm-Invoice">
       <p slot="title" class="title">发票历史信息</p>
       <!-- 添加发票的模态框 -->
-      <el-dialog
-        :visible.sync="dialogVisibleAddInvoice"
-        width="900px"
-        :lock-scroll="false"
-        class="Add-Invoice-shpoing"
-        top="10vh"
-        @close="handleClose2('ruleForm')"
-        append-to-body
-      >
-        <p slot="title" class="title">{{dialogTitleAddInvoice ? "新增开票信息" : '编辑开票信息'}}</p>
-        <div class="dialo-body">
-          <el-form
-            :model="ruleFormAddInvoice"
-            :rules="rulesAddInvoice"
-            ref="ruleForm"
-            label-width="200px"
-            class="demo-ruleForm"
-
-          >
-            <el-form-item label="公司名称：" prop="corporatename">
-              <el-input v-model="ruleFormAddInvoice.corporatename"></el-input>
-            </el-form-item>
-            <el-form-item label="税号/统一信用代码证号：" prop="billno">
-              <el-input v-model="ruleFormAddInvoice.billno"></el-input>
-            </el-form-item>
-            <el-form-item label="开户银行：" prop="openingbank">
-              <el-input v-model="ruleFormAddInvoice.openingbank"></el-input>
-            </el-form-item>
-            <el-form-item label="银行账号：" prop="bankaccount">
-              <el-input v-model="ruleFormAddInvoice.bankaccount"></el-input>
-            </el-form-item>
-            <el-form-item label="开票电话：" prop="registeredphone">
-              <el-input v-model="ruleFormAddInvoice.registeredphone"></el-input>
-            </el-form-item>
-            <el-form-item label="开票地址：" prop="registeredaddress">
-              <el-input v-model="ruleFormAddInvoice.registeredaddress"></el-input>
-            </el-form-item>
-             <el-form-item label="设为默认">
-              <el-switch v-model="ruleFormAddInvoice.isdefault"></el-switch>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div slot="footer" class="dialo-footer">
-
-          <span @click="dialogVisibleAddInvoice = false" class="cancel">取消</span>
-          <span @click="submitFormAddInvoice('ruleForm')" class="ensure">确认发票信息</span>
-        </div>
-      </el-dialog>
       <div class="list">
         <ul class="InvoiceInforma-list">
           <li v-for="item in InvoiceList" :key="item.id" class="Invoiceitem">
@@ -306,84 +350,130 @@
           <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">个人中心>>>我的订单</a>下载上传合同 </p>
       </div>
     </SetTankuang>
+      <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
+          <div class="dialog-body" slot="dialog-body">
+              <div class="RemittancNotes" >
+                  <el-form  label-width="80px">
+                      <el-form-item label="汇款凭证:">
+                          <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
+                          <el-upload
+                              class="upload-demo"
+                              ref="upload"
+                              :limit="1"
+                              :action="requestUrl"
+                              :auto-upload="true"
+                              list-type="picture-card"
+                              :before-upload="beforeAvatarUpload"
+                              :on-success="handleAvatarSuccess"
+                              :on-preview="handlePictureCardPreview"
+                              :on-remove="handleRemove"
+                              :file-list="businessList"
+                          >
+                              <i class="el-icon-plus"></i>
+                              <div
+                                  slot="tip"
+                                  class="el-upload__tip"
+                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                          </el-upload>
+                      </el-form-item>
+                      <el-form-item label="汇款金额:">
+                          <strong class="color" style="font-size:20px;">￥{{getOrderInfo.money}}</strong>
+                      </el-form-item>
+                  </el-form>
+                  <div class="desc">
+                      <p class="tishi">温馨提示:</p>
+                      <p><label for="">汇款方式：</label> <span>1. 通过专属帐号进行线下汇款充值 > 2. 然后去我的订单中心输入汇款单号</span> </p>
+                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
+                      <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
+                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>
+                  </div>
+              </div>
+          </div>
+          <div slot="footer" class="dialog-footer fr">
+              <!-- <el-button @click="showDialog = false">取 消</el-button>
+              <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
+          </div>
+      </SetTankuang>
+
+      <el-dialog
+          title="选择收货地址"
+          :visible.sync="showResetAddress"
+          width="30%"
+          >
+          <div class="selectedAddress">
+              <ul>
+                  <li v-for="(item,k) in allAddress" :key="k" @click="selectedDefaultAddress(k)" :class="defaultAddress.id==item.id?'bgColor':''">
+                    <span class="defaultAddress" v-if="item.isdefault">默</span>
+                    <span>{{item.receivingName}}&nbsp;&nbsp; {{item.phone}}</span>&nbsp;&nbsp;
+                    <span>{{item.address}} {{item.detailedAddress}}</span>
+                  </li>
+              </ul>
+          </div>
+          <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="showResetAddress = false">关闭</el-button>
+  </span>
+      </el-dialog>
+
+      <el-dialog
+          title="选择开票信息"
+          :visible.sync="showResetVoice"
+          width="70%"
+         >
+          <div class="selectedVoice">
+              <ul>
+                  <li v-for="(item,k) in allInvoice" :key="k"  @click="selectedDefaultVoice(k)" :class="DefaultInvoiceObject.id==item.id?'bgColor':''">
+                      <div class="defaultInvoiceMark">
+                          <span v-if="item.isdefault" >默</span>
+                      </div>
+                      <div class="list clear">
+                          <p>公司名称：{{item.corporatename}}</p>
+                          <p>统一信用代码：{{item.billno}}</p>
+                          <p>开票电话：{{item.registeredphone}}</p>
+                          <p>开户地址：{{item.registeredaddress}}</p>
+                          <p>开户银行：{{item.openingbank}}</p>
+                          <p>银行账户：{{item.bankaccount}}</p>
+                      </div>
+
+                  </li>
+              </ul>
+          </div>
+          <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
+  </span>
+      </el-dialog>
   </div>
 </template>
-<style lang="less" scoped>
-@import "./ShoppingSettlement.less";
 
-.counttime{
-  color:red;
-  font-weight:bolder;
-}
-.invoiceFlag{
-          .el-checkbox__label{
-            font-size:16px;
-          }
-        }
-.el-radio__inner{
-  display: none;
-}
-.address-distpicker {
-  .distpicker-address-wrapper{
-    select{
-      font-size:14px;
-    }
-  }
-}
-.Add-Invoice-shpoing{
-  .el-form-item__label{
-    font-size:14px;
-  }
-  .el-input__inner{
-    height:40px;
-    border-width:1px;
-  }
-}
-</style>
-<style scoped>
-
-.editAddress>label{
-  width: 100%;
-}
-.editAddress>>>.el-radio__label{
-  width:100%;
-}
-.wrap>>>.el-icon-close{
-  display:none;
-}
-.wrap>>>.el-dialog__body{
-  padding-top:0;
-}
-.wrap>>>.el-dialog__body p{
-  width:80%;
-  margin:0 auto;
-  font-size:16px;
-  line-height: 40px;
-  padding-bottom: 50px;
-}
-.wrap>>>.el-dialog__body p a{
-  display:inline-block;
-  color:#0068df;
-  cursor: pointer;
-  margin:0 10px;
-
-}
-.wrap>>>.el-dialog__body p a:hover{
-  text-decoration:underline;
-  font-weight: bolder;
-  color:peru;
-}
-</style>
 <script>
+    import { baseURL } from "@/config";
 import VDistpicker from 'v-distpicker'
 import { mapState, mapActions, mapMutations } from "vuex"
 import ShoppingSettlementOItem from "_c/ShoppingSettlementOItem"
 import { setTimeout, setInterval, clearInterval } from "timers"
-import { constants } from "crypto";
+import {axios,presonalAdress,shoppingCar} from "../../../api/apiObj";
+//import { constants } from "crypto";
 export default {
   name: "ShoppingSettlement",
   data() {
     return {
+        showResetVoice:false,
+        showResetAddress:false,
+        timer:null,
+        businessList:[],
+        //收货地址
+        defaultAddress:{},
+        allAddress:[],
+        //开票
+        DefaultInvoiceObject: {},
+        needInvoice:true,
+        allInvoice:[],
+        //0标识在线支付
+        paytype:"0",
+        //生成的订单bianhao
+        orderNumber:"",
+        getOrderInfo:{},
+        //对公转账
+        showDialog:false,
         //购买商品总数
         goodsCount:0,
       //月结用户提交订单成功后需要跳转
@@ -504,8 +594,6 @@ export default {
       dialogInvoice: false,
       // 默认的发票
       DefaultInvoice: "",
-      // 默认发票的对象
-      DefaultInvoiceObject: {},
       // 返回来的详细数据
       DetaileData: [],
       // 价格总和明细
@@ -591,11 +679,16 @@ export default {
       "GetAllPersonalInvoice",
       "GetOrderCreater"
     ]),
-
-
+      //修改地址
+      selectedDefaultAddress(k){
+          this.defaultAddress=this.allAddress[k]
+      },
+        //修改发票
+      selectedDefaultVoice(k){
+        this.DefaultInvoiceObject=this.allInvoice[k]
+      },
     //跳转到个人中心订单列表
     chipCenterOrder(){
-
         clearInterval(this.chipCenterOrderCount)
         this.count=60;
         //this.showGoIndex=false;
@@ -634,17 +727,17 @@ export default {
     },
     // 提交订单
     submit() {
-      if(!this.DefaultInvoice){
+      if(!this.DefaultInvoiceObject.id){
         this.$message.error("请选择发票信息")
         return;
       }
-      if(!this.addressValue){
+      if(!this.defaultAddress.id){
         this.$message.error("请选择配送地址")
         return;
       }
       let bill = JSON.parse(this.OrderInformation.bill);
-      bill.content_id = this.DefaultInvoice;
-      this.OrderInformation.add_id = this.addressValue;
+      bill.content_id = this.DefaultInvoiceObject.id;
+      this.OrderInformation.add_id = this.defaultAddress.id;
       this.OrderInformation.dilivertype = this.dilivertype;
       this.OrderInformation.type = "1";
       this.OrderInformation.bill = JSON.stringify(bill);
@@ -652,7 +745,6 @@ export default {
       if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
         //月结用户直接生成订单，去往个人中心
         this.GetOrderCreater(this.OrderInformation).then(res=>{
-          console.log(res)
           console.log("月结用户直接生成订单，去往个人中心")
           this.showGoIndex=true;
           var _this=this;
@@ -672,16 +764,20 @@ export default {
           type: 'warning'
         }).then(() => {
           this.GetOrderCreater(this.OrderInformation).then(res=>{
-            console.log(res)
-              console.log("月结用户直接生成普通订单，去直接支付")
-              this.$router.push({
-                path: "/ShoppingCart/PaymentOrders",
-                query: {
-                  orderNumber:res.data,
-                  // payType: 2,
-                  // totalPrice: this.totalPrice
-                }
-              });
+              this.orderNumber=res.data;
+              if(this.paytype==0){
+                  this.$router.push({
+                      path: "/ShoppingCart/PaymentOrders",
+                      query: {
+                          orderNumber:res.data,
+                          // payType: 2,
+                          // totalPrice: this.totalPrice
+                      }
+                  });
+              }else{
+                  this.getOrderType()
+
+              }
             })
         }).catch(() => {
           console.log('已取消删除')
@@ -689,16 +785,21 @@ export default {
       }else{
         //普通用户，直接去付款
           this.GetOrderCreater(this.OrderInformation).then(res=>{
-            console.log(res)
-            console.log("普通用户直接生成普通订单，去直接支付")
-             this.$router.push({
-                path: "/ShoppingCart/PaymentOrders",
-                query: {
-                  orderNumber:res.data,
-                  // payType: 2,
-                  // totalPrice: this.totalPrice
-                }
-              });
+              this.orderNumber=res.data;
+              if(this.paytype==0){
+                  this.$router.push({
+                      path: "/ShoppingCart/PaymentOrders",
+                      query: {
+                          orderNumber:res.data,
+                          // payType: 2,
+                          // totalPrice: this.totalPrice
+                      }
+                  });
+              }else{
+                  this.getOrderType()
+
+
+              }
           })
       }
 
@@ -747,15 +848,55 @@ export default {
     },
 
     // 请求所有的发票信息
-    AllInvoice() {
-      this.GetAllPersonalInvoice({
-        start: 0,
-        length: 10,
-        access_token: this.access_token
-      });
+    getAllInvoice()
+    {
+        axios.request({...shoppingCar.queryUserBill,params:{start:0,length:20}}).then(res=>{
+            console.log(res)
+           if(res.data.total==1){
+                this.DefaultInvoiceObject=res.data.data[0]
+            }else if(res.data.total>1){
+               let count=0;
+                res.data.data.forEach(item=>{
+                    if(item.isdefault){
+                        this.DefaultInvoiceObject=item;
+                        count++;
+                    }
+                })
+               if(count==0){
+                   this.DefaultInvoiceObject=res.data.data[0]
+               }
+            }
+            this.allInvoice=res.data.data
+        })
+      // this.GetAllPersonalInvoice({
+      //   start: 0,
+      //   length: 10,
+      //   access_token: this.access_token
+      // });
     },
+      // 获取全部的收货地址
+      getAllAddress() {
+          axios.request({...presonalAdress.getAllAdress,params:{start:0,length:20}}).then(res=>{
+              if(res.data.total==1){
+                  this.defaultAddress=res.data.data[0]
+              }else if(res.data.total>1){
+                  let count=0;
+                  res.data.data.forEach(item=>{
+                      if(item.isdefault){
+                          this.defaultAddress=item;
+                          count++
+                      }
+                  })
+                  if(count==0){
+                      this.defaultAddress=res.data.data[0]
+                  }
+              };
+              this.allAddress= res.data.data;
+          })
+      },
     // 新增开票信息
     addInvoiceInforma() {
+        console.log("ertgr")
       this.dialogVisibleAddInvoice = true;
     },
     // 确认开票信息
@@ -774,7 +915,7 @@ export default {
                   type: "success",
                   message: res
                 });
-                this.AllInvoice();
+                this.getAllInvoice();
                 this.dialogVisibleAddInvoice = false;
               });
           } else {
@@ -873,13 +1014,12 @@ export default {
         }
       });
     },
-    // 获取全部的收货地址
-    allAddress() {
-     this.GetAllReceivingAddress({
-        start: 0,
-        length: 10
-      })
-    },
+
+     // this.GetAllReceivingAddress({
+     //    start: 0,
+     //    length: 10
+     //  })
+   // },
     // 关闭时的回调
     closeDialogAddress(formName) {
       this.$refs[formName].resetFields();
@@ -905,8 +1045,71 @@ export default {
       }else{
             this.dialogInvoice = false;
       }
-    }
-  },
+    },
+      closeDialogCallBack(){
+          this.showDialog=false
+      },
+      handleAvatarSuccess(res, file) {
+          console.log(res, file)
+          if(res.resultCode =='200'){
+              this.$message({
+                  type:'success',
+                  message:'上传成功，等待审核'
+              })
+              this.showDialog=false
+              this.$router.push("/PersonalCenter/BuyerOrderManagement")
+          }
+      },
+      beforeAvatarUpload(file) {
+          // const isJPG = file.type === 'image/jpeg';
+          // const isLt2M = file.size / 1024 / 1024 < 2;
+
+          // if (!isJPG) {
+          //   this.$message.error('上传头像图片只能是 JPG 格式!');
+          // }
+          // if (!isLt2M) {
+          //   this.$message.error('上传头像图片大小不能超过 2MB!');
+          // }
+          // return isJPG && isLt2M;
+      },
+      handleRemove(file, fileList) {
+          console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+          console.log(file);
+      },
+      getOrderType(){
+          let countime=1000
+          var _this = this;
+          const loading = this.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+          });
+          let count=30
+          this.timer=setInterval(function(){
+              count--;
+              if(count<0){
+                  clearInterval(_this.timer)
+              }
+              _this.$store
+                  .dispatch("SignContract/getQueryOrderInfo", {
+                      orderNo: _this.orderNumber,
+                      access_token: _this.access_token
+                  }).then(res=>{
+                  _this.getOrderInfo=res
+                  if( _this.getOrderInfo.money){
+                      _this.totalPrice = _this.getOrderInfo.money;
+                      loading.close()
+                      clearInterval(_this.timer)
+                      _this.showDialog=true;
+                  }
+              })
+          },countime)
+
+      },
+    },
   filters: {
     ToFixed(x) {
       if (x) {
@@ -921,8 +1124,14 @@ export default {
       InvoiceList: state => state.ShoppingSettlement.InvoiceList
     }),
     access_token() {
-      return localStorage.getItem("access_token");
-    }
+      return sessionStorage.getItem("access_token");
+    },
+      requestUrl() {
+          return (
+              baseURL +
+              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.orderNumber}`
+          );
+      },
   },
   created(){
     if(!this.buyOneGoodsDetail.data){
@@ -934,36 +1143,98 @@ export default {
 
   },
   mounted() {
-    this.AllInvoice();
-    //获取全部的收货地址
-    this.allAddress();
+      this.getAllInvoice();
+      //获取全部的收货地址
+      this.getAllAddress();
+      this.$store.state.shoppingCart.active = 1;
+      // 获取全部的发票
+      // 将运费方式改为到付
+      this.dilivertype = "0";
+      // let DetailData = JSON.parse(this.$route.query.data).deatil;
+      // console.log(DetailData);
+      // this.OrderInformation = JSON.parse(this.$route.query.obj2);
+      // this.priceTotalDetail = JSON.parse(this.$route.query.data);
+      let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
+      console.log(JSON.parse(this.buyOneGoodsDetail.data))
+      this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
+      this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
+      this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
+      for (var key in DetailData) {
+          DetailData[key].forEach(item => {
+              console.log(item)
+              this.goodsCount = this.goodsCount + Number(item.goods_count)
+          })
+          this.DetaileData.push({
+              name: key,
+              list: DetailData[key]
+          });
+      }
+  }
+}
+</script>
+<style lang="less" scoped>
+    @import "./ShoppingSettlement.less";
 
-    this.$store.state.shoppingCart.active = 2;
-    // 获取全部的发票
+    .counttime{
+        color:red;
+        font-weight:bolder;
+    }
+    .invoiceFlag{
+        .el-checkbox__label{
+            font-size:16px;
+        }
+    }
+    .el-radio__inner{
+        display: none;
+    }
+    .address-distpicker {
+        .distpicker-address-wrapper{
+            select{
+                font-size:14px;
+            }
+        }
+    }
+    .Add-Invoice-shpoing{
+        .el-form-item__label{
+            font-size:14px;
+        }
+        .el-input__inner{
+            height:40px;
+            border-width:1px;
+        }
+    }
+</style>
+<style scoped>
 
-    // 将运费方式改为到付
-    this.dilivertype = "0";
-    // let DetailData = JSON.parse(this.$route.query.data).deatil;
-    // console.log(DetailData);
-    // this.OrderInformation = JSON.parse(this.$route.query.obj2);
-    // this.priceTotalDetail = JSON.parse(this.$route.query.data);
-    let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
-    console.log(JSON.parse(this.buyOneGoodsDetail.data))
-    this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
-    this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
-    this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
-    for (var key in DetailData) {
-        DetailData[key].forEach(item=>{
-            console.log(item)
-            this.goodsCount=this.goodsCount+Number(item.goods_count)
-        })
-      this.DetaileData.push({
-        name: key,
-        list: DetailData[key]
-      });
-
+    .editAddress>label{
+        width: 100%;
+    }
+    .editAddress>>>.el-radio__label{
+        width:100%;
+    }
+    .wrap>>>.el-icon-close{
+        display:none;
+    }
+    .wrap>>>.el-dialog__body{
+        padding-top:0;
+    }
+    .wrap>>>.el-dialog__body p{
+        width:80%;
+        margin:0 auto;
+        font-size:16px;
+        line-height: 40px;
+        padding-bottom: 50px;
+    }
+    .wrap>>>.el-dialog__body p a{
+        display:inline-block;
+        color:#0068df;
+        cursor: pointer;
+        margin:0 10px;
 
     }
-  }
-};
-</script>
+    .wrap>>>.el-dialog__body p a:hover{
+        text-decoration:underline;
+        font-weight: bolder;
+        color:peru;
+    }
+</style>

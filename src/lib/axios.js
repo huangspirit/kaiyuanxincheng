@@ -38,7 +38,6 @@ class HttpRequest {
       } = res
         return data
     }, error => {
-        console.log(error)
       if (error.response.status === 401) {
         // 401 说明 token 验证失败
         // 可以直接跳转到登录页面，重新登录获取 token
@@ -53,7 +52,11 @@ class HttpRequest {
         // 服务器错误
         // do something
         return Promise.reject(error.response.data)
-      } else {
+       }
+       else if(error.response.status === 400){
+          alert(error.response.data.message)
+      }
+      else {
         //返回 response 里的错误信息
         this.distroy(url)
         return Promise.reject(error.response.data)
@@ -61,12 +64,15 @@ class HttpRequest {
     })
   }
   request (options) {
-   //   console.log("options:",options)
+      let contentType="application/json"
+      if(options.method=='get'){
+          contentType='text/plain;charset=UTF-8'
+      }
     let access_token=sessionStorage.getItem("access_token")
     const instance = axios.create()
     if(access_token){
       options = Object.assign(this.getInsideConfig(),{headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         "Authorization" : "Bearer " + access_token
       }}, options)
     }else{

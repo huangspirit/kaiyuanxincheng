@@ -3,21 +3,21 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
 <!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>-->
 <!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter/PersonalSet' }">个人资料</el-breadcrumb-item>-->
-            <el-breadcrumb-item>月结明细</el-breadcrumb-item>
+            <el-breadcrumb-item>押金充值明细</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="cont">
             <div class="search clear">
-<!--                <el-input-->
-<!--                    class=" searvhInput fr"-->
-<!--                    placeholder="请输入内容"-->
-<!--                    v-model="input"-->
-<!--                    prefix-icon="el-icon-search"-->
-<!--                    clearable>-->
-<!--                </el-input>-->
-<!--                <div class="fl">-->
-<!--                    <span class="item" @click="changeItem(1)" :class="selected==1?'bgColor':''">在售</span>-->
-<!--                    <span class="item" @click="changeItem(0)" :class="selected==0?'bgColor':''">售完</span>-->
-<!--                </div>-->
+                <!--                <el-input-->
+                <!--                    class=" searvhInput fr"-->
+                <!--                    placeholder="请输入内容"-->
+                <!--                    v-model="input"-->
+                <!--                    prefix-icon="el-icon-search"-->
+                <!--                    clearable>-->
+                <!--                </el-input>-->
+                <!--                <div class="fl">-->
+                <!--                    <span class="item" @click="changeItem(1)" :class="selected==1?'bgColor':''">在售</span>-->
+                <!--                    <span class="item" @click="changeItem(0)" :class="selected==0?'bgColor':''">售完</span>-->
+                <!--                </div>-->
                 <el-date-picker
                     class="fl time"
                     v-model="value2"
@@ -136,7 +136,7 @@
             },
             init(){
                 axios.request({...personCenter.queryUserConsumeDetailList,params:{
-                    type:2,
+                        type:88,
                         length:this.pageSize,
                         start:this.start,
                         startTime:this.startTime,

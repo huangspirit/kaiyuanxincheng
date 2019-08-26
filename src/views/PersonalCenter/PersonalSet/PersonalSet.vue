@@ -97,7 +97,7 @@
           <span>剩余购买额度：</span>
           <span class="color">￥{{UserInforma.userTagMap['restcredit-vip']}}</span>
         </div>
-        <router-link to="/PersonalCenter/vipDetailList" tag="span">详细</router-link>
+        <router-link to="/PersonalCenter/vipDetailList" tag="span">月结明细</router-link>
       </li>
       <li>
         <div>
@@ -107,6 +107,11 @@
           <span>钱包余额：</span>
           <span class="color">￥{{UserInforma.userTagMap.wallet}}</span>
         </div>
+          <div>
+              <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
+              <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;
+              <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
+          </div>
       </li>
       <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
         <div>
@@ -116,7 +121,10 @@
           <span>押&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</span>
           <span class="color">￥{{UserInforma.userTagMap.deposit}}</span>
         </div>
-        <router-link to="/PersonalCenter/deposit" tag="span">充值</router-link>
+          <div>
+              <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp;
+              <router-link to="/PersonalCenter/depositDetailList" >详细</router-link>
+          </div>
       </li>
       <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
         <div>
@@ -228,6 +236,70 @@
         <img :src="dialogVisibleWeChatBindCodeUrl" alt />
       </div>
     </el-dialog>
+      <el-dialog
+          :visible.sync="showinputPassword"
+          width="500px"
+      >
+          <p slot="title" class="title">输入密码</p>
+          <div >
+              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputPassword = false">取 消</el-button>
+            <el-button type="primary" @click="checkpassword">确 定</el-button>
+          </span>
+      </el-dialog>
+      <el-dialog
+          :visible.sync="showinputwithdrawTotal"
+          width="700px"
+          class="withdrawApplyTotal"
+      >
+          <p slot="title" class="title"><strong>钱包余额：￥{{UserInforma.userTagMap.wallet}}</strong></p>
+          <div class="withdrawApplyTotalCont">
+              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal"  @input="changewithdrawApplyTotal" ></el-input>
+              <div v-if="withdrawApplyTotal" class="clear">
+                  <div class="withdrawCharge">
+                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
+                      <div class="desc">
+                          <i class="el-icon-question color" ></i>
+                          <div class="cont">
+                              <p><strong>手续费说明</strong></p>
+                              <p>
+                                  当单笔提现金额<1500元，y=2元+提现金额*0.55%
+                              </p>
+                              <p>
+                                  当单笔提现金额≥1500元，y=提现金额*0.7%
+                              </p>
+                              <br>
+                              <p>当天17:00点前申请提现的，提现金额当日到账；</p>
+                              <p>当天17:00点后申请提现的，提现金额次日到账；</p>
+                              <p>周末及节假日申请提现的，提现金额将在下个工作日到账；</p><br>
+                              <p>温馨提示：单笔提现金额≥1500为最优提现方案</p>
+                          </div>
+                      </div>
+                  </div>
+                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <ul v-if="bankList.length">
+                      <li class="title">
+                          <span>提现方式</span>
+                          <span>账号</span>
+                          <span>账户名</span>
+                      </li>
+                      <li v-for="(item,k) in bankList" :class="selectedBank==k?'bgColor':''" :key="k" @click="selectedBank=k">
+                          <span>{{item.bankCode | filterBankCode}}</span>
+                          <span>{{item.bankNumber}}</span>
+                          <span>{{item.cnname}}</span>
+                      </li>
+                  </ul>
+                  <router-link v-if="bankList.length==0" to="/PersonalCenter/withdraw" class="band">没有提现账号，去绑定</router-link>
+              </div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputwithdrawTotal = false">取 消</el-button>
+            <el-button type="primary" @click="saveDraw">确 定</el-button>
+          </span>
+      </el-dialog>
   </div>
 </template>
 <style lang="less" scoped>
@@ -239,7 +311,8 @@ import { mapActions } from "vuex";
 // import "@/assets/css/label-checkbox.less";
 import { setInterval, clearInterval } from "timers";
 import { baseURL } from "@/config";
-import { parse } from "querystring";
+import {axios,personCenter} from "../../../api/apiObj";
+//import { parse } from "querystring";
 export default {
   name: "PersonalSet",
   data() {
@@ -256,7 +329,14 @@ export default {
             {level:'C',val:'90%'},
             {level:'D',val:'100%'},
         ],
-      UserInforma: {
+        showinputPassword:false,
+        inputpassword:"",
+        showinputwithdrawTotal:false,
+        withdrawApplyTotal:"",
+        withdrawApplyTotalObj:{},
+        bankList:[],
+        selectedBank:0,
+        UserInforma: {
         userTagMap: {}
       },
       //信用额度
@@ -299,7 +379,7 @@ export default {
         ],
         nickname: [
           { required: true, message: "请输入昵称", trigger: "blur" },
-          { min: 3, max: 15, message: "长度在 3 到 15 个字符", trigger: "blur" }
+          { min: 2, max: 15, message: "长度在 2 到 15 个字符", trigger: "blur" }
         ]
       },
       timer: null
@@ -352,7 +432,23 @@ export default {
         case 3:
           return "认证商家";
       }
-    }
+    },
+      filterBankCode(val){
+          switch (val) {
+              case "ICBC":
+                  return '工商银行';
+              case "ABC":
+                  return '农业银行';
+              case "CCB":
+                  return '建设银行';
+              case "CMB":
+                  return '招商银行';
+              case "COMM":
+                  return '交通银行';
+              case 'alipay':
+                  return "支付宝"
+          }
+      }
   },
   mounted() {
     // this.$store.dispatch("Login/GetUserInforma");
@@ -377,7 +473,89 @@ export default {
   methods: {
     ...mapActions("ShippingAddress", ["GetAllReceivingAddress"]),
     ...mapActions("Login", ["GetUserInforma"]),
+      changewithdrawApplyTotal(k){
+          let obj =this.withdrawApplyTotal;
+          obj = obj.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+          obj = obj.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+          obj = obj.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+          obj = obj.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3');//只能输入4个小数
+          if(obj.indexOf(".")< 0 && obj !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+              obj= parseFloat(obj);
+          };
+          if(obj>this.UserInforma.userTagMap.wallet){
+              this.withdrawApplyTotal=(obj+"").substring(0, obj.length-2);
+          }else{
+              this.withdrawApplyTotal=obj;
+          }
+          if(this.withdrawApplyTotal){
+              axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal  }}).then(res=>{
+                  this.withdrawApplyTotalObj=res.data
+              })
+          }
 
+      },
+      //提现的相关操作
+      withDraw(){
+            //先验证是否设置提现密码
+          this.inputpassword="";
+          axios.request(personCenter.checkSetPassword).then(res=>{
+                if(res.data==1){
+                    this.showinputPassword=true;
+                }else{
+                    //需要新增
+                    this.$prompt('请设置提现密码', '', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        //校验密码
+                        axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
+                            console.log(res)
+                            if(res){
+                                this.showinputPassword=false;
+                                this.showinputwithdrawTotal=true;
+                                axios.request({...personCenter.getBankList,params:{
+                                        start:0,
+                                        length:100,
+                                    }}).then(res=>{
+                                    console.log(res)
+                                    this.bankList=res.data.data;
+                                })
+                            }
+                        })
+                    }).catch(() => {
+
+                    });
+                }
+          })
+      },
+      checkpassword(){
+          axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
+              console.log(res)
+              if(res){
+                  this.showinputPassword=false;
+                  this.showinputwithdrawTotal=true;
+                  axios.request({...personCenter.getBankList,params:{
+                          start:0,
+                          length:100,
+                      }}).then(res=>{
+                          console.log(res)
+                      this.bankList=res.data.data;
+                  })
+              }
+
+          })
+      },
+      saveDraw(){
+            let obj={
+                withdrawBankId:this.bankList[this.selectedBank].id,
+                ...this.withdrawApplyTotalObj
+            }
+            axios.request({...personCenter.saveDraw,data:obj}).then(res=>{
+                if(res){
+                    this.showinputwithdrawTotal=false;
+                }
+            })
+      },
     GetAllAddress() {
       this.GetAllReceivingAddress({
         start: 0,
@@ -396,7 +574,7 @@ export default {
       });
     },
     ...mapActions("PersonalData", [
-      "GetPersonalData",
+     // "GetPersonalData",
       "GetRefreshToken",
       "GetNotification",
       "GetInternalPhone",

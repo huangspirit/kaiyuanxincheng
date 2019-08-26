@@ -144,11 +144,11 @@ export default {
           name: "",
           id: 1
         },
-        {
-          imgUrl: require("@/assets/image/ShoppingCart/bank.png"),
-          name: "汇款",
-          id: 2
-        },
+        // {
+          //   imgUrl: require("@/assets/image/ShoppingCart/bank.png"),
+          //   name: "汇款",
+          //   id: 2
+          // },
         // {
         //   imgUrl: require("@/assets/image/ShoppingCart/yue.png"),
         //   name: "我的余额",
@@ -182,7 +182,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.query);
     //根据订单号获取订单的详细信息及付款金额
 
     //this.payType = this.$route.query.payType;
@@ -353,7 +352,6 @@ export default {
        handlePictureCardPreview(file) {
         console.log(file);
       },
-     
     closeDialogCallBack(){
        this.showDialog=false
     }
