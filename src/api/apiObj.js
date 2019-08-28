@@ -54,6 +54,10 @@ const buyerOrderCenter = {
     //查询收藏商家的商品
     queryPublishGoodsListByUser: {
         url: "/api-g/goods-b/queryPublishGoodsListByUser"
+    },
+    //确认收货
+    confirmRecieveGoods:{
+        url:"api-order/customerCenter/confirmRecieveGoods"
     }
 }
 const sellerOrderCenter = {

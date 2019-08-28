@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>代理资质</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="AgencyQualification">
-      <el-button class="fr" style="margin-bottom:5px;">
+      <el-button class="bgColor" style="margin-bottom:5px;">
         <router-link to="/PersonalCenter/AdditionalQualifications" tag="span">新增资质</router-link>
       </el-button>
       <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed">

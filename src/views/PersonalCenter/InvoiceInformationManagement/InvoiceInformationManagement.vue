@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-breadcrumb  separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
-      <el-breadcrumb-item>发票管理</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
+      <el-breadcrumb-item to="/PersonalCenter/BuyerInvoiceManagement">发票管理</el-breadcrumb-item>
       <el-breadcrumb-item>开票信息管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="InvoiceInformationManagement">
-      <p class="addInvoiceInforma">
-        <span @click="addInvoiceInforma">+新增开票信息</span>
-      </p>
+      <el-button class="bgColor">
+        <span @click="addInvoiceInforma">新增开票信息</span>
+      </el-button>
       <ul class="InvoiceInforma-list">
         <li v-for="item in list" :key="item.id">
           <span v-if="item.isdefault">默认</span>

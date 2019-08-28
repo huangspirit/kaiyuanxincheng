@@ -2,7 +2,7 @@
   <!-- 关注的商品 -->
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>关注的商品</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="CommoditiesInterest">

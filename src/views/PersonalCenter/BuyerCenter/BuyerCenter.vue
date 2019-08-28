@@ -2,62 +2,85 @@
   <div>
     <div class="BuyerCenter">
       <!-- 个人信息 -->
-      <div class="personal-information">
-        <div class="personal-information-l clear">
-          <!-- 名字信息 -->
-          <div class="img fl">
-            <img :src="UserInforma.headImgUrl" alt>
-<!--              <p><span>编辑资料</span></p>-->
-          </div>
-          <div class="text fl">
-            <p class="name">{{UserInforma.nickname}}</p>
-            <p class="tag" v-if="UserInforma.userTagMap.seller">
-                <span>{{UserInforma.userTagMap.tag | typeFilter}}</span>
-            </p>
-            <p class="tel">{{UserInforma.phone}}</p>
-          </div>
+<!--      <div class="personal-information">-->
+<!--        <div class="personal-information-l clear">-->
+<!--          &lt;!&ndash; 名字信息 &ndash;&gt;-->
+<!--          <div class="img fl">-->
+<!--            <img :src="UserInforma.headImgUrl" alt>-->
+<!--&lt;!&ndash;              <p><span>编辑资料</span></p>&ndash;&gt;-->
+<!--          </div>-->
+<!--          <div class="text fl">-->
+<!--            <p class="name">{{UserInforma.nickname}}</p>-->
+<!--            <p class="tag" v-if="UserInforma.userTagMap.seller">-->
+<!--                <span>{{UserInforma.userTagMap.tag | typeFilter}}</span>-->
+<!--            </p>-->
+<!--            <p class="tel">{{UserInforma.phone}}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="personal-information-r">-->
+<!--          <p class="tit">买家中心</p>-->
+<!--        </div>-->
+<!--      </div>-->
+        <div class="user clear">
+            <div class="username clear fl">
+                <img :src="UserInforma.headImgUrl" class="head-portrait fl" alt />
+                <div class="info fl">
+                    <p class="name">{{UserInforma.nickname}}</p>
+                    <p>
+                        <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
+                        <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                        <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
+                    </p>
+                    <p>信用等级：{{UserInforma.userTagMap.userLevel}}</p>
+                </div>
+            </div>
+            <div class="right">
+                <p class="title">我的钱包</p>
+                <ul>
+                    <li>
+                        <p>￥<span>{{UserInforma.userTagMap.wallet}}</span></p>
+                        <p class="desc">钱包余额</p>
+                        <p>
+<!--                            <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;-->
+<!--                            <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>-->
+<!--                            <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;-->
+<!--                            <a>|&nbsp;&nbsp;</a>-->
+                            <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
+                        </p>
+                    </li>
+                    <li>
+                        <p>￥{{UserInforma.userTagMap.deposit}}</p>
+                        <p class="desc">押金</p>
+                        <p>
+<!--                            <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>-->
+                            <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
+                        </p>
+                    </li>
+                    <li>
+                        <p>￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</p>
+                        <p class="desc">基础额度</p>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="personal-information-r">
-          <p class="tit">买家中心</p>
-          <div class="certifica-lines">
-            <!-- 未认证 -->
-            <!-- <div class="unauthorized">
-            <span>
-              <img src="@/assets/image/PersonalCenter/u24984.png" alt>
-              认证状态
-            </span>
-            <span class="no-rz">未认证</span>
-            <span class="go-rz">去认证</span>
-            </div>-->
-            <!-- 已认证 -->
-<!--            <div class="certified">-->
-<!--              <span>-->
-<!--                <img src="@/assets/image/PersonalCenter/u26343.png" alt>-->
-<!--                我的余额-->
-<!--              </span>-->
-<!--              <span class="num">￥50000</span>-->
-<!--              <span class="top-up">充值</span>-->
-<!--            </div>-->
-            <!-- 额度 -->
-            <!-- <div class="lines">
-            <span>
-              <img src="@/assets/image/PersonalCenter/u53657.png" alt>
-              我的信誉额度
-            </span>
-            <span class="num">￥50000</span>
-            <span class="about">关于信誉额</span>
-            </div>-->
-          </div>
-        </div>
-      </div>
       <!-- 商品状态 -->
         <ul class="goods-state">
             <router-link tag="li" :to="item.path" v-for="(item,index) in messageCount" :key="index">
-                <div class="img">
-                    <img :src="item.imgUrl" alt>
+                <div>
+<!--                    <div class="img">-->
+<!--                        <img :src="item.imgUrl" alt>-->
+<!--                    </div>-->
+                    <p class="name">{{item.name}}</p>
+                    <template>
+                        <p class="desc" v-if="item.num">
+                            您有<span class="color">{{item.num}}</span>{{item.desc}}
+                        </p>
+                        <p v-else class="desc">
+                            {{item.nocont}}
+                        </p>
+                    </template>
+                    <p class="num">{{item.num}} <i class="el-icon-arrow-right fr"></i>    </p>
                 </div>
-                <p>{{item.name}}</p>
-                <p class="num">{{item.num}}</p>
             </router-link>
 <!--            <router-link tag="li" to="BuyerOrderManagement">-->
 <!--                <div class="img">-->
@@ -91,43 +114,57 @@ export default {
                 name:'我的订单',
                 imgUrl:require('@/assets/image/PersonalCenter/u37206.png'),
                 num:0,
-                path:'BuyerOrderManagement'
+                path:'BuyerOrderManagement',
+                desc:'个订单，点击查看',
+                nocont:"您还没有下过订单呦"
             },
             sgoods:{
                 name:'询价篮',
                 imgUrl:require('@/assets/image/PersonalCenter/u37824.png'),
                 num:0,
-                path:'/InquiryBasket/Inquiry/waitInquiry'
+                path:'/InquiryBasket/Inquiry/waitInquiry',
+                desc:"个询价，点击查看",
+                nocont:"您还未做任何商品询价"
             },
             ssller:{
                 name:'购物车',
                 imgUrl:require('@/assets/image/PersonalCenter/u25552.png'),
                 num:0,
-                path:'/ShoppingCart'
+                path:'/ShoppingCart',
+                desc:"个商品躺在购物车中，点击查看",
+                nocont:"购物车空空如也"
             },
             fgoods:{
                 name:'关注商品',
                 imgUrl:require('@/assets/image/PersonalCenter/u37868.png'),
                 num:0,
-                path:'CommoditiesInterest'
+                path:'CommoditiesInterest',
+                desc:"个关注的商品，点击查看",
+                nocont:"您还没有关注任何商品，继续逛逛吧"
             },
             message:{
                 name:'我的消息',
                 imgUrl:require('@/assets/image/PersonalCenter/u37838.png'),
                 num:0,
-                path:'/News'
+                path:'/News',
+                desc:"条信息，点击查看",
+                nocont:"您还没有任何信息呢"
             },
             fsller:{
                 name:'关注商家',
                 imgUrl:require('@/assets/image/PersonalCenter/u37882.png'),
                 num:0,
-                path:'MerchantsConcerned'
+                path:'MerchantsConcerned',
+                desc:"个关注的商家，点击查看",
+                nocont:"您还没有关注任何商家，继续逛逛吧"
             },
           address:{
               name:'收货地址',
                   imgUrl:require('@/assets/image/PersonalCenter/u37900.png'),
               num:12,
-              path:'/PersonalCenter/ShippingAddress'
+              path:'/PersonalCenter/ShippingAddress',
+              desc:"个收货地址，点击管理",
+              nocont:"您还没有收货地址呢，点击添加"
           }
         },
     }

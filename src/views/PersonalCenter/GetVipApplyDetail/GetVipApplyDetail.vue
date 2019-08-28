@@ -1,8 +1,8 @@
 <template>
   <div class="table">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>
-          <el-breadcrumb-item>申请记录</el-breadcrumb-item>
+<!--          <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>-->
+          <el-breadcrumb-item>申请记录查询</el-breadcrumb-item>
       </el-breadcrumb>
     <el-table :data="list" border style="width: 100%">
       <el-table-column fixed prop="applyType" label="申报类型" width="150" align="center">
@@ -242,13 +242,12 @@ export default {
   methods: {
     init() {
       axios.request(FactoryEntry.getApplyList).then(res => {
-        console.log(res);
         this.list = res.data;
       });
     },
     //获取详情
     handleDetail(obj) {
-      console.log(obj);
+
       this.editObj = obj;
 
       axios
@@ -270,13 +269,11 @@ export default {
             this.detailList = res.data;
             this.detailList["applyType"] = obj.applyType;
           }
-          console.log(this.detailList);
         });
 
       this.dialogVisible = true;
     },
     headleEdit(obj) {
-      console.log(obj);
       axios
         .request({
           ...FactoryEntry.getApplyDetail,
@@ -286,7 +283,6 @@ export default {
           }
         })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             if (res.data) {
               if (obj.applyType != "4") {
@@ -322,7 +318,6 @@ export default {
       }
     },
     formatTime(value) {
-      console.log("过滤器", value);
       var date = new Date(value);
       var year = date.getFullYear();
       var month = date.getMonth() + 1;

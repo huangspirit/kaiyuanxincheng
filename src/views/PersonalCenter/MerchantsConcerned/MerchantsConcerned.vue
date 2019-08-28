@@ -2,7 +2,7 @@
   <!-- 关注的商家 -->
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>关注的商家</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="MerchantsConcerned">
@@ -20,12 +20,13 @@
         </li>
       </ul>
       <!-- 商家列表 -->
+        <div class="nocontent" v-if="!list.data || list.data.length==0">您还没有关注任何商家</div>
       <ul class="merchant-list">
         <li v-for="(item, k) in list.data" :key="k">
           <!-- 品牌信息 -->
           <div class="brand-information">
             <img :src="item.headUrl" class="bd-img">
-            <p class="name">{{item.sellerName}}<span class="tag yc">{{item.user_tag | catergoryIdFilter}}</span></p>
+            <p class="name">{{item.sellerName}}<span class="tag yc bgColor">{{item.user_tag | catergoryIdFilter}}</span></p>
             <span class="focus-on" @click="deleteGoodsFavourite(item.id)">取消关注</span>
           </div>
           <!-- 关注商家产品列表 -->
@@ -68,13 +69,13 @@ export default {
         catergoryIdFilter(val){
             switch (val) {
                 case 0:
-                    return "全部商户";
+                    return "全部商家";
                 case 1:
-                    return "原厂商户";
+                    return "原厂";
                 case 2:
-                    return "代理商户";
+                    return "代理商";
                 case 3:
-                    return "普通商户"
+                    return "普通商家"
             }
         }
     },

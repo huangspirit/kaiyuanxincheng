@@ -249,7 +249,9 @@
               <tr :key="value.id">
                 <td>
                   <div class="goodsDetail">
-                    <img :src="value.goods_image" :W="50" :H="50" />
+                      <ImgE :src="value.goods_image" :W="50" :H="50">
+                      </ImgE>
+<!--                    <img :src="value.goods_image" :W="50" :H="50" />-->
                     <div>
                       <p class="num">{{value.goods_name}}</p>
                       <p>品牌：{{value.goods_brand}}</p>
@@ -328,7 +330,7 @@
                         @click="cancleOrder(2,value.id)"
                       >取消订单</span>
                       <span
-                        @click="dialogVisible3 = true"
+                        @click="confirmRecieveGoods(value.id)"
                         v-if="value.receivingGoodsButton"
                         class="btn"
                       >确认收货</span>
@@ -375,11 +377,10 @@
         </p>
         <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" class="primary" @click="isAcceptNewTime(1)">确认，接受新交期</el-button>
-        <el-button type="info" class="info" @click="isAcceptNewTime(2)">拒绝，取消订单</el-button>
-        <el-button @click="dialogVisible = false" class="cancle">取 消</el-button>
-
+      <div slot="footer" class="dialog-footer AcceptNewTime" >
+        <el-button type="primary"  @click="isAcceptNewTime(1)" size="mini">确认，接受新交期</el-button>
+        <el-button type="info"  @click="isAcceptNewTime(2)" size="mini">拒绝，取消订单</el-button>
+        <el-button @click="dialogVisible = false" size="mini" type="info" >关 闭</el-button>
         <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
@@ -425,9 +426,9 @@
         </p>
         <p></p>
       </div>
-      <span slot="footer" class="dialog-footer cancleorder">
-        <span @click="DeliveryCancel" class="ensure">确认取消此订单吗?</span>
-        <span @click="dialogVisible2 = false" class="close">不取消订单</span>
+      <span slot="footer" class="dialog-footer">
+          <el-button  @click="dialogVisible2 = false" class="close">不取消</el-button>
+        <el-button type="primary" @click="DeliveryCancel">确认取消</el-button>
       </span>
     </el-dialog>
     <!-- 确认收货 -->
@@ -443,12 +444,12 @@
       <div class="con">
         <p>请确认您已收到货品？</p>
         <p>确认后系统将会放款给卖家</p>
-        <p></p>
       </div>
       <span slot="footer" class="dialog-footer">
-        <span @click="ConfirmReceipt">确认收货</span>
-        <span @click="dialogVisible3 = false" class="close">取消</span>
+        <el-button @click="dialogVisible3 = false">取 消</el-button>
+        <el-button type="primary" @click="ConfirmReceipt">确认收货</el-button>
       </span>
+
     </el-dialog>
     <!-- 扫码支付模态框 -->
     <!--    <el-dialog-->
@@ -526,6 +527,8 @@ export default {
       dialogVisible: false,
       dialogVisible2: false,
       dialogVisible3: false,
+        //确认收货
+        confirmRecieveGoodsId:"",
       // 下载合同的连接
       dialogContractFlag: false,
       downloadContracturl: "",
@@ -778,11 +781,21 @@ export default {
         this.$emit("successFlagHandel");
       });
     },
+      confirmRecieveGoods(id){
+        this.confirmRecieveGoodsId=id;
+        this.dialogVisible3=true;
+      },
     // 确认收货
     ConfirmReceipt() {
       console.log("确认收货按钮");
-      // this.$emit("successFlagHandel")
-      // this.all();
+      axios.request({...buyerOrderCenter.confirmRecieveGoods,params:{
+          orderId:this.confirmRecieveGoodsId
+          }}).then(res=>{
+              console.log(res)
+          if(res){
+              this.dialogVisible3=false;
+          }
+      })
     },
     showPopover(item) {
       this.GetBuyerOrderOrderProcess({

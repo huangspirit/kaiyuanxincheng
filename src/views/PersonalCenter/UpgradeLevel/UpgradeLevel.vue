@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>提升月结</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 入驻信息 -->
@@ -226,7 +226,7 @@
           </el-form>
         </div>
         <span class="dialog-footer">
-          <span class="sure" @click="submitForm('ruleForm')">
+          <span class="sure bgColor" @click="submitForm('ruleForm')">
             <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
             提交资料
           </span>

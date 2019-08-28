@@ -1,47 +1,68 @@
 // 个人设置
 .PersonalSet {
-  width: 100%;
-  overflow: hidden;
-  max-width: 1350px;
-  margin: 0 auto;
-
   // 用户名和头像
   .user {
-    padding: 30px;
     background: #fff;
     margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+    display:flex;
     .username {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
+      padding:50px 70px;
+      background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
+      background-size:auto 100%;
+      box-sizing: border-box;
       .head-portrait {
-        width: 100px;
+        width: 90px;
+        height:90px;
+        border-radius: 100%;
       }
-
       .info {
         display: flex;
-        height: 80px;
         justify-content: space-between;
         flex-direction: column;
-        font-size: 20px;
-        margin-left: 40px;
-
+        font-size:12px;
+        margin-left:30px;
+        margin-top:15px;
+        color:#fff;
         .name {
           font-weight: bolder;
+          font-size:18px;
+          margin-bottom:15px;
         }
-
         .type {
-          color: #fff;
-          background: #f60;
-          padding: 3px 10px;
-          border-radius: 4px;
-          font-size: 14px;
-
+         background:#fff;
+          padding: 1px 10px;
+          border-radius: 10px;
+          margin-bottom:10px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .right{
+      float: left;
+      flex:1;
+      color:#333;
+      .title{
+        border-bottom:1px solid #e5e5e5;
+        line-height:50px;
+        padding-left:35px;
+      }
+      ul{
+        display:flex;
+        li{
+          width:33%;
+          margin-top:20px;
+          margin-left:30px;
+          p{
+            &.desc{
+              font-size:14px;
+              margin-top:5px;
+              margin-bottom:20px;
+            }
+            span{
+              font-size:24px;
+              font-weight: bold;
+            }
+          }
         }
       }
     }
@@ -51,7 +72,6 @@
   .informa-set {
     padding: 40px 30px;
     background: #fff;
-
     li {
       margin-bottom: 30px;
       display: flex;
@@ -64,13 +84,6 @@
           .cont{
             display:block;
           }
-        }
-        &>span{
-          line-height: 20px;
-          width:20px;
-          border-radius: 100%;
-          text-align: center;
-          cursor: pointer;
         }
         position: relative;
         .cont{
@@ -102,6 +115,9 @@
         vertical-align: middle;
         margin-right: 10px;
       }
+      .marginRight{
+        margin-right:20px;
+      }
       .detailAddress {
         span {
           margin-right: 20px;
@@ -123,423 +139,94 @@
 }
 
 // 个人设置
-.PersonalSet {
-  // 用户名和头像
-  .user {
-    padding: 30px;
-    background: #fff;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+//.PersonalSet {
+//  // 用户名和头像
+//  .user {
+//    padding: 30px;
+//    background: #fff;
+//    margin-bottom: 10px;
+//    display: flex;
+//    justify-content: space-between;
+//    align-items: center;
+//
+//    .username {
+//      display: flex;
+//      justify-content: space-between;
+//      align-items: center;
+//
+//      .head-portrait {
+//        width: 100px;
+//      }
+//
+//      .info {
+//        display: flex;
+//        height: 80px;
+//        justify-content: space-between;
+//        flex-direction: column;
+//        font-size: 20px;
+//        margin-left: 40px;
+//
+//        .name {
+//          font-weight: bolder;
+//        }
+//
+//        .type {
+//          color: #fff;
+//          background: #f60;
+//          padding: 3px 10px;
+//          border-radius: 4px;
+//          font-size: 14px;
+//          margin-right:10px;
+//
+//        }
+//      }
+//    }
+//  }
+//
+//  // 个人信息设置
+//  .informa-set {
+//    padding: 40px 30px;
+//    background: #fff;
+//
+//    li {
+//      margin-bottom: 30px;
+//      display: flex;
+//      justify-content: space-between;
+//      align-items: center;
+//      font-size: 16px;
+//      color: #4A5A6A;
+//
+//      .red {
+//        color: #cc0000;
+//        margin-right: 15px;
+//      }
+//
+//      img {
+//        width: 30px;
+//        vertical-align: middle;
+//        margin-right: 10px;
+//      }
+//
+//      .detailAddress {
+//        span {
+//          margin-right: 20px;
+//        }
+//      }
+//
+//      &>span {
+//        cursor: pointer;
+//        color: #0068B7;
+//
+//        &:hover {
+//          font-size: 17px;
+//          font-weight: bold;
+//          transition: all 0.2s;
+//        }
+//      }
+//    }
+//  }
+//}
 
-    .username {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .head-portrait {
-        width: 100px;
-      }
-
-      .info {
-        display: flex;
-        height: 80px;
-        justify-content: space-between;
-        flex-direction: column;
-        font-size: 20px;
-        margin-left: 40px;
-
-        .name {
-          font-weight: bolder;
-        }
-
-        .type {
-          color: #fff;
-          background: #f60;
-          padding: 3px 10px;
-          border-radius: 4px;
-          font-size: 14px;
-          margin-right:10px;
-
-        }
-      }
-    }
-  }
-
-  // 个人信息设置
-  .informa-set {
-    padding: 40px 30px;
-    background: #fff;
-
-    li {
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 16px;
-      color: #4A5A6A;
-
-      .red {
-        color: #cc0000;
-        margin-right: 15px;
-      }
-
-      img {
-        width: 30px;
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-
-      .detailAddress {
-        span {
-          margin-right: 20px;
-        }
-      }
-
-      &>span {
-        cursor: pointer;
-        color: #0068B7;
-
-        &:hover {
-          font-size: 17px;
-          font-weight: bold;
-          transition: all 0.2s;
-        }
-      }
-    }
-  }
-}
-
-.PersonalData {
-  width: 100%;
-  max-width: 1350px;
-  padding: 30px;
-  margin: 30px auto;
-  box-sizing: border-box;
-  background: #fff;
-
-  .btn {
-    &:hover {
-      font-weight: bolder;
-      transition: all 0.2s;
-    }
-  }
-
-  // 基础额度
-  .GradeCredit {
-    padding: 0 30px;
-
-    &>.title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 20px;
-
-      .btn {
-        font-size: 16px;
-        color: #0068db;
-        margin-left: 20px;
-        cursor: pointer;
-
-        &:hover {
-          font-size: 17px;
-        }
-      }
-    }
-
-    ul {
-      width: 90%;
-      margin: 0 auto;
-
-      li {
-        width: 100%;
-        line-height: 50px;
-
-        border-bottom: 1px dashed #dadada;
-
-        span {
-          margin-right: 5px;
-        }
-
-        .typr-s {
-          color: #aeaeae;
-        }
-
-        .operation {
-          float: right;
-          color: #0068db;
-          cursor: pointer;
-
-          &:hover {
-            font-size: 17px;
-          }
-        }
-
-        .num {
-          color: #cc0000;
-        }
-      }
-    }
-  }
-
-  // 表单信息
-  .PersonalData-form {
-    padding: 30px;
-
-    ul {
-      li {
-        img {
-          vertical-align: middle;
-          margin-right: 10px;
-          height: 25px;
-        }
-      }
-    }
-
-    .submit {
-      width: 135px;
-      line-height: 40px;
-      text-align: center;
-      border: 1px solid #0068db;
-      color: #0068db;
-      cursor: pointer;
-      margin: 20px auto;
-      border-radius: 3px;
-
-      &:hover {
-        font-size: 18px;
-        color: peru;
-        font-weight: bolder;
-        transition: all 0.2s;
-        border-color: peru;
-      }
-    }
-  }
-
-  // 修改手机号的模态框
-  .counttime {
-    color: red;
-    font-style: normal;
-    font-weight: bolder;
-    margin-right: 5px;
-  }
-
-  .dialog-code-phone {
-    .title {
-      font-size: 28px;
-      color: #0068d7;
-      font-weight: bold;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .el-dialog__body {
-      padding: 20px 50px;
-    }
-
-    .noSend {
-      cursor: not-allowed !important;
-      background: #aeaeae !important;
-
-      &:hover {
-        color: #fff !important
-      }
-    }
-
-    .dialog-code-body {
-      width: 100%;
-      overflow: hidden;
-
-
-
-      .form-item {
-        width: 100%;
-        margin-bottom: 25px;
-        font-size: 20px;
-        color: #4a5a6a;
-        float: left;
-        min-height: 60px;
-        display: flex;
-        align-items: center;
-
-        &:last-child {
-          margin-bottom: 0px;
-        }
-
-        &>label {
-          width: 100px;
-          height: 60px;
-          line-height: 60px;
-
-          margin-right: 10px;
-
-        }
-
-        &>div {
-          width: 347px;
-          ;
-
-          input {
-            width: 330px;
-            height: 30px;
-            line-height: 30px;
-            padding: 5px;
-            border: 2px solid #4a5a6a;
-          }
-        }
-
-      }
-
-      .phoneBindFlag {
-        float: left;
-        width: 200px;
-        height: 20px;
-        line-height: 20px;
-        color: #cc0000;
-        font-size: 12px;
-        position: relative;
-        top: -20px;
-        margin-left: 111px;
-      }
-
-      .form-item-code {
-
-        &>div {
-          display: flex;
-          align-items: center;
-        }
-
-        input {
-          width: 200px;
-          height: 30px;
-          line-height: 30px;
-          padding: 5px;
-          border: 2px solid #4a5a6a;
-        }
-
-        .sendCode {
-          width: 140px;
-          height: 44px;
-          line-height: 44px;
-          text-align: center;
-          background: #4a5a6a;
-          color: #fff;
-          font-size: 18px;
-          cursor: pointer;
-
-          &:hover {
-            color: peru
-          }
-        }
-
-        .sendCode-no {
-          cursor: not-allowed;
-          background: #aeaeae;
-        }
-      }
-
-    }
-
-    .dialog-code-footer {
-      width: 100%;
-
-      .submitSend {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        background: #4a5a6a;
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-
-        &:hover {
-          color: peru
-        }
-      }
-    }
-
-
-  }
-
-  // 解绑微信的模态框
-  .dialog-code-wechat {
-    .title {
-      font-size: 28px;
-      text-align: center;
-      color: #4a5a6a;
-      font-weight: bold;
-    }
-
-    .body-wechat {
-      font-size: 24px;
-      color: #4a5a6a;
-      font-weight: bold;
-
-      p {
-        text-align: center;
-      }
-
-      .small {
-        font-size: 20px;
-        color: #aeaeae;
-        font-weight: normal;
-      }
-    }
-
-    .footer-wechat {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-
-      span {
-        width: 200px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        background: #4a5a6a;
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-
-        &:hover {
-          color: peru;
-        }
-
-        margin-bottom: 20px;
-      }
-
-      .close {
-        background: #aeaeae;
-      }
-    }
-  }
-
-  //
-  .dialog-code-wecha-bind {
-    .title {
-      color: #4a5a6a;
-      text-align: center;
-      font-size: 24px;
-
-    }
-
-    .dialog-code-wecha-bind-body {
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      img {
-        width: 300px;
-        height: 300px;
-      }
-    }
-  }
-}
 .withdrawApplyTotal{
   line-height:20px;
   .withdrawApplyTotalCont{

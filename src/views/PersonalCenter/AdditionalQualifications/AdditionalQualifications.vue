@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
-      <el-breadcrumb-item>代理资质</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
+      <el-breadcrumb-item to="/PersonalCenter/AgencyQualification">代理资质</el-breadcrumb-item>
       <el-breadcrumb-item>新增资质</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="AdditionalQualifications">

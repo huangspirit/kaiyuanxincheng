@@ -1,26 +1,30 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>个人中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>收货地址</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 收货地址 -->
     <div class="ShippingAddress">
       <p class="tit">
-        <span>收货地址</span>
-        <el-button class="default add fr" @click="add" style="width:auto;">新增收货地址</el-button>
+<!--        <span>收货地址</span>-->
+        <el-button class="bgColor add" @click="add" style="width:auto;">新增收货地址</el-button>
       </p>
       <ul class="list-addess">
-        <li v-for="item in AddressList" :key="`AddressList_${item.id}`">
+        <li v-for="item in AddressList" :key="`AddressList_${item.id}`" :class="item.isdefault?'bgColor':''">
           <span v-if="item.isdefault" class="defaultAddress">默</span>
           <span class="name">{{item.receivingName}}</span>
           <span class="phone">{{item.phone}}</span>
           <span class="address">{{item.address}}{{item.detailedAddress}}</span>
-          <div class="fr" style="display:flex;height: 100%;">
-            <el-button class="default" @click="updateAddress(item)" v-if="!item.isdefault">设为默认</el-button>
-
-            <el-button class="default" @click="editAddress(item)" style="margin-left: 15px;">编辑该地址</el-button>
-            <el-button class="default" @click="delect(item)" style="margin-left: 15px;">删除</el-button>
+          <div class="fr btnWrap" style="display:flex;height: 100%;">
+              <span @click="updateAddress(item)" v-if="!item.isdefault" class="btn" >设为默认</span>
+              <span  v-if="!item.isdefault">|</span>
+              <span @click="editAddress(item)" class="btn">编辑</span>
+              <span>|</span>
+              <span @click="delect(item)" class="btn">删除</span>
+<!--            <el-button class="default" @click="updateAddress(item)" v-if="!item.isdefault">设为默认</el-button>-->
+<!--            <el-button class="default" @click="editAddress(item)" style="margin-left: 15px;">编辑该地址</el-button>-->
+<!--            <el-button class="default" @click="delect(item)" style="margin-left: 15px;">删除</el-button>-->
           </div>
           <!--          <span class="edit" @click="editAddress(item)">编辑该地址</span>-->
           <!--          <span class="del" @click="delect(item)">删除</span>-->

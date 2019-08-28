@@ -1,7 +1,6 @@
 .BuyerOrderItem {
   .dialog-body {
     margin-bottom: 30px;
-
     p {
       width: 70%;
       white-space: nowrap;
@@ -11,18 +10,18 @@
     }
   }
 
-  .dialog-footer {
-    text-align: center;
-
-    button {
-      margin: 10px auto !important;
-
-      /deep/ span {
-        width: 100% !important;
-        line-height: 30px;
-      }
-    }
-  }
+  //.dialog-footer {
+  //  text-align: center;
+  //
+  //  button {
+  //    margin: 10px auto !important;
+  //
+  //    /deep/ span {
+  //      width: 100% !important;
+  //      line-height: 30px;
+  //    }
+  //  }
+  //}
 
   .list-item {
     // width: 1180px;
@@ -190,12 +189,9 @@
         flex-wrap: wrap;
         position: relative;
         padding-top: 5px;
-
         .wrapbtn {
           margin-left: 10px;
           margin-bottom: 15px;
-          // margin-top:10px;
-          // width:50%;
           text-align: center;
           white-space: nowrap;
 
@@ -206,7 +202,6 @@
             padding: 2px 5px;
             font-size: 14px;
             cursor: pointer;
-
             &:hover {
               color: #ff6600;
               font-size: 15px;
@@ -231,7 +226,6 @@
         .wrapbtn.cancleBtn {
           width: 50%;
           white-space: nowrap;
-
           span {
             border: 1px solid #b3b3b3 !important;
             color: #b3b3b3 !important;
@@ -436,5 +430,13 @@
       font-size: 14px;
       color: peru;
     }
+  }
+}
+.AcceptNewTime{
+  button{
+    display: block;
+    margin:10px auto;
+    width:120px;
+    text-align: center;
   }
 }

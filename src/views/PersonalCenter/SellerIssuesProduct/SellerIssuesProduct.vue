@@ -2,7 +2,7 @@
     <!--发布商品  -->
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+<!--            <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
             <el-breadcrumb-item>发布产品</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="SellerIssuesProduct" @click="noSelect">
@@ -119,11 +119,13 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="价格：" prop="seckil_price" v-if="ruleForm.price_type === false">
-                    <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" min="0"></el-input>
+                    <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" min="0">
+                        <template slot="prepend">{{priceunitMark}}</template>
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="币种：">
-                    <el-input v-model="priceunit" disabled>{{priceunit ? '$美元' : '￥人民币'}}</el-input>
-                </el-form-item>
+<!--                <el-form-item label="币种：">-->
+<!--                    <el-input v-model="priceunit" disabled>{{priceunit ? '$美元' : '￥人民币'}}</el-input>-->
+<!--                </el-form-item>-->
                 <div class="setitem">
                     <label class="fl label">
                         <span class="requireMark">*</span>
@@ -198,7 +200,7 @@
                         :auto-upload="true"
                         list-type="picture-card"
                         :on-preview="handlePictureCardPreview"
-                        :limit="2"
+                        multiple
                     >
                         <i class="el-icon-plus avatar-uploader-icon"></i>
                         <!-- <div slot="tip" class="el-upload__tip">实物照片</div> -->
@@ -208,14 +210,14 @@
                         </div>
                     </el-upload>
                     <div style="margin-top:15px;">
-                        <p style="color:#ff6600;line-height:20px" v-if="needImg">必选项，但是有利于您的商品销售</p>
+                        <p style="color:#ff6600;line-height:20px" v-if="needImg">必选项，有利于您的商品销售</p>
                         <p style>图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
                     </div>
 
                 </el-form-item>
                 <div class="form-item form-item-footer">
                     <label for></label>
-                    <div class="submit" @click="submitForm('ruleForm')">
+                    <div class="submit bgColor" @click="submitForm('ruleForm')">
                         发布产品</div>
                 </div>
             </el-form>

@@ -584,7 +584,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.state.shoppingCart.active = 1;
+    this.$store.state.shoppingCart.active = 0;
     this.init();
   }
 };

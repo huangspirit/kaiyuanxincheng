@@ -142,8 +142,13 @@
                         startTime:this.startTime,
                         endTime:this.endTime
                     }}).then(res=>{
-                    this.tableData=res.data.data
-                    this.total=res.data.total
+                    if(res && res.data){
+                        this.tableData=res.data.data
+                        this.total=res.data.total
+                    }else{
+                        this.tableData=[]
+                        this.total=0
+                    }
                 })
             },
             changeItem(k){

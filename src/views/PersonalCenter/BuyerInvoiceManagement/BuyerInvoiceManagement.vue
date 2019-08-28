@@ -3,13 +3,11 @@
   <!-- // 买家的发票中心 -->
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>发票管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="BuyerInvoiceManagement">
-      <p class="addInvoice">
-        <router-link tag="span" to="/PersonalCenter/InvoiceInformationManagement">管理开票信息</router-link>
-      </p>
+        <el-button class="bgColor AddVoice"> <router-link tag="span" to="/PersonalCenter/InvoiceInformationManagement" >管理开票信息</router-link></el-button>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="orderTitle" align="center" width="400px"  label="商品">
           <template slot-scope="scope">
@@ -17,7 +15,7 @@
             <div>
               <p>
                 <span>订单编号：</span>
-                <span style="color:#E84F47;">{{scope.row.orderNo}}</span> 
+                <span style="color:#E84F47;">{{scope.row.orderNo}}</span>
               </p>
               <p>{{scope.row.orderTitle}}</p>
               <p>{{scope.row.orderCreateTime | formatDate}}</p>

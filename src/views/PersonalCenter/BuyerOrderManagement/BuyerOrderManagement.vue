@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>买家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item class="itemActive">我的订单</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="BuyerOrderManagement">
@@ -13,12 +13,12 @@
             <li
               v-for="item in tabFirstList"
               :key="item.id"
-              :class="{active:tabFirstFlag === item.id}"
+              :class="{bgColor:tabFirstFlag === item.id}"
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
           <el-select
-            class="all-time"
+            class="all-time fl"
             @change="getOrderList(orderDate)"
             v-model="orderDate"
             placeholder="请选择"
@@ -38,7 +38,7 @@
               <span
                 v-for="(item,index) in subWaitPay"
                 :key="index"
-                :class="item.show==true?'active':''"
+                :class="item.show==true?'color':''"
                 @click="getsubWait(item,index)"
               >{{item.name}}</span>
             </li>
@@ -46,14 +46,14 @@
               <span
                 v-for="(item,index) in subConfirm"
                 :key="index"
-                :class="item.show==true?'active':''"
+                :class="item.show==true?'color':''"
                 @click="getSubConfirm(item,index)"
               >{{item.name}}</span>
             </li>
             <li v-if="tabFirstFlag === 4">
               <span
                 v-for="(item,index) in abnormalData"
-                :class="item.show==true?'active':''"
+                :class="item.show==true?'color':''"
                 :key="index"
                 @click="subAbnormal(item,index)"
               >超期未交货</span>

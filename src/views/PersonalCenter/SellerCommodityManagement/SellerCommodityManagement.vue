@@ -1,19 +1,19 @@
 <template>
   <div class="SellerCommodityManagement">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="OrderManagement">
       <!-- 订单列表 -->
       <div class="tab-list">
         <!-- 一级切换 -->
-        <div class="tab-list-t">
+        <div class="tab-list-t clear">
           <ul class="clear">
             <li
               v-for="item in tabFirstList"
               :key="item.id"
-              :class="{active:currentModlue.id === item.id}"
+              :class="{bgColor:currentModlue.id === item.id}"
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
@@ -27,18 +27,18 @@
               <el-dropdown-item>普通销售</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <SearchInput
-           class="clear"
-            @submit="SearchSubmit"
-            :value="SearchInputValue"
-            :width="350"
-            :height="40"
-            :placeholder="'输入商品名称'"
-            :fontSize="14"
-            :btnImgWidth="20"
-            :btnWidth="40"
-            :borderColor="'#e3e3e3'"
-          ></SearchInput>
+<!--          <SearchInput-->
+<!--           class="clear"-->
+<!--            @submit="SearchSubmit"-->
+<!--            :value="SearchInputValue"-->
+<!--            :width="350"-->
+<!--            :height="40"-->
+<!--            :placeholder="'输入商品名称'"-->
+<!--            :fontSize="14"-->
+<!--            :btnImgWidth="20"-->
+<!--            :btnWidth="40"-->
+<!--            :borderColor="'#e3e3e3'"-->
+<!--          ></SearchInput>-->
         </div>
         <!-- 列表的内容 -->
         <div class="tab-list-con">

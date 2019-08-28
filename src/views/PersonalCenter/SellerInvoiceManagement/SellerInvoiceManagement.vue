@@ -1,34 +1,43 @@
 <template>
   <div class="SellerInvoiceManagement">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+<!--          <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
           <el-breadcrumb-item>发票管理</el-breadcrumb-item>
       </el-breadcrumb>
     <div class="OrderManagement">
       <!-- 订单列表 -->
       <div class="tab-list">
         <!-- 一级切换 -->
-        <div class="tab-list-t">
+        <div class="tab-list-t clear">
+            <el-input
+                class="fr"
+                placeholder="请输入内容"
+                v-model="SearchInputValue"
+                prefix-icon="el-icon-search"
+                @input="handleInput"
+                clearable>
+            </el-input>
           <ul>
             <li
               v-for="item in tabFirstList"
               :key="item.id"
-              :class="{active:currentModule.id === item.id}"
+              :class="{bgColor:currentModule.id === item.id}"
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
-          <SearchInput
-              class="clear"
-              @submit="SearchSubmit"
-              :value="SearchInputValue"
-              :width="350"
-              :height="40"
-              :placeholder="'按商品名称搜索'"
-              :fontSize="14"
-              :btnImgWidth="20"
-              :btnWidth="40"
-              :borderColor="'#e3e3e3'"
-          ></SearchInput>
+
+<!--          <SearchInput-->
+<!--              class="clear"-->
+<!--              @submit="SearchSubmit"-->
+<!--              :value="SearchInputValue"-->
+<!--              :width="350"-->
+<!--              :height="40"-->
+<!--              :placeholder="'按商品名称搜索'"-->
+<!--              :fontSize="14"-->
+<!--              :btnImgWidth="20"-->
+<!--              :btnWidth="40"-->
+<!--              :borderColor="'#e3e3e3'"-->
+<!--          ></SearchInput>-->
         </div>
         <div class="tab-list-con">
           <p class="tab-list-con-tit">
@@ -187,7 +196,7 @@ export default {
           val:true
       },
       currentPage:1,
-      pageSize:5,
+      pageSize:1,
       total:0,
         list:[],
         //开发票
@@ -246,12 +255,21 @@ export default {
           }
         axios.request({...sellerOrderCenter.queryBillListBySeller,params:obj}).then(res=>{
             console.log(res)
-            this.total=res.data.total;
-            this.list=res.data.data;
+            if(res && res.data){
+                this.total=res.data.total;
+                this.list=res.data.data;
+            }else{
+               this.$message.info("没有数据了")
+            }
+
         })
       },
+      handleInput(){
+          this.init()
+      },
       SearchSubmit(){
-
+          this.currentPage=1;console.log()
+        this.init();
       },
       tabFirst(item) {
           this.currentPage=1;

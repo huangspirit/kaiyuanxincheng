@@ -30,8 +30,8 @@
                 <ImgE :src="item.goodsImageUrl" class="prod-img" :W="150" :H="150"></ImgE>
                 <p class="goodsName">{{item.goods_name}}</p>
                 <p class="goodsDesc">{{item.goodsDesc}}</p>
-                <span class="btn" @click="purchase(k)">
-                    <img src="@/assets/image/PersonalCenter/u6221.png" alt>
+                <span class="btn bgColor" @click.stop="purchase(k)">
+<!--                    <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
                     立即采购
                 </span>
             </div>

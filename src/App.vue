@@ -90,7 +90,7 @@ export default {
 
     a{
         cursor: pointer;
-        color:#0d94fb;
+        color:#2c7be6;
         text-decoration: none;
         &:hover{
             color:peru;

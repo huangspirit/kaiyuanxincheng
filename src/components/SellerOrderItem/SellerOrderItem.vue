@@ -32,7 +32,7 @@
                              </el-timeline-item>
                          </el-timeline>
                      </div>
-                     <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">{{item.trans_no}}</span>
+                     <span slot="reference" style="color:#0d98ff; cursor: pointer">{{item.trans_no}}</span>
                  </el-popover>
         </span>
       </div>
@@ -62,7 +62,7 @@
               </div>
           </td>
             <td style="width:10%;" >
-                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay}}</strong>/
+                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay}}</strong>&nbsp;/
                 <strong class="price">{{item.totalPayCount | toFixed(0)}}</strong>
             </td>
           <td style="width:15%">
@@ -95,7 +95,7 @@
           <td style="width:5%">
             <p>{{item.diliver_place}}</p>
           </td>
-          <td style="width:13%">
+          <td style="width:13%" class="place">
               <template v-if="item.status==1">
                   <div v-if="item.diliver_place!='香港'" style="text-align: left;padding:0 5px;">
                       <p><strong>收货人</strong>：{{item.warehouseRecipient}}</p>
@@ -142,11 +142,11 @@
               <el-button class="default" v-if="item.diliverButon" @click="DeliverGoodsPI">发货</el-button>
             </div> -->
             <div>
-              <el-button class="default" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
+              <el-button class="default bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
               <!-- <p v-if="!item.diliverBuuton" class="no-change">已发货</p> -->
-              <el-button class="default" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
+              <el-button class="default  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
               <!-- <p v-if="!item.diliverBuuton" class="no-change">已更改交期</p> -->
-              <el-button class="default" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
+              <el-button class="default  bgColor" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
                 <slot name="detail"></slot>
 <!--             <el-button class="default" >订单明细</el-button>-->
             </div>

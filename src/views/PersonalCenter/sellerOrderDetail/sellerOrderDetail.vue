@@ -1,36 +1,41 @@
 <template>
   <div class="sellerOrderDetail">
-    <div class="top">
-      <el-button title="返回订单管理" class="fr" icon="el-icon-back" @click="goback"></el-button>
-      <p class="topdesc">
-        <ImgE :src="currentObj.goods_image" :W="50" :H="50"></ImgE>
-        <span class="goods_name">{{currentObj.goods_name}}</span>
-        <span>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item @click.native="goback">订单管理</el-breadcrumb-item>
+          <el-breadcrumb-item>订单明细</el-breadcrumb-item>
+      </el-breadcrumb>
+    <div class="statusList">
+        <div class="top fr">
+            <p class="topdesc">
+                <ImgE :src="currentObj.goods_image" :W="40" :H="40"></ImgE>
+                <span class="goods_name color">{{currentObj.goods_name}}</span>
+                <span>
           <label>批次号：</label>
           {{currentObj.goods_seller_no}}
         </span>
-      </p>
-    </div>
-    <div class="statusList">
-      <p :class="{'active':state==1}">
+            </p>
+        </div>
+      <p :class="{'bgColor':state==1}">
         <label>
           <input type="radio" value="1" name="status" v-model="state" />
           已支付
         </label>
       </p>
-      <p :class="{'active':state==2}">
+      <p :class="{'bgColor':state==2}">
         <label>
           <input type="radio" value="2" name="status" v-model="state" />
           未支付
         </label>
       </p>
-      <p :class="{'active':state==3}">
+      <p :class="{'bgColor':state==3}">
         <label>
           <input type="radio" value="3" name="status" v-model="state" />
           已取消
         </label>
       </p>
     </div>
+    <div class="tableWrap">
+
 
     <el-table :data="tableData" align="center" border style="width: 100%">
       <el-table-column prop="order_no" label="订单编号" align="center"></el-table-column>
@@ -60,6 +65,7 @@
       :pageSize="pageSize"
       @current-change="handleCurrentChange"
     ></Pagination>
+    </div>
   </div>
 </template>
 <style lang="less" scoped>
@@ -100,11 +106,15 @@ export default {
         case 1:
           return "已支付";
         case 2:
-          return "取消中";
+          return "已冻结";
         case 3:
           return "已取消";
+        case 4:
+            return "已收货";
+        case 6:
+              return "等待仓库核验";
         case 7:
-          return "已逾期";
+          return "仓库已确认";
       }
     }
   },

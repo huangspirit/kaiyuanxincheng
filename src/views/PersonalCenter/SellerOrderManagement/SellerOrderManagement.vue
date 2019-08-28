@@ -2,7 +2,7 @@
   <!-- 订单管理 -->
   <div style="position:relative">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+<!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>订单管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="OrderManagement">
@@ -14,7 +14,7 @@
             <li
               v-for="item in tabFirstList"
               :key="item.id"
-              :class="{active:tabFirstFlag === item.id}"
+              :class="{bgColor:tabFirstFlag === item.id}"
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
@@ -89,8 +89,9 @@
             @DeliverGoodsInvoice="DeliverGoodsInvoice(item)"
             @reload="all"
           >
-            <el-button slot="detail" class="default" @click="storageItem(item)">
+            <el-button slot="detail" class=" bgColor" @click="storageItem(item)">
               <router-link
+                  tag="span"
                 :to="{path:'/PersonalCenter/SellerOrderManagement/SellerOrderDetail',query:{id:item.id}}"
               >订单明细</router-link>
             </el-button>
@@ -310,7 +311,7 @@
     <router-view></router-view>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scoped>
 @import "./SellerOrderManagement.less";
 </style>
 <script>
