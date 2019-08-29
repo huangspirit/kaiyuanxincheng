@@ -2,7 +2,7 @@
 .PersonalSet {
   // 用户名和头像
   .user {
-    background: #fff;
+
     margin-bottom: 10px;
     display:flex;
     .username {
@@ -40,27 +40,57 @@
     .right{
       float: left;
       flex:1;
-      color:#333;
-      .title{
-        border-bottom:1px solid #e5e5e5;
-        line-height:50px;
-        padding-left:35px;
-      }
+      margin-left:15px;
       ul{
-        display:flex;
+        display: flex;
+        height:100%;
         li{
-          width:33%;
-          margin-top:20px;
-          margin-left:30px;
-          p{
-            &.desc{
-              font-size:14px;
-              margin-top:5px;
-              margin-bottom:20px;
+          width:25%;
+          padding-right:15px;
+          float:left;
+          box-sizing: border-box;
+          .cont{
+            background: #fff;
+            height:100%;
+            border-radius: 10px;
+            text-align: center;
+            .money{
+              color:#999;
+              font-size:48px;
+              padding-top:35px;
             }
-            span{
-              font-size:24px;
+            .desc{
+              color:#333;
               font-weight: bold;
+              margin-top:10px;
+            }
+            .router{
+              margin-top:15px;
+            }
+            &.yajin{
+              .router{
+                margin-top:5px;
+                margin-bottom:5px;
+              }
+            }
+            &.circle{
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
+              .text{
+                  margin-left:10px;
+                text-align: left;
+                  .desc{
+                    color:#333;
+                    font-weight: bold;
+                    margin-bottom:8px;
+                  }
+                .rest,.route{
+                  color:#2c7be6;
+                  font-size:14px;
+                }
+              }
             }
           }
         }
@@ -70,163 +100,95 @@
 
   // 个人信息设置
   .informa-set {
-    padding: 40px 30px;
-    background: #fff;
-    li {
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 16px;
-      color: #4A5A6A;
-      .mark{
-        &:hover{
+        display:flex;
+        height:180px;
+        li{
+          float: left;
+          width:20%;
+          padding-right:15px;
           .cont{
-            display:block;
-          }
-        }
-        position: relative;
-        .cont{
-          position: absolute;
-          left:100%;
-          top:100%;
-          width:400px;
-          background: #fff;
-          box-shadow: 0 0 2px 2px #d5d5d5;
-          padding:20px;
-          display: none;
-          div{
-            font-size:14px;
-            text-align: center;
-          }
-          p{
-            line-height:30px;
-            border-bottom:1px solid #d5d5d5;
-           margin:5px;
-            span{
-              width:50%;
-              text-align: center;
+            background: #fff;
+            height:100%;
+            padding:40px 45px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            box-shadow: 0 0 2px 2px #ddd;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            .el-icon-arrow-right{
+              font-size:18px;
+            }
+            .name{
+              font-weight: bold;
+              color:#333;
+              font-size:18px;
+            }
+            .desc{
+              font-size:12px;
+              margin-top:5px;
+            }
+            .val{
+              font-size:48px;
+            }
+            .marginTop{
+              margin-top:30px;
+            }
+            .bind{
+              margin-top:10px;
+              font-size: 36px;
+              .el-icon-arrow-right{
+                margin-top:18px;
+              }
+            }
+            &:hover{
+              background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
+              background-size:auto 100%;
+              color:#fff;
+                .name{
+                  color:#fff;
+                }
+              .cont1{
+                color:#333;
+              }
+            }
+            .userLevel{
+              position: relative;
+              &:hover{
+                .cont1{
+                  display: block;
+                }
+              }
+              .cont1{
+                position: absolute;
+                display: none;
+                left:100%;
+                top:25px;
+                background: #fff;
+                padding:20px;
+                width:300px;
+                box-shadow: 0 0 2px 2px #ddd;
+                color:#333;
+                p{
+                  display: inline-flex;
+                  width:100%;
+                  border-bottom:1px solid #ddd;
+                  margin-bottom:5px;
+                  padding-bottom:5px;
+                  span{
+                    width:50%;
+                    text-align: center;
+                    white-space: nowrap;
+                  }
+                }
+              }
             }
           }
         }
-      }
-      img {
-        width: 30px;
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-      .marginRight{
-        margin-right:20px;
-      }
-      .detailAddress {
-        span {
-          margin-right: 20px;
-        }
-      }
 
-      &>span {
-        cursor: pointer;
-        color: #0068B7;
-
-        &:hover {
-          font-size: 17px;
-          font-weight: bold;
-          transition: all 0.2s;
-        }
-      }
-    }
   }
 }
-
-// 个人设置
-//.PersonalSet {
-//  // 用户名和头像
-//  .user {
-//    padding: 30px;
-//    background: #fff;
-//    margin-bottom: 10px;
-//    display: flex;
-//    justify-content: space-between;
-//    align-items: center;
-//
-//    .username {
-//      display: flex;
-//      justify-content: space-between;
-//      align-items: center;
-//
-//      .head-portrait {
-//        width: 100px;
-//      }
-//
-//      .info {
-//        display: flex;
-//        height: 80px;
-//        justify-content: space-between;
-//        flex-direction: column;
-//        font-size: 20px;
-//        margin-left: 40px;
-//
-//        .name {
-//          font-weight: bolder;
-//        }
-//
-//        .type {
-//          color: #fff;
-//          background: #f60;
-//          padding: 3px 10px;
-//          border-radius: 4px;
-//          font-size: 14px;
-//          margin-right:10px;
-//
-//        }
-//      }
-//    }
-//  }
-//
-//  // 个人信息设置
-//  .informa-set {
-//    padding: 40px 30px;
-//    background: #fff;
-//
-//    li {
-//      margin-bottom: 30px;
-//      display: flex;
-//      justify-content: space-between;
-//      align-items: center;
-//      font-size: 16px;
-//      color: #4A5A6A;
-//
-//      .red {
-//        color: #cc0000;
-//        margin-right: 15px;
-//      }
-//
-//      img {
-//        width: 30px;
-//        vertical-align: middle;
-//        margin-right: 10px;
-//      }
-//
-//      .detailAddress {
-//        span {
-//          margin-right: 20px;
-//        }
-//      }
-//
-//      &>span {
-//        cursor: pointer;
-//        color: #0068B7;
-//
-//        &:hover {
-//          font-size: 17px;
-//          font-weight: bold;
-//          transition: all 0.2s;
-//        }
-//      }
-//    }
-//  }
-//}
-
 .withdrawApplyTotal{
   line-height:20px;
   .withdrawApplyTotalCont{

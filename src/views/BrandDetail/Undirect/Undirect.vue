@@ -57,19 +57,19 @@
                   <!--            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>-->
                   <!--            <span>查看全部</span>-->
                   <!-- 搜索热卖 -->
-                  <SearchInput
-                      class="clear fr"
-                      :value="valueName"
-                      :width="350"
-                      :height="40"
-                      :placeholder="'搜索热卖产品'"
-                      :fontSize="14"
-                      :btnImgWidth="20"
-                      :btnWidth="40"
-                      :borderColor="'#fff'"
-                      @input="hotSearchValue"
-                      @submit="hotSearchsubmit"
-                  ></SearchInput>
+<!--                  <SearchInput-->
+<!--                      class="clear fr"-->
+<!--                      :value="valueName"-->
+<!--                      :width="350"-->
+<!--                      :height="40"-->
+<!--                      :placeholder="'搜索热卖产品'"-->
+<!--                      :fontSize="14"-->
+<!--                      :btnImgWidth="20"-->
+<!--                      :btnWidth="40"-->
+<!--                      :borderColor="'#fff'"-->
+<!--                      @input="hotSearchValue"-->
+<!--                      @submit="hotSearchsubmit"-->
+<!--                  ></SearchInput>-->
                   <!-- 品牌热卖 -->
               </div>
           </div>

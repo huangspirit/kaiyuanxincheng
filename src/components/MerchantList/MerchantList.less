@@ -1,7 +1,168 @@
 // 商家信息列表
 .MerchantList {
-  width: 100%;
-  // overflow: hidden;
+  margin-top:25px;
+  .title{
+    line-height:45px;
+    display: flex;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-bottom:20px;
+    li{
+      flex:1;
+      text-align: center;
+      float: left;
+      width:20%;
+      color:#fff;
+    }
+  }
+  .originFactoryTitle{
+    background:#ddd;
+    color:#333;
+    line-height: 38px;
+    padding:0 20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  .item{
+    display: flex;
+    padding:15px 0;
+    font-size:14px;
+    text-align: center;
+    color:#333;
+    background:#f5f5f5;
+    align-items: center;
+    position: relative;
+    &.originFactory{
+      margin-bottom:15px;
+    }
+    .count{
+      p{
+        padding-left:30%;
+        text-align: left;
+      }
+    }
+    .sellerInfo{
+      text-align: center;
+      &>div{
+        display: inline-block;
+        vertical-align: middle;
+      }
+      p{
+        text-align: left;
+      }
+      .ImgE{
+        border:1px solid #ddd;
+        margin-right:10px;
+        background: #fff;
+        overflow: hidden;
+        height:55px;
+        width:55px;
+        text-align: center;
+        /deep/img{
+          height:100%;
+          width:100%;
+        }
+      }
+    }
+    .timer{
+     p{
+       padding-left:30%;
+       text-align: left;
+       box-sizing: border-box;
+       font-size:12px;
+       color:#999;
+       label{
+         color:#333;
+         font-size:14px;
+       }
+     }
+
+    }
+    .info{
+      &>div{
+        display: inline-flex;
+        img{
+          width:50px;
+          height:50px;
+          border-radius: 100%;
+          overflow: hidden;
+        }
+        div{
+          text-align: left;
+          margin-left:10px;
+          font-weight: bolder;
+          .tag{
+            margin-top:10px;
+            font-size:12px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .price{
+      .stepped-price{
+        margin-bottom:10px;
+        ul{
+          width:100%;
+          max-width:120px;
+          margin:0 auto;
+        }
+      }
+      .goodsprice{
+        .mark{
+          vertical-align: bottom;
+        }
+        .price-num{
+          font-size:24px;
+          line-height: 1;
+        }
+        .btn{
+          line-height:20px;
+          padding:0 8px;
+          border-radius: 3px;
+          font-size:12px;
+          margin-left:5px;
+        }
+      }
+      .countTime{
+        margin-top:5px;
+        /deep/.counttime{
+          font-size:12px;
+          .timeStr{
+            background: none;
+            margin:0;
+            padding: 0;
+            color:#df3f2f;
+          }
+        }
+      }
+    }
+    .btnWrap{
+      p{
+        width:100px;
+        margin:5px auto;
+        line-height: 25px;
+        border-radius: 3px;
+        cursor: pointer;
+        &.addCark{
+          background:#ccc;
+          color:#fff;
+        }
+      }
+
+    }
+    &>div{
+      flex:1;
+      width:20%;
+      float:left;
+    }
+    /deep/.purchase{
+      width:100%;
+      right:0;
+    }
+  }
   table {
     width: 100%;
     border-top-left-radius: 10px;
@@ -73,13 +234,25 @@
   // 箭头
   .arrow-bar {
     text-align: center;
-    img{
-      width:27px;
-      margin:15px 15px 0;
+    span{
+      line-height: 25px;
+      padding:0 25px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      font-size:14px;
       cursor: pointer;
       &:hover{
-        transform:scale(1.5);
+        font-weight: bold;
       }
     }
+
+    //img{
+    //  width:27px;
+    //  margin:15px 15px 0;
+    //  cursor: pointer;
+    //  &:hover{
+    //    transform:scale(1.5);
+    //  }
+    //}
   }
 }

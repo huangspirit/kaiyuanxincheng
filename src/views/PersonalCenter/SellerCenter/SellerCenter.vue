@@ -1,132 +1,681 @@
 <template>
   <div class="SellerCenter">
-    <!-- 个人信息 -->
-    <div class="personal-information">
-      <div class="personal-information-l">
-        <!-- 名字信息 -->
-        <div class="img">
-          <img src='@/assets/image/PersonalCenter/u23123.png' alt>
-          <span>编辑资料</span>
-        </div>
-        <div class="text">
-          <span class="name">爱就这么玩</span>
-          <span class="rz">未认证</span>
-          <span >111111111</span>
-        </div>
-      </div>
-      <div class="personal-information-r">
-        <p class="tit">卖家中心</p>
-        <div class="certifica-lines">
-          <!-- 认证 -->
-          <div class="certifica">
-            <span>
-              <img src='@/assets/image/PersonalCenter/u24984.png' alt>
-              认证状态
-            </span>
-            <span class="no-rz">未认证</span>
-            <span class="go-rz">去认证</span>
+      <div class="user clear">
+          <div class="username clear fl">
+              <img :src="UserInforma.headImgUrl" class="head-portrait fl" alt />
+              <div class="info fl">
+                  <p class="name">{{UserInforma.nickname}}</p>
+                  <p>
+                      <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
+                      <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                      <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
+                  </p>
+                  <p>信用等级：{{UserInforma.userTagMap.userLevel}}</p>
+              </div>
           </div>
-          <!-- 额度 -->
-          <div class="lines">
-            <span>
-              <img src='@/assets/image/PersonalCenter/u53657.png' alt>
-              我的信誉额度
-            </span>
-            <span class="num">￥50000</span>
-            <span class="about">关于信誉额</span>
+          <div class="right">
+              <ul class="clear">
+                  <li>
+                      <div class="cont">
+                          <p class="money">{{UserInforma.userTagMap.wallet}}</p>
+                          <p class="desc">钱包余额（元）</p>
+                          <p class="router">
+                              <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
+                              <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
+                              <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;
+                              <a>|&nbsp;&nbsp;</a>
+                              <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
+                          </p>
+                      </div>
+                  </li>
+                  <li  v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
+                      <div class="cont yajin">
+                          <p class="money">{{UserInforma.userTagMap.deposit}}</p>
+                          <p class="desc">押金（元）</p>
+                          <p class="router">
+                              <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
+                              <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
+                          </p>
+                          <p>售卖额度 = 押金*10 + 基础额度</p>
+                      </div>
+                  </li>
+                  <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
+                      <div class="cont circle clear">
+                          <el-progress type="circle" :width="80" :percentage="creditsellerPercente"  class="fl"></el-progress>
+                          <div class="text fl">
+                              <p class="desc">
+                                  售卖额度：{{UserInforma.userTagMap['credit-seller']}}
+                              </p>
+                              <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
+                              <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
+                          </div>
+                      </div>
+
+                  </li>
+              </ul>
           </div>
-        </div>
       </div>
-    </div>
-    <!-- 商品状态 -->
-    <ul class="goods-state">
-      <li>
-        <div class="img">
-          <img src="@/assets/image/PersonalCenter/u37206.png" alt="">
-        </div>
-        <p>在售商品</p>
-        <p class="num">11</p>
-      </li>
-      <li>
-        <div class="img" >
-          <img src="@/assets/image/PersonalCenter/u37838.png" alt="">
-        </div>
-        <p>待付款</p>
-        <p class="num"> 11</p>
-      </li>
-      <li>
-        <div class="img">
-          <img src="@/assets/image/PersonalCenter/u37824.png" alt="">
-        </div>
-        <p>待成团</p>
-        <p class="num">11</p>
-      </li>
-      <li>
-        <div class="img">
-          <img src="@/assets/image/PersonalCenter/u37838.png" alt="">
-        </div>
-        <p>待发货</p>
-        <p class="num">11</p>
-      </li>
-    </ul>
-    <!-- 商家数据 -->
-    <div class="business-data">
-      <p class="tit">商家数据</p>
-      <div class="business-data-tab">
-        <ul>
-          <li class="active">今日</li>
-          <li>周</li>
-          <li>月</li>
-          <li>年</li>
-        </ul>
-        <!-- 选择日期 -->
-        <!-- <select name="" id=""></select> -->
-      </div>
-      <ul class="business-data-con">
-        <li>
-          <span>订单数</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>成交额</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>商品被收藏</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>商品被浏览</span>
-          <span>10单</span>
-        </li>
-         <li>
-          <span>订单数</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>成交额</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>商品被收藏</span>
-          <span>10单</span>
-        </li>
-        <li>
-          <span>商品被浏览</span>
-          <span>10单</span>
-        </li>
+      <ul class="goods-state">
+          <router-link tag="li" to="">
+              <div>
+                  <p class="name">在售商品</p>
+                      <p class="desc" >
+                          您有<span class="color">{{obj.isSelling}}</span>件在售商品，立即查看
+                      </p>
+
+                  <p class="num">{{obj.isSelling}} <i class="el-icon-arrow-right fr"></i>    </p>
+              </div>
+          </router-link>
+              <router-link tag="li" to="">
+                  <div>
+                      <p class="name">已下架商品</p>
+                      <p class="desc" >
+                          <br>
+<!--                          您有<span class="color">{{obj.noSelling}}</span>件在售商品，立即查看-->
+                      </p>
+                      <p class="num">{{obj.noSelling}} <i class="el-icon-arrow-right fr"></i>    </p>
+                  </div>
+              </router-link>
+              <router-link tag="li" to="">
+                  <div>
+                      <p class="name">待发货订单数</p>
+                      <p class="desc" >
+                          您有<span class="color">{{obj.undiliver}}</span>个待发货的订单，立即查看
+                      </p>
+
+                      <p class="num">{{obj.undiliver}} <i class="el-icon-arrow-right fr"></i>    </p>
+                  </div>
+              </router-link>
+              <router-link tag="li" to="">
+                  <div>
+                      <p class="name">待结算货款</p>
+                      <p class="desc" style="white-space: nowrap">
+                        结算金额以卖家发货为准，立即查看
+                      </p>
+
+                      <p class="num">￥{{obj.uncheck}} <i class="el-icon-arrow-right fr"></i>    </p>
+                  </div>
+              </router-link>
       </ul>
-    </div>
+      <el-dialog
+          :visible.sync="showinputPassword"
+          width="500px"
+      >
+          <p slot="title" class="title">输入密码</p>
+          <div >
+              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputPassword = false">取 消</el-button>
+            <el-button type="primary" @click="checkpassword">确 定</el-button>
+          </span>
+      </el-dialog>
+      <el-dialog
+          :visible.sync="showinputwithdrawTotal"
+          width="700px"
+          class="withdrawApplyTotal"
+      >
+          <p slot="title" class="title"><strong>钱包余额：￥{{UserInforma.userTagMap.wallet}}</strong></p>
+          <div class="withdrawApplyTotalCont">
+              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal"  @input="changewithdrawApplyTotal" ></el-input>
+              <div v-if="withdrawApplyTotal" class="clear">
+                  <div class="withdrawCharge">
+                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
+                      <div class="desc">
+                          <i class="el-icon-question color" ></i>
+                          <div class="cont">
+                              <p><strong>手续费说明</strong></p>
+                              <p>
+                                  当单笔提现金额<1500元，y=2元+提现金额*0.55%
+                              </p>
+                              <p>
+                                  当单笔提现金额≥1500元，y=提现金额*0.7%
+                              </p>
+                              <br>
+                              <p>当天17:00点前申请提现的，提现金额当日到账；</p>
+                              <p>当天17:00点后申请提现的，提现金额次日到账；</p>
+                              <p>周末及节假日申请提现的，提现金额将在下个工作日到账；</p><br>
+                              <p>温馨提示：单笔提现金额≥1500为最优提现方案</p>
+                          </div>
+                      </div>
+                  </div>
+                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <ul v-if="bankList.length">
+                      <li class="title">
+                          <span>提现方式</span>
+                          <span>账号</span>
+                          <span>账户名</span>
+                      </li>
+                      <li v-for="(item,k) in bankList" :class="selectedBank==k?'bgColor':''" :key="k" @click="selectedBank=k">
+                          <span>{{item.bankCode | filterBankCode}}</span>
+                          <span>{{item.bankNumber}}</span>
+                          <span>{{item.cnname}}</span>
+                      </li>
+                  </ul>
+                  <router-link v-if="bankList.length==0" to="/PersonalCenter/withdraw" class="band">没有提现账号，去绑定</router-link>
+              </div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputwithdrawTotal = false">取 消</el-button>
+            <el-button type="primary" @click="saveDraw">确 定</el-button>
+          </span>
+      </el-dialog>
+      <div class="chartWrap clear">
+          <div id="main" ></div>
+          <div id="main1" ></div>
+      </div>
+
   </div>
 </template>
 <style lang="less" scoped>
 @import "./SellerCenter.less";
 </style>
-
 <script>
+    //var echarts = require('echarts/lib/echarts');
+    import echarts from "echarts";
+    import {mapActions } from "vuex";
+    import {axios,sellerOrderCenter,personCenter } from "../../../api/apiObj";
+    export default {
+        name: "BuyerCenter",
+        data(){
+            return {
+                UserInforma:{
+                    userTagMap:{}
+                },
+                showinputPassword:false,
+                inputpassword:"",
+                showinputwithdrawTotal:false,
+                withdrawApplyTotal:"",
+                withdrawApplyTotalObj:{},
+                bankList:[],
+                selectedBank:0,
+                source0:[],
+                source1:[],
+                obj:{}
+                // note: {
+                //     backgroundImage: "url(" + require("./assets/bg.jpg") + ")",
+                //     backgroundRepeat: "no-repeat",
+                //     backgroundSize:'100% 100%',
+                //     marginTop: "5px",
+                // },
+            }
+        },
+        filters:{
+            typeFilter(val) {
+                switch (val) {
+                    case 1:
+                        return "原厂";
+                    case 2:
+                        return "代理商";
+                    case 3:
+                        return "认证商";
+                }
+            },
+            filterBankCode(val){
+                switch (val) {
+                    case "ICBC":
+                        return '工商银行';
+                    case "ABC":
+                        return '农业银行';
+                    case "CCB":
+                        return '建设银行';
+                    case "CMB":
+                        return '招商银行';
+                    case "COMM":
+                        return '交通银行';
+                    case 'alipay':
+                        return "支付宝"
+                }
+            }
+        },
+        computed:{
+            creditsellerPercente(){
+                if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['credit-seller']){
+                    return ((this.UserInforma.userTagMap['restcredit-seller']/this.UserInforma.userTagMap['credit-seller'])*100).toFixed(1)
+                }
+            }
+        },
+        methods:{
+            ...mapActions("Login",[
+                "GetUserInforma"
+            ]),
+            changewithdrawApplyTotal(k){
+                let obj =this.withdrawApplyTotal;
+                obj = obj.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+                obj = obj.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+                obj = obj.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+                obj = obj.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3');//只能输入4个小数
+                if(obj.indexOf(".")< 0 && obj !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+                    obj= parseFloat(obj);
+                };
+                if(obj>this.UserInforma.userTagMap.wallet){
+                    this.withdrawApplyTotal=(obj+"").substring(0, obj.length-2);
+                }else{
+                    this.withdrawApplyTotal=obj;
+                }
+                if(this.withdrawApplyTotal){
+                    axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal  }}).then(res=>{
+                        this.withdrawApplyTotalObj=res.data
+                    })
+                }
 
+            },
+            //提现的相关操作
+            withDraw(){
+                //先验证是否设置提现密码
+                this.inputpassword="";
+                axios.request(personCenter.checkSetPassword).then(res=>{
+                    if(res.data==1){
+                        this.showinputPassword=true;
+                    }else{
+                        //需要新增
+                        this.$prompt('请设置提现密码', '', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                        }).then(({ value }) => {
+                            //校验密码
+                            axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
+                                console.log(res)
+                                if(res){
+                                    this.showinputPassword=false;
+                                    this.showinputwithdrawTotal=true;
+                                    axios.request({...personCenter.getBankList,params:{
+                                            start:0,
+                                            length:100,
+                                        }}).then(res=>{
+                                        console.log(res)
+                                        this.bankList=res.data.data;
+                                    })
+                                }
+                            })
+                        }).catch(() => {
 
-export default {
-  name: "SellerCenter"
-};
+                        });
+                    }
+                })
+            },
+            checkpassword(){
+                axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
+                    console.log(res)
+                    if(res){
+                        this.showinputPassword=false;
+                        this.showinputwithdrawTotal=true;
+                        axios.request({...personCenter.getBankList,params:{
+                                start:0,
+                                length:100,
+                            }}).then(res=>{
+                            console.log(res)
+                            this.bankList=res.data.data;
+                        })
+                    }
+
+                })
+            },
+            saveDraw(){
+                let obj={
+                    withdrawBankId:this.bankList[this.selectedBank].id,
+                    ...this.withdrawApplyTotalObj
+                }
+                axios.request({...personCenter.saveDraw,data:obj}).then(res=>{
+                    if(res){
+                        this.showinputwithdrawTotal=false;
+                        this.all();
+                    }
+                })
+            },
+            all() {
+                this.GetUserInforma().then(res => {
+                    this.UserInforma=res;
+                });
+            },
+            querySellerCenterSummary(){
+                axios.request(sellerOrderCenter.querySellerCenterSummary).then(res=>{
+                    console.log(res)
+
+                    if(res){
+                        this.obj={
+                            ...res.data
+                        }
+                       Object.keys(res.data.count).forEach(item=>{
+                           let arr0=[];
+                           if(item=='day'){
+                               arr0=['今日',res.data.count[item].total,res.data.count[item]['1'],res.data.count[item]['5'],res.data.count[item]['3']]
+                               this.source0[0]=arr0
+                           }else if(item=='week'){
+                               arr0=['本周',res.data.count[item].total,res.data.count[item]['1'],res.data.count[item]['5'],res.data.count[item]['3']]
+                               this.source0[1]=arr0
+                           }else if(item=='month'){
+                               arr0=['本月',res.data.count[item].total,res.data.count[item]['1'],res.data.count[item]['5'],res.data.count[item]['3']]
+                               this.source0[2]=arr0
+                           }else if(item=='3month'){
+                               arr0=['本季度',res.data.count[item].total,res.data.count[item]['1'],res.data.count[item]['5'],res.data.count[item]['3']]
+                               this.source0[3]=arr0
+                           }
+                       })
+                        Object.keys(res.data.amount).forEach(item=>{
+                            let arr0=[];
+                            if(item=='day'){
+                                arr0=['今日',res.data.amount[item].total,res.data.amount[item]['total_final'],res.data.amount[item]['total_pre']]
+                                this.source1[0]=arr0
+                            }else if(item=='week'){
+                                arr0=['本周',res.data.amount[item].total,res.data.amount[item]['total_final'],res.data.amount[item]['total_pre']]
+                                this.source1[1]=arr0
+                            }else if(item=='month'){
+                                arr0=['本月',res.data.amount[item].total,res.data.amount[item]['total_final'],res.data.amount[item]['total_pre']]
+                                this.source1[2]=arr0
+                            }else if(item=='3month'){
+                                arr0=['本季度',res.data.amount[item].total,res.data.amount[item]['total_final'],res.data.amount[item]['total_pre']]
+                                this.source1[3]=arr0
+                            }
+                        })
+                    }
+                    // this.source0=
+                    //     [
+                    //     ['今日', 4,1,1,1],
+                    //         ['本周', 4,1,1,1],
+                    //         ['本月', 4,1,1,1],
+                    //         ['本季度', 4,1,1,1],
+                    //     ]
+                    this.histogram();
+                })
+            },
+            histogram(){
+                var myChart = echarts.init(document.getElementById('main'));
+
+                var myChart1 = echarts.init(document.getElementById('main1'));
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '订单成交数量',
+                        textStyle: {
+                            rich: {
+                                big: {
+                                    fontSize: 48,
+                                    color: '#8DEAFB',
+                                },
+                                vcolor: {
+                                    fontSize: 24,
+                                    color: '#8DEAFB',
+                                    fontFamily: 'SimSun',
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        right: 100,
+                        top: 0,
+                        textStyle: {
+                            color: '#333',
+                        },
+                        data: [
+                            {
+                                name: '总订单数',
+                                icon: 'circle',
+                            },
+                            {
+                                name: '全款订单数',
+                                icon: 'circle',
+                            },
+                            {
+                                name: '预付款订单数',
+                                icon: 'circle',
+                            },
+                            {
+                                name: '已取消订单',
+                                icon: 'circle',
+                            },
+                        ],
+                    },
+                    color: [
+                        new echarts.graphic.LinearGradient(231,97,79,1, [{
+                            offset: 0,
+                            color: '#e7614f'
+                        }, {
+                            offset: 1,
+                            color: '#e7614f'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#e7c54f'
+                        }, {
+                            offset: 1,
+                            color: '#e7c54f'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#75c96d'
+                        }, {
+                            offset: 1,
+                            color: '#75c96d'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#6db0c9'
+                        }, {
+                            offset: 1,
+                            color: '#6db0c9'
+                        }])
+                    ],
+                    tooltip: {},
+
+                    dataset: {
+                        // 提供一份数据。
+                        dimensions: ['', '总订单数', '全款订单数', '预付款订单数', '已取消订单'],
+                        source:this.source0
+                    },
+                    xAxis: {
+                        type: 'category',
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: '#46EEF4'
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            interval: 0,
+                            color: '#00f4fc',
+                            fontSize: 14,
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        triggerEvent: true //将x轴的标签声明为可点击 触发事件
+                    },
+                    yAxis: [{
+                        type: 'value',
+                        // splitNumber: 5,
+                        // interval: 400,
+
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#333',
+                                opacity: 0.5
+                            }
+                        },
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: '#333',
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        }
+                    },
+                    ],
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                            itemStyle: {
+                                // barBorderRadius: 6,
+
+                            },
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                        }
+                        ,
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                        }
+                    ]
+                };
+                var option1 = {
+                    title: {
+                        text: '订单成交金额（元）',
+                        textStyle: {
+                            rich: {
+                                big: {
+                                    fontSize: 48,
+                                    color: '#8DEAFB',
+                                },
+                                vcolor: {
+                                    fontSize: 24,
+                                    color: '#8DEAFB',
+                                    fontFamily: 'SimSun',
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        right: 100,
+                        top: 0,
+                        textStyle: {
+                            color: '#333',
+                        },
+                        data: [
+                            {
+                                name: '订单总金额',
+                                icon: 'circle',
+                            },
+                            {
+                                name: '总全款金额',
+                                icon: 'circle',
+                            },
+                            {
+                                name: '总预付款金额',
+                                icon: 'circle',
+                            },
+                        ],
+                    },
+                    color: [
+                        new echarts.graphic.LinearGradient(231,97,79,1, [{
+                            offset: 0,
+                            color: '#e7614f'
+                        }, {
+                            offset: 1,
+                            color: '#e7614f'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#e7c54f'
+                        }, {
+                            offset: 1,
+                            color: '#e7c54f'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#75c96d'
+                        }, {
+                            offset: 1,
+                            color: '#75c96d'
+                        }]),
+                        new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#6db0c9'
+                        }, {
+                            offset: 1,
+                            color: '#6db0c9'
+                        }])
+                    ],
+                    tooltip: {},
+
+                    dataset: {
+                        // 提供一份数据。
+                        dimensions: ['', '订单总金额', '总全款金额', '总预付款金额'],
+                        source:this.source1
+                    },
+                    xAxis: {
+                        type: 'category',
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: '#46EEF4'
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            interval: 0,
+                            color: '#00f4fc',
+                            fontSize: 14,
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        triggerEvent: true //将x轴的标签声明为可点击 触发事件
+                    },
+                    yAxis: [{
+                        type: 'value',
+                        // splitNumber: 5,
+                        // interval: 400,
+
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#333',
+                                opacity: 0.5
+                            }
+                        },
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: '#333',
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        }
+                    },
+                    ],
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                            itemStyle: {
+                                // barBorderRadius: 6,
+
+                            },
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                        },
+                        {
+                            type: 'bar',
+                            barWidth: '15',
+                        }
+                        ,
+
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+                myChart1.setOption(option1);
+            },
+        },
+        mounted(){
+           this.all()
+           this.querySellerCenterSummary()
+        }
+    };
 </script>

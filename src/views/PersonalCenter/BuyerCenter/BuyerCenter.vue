@@ -1,26 +1,6 @@
 <template>
   <div>
     <div class="BuyerCenter">
-      <!-- 个人信息 -->
-<!--      <div class="personal-information">-->
-<!--        <div class="personal-information-l clear">-->
-<!--          &lt;!&ndash; 名字信息 &ndash;&gt;-->
-<!--          <div class="img fl">-->
-<!--            <img :src="UserInforma.headImgUrl" alt>-->
-<!--&lt;!&ndash;              <p><span>编辑资料</span></p>&ndash;&gt;-->
-<!--          </div>-->
-<!--          <div class="text fl">-->
-<!--            <p class="name">{{UserInforma.nickname}}</p>-->
-<!--            <p class="tag" v-if="UserInforma.userTagMap.seller">-->
-<!--                <span>{{UserInforma.userTagMap.tag | typeFilter}}</span>-->
-<!--            </p>-->
-<!--            <p class="tel">{{UserInforma.phone}}</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="personal-information-r">-->
-<!--          <p class="tit">买家中心</p>-->
-<!--        </div>-->
-<!--      </div>-->
         <div class="user clear">
             <div class="username clear fl">
                 <img :src="UserInforma.headImgUrl" class="head-portrait fl" alt />
@@ -35,30 +15,31 @@
                 </div>
             </div>
             <div class="right">
-                <p class="title">我的钱包</p>
-                <ul>
+                <ul class="clear">
                     <li>
-                        <p>￥<span>{{UserInforma.userTagMap.wallet}}</span></p>
-                        <p class="desc">钱包余额</p>
-                        <p>
-<!--                            <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;-->
-<!--                            <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>-->
-<!--                            <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;-->
-<!--                            <a>|&nbsp;&nbsp;</a>-->
-                            <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
-                        </p>
+                        <div class="cont">
+                            <p class="money">{{UserInforma.userTagMap.wallet}}</p>
+                            <p class="desc">钱包余额（元）</p>
+                            <p class="router">
+                                <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
+                                <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
+                                <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;
+                                <a>|&nbsp;&nbsp;</a>
+                                <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
+                            </p>
+                        </div>
                     </li>
-                    <li>
-                        <p>￥{{UserInforma.userTagMap.deposit}}</p>
-                        <p class="desc">押金</p>
-                        <p>
-<!--                            <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>-->
-                            <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
-                        </p>
-                    </li>
-                    <li>
-                        <p>￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</p>
-                        <p class="desc">基础额度</p>
+                    <li v-if="UserInforma.userTagMap.vip">
+                        <div class="cont circle clear">
+                            <el-progress type="circle" :width="80" :percentage="creditvipPercente"  class="fl"></el-progress>
+                            <div class="text fl">
+                                <p class="desc">
+                                    月结额度:{{UserInforma.userTagMap['credit-vip'] }}
+                                </p>
+                                <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-vip']}}</p>
+                                <router-link to="/PersonalCenter/vipDetailList" class="route">额度明细</router-link>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -97,6 +78,70 @@
 <!--        <span>品牌入驻</span>-->
 <!--      </div>-->
     </div>
+      <el-dialog
+          :visible.sync="showinputPassword"
+          width="500px"
+      >
+          <p slot="title" class="title">输入密码</p>
+          <div >
+              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputPassword = false">取 消</el-button>
+            <el-button type="primary" @click="checkpassword">确 定</el-button>
+          </span>
+      </el-dialog>
+      <el-dialog
+          :visible.sync="showinputwithdrawTotal"
+          width="700px"
+          class="withdrawApplyTotal"
+      >
+          <p slot="title" class="title"><strong>钱包余额：￥{{UserInforma.userTagMap.wallet}}</strong></p>
+          <div class="withdrawApplyTotalCont">
+              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal"  @input="changewithdrawApplyTotal" ></el-input>
+              <div v-if="withdrawApplyTotal" class="clear">
+                  <div class="withdrawCharge">
+                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
+                      <div class="desc">
+                          <i class="el-icon-question color" ></i>
+                          <div class="cont">
+                              <p><strong>手续费说明</strong></p>
+                              <p>
+                                  当单笔提现金额<1500元，y=2元+提现金额*0.55%
+                              </p>
+                              <p>
+                                  当单笔提现金额≥1500元，y=提现金额*0.7%
+                              </p>
+                              <br>
+                              <p>当天17:00点前申请提现的，提现金额当日到账；</p>
+                              <p>当天17:00点后申请提现的，提现金额次日到账；</p>
+                              <p>周末及节假日申请提现的，提现金额将在下个工作日到账；</p><br>
+                              <p>温馨提示：单笔提现金额≥1500为最优提现方案</p>
+                          </div>
+                      </div>
+                  </div>
+                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <ul v-if="bankList.length">
+                      <li class="title">
+                          <span>提现方式</span>
+                          <span>账号</span>
+                          <span>账户名</span>
+                      </li>
+                      <li v-for="(item,k) in bankList" :class="selectedBank==k?'bgColor':''" :key="k" @click="selectedBank=k">
+                          <span>{{item.bankCode | filterBankCode}}</span>
+                          <span>{{item.bankNumber}}</span>
+                          <span>{{item.cnname}}</span>
+                      </li>
+                  </ul>
+                  <router-link v-if="bankList.length==0" to="/PersonalCenter/withdraw" class="band">没有提现账号，去绑定</router-link>
+              </div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showinputwithdrawTotal = false">取 消</el-button>
+            <el-button type="primary" @click="saveDraw">确 定</el-button>
+          </span>
+      </el-dialog>
   </div>
 </template>
 <script>
@@ -109,6 +154,13 @@ export default {
         UserInforma:{
             userTagMap:{}
         },
+        showinputPassword:false,
+        inputpassword:"",
+        showinputwithdrawTotal:false,
+        withdrawApplyTotal:"",
+        withdrawApplyTotalObj:{},
+        bankList:[],
+        selectedBank:0,
         messageCount:{
             orderCount:{
                 name:'我的订单',
@@ -179,12 +231,120 @@ export default {
                 case 3:
                     return "认证商";
             }
+        },
+        filterBankCode(val){
+            switch (val) {
+                case "ICBC":
+                    return '工商银行';
+                case "ABC":
+                    return '农业银行';
+                case "CCB":
+                    return '建设银行';
+                case "CMB":
+                    return '招商银行';
+                case "COMM":
+                    return '交通银行';
+                case 'alipay':
+                    return "支付宝"
+            }
+        }
+    },
+    computed:{
+        creditvipPercente(){
+            if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['restcredit-vip']){
+                return ((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1)
+            }
+
         }
     },
     methods:{
         ...mapActions("Login",[
             "GetUserInforma"
         ]),
+        changewithdrawApplyTotal(k){
+            let obj =this.withdrawApplyTotal;
+            obj = obj.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
+            obj = obj.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+            obj = obj.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+            obj = obj.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/,'$1$2.$3');//只能输入4个小数
+            if(obj.indexOf(".")< 0 && obj !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+                obj= parseFloat(obj);
+            };
+            if(obj>this.UserInforma.userTagMap.wallet){
+                this.withdrawApplyTotal=(obj+"").substring(0, obj.length-2);
+            }else{
+                this.withdrawApplyTotal=obj;
+            }
+            if(this.withdrawApplyTotal){
+                axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal  }}).then(res=>{
+                    this.withdrawApplyTotalObj=res.data
+                })
+            }
+
+        },
+        //提现的相关操作
+        withDraw(){
+            //先验证是否设置提现密码
+            this.inputpassword="";
+            axios.request(personCenter.checkSetPassword).then(res=>{
+                if(res.data==1){
+                    this.showinputPassword=true;
+                }else{
+                    //需要新增
+                    this.$prompt('请设置提现密码', '', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        //校验密码
+                        axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
+                            console.log(res)
+                            if(res){
+                                this.showinputPassword=false;
+                                this.showinputwithdrawTotal=true;
+                                axios.request({...personCenter.getBankList,params:{
+                                        start:0,
+                                        length:100,
+                                    }}).then(res=>{
+                                    console.log(res)
+                                    this.bankList=res.data.data;
+                                })
+                            }
+                        })
+                    }).catch(() => {
+
+                    });
+                }
+            })
+        },
+        checkpassword(){
+            axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
+                console.log(res)
+                if(res){
+                    this.showinputPassword=false;
+                    this.showinputwithdrawTotal=true;
+                    axios.request({...personCenter.getBankList,params:{
+                            start:0,
+                            length:100,
+                        }}).then(res=>{
+                        console.log(res)
+                        this.bankList=res.data.data;
+                    })
+                }
+
+            })
+        },
+        saveDraw(){
+            let obj={
+                withdrawBankId:this.bankList[this.selectedBank].id,
+                ...this.withdrawApplyTotalObj
+            }
+            axios.request({...personCenter.saveDraw,data:obj}).then(res=>{
+                if(res){
+                    this.showinputwithdrawTotal=false;
+                    this.all();
+                }
+            })
+        },
         all() {
             this.GetUserInforma().then(res => {
                 this.UserInforma=res;

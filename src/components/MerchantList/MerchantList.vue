@@ -1,86 +1,234 @@
 <template>
   <!-- 商家列表 -->
   <div class="MerchantList" ref="searchBar" v-if="total">
-    <table v-show="closeTable" border="1">
-      <thead>
-        <th>商家</th>
-        <th>MOQ</th>
-        <th>MPQ</th>
-        <th>库存</th>
-        <th>状态</th>
-        <th>预计交期</th>
-        <th>价格</th>
-        <th>操作</th>
-      </thead>
-      <tbody>
-        <template v-for="(item,index) in MerchantList">
-            <tr class="MerchantItem"  :key="item.id">
-                <td class="info">
+<!--    <table v-show="closeTable" border="1">-->
+<!--      <thead>-->
+<!--        <th>商家</th>-->
+<!--        <th>MOQ</th>-->
+<!--        <th>MPQ</th>-->
+<!--        <th>库存</th>-->
+<!--        <th>状态</th>-->
+<!--        <th>预计交期</th>-->
+<!--        <th>价格</th>-->
+<!--        <th>操作</th>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--        <template v-for="(item,index) in MerchantList">-->
+<!--            <tr class="MerchantItem"  :key="item.id">-->
+<!--                <td class="info">-->
+<!--                    <div>-->
+<!--                        <img :src="item.userImgeUrl"/>-->
+<!--                        <div>-->
+<!--                            <p>{{item.sellerName}}</p>-->
+<!--                            <p><span class="tag">{{item.tag | tagFilter}}</span></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td><p>{{item.moq}}</p></td>-->
+<!--                <td><p>{{item.mpq}}</p></td>-->
+<!--                <td><p>{{item.goodsStockCount}}</p></td>-->
+<!--                <td><p><span>{{item.goods_type ? '现货' : '期货'}}</span></p></td>-->
+<!--                <td>-->
+<!--                    <p>{{item.diliverPlace}}</p>-->
+<!--                    <p>-->
+<!--                        交期:-->
+<!--                        <span v-if="item.seller_always">-->
+<!--                            {{item.day_interval}}天后交货-->
+<!--                        </span>-->
+<!--                        <span v-else>-->
+<!--                            {{item.deliverTime | formatDate}}-->
+<!--                        </span>-->
+<!--                    </p>-->
+<!--                </td>-->
+<!--                <td class="price">-->
+<!--                        <div class="stepped-price" v-if="item.priceType">-->
+<!--                            <ul>-->
+<!--                                <li v-for="(val, k) in item.priceList" :key="k">-->
+<!--                                        <span>{{val.num}}+ -&#45;&#45;</span>-->
+<!--                                        <strong >{{item.priceUnit ? '$' : '￥'}}{{val.price}}{{item.includBill ? '(含税)' : '(不含税)'}}</strong>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                        <div v-else>-->
+<!--                            <strong class="price-num">{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</strong>-->
+<!--                        </div>-->
+<!--                        <div v-if="!item.seller_always">-->
+<!--                            <CountTime-->
+<!--                                v-on:end_callback="countDownE_cb()"-->
+<!--                                :currentTime="item.currentTime"-->
+<!--                                :startTime="item.currentTime"-->
+<!--                                :endTime="item.expireTime"-->
+<!--                                :tipText="''"-->
+<!--                                :tipTextEnd="'距特价结束:'"-->
+<!--                                :endText="'活动已结束'"-->
+<!--                                :dayTxt="'天'"-->
+<!--                                :hourTxt="'小时'"-->
+<!--                                :minutesTxt="'分钟'"-->
+<!--                                :secondsTxt="'秒'"-->
+<!--                            ></CountTime>-->
+<!--                        </div>-->
+<!--                </td>-->
+<!--                <td class="operation">-->
+<!--                    <p @click="purchase(index)">购买</p>-->
+<!--                    <p @click="addCar(index)">加入购物车</p>-->
+<!--                    <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </template>-->
+<!--      </tbody>-->
+<!--    </table>-->
+      <ul class="title bgGray clear">
+          <li>卖家</li>
+          <li>器件与订购描述</li>
+          <li>交货周期
+          <li>价格</li>
+          <li>操作</li>
+      </ul>
+      <div>
+          <div v-if="showOriginFactory" class="originFactoryTitle">
+              <span>原厂直供</span>
+              <span class="fr">申请特价</span>
+          </div>
+          <template v-for="(item,index) in MerchantList">
+              <div v-if="item.tag==1" class="item originFactory clear">
                     <div>
-                        <img :src="item.userImgeUrl"></img>
-                        <div>
-                            <p>{{item.sellerName}}</p>
-                            <p><span class="tag">{{item.tag | tagFilter}}</span></p>
-                        </div>
+                        <ImgE :src="item.brandImageUrl" :W="180" :H="60"></ImgE>
                     </div>
-                </td>
-                <td><p>{{item.moq}}</p></td>
-                <td><p>{{item.mpq}}</p></td>
-                <td><p>{{item.goodsStockCount}}</p></td>
-                <td><p><span>{{item.goods_type ? '现货' : '期货'}}</span></p></td>
-                <td>
-                    <p>{{item.diliverPlace}}</p>
-                    <p>
-                        交期:
-                        <span v-if="item.seller_always">
-                            {{item.day_interval}}天后交货
+                    <div  class="count">
+                        <p>MOQ：{{item.moq}}</p>
+                        <p>MPQ：{{item.mpq}}</p>
+                        <p>剩余：{{item.goodsStockCount}}</p>
+                    </div>
+                    <div class="timer">
+                        <p><label>{{item.goods_type ? '现货' : '订货'}}</label></p>
+                        <p>
+                            预计于
+                            <span v-if="item.seller_always">
+                            {{item.day_interval}}天后
                         </span>
-                        <span v-else>
+                            <span v-else>
                             {{item.deliverTime | formatDate}}
                         </span>
-                    </p>
-                </td>
-                <td class="price">
-                        <div class="stepped-price" v-if="item.priceType">
-                            <ul>
-                                <li v-for="(val, k) in item.priceList" :key="k">
-                                        <span>{{val.num}}+ ---</span>
-                                        <strong >{{item.priceUnit ? '$' : '￥'}}{{val.price}}{{item.includBill ? '(含税)' : '(不含税)'}}</strong>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-else>
-                            <strong class="price-num">{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</strong>
-                        </div>
-                        <div v-if="!item.seller_always">
-                            <CountTime
-                                v-on:end_callback="countDownE_cb()"
-                                :currentTime="item.currentTime"
-                                :startTime="item.currentTime"
-                                :endTime="item.expireTime"
-                                :tipText="''"
-                                :tipTextEnd="'距特价结束:'"
-                                :endText="'活动已结束'"
-                                :dayTxt="'天'"
-                                :hourTxt="'小时'"
-                                :minutesTxt="'分钟'"
-                                :secondsTxt="'秒'"
-                            ></CountTime>
-                        </div>
-                </td>
-                <td class="operation">
-                    <p @click="purchase(index)">购买</p>
-                    <p @click="addCar(index)">加入购物车</p>
-                    <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>
-                </td>
-            </tr>
-        </template>
-      </tbody>
-    </table>
+                        </p>
+                        <p>{{item.diliverPlace}}交货</p>
+                    </div>
+                  <div class="price">
+                      <div class="stepped-price color" v-if="item.priceType">
+                          <ul>
+                              <li v-for="(val, k) in item.priceList" :key="k" class="color clear">
+                                  <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
+<!--                                      {{item.includBill ? '(含税)' : '(不含税)'}}-->
+                                  </span>
+                                  <span class="fl">{{val.num}}+</span>
+                              </li>
+                          </ul>
+                          <p >更多数量可申请特价</p>
+                      </div>
+                      <div v-else class="goodsprice">
+                          <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
+                          <span class="price-num color">{{item.goodsPrice}}</span>
+                          <span class="btn bgColor">一口价</span>
+                      </div>
+                      <div v-if="!item.seller_always" class="">
+                          <CountTime
+                              v-on:end_callback="countDownE_cb()"
+                              :currentTime="item.currentTime"
+                              :startTime="item.currentTime"
+                              :endTime="item.expireTime"
+                              :tipText="''"
+                              :tipTextEnd="'距特价结束：'"
+                              :endText="'活动已结束'"
+                              :dayTxt="'天'"
+                              :hourTxt="'小时'"
+                              :minutesTxt="'分钟'"
+                              :secondsTxt="'秒'"
+                          ></CountTime>
+                      </div>
+                  </div>
+                  <div class="btnWrap">
+                      <p class="bgColor"  @click="purchase(index)">购买</p>
+                      <p class="addCark" @click="addCar(index)">加入购物车</p>
+                      <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>
+                  </div>
+              </div>
+              <div v-else class="item clear ">
+                  <div class="info">
+                      <div>
+                          <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"></img>
+                          <div>
+                              <p>{{item.sellerName}}</p>
+                              <p v-if="item.focus"><span class="tag bgGray"style="color:#fff;">已关注</span></p>
+                              <p v-if="!item.focus"><span class="tag bgColor">关注卖家</span></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="sellerInfo">
+                      <ImgE :src="item.goodsImageUrl" :W="50" :H="50"></ImgE>
+                      <div>
+                          <p>MOQ：{{item.moq}}</p>
+                          <p>MPQ：{{item.mpq}}</p>
+                          <p>剩余：{{item.goodsStockCount}}</p>
+                      </div>
+                  </div>
+                  <div class="timer">
+                      <p><label>{{item.goods_type ? '现货' : '订货'}}</label></p>
+                      <p>
+                          预计于
+                          <span v-if="item.seller_always">
+                            {{item.day_interval}}天后
+                        </span>
+                          <span v-else>
+                            {{item.deliverTime | formatDate}}
+                        </span>
+                      </p>
+                      <p>{{item.diliverPlace}}交货</p>
+                  </div>
+                  <div  class="price">
+                      <div class="stepped-price" v-if="item.priceType">
+                          <ul>
+                              <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
+                                  <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
+                                      <!--                                      {{item.includBill ? '(含税)' : '(不含税)'}}-->
+                                  </span>
+                                  <span class="fl">{{val.num}}+ </span>
+                              </li>
+                          </ul>
+                      </div>
+                      <div v-else class="goodsprice">
+                          <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
+                          <span class="price-num color">{{item.goodsPrice}}</span>
+                          <span class="btn bgColor">一口价</span>
+                      </div>
+                      <div v-if="!item.seller_always" class="countTime">
+                          <CountTime
+                              class="color"
+                              v-on:end_callback="countDownE_cb()"
+                              :currentTime="item.currentTime"
+                              :startTime="item.currentTime"
+                              :endTime="item.expireTime"
+                              :tipText="''"
+                              :tipTextEnd="'距特价结束：'"
+                              :endText="'活动已结束'"
+                              :dayTxt="'天'"
+                              :hourTxt="'小时'"
+                              :minutesTxt="'分钟'"
+                              :secondsTxt="'秒'"
+                          ></CountTime>
+                      </div>
+                  </div>
+                  <div class="btnWrap">
+                      <p class="bgColor"  @click="purchase(index)">购买</p>
+                      <p class="addCark" @click="addCar(index)">加入购物车</p>
+                  </div>
+                  <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>
+              </div>
+          </template>
+      </div>
     <div class="arrow-bar">
-        <p v-if="!closeTable">共有{{total}}个供应商发布特价产品，点击查看</p>
-        <img src="@/assets/image/brandDetail/u4650.png" alt="" class="closeTable" v-show="closeTable" title="关闭" @click="closeEvent">
-        <img src="@/assets/image/brandDetail/u4530.png" alt="" class="getMore" v-show="getMore" title="获取更多供应商特价" @click="getMoreList">
+<!--        <p v-if="!closeTable">共有{{total}}个供应商发布特价产品，点击查看</p>-->
+<!--        <img src="@/assets/image/brandDetail/u4650.png" alt="" class="closeTable" v-show="closeTable" title="关闭" @click="closeEvent">-->
+        <span class="bgColor" v-show="getMore"  @click="getMoreList">展开更多供应商 <i class="el-icon-arrow-down"></i></span>
+<!--        <img src="@/assets/image/brandDetail/u4530.png" alt="" class="getMore" v-show="getMore" title="获取更多供应商特价" @click="getMoreList">-->
     </div>
   </div>
 </template>
@@ -110,6 +258,7 @@ export default {
         MerchantList:[],
         pageSize:10,
         getMore:false,
+        showOriginFactory:false
         // purchaseObj:{},
         // showPurchase:false
     };
@@ -141,6 +290,9 @@ export default {
             this.MerchantList=res.data.data.map(item0 =>{
                 if(item0.priceType){
                     item0.priceList=ladderPrice(item0.priceLevel)
+                }
+                if(item0.tag==1){
+                    this.showOriginFactory=true;
                 }
                 return item0;
             })
@@ -219,7 +371,8 @@ export default {
               sellerGoodsId: this.MerchantList[k].id,
               sellerId:this.MerchantList[k].sellerId,
               goodsSource: "1",
-              goodsName:this.MerchantList[k].goods_name
+              goodsName:this.MerchantList[k].goods_name,
+              goodsId:this.MerchantList[k].goods_id
           };
           axios.request({ ...shoppingCar.insertShoppingCar, params: obj })
               .then(res => {
@@ -228,6 +381,7 @@ export default {
       },
   },
   mounted() {
+      console.log(this.HeaderImg)
     this.GetMerchantList()
   },
     filters:{

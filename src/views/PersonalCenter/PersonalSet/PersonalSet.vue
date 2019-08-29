@@ -16,195 +16,133 @@
         </div>
       </div>
         <div class="right">
-            <p class="title">我的钱包</p>
-            <ul>
+            <ul class="clear">
                 <li>
-                    <p>￥<span>{{UserInforma.userTagMap.wallet}}</span></p>
-                    <p class="desc">钱包余额</p>
-                    <p>
-                        <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
-                        <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
-                        <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;
-                        <a>|&nbsp;&nbsp;</a>
-                        <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
-                    </p>
+                    <div class="cont">
+                        <p class="money">{{UserInforma.userTagMap.wallet}}</p>
+                        <p class="desc">钱包余额（元）</p>
+                        <p class="router">
+                            <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
+                            <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
+                            <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;
+                            <a>|&nbsp;&nbsp;</a>
+                            <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
+                        </p>
+                    </div>
+
                 </li>
                 <li  v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
-                    <p>￥{{UserInforma.userTagMap.deposit}}</p>
-                    <p class="desc">押金</p>
-                    <p>
-                        <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
-                        <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
-                    </p>
+                    <div class="cont yajin">
+                        <p class="money">{{UserInforma.userTagMap.deposit}}</p>
+                        <p class="desc">押金（元）</p>
+                        <p class="router">
+                            <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
+                            <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
+                        </p>
+                        <p>售卖额度 = 押金*10 + 基础额度</p>
+                    </div>
                 </li>
-                <li>
-                    <p>
-                        <span >￥{{UserInforma.userTagMap['credit-vip']}}</span>
-                        <span >￥{{UserInforma.userTagMap['restcredit-vip']}}</span></p>
-                    <p class="desc">
-                        购买额度/剩余购买额度
-                    </p>
-                    <p>
-                        <router-link to="/PersonalCenter/vipDetailList" >月结明细</router-link>
-                    </p>
+                <li v-if="UserInforma.userTagMap.vip">
+                    <div class="cont circle clear">
+                        <el-progress type="circle" :width="80" :percentage="creditvipPercente"  class="fl"></el-progress>
+                        <div class="text fl">
+                            <p class="desc">
+                                月结额度:{{UserInforma.userTagMap['credit-vip'] }}
+                            </p>
+                            <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-vip']}}</p>
+                            <router-link to="/PersonalCenter/vipDetailList" class="route">额度明细</router-link>
+                        </div>
+                    </div>
+                </li>
+                <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
+                    <div class="cont circle clear">
+                        <el-progress type="circle" :width="80" :percentage="creditsellerPercente"  class="fl"></el-progress>
+                        <div class="text fl">
+                            <p class="desc">
+                                售卖额度：{{UserInforma.userTagMap['credit-seller']}}
+                            </p>
+                            <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
+                            <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
+                        </div>
+                    </div>
+
                 </li>
             </ul>
         </div>
     </div>
     <!-- 个人信息设置 -->
-    <ul class="informa-set">
+    <ul class="informa-set clear">
       <li>
-        <div class="clear">
-<!--          <span class=" fl">-->
-<!--            <img src="@/assets/image/PersonalCenter/u65597.png" alt />-->
-<!--          </span>-->
-          <span class=" fl">信用等级：</span>
-          <span class="red fl">{{UserInforma.userTagMap.userLevel}}</span>
-            <div class="mark fl">
-               &nbsp; <span class="el-icon-question color"></span>
-                <div class="cont">
-                    <p>
-                        <span>信用等级</span><span>预付款比列</span>
-                    </p>
-                    <p v-for="item in levelList" :class="item.level==UserInforma.userTagMap.userLevel ? 'color':''">
-                        <span>{{item.level}}</span><span>{{item.val}}</span>
-                    </p>
-                    <div class="color">提示：系统会根据您购买商品的能力进行等级的调整</div>
+        <div class="clear cont ">
+            <div class="clear">
+                <div class="userLevel fl">
+                    <p class="name">信用等级 &nbsp;<span class="el-icon-question"></span></p>
+                    <div class="cont1">
+                        <p>
+                            <span>信用等级</span><span>预付款比列</span>
+                        </p>
+                        <p v-for="item in levelList" :class="item.level==UserInforma.userTagMap.userLevel ? 'color':''">
+                            <span>{{item.level}}</span><span>{{item.val}}</span>
+                        </p>
+                        <div class="color">提示：系统会根据您购买商品的能力进行等级的调整</div>
+                    </div>
                 </div>
-            </div>
-<!--            <span>(预付款比例：{{UserInforma.userTagMap.credit_discount}})</span>-->
-        </div>
-        <!--        <router-link to="/PersonalCenter/UpgradeLevel" tag="span">提升等级</router-link>-->
-      </li>
-      <li>
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u133711.png" alt />-->
-<!--          </span>-->
-          <span>手&nbsp;机&nbsp;号：</span>
-          <span style="margin-right:20px">{{UserInforma.phone}}</span>
-          <!-- <span>
-            <img src="@/assets/image/PersonalCenter/u133715.png" alt>已绑定1
-          </span>-->
-        </div>
-        <a
-          :class="{noBan:UserInforma.phone}"
-          @click="dialogVisibleCode = true"
-          class="operation btn"
-        >更换手机号</a>
-        <!--        <router-link to="/PersonalCenter/PersonalData" tag="span">修改</router-link>-->
-      </li>
-      <li>
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u133720.png" alt />-->
-<!--          </span>-->
-          <span>绑定微信：</span>
-          <span>{{UserInforma.bindWeChat ? '已绑定' : '未绑定'}}</span>
-        </div>
-        <a class="ban" v-if="!UserInforma.bindWeChat" @click="dialogVisibleWeChatBindHandle">绑定</a>
-      </li>
-      <li
-        v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1"
-      >
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u26343.png" alt />-->
-<!--          </span>-->
-          <span>售卖额度：</span>
-          <span class="color marginRight">￥{{UserInforma.userTagMap['credit-seller']}}</span>
-          <span>剩余售卖额度：</span>
-          <span class="color">￥{{UserInforma.userTagMap['restcredit-seller']}}</span>
-        </div>
-          <router-link to="/PersonalCenter/sellerDetailList">售卖明细</router-link>
-      </li>
-<!--      <li v-if="UserInforma.userTagMap.vip">-->
-<!--        <div>-->
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u65597.png" alt />-->
-<!--          </span>-->
-<!--          <span>购买额度：</span>-->
-<!--          <span class="color marginRight">￥{{UserInforma.userTagMap['credit-vip']}}</span>-->
-<!--          <span>剩余购买额度：</span>-->
-<!--          <span class="color">￥{{UserInforma.userTagMap['restcredit-vip']}}</span>-->
-<!--        </div>-->
-<!--        <router-link to="/PersonalCenter/vipDetailList" >月结明细</router-link>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <div>-->
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u26343.png" alt />-->
-<!--          </span>-->
-<!--          <span>钱包余额：</span>-->
-<!--          <span class="color">￥{{UserInforma.userTagMap.wallet}}</span>-->
-<!--        </div>-->
-<!--          <div>-->
-<!--              <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;-->
-<!--              <router-link to="/PersonalCenter/withdraw" >提现管理</router-link>&nbsp;&nbsp;-->
-<!--              <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>-->
-<!--          </div>-->
-<!--      </li>-->
-<!--      <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">-->
-<!--        <div>-->
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u26343.png" alt />-->
-<!--          </span>-->
-<!--          <span>押&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;金：</span>-->
-<!--          <span class="color">￥{{UserInforma.userTagMap.deposit}}</span>-->
-<!--        </div>-->
-<!--          <div>-->
-<!--              <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp;-->
-<!--              <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>-->
-<!--          </div>-->
-<!--      </li>-->
-      <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u26343.png" alt />-->
-<!--          </span>-->
-          <span>基础额度：</span>
-          <span
-            class="color"
-          >￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</span>
-        </div>
-        <router-link
-          to="/PersonalCenter/UpgradeLevel"
-          tag="span"
-          v-if="!UserInforma.userTagMap.seller"
-        >原厂入驻</router-link>
-      </li>
-      <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u26343.png" alt />-->
-<!--          </span>-->
-          <span>信用额度：</span>
-          <span class="color">￥{{amount}}</span>&nbsp;
-          <span>=</span>&nbsp;&nbsp;
-          <span class="color">￥{{UserInforma.userTagMap.deposit}}&nbsp;</span>
-          <span>x&nbsp;10&nbsp;+</span>&nbsp;
-          <span
-            class="color"
-          >￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</span>
-        </div>
-        <!--            <router-link to="/PersonalCenter/CredibiliForehead" tag="span">详情</router-link>-->
-      </li>
 
-      <li>
-        <div>
-<!--          <span>-->
-<!--            <img src="@/assets/image/PersonalCenter/u37900.png" alt />-->
-<!--          </span>-->
-          <span>收货地址：</span>
-          <span v-if="defaultAddress&&defaultAddress.receivingName" class="detailAddress">
-            <span>{{defaultAddress.receivingName}}</span>
-            <span>{{defaultAddress.phone}}</span>
-            <span>{{defaultAddress.address}}</span>
-            <span>{{defaultAddress.detailedAddress}}</span>
-          </span>
-          <span v-else>暂无收货地址</span>
+            </div>
+            <div class="desc">
+                保持良好的信用获得更高等级
+            </div>
+            <div class="val"> <span>{{UserInforma.userTagMap.userLevel}}</span></div>
         </div>
-        <router-link to="/PersonalCenter/ShippingAddress">管理收货地址</router-link>
+      </li>
+      <li>
+        <div class="cont"  @click="dialogVisibleCode = true">
+            <p class="name">
+                手&nbsp;机&nbsp;号
+            </p>
+            <p class="desc">更换手机号</p>
+            <p class="marginTop">
+                <span>{{UserInforma.phone}}</span>
+                <span class="el-icon-arrow-right fr"></span>
+            </p>
+        </div>
+      </li>
+      <li>
+          <div class="cont">
+              <div class="name">绑定微信</div>
+              <p class="desc" v-if="!UserInforma.bindWeChat">你还没有绑定微信，快去绑定吧</p>
+              <p class="bind"v-if="!UserInforma.bindWeChat" @click="dialogVisibleWeChatBindHandle">
+                  <span>去绑定</span>
+                  <span class="el-icon-arrow-right fr"></span></p>
+              <p class="marginTop" v-if="UserInforma.bindWeChat">已绑定</p>
+          </div>
+
+      </li>
+      <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
+          <div class="cont">
+              <div class="name">基础额度（元）</div>
+              <div class="desc">
+                  基础额度
+              </div>
+              <div class="val">{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</div>
+<!--              <router-link-->
+<!--                  to="/PersonalCenter/UpgradeLevel"-->
+<!--                  tag="span"-->
+<!--                  v-if="!UserInforma.userTagMap.seller"-->
+<!--              >原厂入驻</router-link>-->
+          </div>
+
+      </li>
+      <li>
+          <router-link to="/PersonalCenter/ShippingAddress" class="cont" tag="div">
+              <div class="name">收货地址</div>
+              <div class="desc" v-if="defaultAddress&&defaultAddress.receivingName" >您已添加收货地址</div>
+              <div class="desc" v-if="!(defaultAddress&&defaultAddress.receivingName)" >您还未添加收货地址</div>
+              <div class="marginTop">
+                  去管理收货地址
+                  <span class="el-icon-arrow-right fr"></span>
+              </div>
+          </router-link>
       </li>
     </ul>
     <!-- 修改手机号的模态框 -->
@@ -267,7 +205,7 @@
         <img :src="dialogVisibleWeChatBindCodeUrl" alt />
       </div>
     </el-dialog>
-      <el-dialog
+    <el-dialog
           :visible.sync="showinputPassword"
           width="500px"
       >
@@ -425,7 +363,19 @@ export default {
         baseURL +
         `api-f/files/uploadWithCloud?access_token=${this.access_token}&fileSource=QINIUYUN&type=7&id=1`
       );
-    }
+    },
+     creditvipPercente(){
+        if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['restcredit-vip']){
+            return ((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1)
+        }
+
+     },
+      creditsellerPercente(){
+          if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['credit-seller']){
+              return ((this.UserInforma.userTagMap['restcredit-seller']/this.UserInforma.userTagMap['credit-seller'])*100).toFixed(1)
+          }
+
+      }
   },
   watch: {
     newPhoneValue() {
@@ -584,6 +534,7 @@ export default {
             axios.request({...personCenter.saveDraw,data:obj}).then(res=>{
                 if(res){
                     this.showinputwithdrawTotal=false;
+                    this.all();
                 }
             })
       },

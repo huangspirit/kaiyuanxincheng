@@ -192,7 +192,7 @@
         position: absolute;
         bottom:5px;
         width:100%;
-        min-width:1390px;
+        /*min-width:1390px;*/
         right:5px;
         background: #f4f4f4;
         padding:15px;

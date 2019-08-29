@@ -1,9 +1,8 @@
-// 卖家中心
+// 买家中心
 .BuyerCenter {
     padding: 20px;
     //个人信息
     .user {
-        background: #fff;
         margin-bottom: 10px;
         display:flex;
         .username {
@@ -40,111 +39,63 @@
         .right{
             float: left;
             flex:1;
-            color:#333;
-            .title{
-                border-bottom:1px solid #e5e5e5;
-                line-height:50px;
-                padding-left:35px;
-            }
+            margin-left:15px;
             ul{
-                display:flex;
+                display: flex;
+                height:100%;
                 li{
-                    width:33%;
-                    margin-top:20px;
-                    margin-left:30px;
-                    p{
-                        &.desc{
-                            font-size:14px;
-                            margin-top:5px;
-                            margin-bottom:20px;
+                    width:25%;
+                    padding-right:15px;
+                    float:left;
+                    box-sizing: border-box;
+                    .cont{
+                        background: #fff;
+                        height:100%;
+                        border-radius: 10px;
+                        text-align: center;
+                        .money{
+                            color:#999;
+                            font-size:48px;
+                            padding-top:35px;
                         }
-                        span{
-                            font-size:24px;
+                        .desc{
+                            color:#333;
                             font-weight: bold;
+                            margin-top:10px;
+                        }
+                        .router{
+                            margin-top:15px;
+                        }
+                        &.yajin{
+                            .router{
+                                margin-top:5px;
+                                margin-bottom:5px;
+                            }
+                        }
+                        &.circle{
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-around;
+                            .text{
+                                margin-left:10px;
+                                text-align: left;
+                                .desc{
+                                    color:#333;
+                                    font-weight: bold;
+                                    margin-bottom:8px;
+                                }
+                                .rest,.route{
+                                    color:#2c7be6;
+                                    font-size:14px;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
-    .personal-information {
-        width: 100%;
-        display: flex;
-        border-bottom: 2px solid #4a5a6a;
-        .personal-information-l {
-            padding: 20px;
-            border: 2px solid #4a5a6a;
-            border-bottom:none;
-            color: #4a5a6a;
-            &>.img {
-                margin-right:10px;
-                text-align: center;
-                img{
-                    width:60px;
-                    height:60px;
-                    border-radius: 60px;
-                }
-               span {
-                   padding:0 15px;
-                    line-height: 25px;
-                    font-size: 12px;
-                    color: #fff;
-                    background: #4a5a6a;
-                   margin-top:15px;
-                   text-align: center;
-                   cursor: pointer;
-                }
-            }
-
-            &>.text {
-                .name {
-                    font-size: 22px;
-                    font-weight: bold;
-                    margin-bottom:10px;
-                }
-                .tag{
-                    span{
-                        background: #ff4400;
-                        color:#fff;
-                        padding:0px 8px;
-                        font-size:12px;
-                        border-radius: 3px;
-                        margin-bottom:10px;
-                    }
-                }
-            }
-        }
-
-        .personal-information-r {
-            padding-left: 15px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: column;
-            &>.tit {
-                width: 100%;
-                font-size: 28px;
-                font-weight: bold;
-                color: #4a5a6a;
-            }
-
-            // 已认证
-                .certified{
-                    .num{
-                        color: #cc0000;
-                        margin-right:10px;
-                    }
-                    .top-up{
-                        color: #3da8f5
-                    }
-                    img{
-                        vertical-align: middle;
-                        width:25px;
-                        margin-right: 5px;
-                    }
-                }
-        }
-    }
-
     // 商品状态
     .goods-state {
         display: flex;
@@ -193,34 +144,62 @@
                     margin-top:15px;
                 }
             }
-
-            //
-            //&>.img {
-            //    width: 90px;
-            //    line-height:90px;
-            //    margin:10px auto;
-            //    border-radius: 100%;
-            //    border: 2px solid #686868;
-            //    img{
-            //        width:50%;
-            //        vertical-align:middle;
-            //    }
-            //}
-
         }
     }
-
-    //   品牌入驻
-    .brands {
-        width: 100%;
-        background: #f2f2f2;
-        text-align: center;
-        font-size: 28px;
-        line-height: 105px;
-        cursor: pointer;
-        &:hover {
-            box-shadow: 2px 2px 2px 2px rgba(148, 143, 143, 0.5)
+}
+.withdrawApplyTotal{
+    line-height:20px;
+    .withdrawApplyTotalCont{
+        max-height:700px;
+        min-height:400px;
+        overflow-y: auto;
+        .band{
+            margin-top:15px;
+            display:block;
         }
-
+        .withdrawCharge{
+            margin-top:10px;
+            .desc{
+                position: relative;
+                display: inline-block;
+                &:hover{
+                    .cont{
+                        display: block;
+                    }
+                }
+                .cont{
+                    display: none;
+                    position: absolute;
+                    background:#fff;
+                    left:100%;
+                    top:100%;
+                    white-space: nowrap;
+                    padding:20px;
+                    box-shadow: 0 0 5px 2px #ddd;
+                    p{
+                        margin-top:5px;
+                    }
+                }
+            }
+        }
+        p{
+            margin-top:10px;
+            width:100%;
+        }
+        ul>li{
+            line-height: 35px;
+            margin-top:10px;
+            background:#f5f5f5;
+            padding:0 20px;
+            cursor: pointer;
+            display:inline-flex;
+            width:100%;
+            box-sizing: border-box;
+            justify-content: space-around;
+            &.title{
+                font-weight: bolder;
+                cursor:none;
+            }
+        }
     }
 }

@@ -61,6 +61,9 @@ const buyerOrderCenter = {
     }
 }
 const sellerOrderCenter = {
+    querySellerCenterSummary:{
+        url:"api-order/selllerCenter/querySellerCenterSummary"
+    },
     diliverGoods: {
         url: "/api-order/sellerCenter/diliverGoods"
     },

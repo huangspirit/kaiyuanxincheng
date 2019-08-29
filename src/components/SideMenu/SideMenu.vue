@@ -114,7 +114,7 @@ export default {
   .ensure{
     background: #4a5a6a;
     padding: 6px 15px;
-    margin-bottom:20px;
+    /*margin-bottom:20px;*/
     margin-left:15px;
     border-radius: 3px;
     cursor: pointer;

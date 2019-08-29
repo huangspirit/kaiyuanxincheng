@@ -332,7 +332,7 @@
           </el-form>
         </div>
         <span class="dialog-footer">
-          <span class="sure" @click="submitForm('ruleForm')">
+          <span class="sure bgColor" @click="submitForm('ruleForm')">
             <img src="@/assets/image/OriginalFactoryEntry/u44984.png" alt />
             确认提交
           </span>
@@ -448,11 +448,6 @@ export default {
         ],
         legalagent: [
           { required: true, message: "请输入法定代表人", trigger: "blur" },
-          {
-            min: 3,
-            message: "法定代表人最小为3个字符",
-            trigger: "blur"
-          }
         ],
         establishmenttime: [
           {

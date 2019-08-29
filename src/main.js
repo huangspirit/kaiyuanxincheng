@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 import SearchInput from '_c/SearchInput'
 import ButtonIcon from '_c/ButtonIcon'
 import LadderPrice from '_c/LadderPrice'
@@ -41,6 +42,7 @@ Vue.use(Vuelazyload, {
 Object.keys(filters).forEach((key) => {
     Vue.filter(key, filters[key][key])
 });
+Vue.prototype.HeaderImg="//brand.113ic.com/2100a014823349faa6323f8541cefbe2.jpg"
 new Vue({
     router,
     store,
