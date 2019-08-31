@@ -8,8 +8,8 @@
       <!-- 订单列表 -->
       <div class="tab-list">
         <!-- 一级切换 -->
-        <div class="tab-list-t">
-          <ul>
+        <div class="tab-list-t clear">
+          <ul class="fl">
             <li
               v-for="item in tabFirstList"
               :key="item.id"
@@ -56,7 +56,7 @@
                 :class="item.show==true?'color':''"
                 :key="index"
                 @click="subAbnormal(item,index)"
-              >超期未交货</span>
+              >{{item.name}}</span>
             </li>
           </ul>
         </div>
@@ -91,6 +91,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import BuyerOrderItem from "_c/BuyerOrderItem";
+import {axios,buyerOrderCenter} from "../../../api/apiObj";
+
 export default {
   name: "BuyerOrderManagement",
   data() {
@@ -206,7 +208,7 @@ export default {
       ],
       abnormalData: [
         {
-          name: "超期未交货",
+          name: "已取消",
           params: "6.1",
           show: false
         },
@@ -221,7 +223,9 @@ export default {
       orderParams: {},
       currentPage: 1,
       pageSize: 10,
-      SearchInputValue: ""
+      SearchInputValue: "",
+        BuyerOrderList:[],
+        BuyerOrderManagementTotal:0,
     };
   },
   components: {
@@ -236,7 +240,6 @@ export default {
   methods: {
     ...mapActions("BuyerOrderManagement", ["GetBuyerOrderManagement"]),
     handleCurrentPageChange(x) {
-      console.log("currentpage:", x);
       this.currentPage = x;
       this.all();
     },
@@ -328,19 +331,17 @@ export default {
     getOrderList(val) {
       this.orderParams["day"] = val;
       this.all();
-      console.log(this.orderParams);
     },
     all() {
-      this.GetBuyerOrderManagement(this.orderParams);
+        axios.request({...buyerOrderCenter.queryOrderPersonal,params:this.orderParams}).then(res=>{
+            if(res){
+                this.BuyerOrderList=res.data.data;
+                this.BuyerOrderManagementTotal=res.data.total
+            }
+        })
     }
   },
   computed: {
-    ...mapState({
-      BuyerOrderList: state =>
-        state.BuyerOrderManagement.BuyerOrderManagementList,
-      BuyerOrderManagementTotal: state =>
-        state.BuyerOrderManagement.BuyerOrderManagementTotal
-    }),
     start() {
       return (this.currentPage - 1) * this.pageSize;
     }

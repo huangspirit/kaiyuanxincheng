@@ -74,7 +74,7 @@
               <p>{{item.orderVo.phone}}</p>
             </div>
             <div class="text_left">
-              <label for>地 &nbsp;&nbsp; 址：</label>
+              <label for>地&nbsp;&nbsp; 址：</label>
               <p>{{item.orderVo.address}}{{item.orderVo.detailedAddress}}</p>
             </div>
           </td>
@@ -85,15 +85,7 @@
           </td>
           <td style="width:15%" class="operation">
             <div>
-              <span style="color:red;font-weight:bolder;">{{item.orderVo.order_status | payStatus}}</span>
-              <!-- <span v-if="item.order_status === 0">未支付</span>
-              <span v-if="item.order_status === 1">已支付</span>
-              <span v-if="item.order_status === 2">取消中</span>
-              <span v-if="item.order_status === 3">已取消</span>
-              <span v-if="item.order_status === 4">已完成</span>
-              <span v-if="item.order_status === 5">预付款已付款</span>
-              <span v-if="item.order_status === 6">待付尾款</span>
-              <span v-if="item.order_status === 13">已逾期</span>-->
+              <span style="font-weight:bolder;" class="color">{{item.orderVo.orderStatesDesc}}</span>
             </div>
             <el-popover placement="top-start" width="500" trigger="hover" @show="showPopover(item)">
               <div class="orderpress">
@@ -117,74 +109,79 @@
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">查看订单进程</span>
             </el-popover>
             <!-- 合同的按钮 -->
-            <div v-if="item.orderVo.download" class="box-con">
-              <div class="wrapbtn">
-                <span class="downloadContract">
-                  <a @click="downLoadOrderContract(item.orderVo.contractUrl)">下载合同</a>
-                </span>
-              </div>
-              <el-upload
-                class="upload-demo-uploadContract wrapbtn"
-                :action="uploadUrl"
-                :limit="1"
-                :data="uploadObj"
-                :on-success="uploadSuccess"
-                :before-upload="beforeAvatarUpload"
-                v-if="item.orderVo.order_status !== 11"
-              >
-                <span class="uploadContract upload-demo-uploadContract">上传合同</span>
-              </el-upload>
-            </div>
+
           </td>
           <td style="width:15%">
             <p
               class="num"
               v-if="item.orderVo.order_prepay"
-            >{{item.orderVo.goods_type ? '$' : '￥'}}{{item.orderVo.order_prepay}}</p>
+            >
+<!--                {{item.orderVo.goods_type ? '$' : '￥'}}-->
+                ￥
+                {{item.orderVo.order_prepay}}
+            </p>
           </td>
           <td style="width:15%">
             <p class="num">总额：￥{{item.orderVo.order_amount}}</p>
-            <span>附加发票金额（￥{{item.orderVo.order_bill}}）</span>
+            <span>附加发票金额（￥{{item.orderVo.order_bill}}）</span><br>
             <span>关税（￥{{item.orderVo.guanshui}}）</span>
           </td>
           <td style="width:20%" class="operation">
             <!-- 是不是月结 -->
+              <div class="box-con">
+                  <div class="wrapbtn" v-if="item.orderVo.download">
+                    <span class="downloadContract bgLightGray"  @click="downLoadOrderContract(item.orderVo.contractUrl)">
+                     下载合同
+                    </span>
+                  </div>
+                  <el-upload
+                      class="upload-demo-uploadContract"
+                      :action="uploadUrl"
+                      :limit="1"
+                      :data="uploadObj"
+                      :on-success="uploadSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      style="margin-bottom:10px;position: relative"
+                      v-if="item.orderVo.order_status !== 11 && item.orderVo.download"
+                  >
+                      <!--                    v-if="item.orderVo.order_status !== 11 && item.orderVo.download"-->
+                      <span class="uploadContract btn bgLightGray">
+                        上传合同
+                      </span>
+                  </el-upload>
+              </div>
             <div class="box-con">
-              <!-- <div class="wrapbtn">
-                  <span @click="payment(0)">去预付款</span>
-              </div>-->
-              <div class="wrapbtn" v-if="item.orderVo.prePayButton">
-                <span @click="payment(0)">去付定金</span>
+
+              <div class="wrapbtn " v-if="item.orderVo.prePayButton">
+                <span @click="payment(0)" class="bgColor">去付定金</span>
               </div>
               <div class="wrapbtn" v-if="item.orderVo.finalPayButton">
-                <span @click="payment(1)">去付尾款</span>
+                <span @click="payment(1)" class="bgColor">去付尾款</span>
               </div>
               <div
                 class="wrapbtn"
                 v-if="item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
               >
-                <span @click="vipPayment">全额付款</span>
+                <span @click="vipPayment" class="bgColor">全额付款</span>
               </div>
               <div
                 class="wrapbtn"
                 v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
               >
-                <span @click="payment(2)">全额付款</span>
+                <span @click="payment(2)" class="bgColor">全额付款</span>
               </div>
-              <div class="wrapbtn cancleBtn" v-if="item.orderVo.cancelButton">
-                <span @click="cancleOrder(1,item.orderVo.id)">取消订单</span>
+              <div class="wrapbtn" v-if="item.orderVo.cancelButton">
+                <span @click="cancleOrder(1,item.orderVo.id)" class="bgLightGray">取消订单</span>
               </div>
-              <!-- <div class="wrapbtn" v-if="item.payButton"><span  @click="payment(2)">去付全款</span></div> -->
-            </div>
-            <!-- <div class="box-con cancleBtn">
 
-            </div>-->
+            </div>
+
             <!-- 判断倒计时是否失效 -->
             <div class="counttimewrap">
               <div v-if="item.orderVo.expireTime">
                 <!-- <p>订单剩余有效时间：</p> -->
                 <CountTime
-                  class="CountTime"
+                  class="CountTime color"
                   v-on:end_callback="countDownE_cb()"
                   :currentTime="item.orderVo.currentTime"
                   :startTime="item.orderVo.currentTime"
@@ -321,7 +318,7 @@
                       <span
                         v-if="value.confirmChangeDiliverTimeButton"
                         @click="confirmChangeDiliverTime(value)"
-                        class="btn"
+                        class="btn bgColor"
                       >确认新交期</span>
                       <!-- <span v-else class="yjs">已接受新交期</span> -->
                       <span
@@ -332,7 +329,7 @@
                       <span
                         @click="confirmRecieveGoods(value.id)"
                         v-if="value.receivingGoodsButton"
-                        class="btn"
+                        class="btn bgColor"
                       >确认收货</span>
                       <!-- <p>交期延期至{{value.complete_date | formatDate}}</p> -->
                     </div>
@@ -363,9 +360,11 @@
         <!-- </div> -->
       </div>
       <div class="list-detail-bar" @click="DetailList(item)">
-        {{flag ? '收起订单商品详细' : '查看订单商品详细'}}
+        <span class="bgColor btn">
+            {{flag ? '收起订单商品详细' : '查看订单商品详细'}}
         <i class="el-icon-caret-bottom" v-if="!flag"></i>
         <i class="el-icon-caret-top" v-else></i>
+        </span>
       </div>
     </div>
     <!-- 确认交期模态框 -->
@@ -384,29 +383,6 @@
         <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
-    <!--    <el-dialog-->
-    <!--      center-->
-    <!--      :visible.sync="dialogVisible"-->
-    <!--      width="500px"-->
-    <!--      class="confirma-delivery-dialog"-->
-    <!--      top="20vh"-->
-    <!--      lock-scroll-->
-    <!--    >-->
-    <!--      <p slot="title" class="title">是否接受新交期</p>-->
-    <!--      <div class="con">-->
-    <!--        <p>卖家更改了交期</p>-->
-    <!--        <p>-->
-    <!--          由2016-06-30更改为2016-07-12，共延迟了12天-->
-    <!--          是否接受新交期？-->
-    <!--        </p>-->
-    <!--        <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>-->
-    <!--      </div>-->
-    <!--      <span slot="footer" class="dialog-footer">-->
-    <!--        <span @click="comfirmaDelivery">确认，可接受新交期</span>-->
-    <!--        <span @click="dialogVisible = false" class="close">取消</span>-->
-    <!--      </span>-->
-    <!--    </el-dialog>-->
-    <!-- 取消订单模态框 -->
     <el-dialog
       center
       :visible.sync="dialogVisible2"
@@ -449,28 +425,7 @@
         <el-button @click="dialogVisible3 = false">取 消</el-button>
         <el-button type="primary" @click="ConfirmReceipt">确认收货</el-button>
       </span>
-
     </el-dialog>
-    <!-- 扫码支付模态框 -->
-    <!--    <el-dialog-->
-    <!--      :visible.sync="dialogCode"-->
-    <!--      width="300px"-->
-    <!--      center-->
-    <!--      class="dialog-ruleForm-code"-->
-    <!--      :close-on-click-modal="false"-->
-    <!--    >-->
-    <!--      <p slot="title" class="title">扫码支付</p>-->
-    <!--      <div class="dialog-ruleForm-code-body">-->
-    <!--        <div class="code-image">-->
-    <!--          <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" />-->
-    <!--          <div class="Invalid" v-if="InvalidFlag">-->
-    <!--            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle()" />-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--        <p>{{InvalidFlag ? '刷新重新获取支付二维码' : '请扫描二维码进行支付'}}</p>-->
-    <!--      </div>-->
-    <!--    </el-dialog>-->
-    <!-- 预览合同 -->
     <el-dialog
       :visible.sync="dialogContractFlag"
       width="1000px"
@@ -484,6 +439,62 @@
     <el-dialog :visible.sync="imgDialogVisible">
       <img width="100%;" :src="dialogImageUrl" alt />
     </el-dialog>
+      <el-dialog
+          title="选择付款方式"
+          :visible.sync="selectedPayType"
+          width="30%"
+        >
+         <div>
+             <div class="selectpayType">
+                 <span @click="payType=1" :class="{bgColor:payType==1}" class="btn">对公转账</span>
+                 <span  @click="payType=2" :class="{bgColor:payType==2}" class="btn">在线支付</span>
+             </div>
+         </div>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="selectedPayType = false">取 消</el-button>
+                <el-button type="primary" @click="submitpayType">确 定</el-button>
+              </span>
+      </el-dialog>
+      <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
+          <div class="dialog-body" slot="dialog-body">
+              <div class="RemittancNotes" >
+                  <el-form  label-width="80px">
+                      <el-form-item label="汇款凭证:">
+                          <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
+                          <el-upload
+                              class="upload-demo"
+                              ref="upload"
+                              :limit="1"
+                              :action="requestUrl"
+                              :auto-upload="true"
+                              list-type="picture-card"
+                              :on-success="handleAvatarSuccess"
+                          >
+                              <i class="el-icon-plus"></i>
+                              <div
+                                  slot="tip"
+                                  class="el-upload__tip"
+                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                          </el-upload>
+                      </el-form-item>
+                      <el-form-item label="汇款金额:">
+                          <strong class="color" style="font-size:20px;">￥{{item.orderVo.order_prepay}}</strong>
+                      </el-form-item>
+                  </el-form>
+                  <div class="desc">
+                      <p class="tishi">温馨提示:</p>
+                      <p><label for="">汇款方式：</label> <span> 1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
+                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
+                      <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
+                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>
+                  </div>
+              </div>
+          </div>
+          <div slot="footer" class="dialog-footer fr">
+              <!-- <el-button @click="showDialog = false">取 消</el-button>
+              <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
+          </div>
+      </SetTankuang>
   </div>
 </template>
 
@@ -545,7 +556,10 @@ export default {
       expressList: [],
       currentSecondOrder: {},
       dialogImageUrl: "",
-      imgDialogVisible: false
+      imgDialogVisible: false,
+        payType:1,
+        selectedPayType:false,
+        showDialog:false,
     };
   },
   props: {
@@ -565,6 +579,35 @@ export default {
       "CancleOrderSubmit",
       "queryExpress"
     ]),
+      closeDialogCallBack(){
+          this.showDialog=false
+      },
+      handleAvatarSuccess(res, file) {
+          if(res.resultCode =='200'){
+              this.$message({
+                  type:'success',
+                  message:'上传成功，等待审核'
+              })
+              this.showDialog=false;
+              this.$parent.all();
+            //  this.$router.push("/PersonalCenter/BuyerOrderManagement")
+          }
+      },
+      submitpayType(){
+            if(this.payType==1){
+                this.showDialog=true;
+            }else if(this.payType==2){
+                this.$router.push({
+                    path: "/ShoppingCart/PaymentOrders",
+                    query: {
+                        // payType: x,
+                        // totalPrice: totalPrice,
+                        orderNumber: this.item.orderVo.order_no
+                    }
+                });
+            }
+            this.selectedPayType=false;
+      },
     //确认交期的操作
     confirmChangeDiliverTime(item) {
       this.currentSecondOrder = item;
@@ -679,14 +722,8 @@ export default {
           totalPrice = this.item.order_amount;
           break;
       }
-      this.$router.push({
-        path: "/ShoppingCart/PaymentOrders",
-        query: {
-          // payType: x,
-          // totalPrice: totalPrice,
-          orderNumber: this.item.orderVo.order_no
-        }
-      });
+        this.selectedPayType=true;
+
     },
     // 月结的付款
     vipPayment() {
@@ -733,6 +770,7 @@ export default {
     },
     // 上传合同成功的函数
     uploadSuccess(response, file, fileList) {
+        console.log("shangchuan")
       this.$message({
         type: "success",
         message: "上传成功"
@@ -743,9 +781,8 @@ export default {
     // 上传合同之前的验证
     beforeAvatarUpload(file) {
       const isJPG = file.type === "application/pdf";
-
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 pdf格式!");
+        this.$message.error("上传合同只能是 pdf格式!");
       }
       return isJPG;
     },
@@ -818,6 +855,12 @@ export default {
     access_token() {
       return sessionStorage.getItem("access_token");
     },
+      requestUrl() {
+          return (
+              baseURL +
+              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.item.orderVo.order_no}`
+          );
+      },
     // 上传文件的地址
     uploadUrl() {
       return `${baseURL}api-order/customerCenter/uploadOrderContract`;
@@ -925,10 +968,19 @@ export default {
   transition: all 0.2s;
 }
 .box-con >>> .el-upload-list--text {
-  position: absolute;
-  bottom: -12px;
-  width: 100%;
-  left: 0;
+    position: absolute;
+    top: 25px;
+    width: 180%;
+    left: -90%;
+    background:#fff;
+    color:#df3f2f;
+    li{
+        line-height: 20px;
+        margin:0;
+        a{
+            font-size:12px;
+        }
+    }
 }
 </style>
 

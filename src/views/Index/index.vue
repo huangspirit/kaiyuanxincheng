@@ -175,10 +175,15 @@
                             <div @click.stop="chipbrand(k)">{{item.brandName}}</div>
                             <div>{{item.goodsStockCount}}</div>
                             <div>{{item.diliverPlace}}</div>
-                            <div class="color">
-                                <span v-if="item.priceType">
-                                    {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price']}}
-                                </span>
+                            <div class="color stepPriceWrap">
+                                <div v-if="item.priceType" class="stepPrice">
+                                    {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price']}}&nbsp;<i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
+                                    <ul class="priceList">
+                                        <li v-for="item0 in item.priceList">
+                                            {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{item.includBill?'含税':'不含税'}})
+                                        </li>
+                                    </ul>
+                                </div>
                                 <span v-if="!item.priceType">
                                      {{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}
                                 </span>

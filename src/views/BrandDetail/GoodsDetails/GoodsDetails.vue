@@ -26,10 +26,11 @@
               <div class="fl right">
                   <p class="goodsName">{{goodsinfo.productno}}</p>
                   <p class="goodsdesc">{{goodsinfo.productdesc}}</p>
-                  <router-link
-                        tag="p"
-                        class="brandName"
-                        :to="{
+                  <p class="brandDesc">
+                      <router-link
+                          tag="span"
+                          class="brandName"
+                          :to="{
                       path:'/BrandDetail',
                        query:{
                           tag:'brand',
@@ -37,65 +38,21 @@
                           name:goodsinfo.brand
                           }
                       }"
-                    >
-                        制造商：{{goodsinfo.brand}}
-                    </router-link>
-<!--                  <span class="tag color" v-if="!goodsinfo.factorySellerInfo || !goodsinfo.factorySellerInfo.diliver_place">暂无原厂报价</span>-->
-<!--                  <span class="tag color" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place">原厂直供</span>-->
-<!--                  <div class="price color" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place && goodsinfo.factorySellerInfo.price_type">-->
-<!--                      <p v-for="item in goodsinfo.factorySellerInfo.priceList">{{item.num}}+ ~ {{goodsinfo.factorySellerInfo.priceunit?'$':'￥'}}{{item.price}}</p>-->
-<!--                  </div>-->
-<!--                  <p class="price color" v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place && !goodsinfo.factorySellerInfo.price_type">-->
-<!--                      {{goodsinfo.factorySellerInfo.priceunit?'$':'￥'}}{{goodsinfo.factorySellerInfo.seckil_price}}-->
-<!--                  </p>-->
-                  <div class="cont1">
-<!--                      <div class="mpq"  v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.diliver_place">-->
-<!--                          <div class="fl">-->
-<!--                              <p>MOQ：{{goodsinfo.factorySellerInfo.moq}}</p>-->
-<!--                              <p>MPQ：{{goodsinfo.factorySellerInfo.mpq}}</p>-->
-<!--                          </div>-->
-<!--                          <div ><p class="line"></p></div>-->
-<!--                          <div class="fl">-->
-<!--                              <p>币种：{{goodsinfo.factorySellerInfo.priceunit?'美元':'人民币'}}</p>-->
-<!--                              <p>库存：{{goodsinfo.factorySellerInfo.stockcount}}</p>-->
-<!--                          </div>-->
-<!--                          <div ><p class="line"></p></div>-->
-<!--                          <div class="fl">-->
-<!--                              <p v-if="goodsinfo.factorySellerInfo.complete_date ">预计交期：{{goodsinfo.factorySellerInfo.complete_date | formatDate}}</p>-->
-<!--                              <p v-if="goodsinfo.factorySellerInfo.day_interval ">预计交期：{{goodsinfo.factorySellerInfo.day_interval}}天后交货</p>-->
-<!--                              <p>交货地址：{{goodsinfo.factorySellerInfo.diliver_place}}</p>-->
-<!--                          </div>-->
-<!--                      </div>-->
-<!--                      <div>-->
-<!--                          <router-link-->
-<!--                              tag="p"-->
-<!--                              class="brandName"-->
-<!--                              :to="{-->
-<!--                            path:'/BrandDetail',-->
-<!--                             query:{-->
-<!--                                tag:'brand',-->
-<!--                                documentid:goodsinfo.brandId,-->
-<!--                                name:goodsinfo.brand-->
-<!--                                }-->
-<!--                            }"-->
-<!--                          >-->
-<!--                              品牌：{{goodsinfo.brand}}-->
-<!--                              <ImgE :src="goodsinfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
-<!--                          </router-link>-->
-<!--                          <p class="brandName">-->
-<!--                              品牌：{{goodsinfo.brand}}-->
-<!--                              <ImgE :src="goodsinfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
-<!--                          </p>-->
-<!--                          <p class="brandDesc">功能描述：{{goodsinfo.productdesc}}</p>-->
-<!--                      </div>-->
+                      >
+                          制造商：{{goodsinfo.brand}}
+                      </router-link>
+                      <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
+                  </p>
 
-                      <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：暂无</span>
-                  </div>
+
+<!--                  <div class="cont1">-->
+<!--                      <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：暂无</span>-->
+<!--                  </div>-->
                   <div class="icon">
                       <span v-if="goodsinfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
                       <span @click="addFocus" v-if="!goodsinfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
                       <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
-                      <span class="btn"><i class="el-icon-position " ></i>&nbsp;分享</span>
+                      <span class="btn"><img src="@/assets/image/icon/share.png" alt="" style="height:13px;">&nbsp;分享</span>
 <!--                      <span class="btn"><i class="el-icon-plus "></i>&nbsp;我有特价</span>-->
 <!--                      <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>-->
                   </div>
@@ -117,7 +74,7 @@
 <!--      </div>-->
 <!--      <p class="StatementStatus">* 标注现货货字样的需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准</p>-->
       <!-- 商家信息列表 -->
-      <MerchantList :id="goodsinfo.id" v-if="goodsinfo.id"></MerchantList>
+      <MerchantList :id="goodsinfo.id" v-if="goodsinfo.id" @specialPrice="specialPrice"></MerchantList>
     </div>
     <!-- 详细信息 -->
     <div class="detail-informan">

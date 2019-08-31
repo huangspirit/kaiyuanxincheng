@@ -1,15 +1,6 @@
 //import Home from '@/views/Home'
 import Index from "@/views/Index"
 export default [
-    // 首页
-    // {
-    //     path: '/',
-    //     name: 'home',
-    //     component: Home,
-    //     meta: {
-    //         title: '首页'
-    //     }
-    // },
     {
         path: '/',
         name: 'index',
@@ -388,24 +379,17 @@ export default [
         component: () => import('@/views/PersonalCenter'),
         meta: {
             requireAuth: true,
-            title: '个人中心'
+            title: '个人中心',
+            parentname:"PersonalCenter"
         },
         children: [
-            // {
-            //     path: 'PersonalSet',
-            //     name: 'PersonalSet',
-            //     component: () => import('@/views/PersonalCenter/PersonalSet'),
-            //     meta: {
-            //         requireAuth: true,
-            //         title: '个人资料'
-            //     }
-            // },
             {
                 path: '',
                 component: () => import('@/views/PersonalCenter/PersonalSet'),
                 meta: {
                     requireAuth: true,
-                    title: '个人中心'
+                    title: '个人中心',
+                    parentname:"PersonalCenter"
                 },
 
             },
@@ -460,7 +444,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerCenter'),
                 meta: {
                     requireAuth: true,
-                    title: '卖家中心'
+                    title: '卖家中心',
+                    parentname:"SellerCenter"
                 }
             },
             // 卖家订单管理
@@ -470,17 +455,18 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerOrderManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '订单管理'
+                    title: '订单管理',
+                    parentname:"SellerCenter"
                 },
-                children: [{
-                    path: 'SellerOrderDetail',
-                    name: 'SellerOrderDetail',
-                    component: () => import('@/views/PersonalCenter/sellerOrderDetail'),
-                    meta: {
-                        requireAuth: true,
-                        title: '卖家中心'
-                    }
-                }, ]
+                // children: [{
+                //     path: 'SellerOrderDetail',
+                //     name: 'SellerOrderDetail',
+                //     component: () => import('@/views/PersonalCenter/sellerOrderDetail'),
+                //     meta: {
+                //         requireAuth: true,
+                //         title: '卖家中心'
+                //     }
+                // }, ]
             },
             // 卖家商品管理
             {
@@ -489,7 +475,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerCommodityManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '商品管理'
+                    title: '商品管理',
+                    parentname:"SellerCenter"
                 }
             },
             // 卖家发布商品
@@ -500,7 +487,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerIssuesProduct'),
                 meta: {
                     requireAuth: true,
-                    title: '发布商品'
+                    title: '发布商品',
+                    parentname:"SellerCenter"
                 }
             },
             // 卖家发布完成
@@ -510,7 +498,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SuccessfulCommodityRelease'),
                 meta: {
                     requireAuth: true,
-                    title: '发布商品完成'
+                    title: '发布商品完成',
+                    parentname:"SellerCenter"
                 }
             },
             // 卖家发布拼团
@@ -530,7 +519,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerBillCenter'),
                 meta: {
                     requireAuth: true,
-                    title: '账单中心'
+                    title: '账单中心',
+                    parentname:"SellerCenter"
                 }
             },
             // 询价单列表
@@ -584,7 +574,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerInvoiceManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '发票管理'
+                    title: '发票管理',
+                    parentname:"SellerCenter"
                 }
             },
             // 代理资质
@@ -594,7 +585,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/AgencyQualification'),
                 meta: {
                     requireAuth: true,
-                    title: '代理资质'
+                    title: '代理资质',
+                    parentname:"SellerCenter"
                 }
             },
             // 新增资质
@@ -634,7 +626,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/BuyerCenter'),
                 meta: {
                     requireAuth: true,
-                    title: '买家中心'
+                    title: '买家中心',
+                    parentname:"BuyerCenter"
                 }
             },
             // 买家订单
@@ -644,7 +637,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/BuyerOrderManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '买家订单'
+                    title: '买家订单',
+                    parentname:"BuyerCenter"
                 }
             },
             // 关注的商品
@@ -654,7 +648,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/CommoditiesInterest'),
                 meta: {
                     requireAuth: true,
-                    title: '关注的商品'
+                    title: '关注的商品',
+                    parentname:"BuyerCenter"
                 }
             },
             // 关注的商家
@@ -664,7 +659,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/MerchantsConcerned'),
                 meta: {
                     requireAuth: true,
-                    title: '关注的商家'
+                    title: '关注的商家',
+                    parentname:"BuyerCenter"
                 }
             },
             // 买家的账单中心
@@ -674,7 +670,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/BuyerBillCenter'),
                 meta: {
                     requireAuth: true,
-                    title: '账单中心'
+                    title: '账单中心',
+                    parentname:"BuyerCenter"
                 }
             },
             // 买家发票管理
@@ -684,7 +681,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/BuyerInvoiceManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '发票管理'
+                    title: '发票管理',
+                    parentname:"BuyerCenter"
                 }
             },
             // 买家发票开票信息管理
@@ -694,7 +692,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/InvoiceInformationManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '管理开票信息'
+                    title: '管理开票信息',
+                    parentname:"BuyerCenter"
                 }
             },
             // 提升等级
@@ -704,7 +703,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/UpgradeLevel'),
                 meta: {
                     requireAuth: true,
-                    title: '提升等级'
+                    title: '提升等级',
+                    parentname:"BuyerCenter"
                 }
             },
 
@@ -749,15 +749,15 @@ export default [
                 }
             },
             // 信誉额
-            {
-                path: 'CredibiliForehead',
-                name: 'CredibiliForehead',
-                component: () => import('@/views/PersonalCenter/CredibiliForehead'),
-                meta: {
-                    requireAuth: true,
-                    title: '信誉额'
-                }
-            },
+            // {
+            //     path: 'CredibiliForehead',
+            //     name: 'CredibiliForehead',
+            //     component: () => import('@/views/PersonalCenter/CredibiliForehead'),
+            //     meta: {
+            //         requireAuth: true,
+            //         title: '信誉额'
+            //     }
+            // },
             // 收货地址
             {
                 path: 'ShippingAddress',
@@ -765,7 +765,8 @@ export default [
                 component: () => import('@/views/PersonalCenter/ShippingAddress'),
                 meta: {
                     requireAuth: true,
-                    title: '收货地址'
+                    title: '收货地址',
+                    parentname:"PersonalCenter"
                 }
             },
             // 个人发票
@@ -778,16 +779,6 @@ export default [
                     title: '个人发票'
                 }
             },
-            // 账号绑定
-            // {
-            //   path: 'AccountBind',
-            //   name: 'AccountBind',
-            //   component: () => import('@/views/PersonalCenter/AccountBind'),
-            //   meta: {
-            //     requireAuth: true,
-            //     title: '账号绑定'
-            //   }
-            // },
             // 更改密码
             {
                 path: 'ChangePassword',

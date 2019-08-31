@@ -1,5 +1,5 @@
 <template>
-  <div class="PersonalCenter bgGray" id="PersonalCenter">
+  <div class="PersonalCenter" id="PersonalCenter">
     <div class="sideMenu">
       <SideMenu :list="list"></SideMenu>
     </div>
@@ -21,54 +21,64 @@ export default {
   name: "PersonalCenter",
   data() {
     return {
+
       list: [
         {
           isShow: false,
           title: "卖家中心",
+            name:"SellerCenter",
           index: "1",
           path: "/PersonalCenter/SellerCenter",
           icon: require("@/assets/image/PersonalCenter/u37925.png"),
           diabled: true,
           children: [
+              {
+                  show:'hidden',
+                  title: "卖家中心",
+                  name:"SellerCenter",
+                  index: "1_-1",
+                  path: "",
+              },
             {
               title: "订单管理",
-              index: "1-1",
+                name:"SellerOrderManagement",
+              index: "1_0",
               path: "/PersonalCenter/SellerOrderManagement",
               icon: require("@/assets/image/PersonalCenter/u10006.png")
             },
             {
               title: "商品管理",
-              index: "1-2",
+              index: "1_1",
               path: "/PersonalCenter/SellerCommodityManagement",
               icon: require("@/assets/image/PersonalCenter/u37933.png")
             },
             {
               title: "发布商品",
-              index: "1-3",
+              index: "1_2",
               path: "/PersonalCenter/SellerIssuesProduct",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
             {
               title: "询价单列表",
-              index: "1-4",
+              index: "1_3",
               path: "/PersonalCenter/inquiryList",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
             {
               title: "发票管理",
-              index: "1-5",
+              index: "1_4",
               path: "/PersonalCenter/SellerInvoiceManagement",
               icon: require("@/assets/image/PersonalCenter/u38134.png")
             },
             {
               title: "账单中心",
-              index: "1-6",
+              index: "1_5",
               path: "/PersonalCenter/SellerBillCenter",
               icon: require("@/assets/image/PersonalCenter/u28045.png")
             },
             {
               title: "代理资质",
-              index: "1-7",
+              index: "1_6",
               path: "/PersonalCenter/AgencyQualification",
               icon: require("@/assets/image/PersonalCenter/u28045.png")
             }
@@ -78,60 +88,49 @@ export default {
           isShow: true,
           title: "买家中心",
           index: "2",
+          name:"BuyerCenter",
           path: "/PersonalCenter/BuyerCenter",
           icon: require("@/assets/image/PersonalCenter/u9664.png"),
           children: [
+              {
+                  show:"hidden",
+                  title: "买家中心",
+                  index: "2_-1",
+                  path: "/PersonalCenter/BuyerCenter1",
+              },
             {
               title: "我的订单",
-              index: "2-1",
+              index: "2_0",
               path: "/PersonalCenter/BuyerOrderManagement",
               icon: require("@/assets/image/PersonalCenter/u10006.png")
             },
-            // {
-            //   title: "我的购物车",
-            //   index: "2-2",
-            //   path: "/ShoppingCart",
-            //   icon: require("@/assets/image/PersonalCenter/u37933.png")
-            // },
-            // {
-            //   title: "我的询价篮",
-            //   index: "2-3",
-            //   path: "/InquiryBasket",
-            //   icon: require("@/assets/image/PersonalCenter/u28037.png")
-            // },
-            // {
-            //   title: "我的BOM",
-            //   index: "2-4",
-            //   path: "/InquiryBasket",
-            //   icon: require("@/assets/image/PersonalCenter/b_2342.png")
-            // },
             {
               title: "关注的商品",
-              index: "2-3",
+              index: "2_1",
               path: "/PersonalCenter/CommoditiesInterest",
               icon: require("@/assets/image/PersonalCenter/u9664.png")
             },
             {
               title: "关注的商家",
-              index: "2-4",
+              index: "2_2",
               path: "/PersonalCenter/MerchantsConcerned",
               icon: require("@/assets/image/PersonalCenter/u37925.png")
             },
             {
               title: "账单中心",
-              index: "2-5",
+              index: "2_3",
               path: "/PersonalCenter/BuyerBillCenter",
-              icon: require("@/assets/image/PersonalCenter/u28045.png")
+              icon: require("@/assets/image/PersonalCenter/u28045.png"),
             },
             {
               title: "发票管理",
-              index: "2-6",
+              index: "2_4",
               path: "/PersonalCenter/BuyerInvoiceManagement",
               icon: require("@/assets/image/PersonalCenter/u38134.png")
             },
             {
               title: "申请月结",
-              index: "2-7",
+              index: "2_5",
               path: "/PersonalCenter/UpgradeLevel",
               icon: require("@/assets/image/PersonalCenter/u44756.png")
             }
@@ -142,35 +141,26 @@ export default {
           title: "个人中心",
           index: "3",
           path: "/PersonalCenter",
+            name:"PersonalCenter",
           icon: require("@/assets/image/PersonalCenter/u1874.png"),
           children: [
-            // {
-            //   title: "个人资料",
-            //   index: "3-1",
-            //   path: "/PersonalCenter/PersonalSet",
-            //   icon: require("@/assets/image/PersonalCenter/u37980.png")
-            // },
-            // {
-            //   title: "账户余额",
-            //   index: "3-2",
-            //   path: "/PersonalCenter/AccountBalance",
-            //   icon: require("@/assets/image/PersonalCenter/u28045.png")
-            // },
-            // {
-            //   title: "我的信誉额",
-            //   index: "3-3",
-            //   path: "/PersonalCenter/CredibiliForehead",
-            //   icon: require("")
-            // },
+              {
+                  show:'hidden',
+                  title: "个人中心",
+                  index: "3_-1",
+                  name:'PersonalCenter',
+                  path: "/PersonalCenter",
+                  icon: require("@/assets/image/PersonalCenter/u37960.png")
+              },
             {
               title: "收货地址",
-              index: "3-4",
+              index: "3_0",
               path: "/PersonalCenter/ShippingAddress",
               icon: require("@/assets/image/PersonalCenter/u37960.png")
             },
               {
                     title: "申请进度查询",
-                    index: "3-5",
+                    index: "3_1",
                     path: "/PersonalCenter/GetVipApplyDetail",
                     icon: require("@/assets/image/PersonalCenter/u38134.png")
               }
@@ -204,11 +194,10 @@ export default {
       ]
     };
   },
-  created() {},
+
   components: {
     SideMenu
   },
-  computed: {},
   mounted() {
     var UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
     this.list = this.list.map(item => {
@@ -222,6 +211,17 @@ export default {
             }
           }
         }
+      }else if(item.index==2){
+          if(!UserInforma.userTagMap.vip) {
+              item.children= item.children.map(item0=>{
+                  if(item0.title=='账单中心'){
+                      console.log(item0)
+                        item0.show="hidden"
+                  }
+                  return item0;
+              })
+
+          }
       }
       return item;
     });

@@ -112,6 +112,11 @@ export default {
     }
     .bgGray{
         background:#4f4f4f ;
+        color:#fff;
+    }
+    .bgLightGray{
+        background: #d5d5d5;
+        color:#999;
     }
     color:#999;
     background: #f5f5f5;

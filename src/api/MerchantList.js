@@ -12,7 +12,7 @@ export const MerchantList = (data) => {
 // 下单
 export const Order = (data) => {
   return axios.request({
-    url: `/api-g/goods-b/orderCheck?access_token=${data.access_token}`,
+    url: `/api-g/goods-b/orderCheck`,
     method: 'post',
     data: JSON.stringify(data),
     params: {}

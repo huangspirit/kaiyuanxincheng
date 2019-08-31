@@ -1,32 +1,43 @@
 <template>
   <div id="topupDeposit">
-    <h3>充值</h3>
-    <div>
-      <ul class="topupAmount">
-        <span>充值金额：</span>
-        <li
-          v-for="(item,index) in descData"
-          :class="item.show?'amountIndex':''"
-          :key="index"
-          @click="chooseAmount(index)"
-        >{{item.credit}}</li>
-      </ul>
-      <ul class="topupType">
-        <span>充值方式：</span>
-        <li
-          v-for="(item,index) in uptopType"
-          :key="index"
-          class="moneyList"
-          :class="item.show?'active':''"
-          @click="uptopClick(index)"
-        >{{item.name}}</li>
-      </ul>
-      <ul class="topupType" v-if="qrcode">
-        <span></span>
-        <li>
-          <img :src="'data:image/png;base64,'+qrcode" alt />
-        </li>
-      </ul>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+          <!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
+          <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    <div class="cont">
+        <div class="contWrap">
+            <p class="tit">充值金额(RMB)</p>
+            <ul class="topupAmount">
+
+                <li
+                    v-for="(item,index) in descData"
+                    :class="item.show?'amountIndex':''"
+                    :key="index"
+                    @click="chooseAmount(index)"
+                >{{item.credit}}</li>
+            </ul>
+            <p class="tit">充值方式：</p>
+            <ul class="topupType">
+                <li
+                    v-for="(item,index) in uptopType"
+                    :key="index"
+                    class="moneyList"
+                    :class="item.show?'active':''"
+                    @click="uptopClick(index)"
+                >
+                    <img :src="item.imgUrl" alt="">{{item.name}}
+                    <span class="mark" v-show="item.show">
+                        <i class="el-icon-check"></i>
+                    </span>
+
+                </li>
+            </ul>
+            <ul class="topupType" v-if="qrcode">
+                <li>
+                    <img :src="'data:image/png;base64,'+qrcode" alt />
+                </li>
+            </ul>
+        </div>
     </div>
   </div>
 </template>
@@ -43,12 +54,14 @@ export default {
         {
           name: "微信",
           show: false,
-          id: 1
+          id: 1,
+          imgUrl:require("@/assets/image/icon/weichat.png")
         },
         {
           name: "支付宝",
           show: false,
-          id: 2
+          id: 2,
+          imgUrl:require("@/assets/image/icon/zhifubao.png")
         }
       ],
       descData: [],
@@ -57,12 +70,17 @@ export default {
       qrcode: "",
       amount: "",
       countNum: 0,
-      noParams:""
+      noParams:"",
+        timer:null,
+        isNeedTimer:false,
     };
   },
   mounted() {
     this.getDepositList();
   },
+    destroyed(){
+      this.isNeedTimer=false
+    },
   methods: {
     getDepositList() {
       var obj = {
@@ -73,7 +91,6 @@ export default {
       axios
         .request({ ...topupDeposit.getDepositList, params: obj })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             this.descData = res.data.data;
             for (var i = 0; i < this.descData.length; i++) {
@@ -83,6 +100,8 @@ export default {
         });
     },
     chooseAmount(index) {
+        this.countNum=0;
+        clearTimeout(this.timer)
       for (var i = 0; i < this.descData.length; i++) {
         this.descData[i].show = false;
       }
@@ -95,21 +114,22 @@ export default {
       this.amount = this.descData[index].credit;
     },
     getWechatPayVip() {
-      console.log(this.amount);
       var obj = {
         amount: this.amount
       };
       axios
         .request({ ...topupDeposit.getWechatPayVip, params: obj })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             if (res.data) {
               let str = res.data.prepay_id.replace(/\. +/g, "");
               str = str.replace(/[\r\n]/g, "");
               this.qrcode = str;
               this.noParams = res.data.no;
-              this.queryUserVipConsumeDetail();
+              this.isNeedTimer=true;
+              this.countNum=0;
+              this.getResult()
+            //  this.queryUserVipConsumeDetail();
             }
           }
         });
@@ -118,8 +138,6 @@ export default {
       var obj = {
         amount: this.amount
       };
-
-      console.log(this.$refs);
       axios
         .request({ ...topupDeposit.pagePayDeposit, params: obj })
         .then(res => {
@@ -131,10 +149,43 @@ export default {
           document.forms[0].submit();
         });
     },
+      getResult(){
+            let _this= this;
+            if(!this.isNeedTimer){
+                clearTimeout(this.timer)
+                return;
+            }
+          this.timer=setTimeout(function(){
+            _this.countNum++;
+            axios
+                .request({
+                    ...topupDeposit.queryUserVipConsumeDetail,
+                    params: { no: _this.noParams }
+                }).then(res=>{
+                    if(res){
+                        if (res.data == "1") {
+                            _this.$message.success("充值成功");
+                            _this.$router.push('/PersonalCenter')
+                        }else if (res.data == "0") {
+                            if (_this.countNum >= 60){
+                                clearTimeout(_this.timer)
+                                _this.qrcode = "";
+                                _this.$message({
+                                    type: "warning",
+                                    message: "请重新获取支付二维码"
+                                });
+                            }else{
+                                _this.getResult()
+                            }
+                        }
+                    }
+            })
+        },1000)
+      },
     queryUserVipConsumeDetail() {
-      var time = setTimeout(() => {
+      let time = setTimeout(() => {
         if (this.countNum >= 60) {
-          clearInterval(time);
+          clearTimeout(time);
           this.qrcode = "";
           this.$message({
             type: "warning",
@@ -152,12 +203,12 @@ export default {
             if (res.resultCode == "200") {
               if (res.data == "0") {
                 this.queryUserVipConsumeDetail();
-                clearInterval(time);
+                  clearTimeout(time);
               }
-              clearInterval(time);
+                clearTimeout(time);
               if (res.data == "1") {
                 this.$message.success("充值成功");
-                clearInterval(time);
+                  clearTimeout(time);
                 this.$router.push('/PersonalCenter/PersonalSet')
               }
             }
@@ -179,6 +230,10 @@ export default {
           this.getWechatPayVip();
         }
       } else if (index == 1) {
+          //标识支付宝
+          this.isNeedTimer=false;
+          this.countNum=0;
+          this.qrcode = "";
         if (this.amount == "") {
           this.$message({
             type: "warning",

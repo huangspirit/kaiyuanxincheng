@@ -447,7 +447,7 @@
         }
       }
       &>ol{
-        li{
+        &>li{
           display: flex;
           line-height:60px;
           &:hover{
@@ -465,6 +465,34 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            &.stepPriceWrap{
+              overflow: initial;
+            }
+            .stepPrice{
+              cursor: pointer;
+              position: relative;
+              &:hover{
+                .priceList{
+                  display: block;
+                }
+              }
+              .priceList{
+                border-radius: 5px;
+                display: none;
+                position: absolute;
+                left:0;
+                top:80%;
+                background: #fff;
+                box-shadow: 0 0 2px 2px #dfdfdf;
+                z-index: 1;
+                padding:15px;
+                  li{
+                    line-height: 1.7;
+                    color:#333;
+                    font-size:12px;
+                  }
+              }
+            }
           }
         }
       }

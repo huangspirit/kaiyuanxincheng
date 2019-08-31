@@ -67,17 +67,20 @@
         </ul>
       </div>
     </div>
-    <div class="siderList" :class="siderListShow?'siderActive':''">
-      <ul>
-        <li
-          v-for="(item,index) in findBrandListKey"
-          :key="index"
-          :class="{active:listKey == item}"
-          @click="send(item)"
-        >{{item}}</li>
-      </ul>
-      <li @click="toTop">顶部</li>
-    </div>
+      <div class="leftSlide" :style="'height:'+screenHeight+'px'" :class="siderListShow?'siderActive':''">
+          <div class="siderList bgGray">
+              <ul>
+                  <li
+                      v-for="(item,index) in findBrandListKey"
+                      :key="index"
+                      :class="{active:listKey == item}"
+                      @click="send(item)"
+                  ><span>{{item}}</span></li>
+              </ul>
+              <p @click="toTop" class="toTop bgGray"><i class="el-icon-upload2"></i></p>
+          </div>
+      </div>
+
   </div>
 </template>
 <style lang="less" scoped>
@@ -98,7 +101,8 @@ export default {
       findBrandListKey: [],
       imgList: [],
       animate: false,
-      siderListShow: false
+      siderListShow: false,
+        screenHeight:1000,
     };
   },
   computed: {
@@ -106,6 +110,7 @@ export default {
   mounted() {
     this.getBrandList();
     window.addEventListener("scroll", this.handleScroll);
+    this.screenHeight=window.screen.height-80
   },
   destroyed() {
     window.removeEventListener("scroll", this.handleScroll); //  离开页面清除（移除）滚轮滚动事件

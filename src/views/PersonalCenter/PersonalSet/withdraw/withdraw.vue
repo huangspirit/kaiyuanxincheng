@@ -4,11 +4,12 @@
 <!--            0-->
             <el-breadcrumb-item>银行卡管理</el-breadcrumb-item>
         </el-breadcrumb>
+        <div class="cont">
         <div class="title">
-            <el-button type="primary" @click="addBank">新增提现方式</el-button>
-            <el-button type="primary" @click="setPassword">更改提现密码</el-button>
+            <el-button @click="addBank" class="bgColor">新增提现方式</el-button>
+            <el-button @click="setPassword" class="bgColor">更改提现密码</el-button>
         </div>
-        <div>
+
             <el-table
                 :data="tableData"
                 style="width: 100%"
@@ -44,7 +45,7 @@
                     label="操作"
                     align="center">
                     <template slot-scope="scope">
-                        <el-button type="primary" plain size="mini" @click="deleBank(scope.row)">解绑</el-button>
+                        <el-button class="bgColor" plain size="mini" @click="deleBank(scope.row)">解绑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -55,15 +56,14 @@
                 :total="total"
                 @current-change="handleCurrentPageChange"
             ></Pagination>
-        </div>
         <el-dialog
             title="新增提现方式"
             :visible.sync="showAddBank"
             width="30%"
             >
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-                <el-form-item label="开户银行">
-                    <el-select v-model="form.bankCode" placeholder="请选择" prop="bankCode">
+                <el-form-item label="开户银行" prop="bankCode">
+                    <el-select v-model="form.bankCode" placeholder="请选择" >
                         <el-option label="工商银行" value="ICBC"></el-option>
                         <el-option label="农业银行" value="ABC"></el-option>
                         <el-option label="建设银行" value="CCB"></el-option>
@@ -72,8 +72,8 @@
                         <el-option label="支付宝" value="alipay"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="账户名称" prop="cnname">
-                    <el-input v-model="form.cnname" :placeholder="form.bankCode=='alipay'?'支付宝名称':'银行账户名'"></el-input>
+                <el-form-item label="持卡人" prop="cnname">
+                    <el-input v-model="form.cnname" :placeholder="form.bankCode=='alipay'?'支付宝名称':'持卡人姓名'"></el-input>
                 </el-form-item>
                 <el-form-item label="开户行地址" v-if="form.bankCode!='alipay'" prop="bankName">
                     <el-input v-model="form.bankName"></el-input>
@@ -104,9 +104,18 @@
                 <el-button type="primary" @click="submitSetpassword">确 定</el-button>
             </div>
         </el-dialog>
-
+        </div>
     </div>
 </template>
+<style lang="less" scoped>
+    .cont{
+        background:#fff;
+        padding:10px;
+        .title{
+            margin-bottom:10px;
+        }
+    }
+</style>
 <script>
     import {axios,personCenter} from "../../../../api/apiObj";
     export  default {

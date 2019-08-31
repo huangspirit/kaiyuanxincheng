@@ -1,7 +1,6 @@
 <template>
   <div class="SellerInvoiceManagement">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-<!--          <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
           <el-breadcrumb-item>发票管理</el-breadcrumb-item>
       </el-breadcrumb>
     <div class="OrderManagement">
@@ -55,10 +54,6 @@
           <div class="list-item" v-for="item in list" :key="item.id" >
             <div class="list-item-tit">
               <span class="phon">批次号：<strong>{{item.goods_seller_no}}</strong></span>
-<!--              <span class="inform fr">-->
-<!--                深圳强哥-->
-<!--                <img src="@/assets/image/PersonalCenter/u23123.png" alt>-->
-<!--              </span>-->
             </div>
             <table
               width="100%"
@@ -196,7 +191,7 @@ export default {
           val:true
       },
       currentPage:1,
-      pageSize:1,
+      pageSize:10,
       total:0,
         list:[],
         //开发票

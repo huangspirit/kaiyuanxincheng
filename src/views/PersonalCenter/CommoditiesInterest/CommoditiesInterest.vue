@@ -13,7 +13,7 @@
           :key="k"
           @click="tabChange(k)"
         >
-          <img :src="item.catergoryUrl" alt class="img-1">
+<!--          <img :src="item.catergoryUrl" alt class="img-1">-->
           <span class="text">{{item.catergoryName}} <span class="num">（{{item.summaryTotal}}）</span>     </span>
           <div class="select">
             <img src="@/assets/image/index/u1076.png" alt>
@@ -37,7 +37,6 @@
                             }"
                     >  <ImgE :src="item.goodsBase.imageUrl" :W="100" :H="100"></ImgE></router-link>
 
-                    <!--              <img :src="item.goodsBase.imageUrl" alt="">-->
                 </div>
                 <div class="text fl">
                     <router-link
@@ -52,11 +51,6 @@
                         tag="p"
                         class="name"
                     > {{item.goodsBase.productno}}</router-link>
-                    <!--              <p class="name">{{item.goodsBase.productno}}</p>-->
-                    <!--              <p class="brand">-->
-                    <!--                  <span>品牌：</span>{{item.goodsBase.brand}}-->
-                    <!--              </p>-->
-                    <!--            <router-link to="/BrandDetail/GoodsDetails" class="name" tag="p">{{item.goodsBase.productno}}</router-link>-->
                     <router-link
                         :to="{
                 path:'/BrandDetail',
@@ -85,12 +79,15 @@
                 <span @click="addInquiry(index)" class="bgColor">
                     <i class="el-icon-open"></i>加询价篮
                 </span>
+                <br>
                 <span @click="canclePub(index)" class="bgColor">
                     <i class="el-icon-star-on"></i>取消关注
                 </span>
+                <br>
                 <span class="specialPrice bgColor" @click="specialPrice">
                     <i class="el-icon-plus"></i> 我有特价
                 </span>
+                <br>
                 <router-link
                     :to="{
                             path:'/BrandDetail/GoodsDetails',
@@ -107,31 +104,6 @@
                     <i class="el-icon-s-promotion"></i>
                     去采购
                 </router-link>
-                <!--                <div class="focus-collection buttonIcon" >-->
-                <!--                    <img src="@/assets/image/PersonalCenter/_u4518.png" alt @click="addInquiry(index)">-->
-                <!--                    <img src="@/assets/image/PersonalCenter/_u4512.png" alt @click="canclePub(index)">-->
-                <!--                </div>-->
-                <!--                <div class="buttonIcon">-->
-                <!--                    <div class="specialPrice" @click="specialPrice">-->
-                <!--                        <i class="el-icon-plus"></i> 我有特价-->
-                <!--                    </div>-->
-                <!--                    <div class="purchase" v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">-->
-                <!--                        <router-link-->
-                <!--                            :to="{-->
-                <!--                            path:'/BrandDetail/GoodsDetails',-->
-                <!--                            query:{-->
-                <!--                            tag:'goodsinfo',-->
-                <!--                            documentid:item.goodsBase.id,-->
-                <!--                            name:item.goodsBase.productno-->
-                <!--                            }-->
-                <!--                            }"-->
-                <!--                            tag="p"-->
-                <!--                        >-->
-                <!--                            <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
-                <!--                            去采购-->
-                <!--                        </router-link>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </li>
       </ul>

@@ -1,73 +1,71 @@
 #topupDeposit {
-    width: 70%;
-    margin: 0 auto;
-
-    >h3 {
-        width: 100%;
-        height: 80px;
-        line-height: 80px;
+    .cont{
         background: #fff;
-        color: black;
-        font-weight: bold;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-
-    >div {
-        width: 70%;
-        margin: 20px auto;
-
+        min-height:500px;
+        .contWrap{
+            width:60%;
+            padding:20px;
+            margin:0 auto;
+            color:#333;
+            .tit{
+               margin-bottom:20px;
+            }
+        }
         .topupAmount {
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 20px;
-
-            >span {
-                min-width: 120px;
-                height: 40px;
-                line-height: 40px;
-                text-align: right;
-                padding-right: 20px;
-                box-sizing: border-box;
-            }
-
             >li {
                 width: 19%;
                 margin-right: 1%;
                 border: 1px solid rgba(237, 239, 242, 1);
                 text-align: center;
-                line-height: 40px;
+                line-height: 60px;
                 margin-bottom: 10px;
                 color: rgba(51, 60, 79, 1);
+                background:#f5f5f5;
+                border-radius: 5px;
+                &:hover{
+                    border-color:#df3f2f;
+                }
             }
-
             .amountIndex {
-                border: 1px solid rgba(42, 206, 128, 1);
+                border-color:#df3f2f;
             }
         }
 
         .topupType {
             display: flex;
             margin-bottom: 20px;
-            >span {
-                min-width: 120px;
-                height: 40px;
-                line-height: 40px;
-                text-align: right;
-                padding-right: 20px;
-                box-sizing: border-box;
-            }
-
             >.moneyList {
-                margin-right: 20px;
+                width: 19%;
+                margin-right: 1%;
                 border: 1px solid rgba(237, 239, 242, 1);
-                padding: 0 14px;
-                line-height: 40px;
+                line-height: 60px;
                 color: rgba(51, 60, 79, 1);
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                border-radius: 5px;
+                .mark{
+                    position: absolute;
+                    bottom:-50%;
+                    right:0;
+                    height:0;
+                    width:0;
+                    border:30px solid transparent;
+                    border-right-color: #df3f2f;
+                    i{
+                        position: absolute;
+                        bottom:3px;
+                        left:15px;
+                        color:#fff;
+                        font-size:14px;
+                    }
+                }
             }
-
             .active {
-                border: 1px solid rgba(42, 206, 128, 1);
+                border: 1px solid #df3f2f;
             }
         }
     }

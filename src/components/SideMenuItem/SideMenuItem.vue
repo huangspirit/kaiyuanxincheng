@@ -3,29 +3,26 @@
     <el-submenu
       v-if="item.children"
       :index="item.index"
-      :key="`list_${item.index}`"
       :disabled="item.diabled"
     >
       <template slot="title">
         <div @click="send(item)">
-          <img :src="item.icon" alt>
+<!--          <img :src="item.icon" alt>-->
           <span>{{item.title}}</span>
         </div>
       </template>
-      <template v-for="v in item.children">
-        <SideMenuItem v-if="v.children" :item="v" :key="`list_${v.index}`"></SideMenuItem>
-        <router-link :to="v.path" v-else :key="`list_${v.index}`" tag="div">
+      <template v-for="(v,index) in item.children">
+        <SideMenuItem v-if="v.children" :item="v" :key="index"></SideMenuItem>
+        <router-link :to="v.path" v-else :key="index" tag="div" v-show="v.show!='hidden'">
           <el-menu-item :index="v.index">
-            <img :src="v.icon" alt>
+<!--            <img :src="v.icon" alt>-->
             <span slot="title">{{v.title}}</span>
           </el-menu-item>
         </router-link>
       </template>
     </el-submenu>
-
   </div>
 </template>
-
 <script>
 import "./SideMenuItem.less";
 import '@/assets/css/dialog-delect.less'

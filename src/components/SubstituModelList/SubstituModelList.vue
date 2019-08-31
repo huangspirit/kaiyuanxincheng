@@ -62,7 +62,7 @@
             </div>
           </div>
         </div>
-        <MerchantList :id="item.id" v-if="item.map.totalSeller"></MerchantList>
+<!--        <MerchantList :id="item.id" v-if="item.map.totalSeller"></MerchantList>-->
       </li>
     </ul>
   </div>

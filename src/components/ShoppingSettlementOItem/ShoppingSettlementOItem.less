@@ -50,20 +50,24 @@
       // justify-content: space-between;
       flex-wrap: wrap;
       .item {
-        width: 33%;
-        flex:1;
+        width: 50%;
+        margin-bottom:20px;
+        border-bottom:1px solid #e0e4e9;
+        padding-bottom:10px;
+        box-sizing: border-box;
+
         &>.img {
           width: 130px;
           border: 1px solid #ddd;
           background: #fff;
           float: left;
           margin-right: 20px;
-
-          img {
-            width: 100%;
+          /deep/.ImgE{
+            img {
+              width: 100%;
+            }
           }
         }
-
         &>.text {
           height:100%;
           float: left;
@@ -78,15 +82,15 @@
             }
             span{
               margin-right:15px;
-              
+
               .clude_bill{
                 font-size:14px;
                 color:#333;
               }
             }
-            
+
           }
-          
+
           .num {
             color: #cc0000;
             font-weight: bolder;

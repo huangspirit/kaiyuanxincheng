@@ -89,7 +89,7 @@
           </el-form>
         <div class="desc">
           <p class="tishi">温馨提示:</p>
-          <p><label for="">汇款方式：</label> <span>1. 通过专属帐号进行线下汇款充值 > 2. 然后去我的订单中心输入汇款单号</span> </p>
+          <p><label for="">汇款方式：</label> <span>1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
           <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
           <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
           <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>

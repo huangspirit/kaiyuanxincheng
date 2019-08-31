@@ -42,6 +42,10 @@ const home = {
 
 }
 const buyerOrderCenter = {
+    //获取买家订单
+    queryOrderPersonal:{
+        url:"api-order/customerCenter/queryOrderPersonal"
+    },
     //确认更改交期
     confirmChangeDiliverTime: {
         url: "/api-order/customerCenter/confirmChangeDiliverTime",
@@ -58,7 +62,15 @@ const buyerOrderCenter = {
     //确认收货
     confirmRecieveGoods:{
         url:"api-order/customerCenter/confirmRecieveGoods"
-    }
+    },
+    //月结查询订单
+    vipOrderBill:{
+        url:"api-order/customerCenter/vipOrderBill"
+    },
+    vipOrderBillCheck :{
+    url:"api-order/customerCenter/vipOrderBillCheck",
+        method:"post"
+}
 }
 const sellerOrderCenter = {
     querySellerCenterSummary:{
@@ -147,6 +159,9 @@ const message = {
     }
 }
 const shoppingCar = {
+    queryGoodsBillSetOffList:{
+        url:"api-g/goods-b/queryGoodsBillSetOffList"
+    },
     queryUserBill:{
         url:"/api-u/userBill/queryUserBill"
     },

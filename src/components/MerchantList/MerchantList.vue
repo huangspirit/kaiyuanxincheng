@@ -87,7 +87,7 @@
       <div>
           <div v-if="showOriginFactory" class="originFactoryTitle">
               <span>原厂直供</span>
-              <span class="fr">申请特价</span>
+              <span class="fr" @click="specialPrice"><img src="@/assets/image/icon/specialPrice.png" alt="">&nbsp;申请特价</span>
           </div>
           <template v-for="(item,index) in MerchantList">
               <div v-if="item.tag==1" class="item originFactory clear">
@@ -113,23 +113,37 @@
                         <p>{{item.diliverPlace}}交货</p>
                     </div>
                   <div class="price">
-                      <div class="stepped-price color" v-if="item.priceType">
+                      <div class="stepped-price color" v-if="item.priceType && item.is_old_product">
+                          <p class="color">
+                              {{item.priceUnit ? '$' : '￥'}} <strong class="price-num">{{item.priceList[item.priceList.length-1].price}}</strong>  <i class="el-icon-circle-plus-outline"></i>
+                              <span class="btn oldProduct" v-if="item.is_old_product">呆料清仓</span>
+                          </p>
                           <ul>
-                              <li v-for="(val, k) in item.priceList" :key="k" class="color clear">
+                              <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
                                   <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
-<!--                                      {{item.includBill ? '(含税)' : '(不含税)'}}-->
                                   </span>
-                                  <span class="fl">{{val.num}}+</span>
+                                  <span class="fl">{{val.num}}+ </span>
                               </li>
                           </ul>
                           <p >更多数量可申请特价</p>
                       </div>
-                      <div v-else class="goodsprice">
+                      <div class="stepped-price-origin color" v-if="item.priceType && !item.is_old_product">
+                          <ul>
+                              <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
+                                  <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
+                                  </span>
+                                  <span class="fl">{{val.num}}+ </span>
+                              </li>
+                          </ul>
+                          <p >更多数量可申请特价</p>
+                      </div>
+                      <div v-if="!item.priceType" class="goodsprice">
                           <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
                           <span class="price-num color">{{item.goodsPrice}}</span>
                           <span class="btn bgColor">一口价</span>
+                          <span class="btn oldProduct" v-if="item.is_old_product">呆料清仓</span>
                       </div>
-                      <div v-if="!item.seller_always" class="">
+                      <div v-if="!item.seller_always" class="countTime color">
                           <CountTime
                               v-on:end_callback="countDownE_cb()"
                               :currentTime="item.currentTime"
@@ -158,7 +172,7 @@
                           <div>
                               <p>{{item.sellerName}}</p>
                               <p v-if="item.focus"><span class="tag bgGray"style="color:#fff;">已关注</span></p>
-                              <p v-if="!item.focus"><span class="tag bgColor">关注卖家</span></p>
+                              <p v-if="!item.focus" @click="focus(index)"><span class="tag bgColor btn">关注卖家</span></p>
                           </div>
                       </div>
                   </div>
@@ -167,7 +181,8 @@
                       <div>
                           <p>MOQ：{{item.moq}}</p>
                           <p>MPQ：{{item.mpq}}</p>
-                          <p>剩余：{{item.goodsStockCount}}</p>
+                          <p>总数量：{{item.goodsCount}}</p>
+                          <p>(剩余：{{item.goodsStockCount}})</p>
                       </div>
                   </div>
                   <div class="timer">
@@ -184,20 +199,33 @@
                       <p>{{item.diliverPlace}}交货</p>
                   </div>
                   <div  class="price">
-                      <div class="stepped-price" v-if="item.priceType">
+                      <div class="stepped-price" v-if="item.priceType && item.is_old_product">
+                          <p class="color">
+                              {{item.priceUnit ? '$' : '￥'}} <strong class="price-num">{{item.priceList[item.priceList.length-1].price}}</strong>  <i class="el-icon-circle-plus-outline"></i>
+                              <span class="btn oldProduct" v-if="item.is_old_product">呆料清仓</span>
+                          </p>
                           <ul>
                               <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
                                   <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
-                                      <!--                                      {{item.includBill ? '(含税)' : '(不含税)'}}-->
                                   </span>
                                   <span class="fl">{{val.num}}+ </span>
                               </li>
                           </ul>
                       </div>
-                      <div v-else class="goodsprice">
+                      <div class="stepped-price-origin" v-if="item.priceType && !item.is_old_product">
+                          <ul>
+                              <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
+                                  <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
+                                  </span>
+                                  <span class="fl">{{val.num}}+ </span>
+                              </li>
+                          </ul>
+                      </div>
+                      <div v-if="!item.priceType" class="goodsprice">
                           <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
                           <span class="price-num color">{{item.goodsPrice}}</span>
                           <span class="btn bgColor">一口价</span>
+                          <span class="btn oldProduct" v-if="item.is_old_product">呆料清仓</span>
                       </div>
                       <div v-if="!item.seller_always" class="countTime">
                           <CountTime
@@ -227,7 +255,7 @@
     <div class="arrow-bar">
 <!--        <p v-if="!closeTable">共有{{total}}个供应商发布特价产品，点击查看</p>-->
 <!--        <img src="@/assets/image/brandDetail/u4650.png" alt="" class="closeTable" v-show="closeTable" title="关闭" @click="closeEvent">-->
-        <span class="bgColor" v-show="getMore"  @click="getMoreList">展开更多供应商 <i class="el-icon-arrow-down"></i></span>
+        <span class="bgColor" v-show="getMore"  @click="getMoreList">展开更多供应商 <img src="@/assets/image/icon/down.png" alt=""></span>
 <!--        <img src="@/assets/image/brandDetail/u4530.png" alt="" class="getMore" v-show="getMore" title="获取更多供应商特价" @click="getMoreList">-->
     </div>
   </div>
@@ -277,6 +305,37 @@ export default {
   },
 
   methods: {
+      focus(k){
+          console.log(this.MerchantList[k])
+          let obj={
+              favour_type:2,//标识关注卖家
+              user_tag: this.MerchantList[k].tag,
+              seller_id: this.MerchantList[k].sellerId
+          };
+          axios
+              .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
+              .then(res => {
+                  if(res){
+                      this.$message.success(res.message);
+                      this.$set(this.MerchantList[k],'focus',true)
+                  }
+
+              });
+      },
+      specialPrice(){
+          if(!this.loginState){
+              this.$router.push('/Login')
+              return;
+          }
+          this.$emit("specialPrice")
+          console.log(this.MerchantList[0])
+          // let factorySellerInfo=this.goodsinfo.factorySellerInfo
+          // factorySellerInfo.priceType=factorySellerInfo.price_type
+          // factorySellerInfo.priceLevel=factorySellerInfo.price_level
+          // factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
+          // this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
+          // this.$router.push("/InquiryBasket/ApplySpecialPrice");
+      },
     GetMerchantList(){
         let obj={
             goods_id: this.id,
@@ -332,7 +391,6 @@ export default {
               return;
           };
           let res=this.MerchantList[k]
-          console.log(res)
          let purchaseObj={
               goods_id: res.goods_id,
               goods_name: res.goods_name,

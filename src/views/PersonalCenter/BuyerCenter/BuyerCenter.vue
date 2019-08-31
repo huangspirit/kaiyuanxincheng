@@ -252,7 +252,7 @@ export default {
     computed:{
         creditvipPercente(){
             if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['restcredit-vip']){
-                return ((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1)
+                return parseFloat(((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1))
             }
 
         }

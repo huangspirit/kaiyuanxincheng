@@ -366,15 +366,14 @@ export default {
     },
      creditvipPercente(){
         if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['restcredit-vip']){
-            return ((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1)
+            return parseFloat(((this.UserInforma.userTagMap['restcredit-vip']/this.UserInforma.userTagMap['credit-vip'])*100).toFixed(1));
         }
 
      },
       creditsellerPercente(){
           if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['credit-seller']){
-              return ((this.UserInforma.userTagMap['restcredit-seller']/this.UserInforma.userTagMap['credit-seller'])*100).toFixed(1)
+              return parseFloat(((this.UserInforma.userTagMap['restcredit-seller']/this.UserInforma.userTagMap['credit-seller'])*100).toFixed(1))
           }
-
       }
   },
   watch: {

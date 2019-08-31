@@ -22,7 +22,7 @@
               <label>交货地:</label>
               {{value.diliver_place}}
             </span>
-            
+
           </p>
           <p v-if="value.diliver_date">
             <span >
@@ -38,35 +38,26 @@
       </div>
     </div>
     <div class="foot">
-      
       <div class="foot-r">
-        <!-- <p>
-                  <span>运费：免运费</span>
-                  <span>支付方式：人民币</span>
-                  <span>配送方式：国内快递</span>
-                  <span>交货地：大陆内地</span>
-        </p>-->
-        <div>
-          <span class="num">￥{{this.totalPrice}}</span>
-          <span class="fw">店铺合计：</span>
-          <!-- <span>分期付款</span> -->
-          <!-- <span class="hook">
-            <img src="@/assets/image/inquirybasket/_u11390.png" alt>
-          </span>-->
-        </div>
+          <span>店铺合计：</span>
+            <span class="color" v-if="totalPrice">￥{{this.totalPrice}}</span>
+            <span class="color" v-if="unittotalPrice && totalPrice">&nbsp;+&nbsp;</span>
+            <span class="color" v-if="unittotalPrice">${{this.unittotalPrice}}</span>
       </div>
     </div>
   </li>
 </template>
-
+<style lang="less" scoped>
+    @import "./ShoppingSettlementOItem.less";
+</style>
 <script>
-import "./ShoppingSettlementOItem.less";
 import { TimeForma } from "@/lib/utils";
 export default {
   name: "ShoppingSettlementOItem",
   data() {
     return {
-      totalPrice: 0
+        totalPrice: 0,
+        unittotalPrice:0
     };
   },
   props: {
@@ -79,9 +70,14 @@ export default {
     }
   },
   mounted() {
-
+      console.log(this.item)
     this.item.list.forEach(item => {
-      this.totalPrice += item.total_price;
+        if(item.price_unit){
+            this.unittotalPrice += item.total_price;
+        }else{
+            this.totalPrice += item.total_price;
+        }
+
     });
 
   }

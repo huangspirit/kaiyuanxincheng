@@ -1,26 +1,26 @@
 <template>
   <div class="SideMenu">
     <el-menu
-      default-active="1"
       @open="handleOpen"
       @close="handleClose"
       background-color="#3f3f3f"
       text-color="#fff"
       active-text-color="#3da8f5"
       :unique-opened='true'
-      :default-openeds="['3']"
+      :default-openeds="defaultOpeneds"
+        :default-active="defaultActive"
     >
       <template v-for="item in list">
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
         <router-link :to="item.path" v-else-if="!item.children && item.isShow" :key="`list_${item.index}`" tag="div">
           <el-menu-item :index="item.index">
-            <img :src="item.icon" alt>
+<!--            <img :src="item.icon" alt>-->
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </router-link>
         <div v-else-if="!item.isShow" :key="`list_${item.index}`" @click="dialogVisible = true">
           <el-menu-item :index="item.index">
-            <img :src="item.icon" alt>
+<!--            <img :src="item.icon" alt>-->
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </div>
@@ -44,7 +44,6 @@
         <p></p>
       </div>
       <span slot="footer" class="dialog-footer ruzhu">
-
         <span @click="dialogVisible = false" class="close">取消</span>
         <span @click="ensure" class="ensure">立刻进行商家入驻</span>
       </span>
@@ -58,24 +57,50 @@ import SideMenuItem from "../SideMenuItem/SideMenuItem";
 // import '@/assets/css/dialog-delect.less'
 export default {
   name: "SideMenu",
+    data(){
+      return {
+          defaultOpeneds:[],
+          defaultActive:"",
+          dialogVisible: false,
+      }
+    },
   props: {
     list: {
       type: Array,
       default: () => []
-    }
+    },
   },
+    created(){
+      this.fetchDate()
+
+    },
   mounted(){
-    console.log("this.$store.state:",this.$store.state)
-  },
-  data() {
-    return {
-       dialogVisible: false,
-    };
+
   },
   components: {
     SideMenuItem
   },
   methods: {
+      fetchDate(){
+          console.log(this.$route)
+          var name=this.$route.meta.parentname;
+          this.list.forEach((item)=>{
+              if(name==item.name){
+                  this.defaultOpeneds=[item.index]
+                  item.children.forEach(item0=>{
+                      if(this.$route.path==item0.path){
+                          this.defaultActive=item0.index;
+                      }
+                  })
+              }
+          })
+          console.log(this.defaultOpeneds)
+          console.log( this.defaultActive)
+          if(!this.defaultActive){
+              this.defaultActive=this.defaultOpeneds[0]+"_-1"
+          }
+
+      },
     handleOpen(key, keyPath) {
 
     },
@@ -87,7 +112,11 @@ export default {
         path: '/OriginalFactoryEntry'
       });
     }
-  }
+  },
+
+    watch:{
+        "$route":"fetchDate"
+    }
 };
 </script>
 
@@ -95,6 +124,25 @@ export default {
 .SideMenu {
     /deep/.el-menu{
         border:none;
+    }
+    /deep/.el-submenu{
+        .el-submenu__title{
+            font-size:20px;
+            font-weight: bold;
+        }
+        &.is-active{
+            .el-submenu__title{
+                background:#262626!important;
+            }
+        }
+        .el-menu{
+            .el-menu-item{
+                &.is-active{
+                    background:#df3f2f!important;
+                    color:#fff!important;
+                }
+            }
+        }
     }
   width: auto;
   img {

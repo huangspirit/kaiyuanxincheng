@@ -29,7 +29,6 @@
     margin-bottom: 20px;
     border: 1px solid #ddd;
     position: relative;
-
     .list-item-tit {
       // width: 1150px;
 
@@ -61,7 +60,6 @@
         >img {
           margin-left: 10px;
         }
-
         strong {
           color: #4a5a6a;
         }
@@ -91,24 +89,14 @@
 
       tr {
         td {
-          font-size: 16px;
+          font-size: 13px;
           color: #4a5a6a;
           border-right: 1px solid #ddd;
-
-          .upload-demo-uploadContract {
-            &>div {
-              width: 100% !important;
-            }
-          }
-
           padding-top: 5px;
           padding-bottom: 5px;
-
           span {
             color: #a1a1a1;
           }
-
-          font-size: 16px;
 
           .num {
             color: #cc0000;
@@ -139,18 +127,18 @@
       width: 100%;
       background: #f2f2f2;
       height: 40px;
-      line-height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      font-weight: bold;
-      // color: #cc0000;
-      cursor: pointer;
       border-top: 1px solid #ddd;
-
-      &:hover {
-        color: #0d98ff;
+      text-align: center;
+      .btn{
+        font-size:12px;
+        padding:0 12px;
+        cursor: pointer;
+        line-height:30px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        &:hover {
+          font-weight: bold;
+        }
       }
     }
 
@@ -163,7 +151,6 @@
 
   .table {
     text-align: center;
-
     .operation {
       .counttimewrap {
         .counttime {
@@ -180,59 +167,82 @@
       }
 
       .box-con {
-        display: flex;
-        margin: 0 auto;
-        max-width: 200px;
-        //justify-content: space-around;
-        justify-content: space-between;
-        width: 100%;
+        //display: flex;
+        //margin: 0 auto;
+        //max-width: 200px;
+        justify-content: space-around;
         flex-wrap: wrap;
-        position: relative;
-        padding-top: 5px;
-        .wrapbtn {
-          margin-left: 10px;
-          margin-bottom: 15px;
+        //position: relative;
+          display: inline-flex;
+          width:100%;
+        max-width:200px;
+        margin:0 auto;
+        .upload-demo-uploadContract{
+          width:50%;
           text-align: center;
-          white-space: nowrap;
-
-          span {
-            border: 1px solid rgb(13, 148, 251);
-            color: rgb(13, 152, 255);
-            border-radius: 3px;
-            padding: 2px 5px;
-            font-size: 14px;
+          display: inline-block;
+          margin-top:6px;
+          .btn{
+            width:80px;
+            text-align: center;
+            border-radius: 2px;
+            font-size:12px;
+            line-height:25px;
             cursor: pointer;
-            &:hover {
-              color: #ff6600;
-              font-size: 15px;
+            &:hover{
               font-weight: bold;
-              transition: all 0.2;
-            }
-
-            a {
-              text-decoration: none;
-              color: rgb(13, 152, 255);
-
-              &:hover {
-                color: #ff6600;
-                font-size: 15px;
-                font-weight: bold;
-                transition: all 0.2;
-              }
+              font-size:14px;
+              transition: all 0.2s;
             }
           }
         }
-
-        .wrapbtn.cancleBtn {
-          width: 50%;
-          white-space: nowrap;
-          span {
-            border: 1px solid #b3b3b3 !important;
-            color: #b3b3b3 !important;
-
+        .wrapbtn{
+          //flex:1;
+          width:50%;
+          text-align: center;
+          display: inline-block;
+          margin-top:6px;
+          &>span{
+            width:80px;
+            text-align: center;
+            border-radius: 2px;
+            font-size:12px;
+            line-height:25px;
+            cursor: pointer;
+            &:hover{
+              font-weight: bold;
+              font-size:14px;
+              transition: all 0.2s;
+            }
           }
         }
-
+        //.wrapbtn {
+        //  margin-left: 10px;
+        //  margin-bottom: 15px;
+        //  text-align: center;
+        //  white-space: nowrap;
+        //  span {
+        //    border-radius: 3px;
+        //    padding: 2px 7px;
+        //    font-size: 14px;
+        //    cursor: pointer;
+        //    color:#fff;
+        //    &:hover {
+        //      font-size: 15px;
+        //      font-weight: bold;
+        //      transition: all 0.2s;
+        //    }
+        //    a {
+        //      text-decoration: none;
+        //      color:#fff;
+        //      &:hover {
+        //        font-size: 15px;
+        //        font-weight: bold;
+        //        transition: all 0.2s;
+        //      }
+        //    }
+        //  }
+        //}
         &:after {
           content: "";
           display: block;
@@ -249,14 +259,16 @@
         display: flex;
         padding: 2px 10px;
         box-sizing: border-box;
-
         p {
           flex: 1;
           margin: 0;
           text-align: left;
           word-break: break-all;
           overflow: hidden;
-          font-size: 14px;
+          font-size: 13px;
+        }
+        label{
+          font-size:13px;
         }
       }
     }
@@ -283,15 +295,13 @@
           border-bottom: 1px solid #999;
           border-color: #999;
           // padding:10px;
-          font-size: 14px;
+          font-size: 12px;
           height: 100%;
 
           &.sellerInfo {
             background: #f2faff;
-
             .sellerInfowrap {
               position: relative;
-
               &:hover {
                 .hisinfo {
                   display: block;
@@ -323,13 +333,13 @@
                   &>span {
                     color: peru;
                     font-weight: bolder;
-                    font-size: 16px;
+                    font-size: 14px;
                   }
                 }
 
                 .sellername {
                   color: #fff;
-                  font-size: 16px;
+                  font-size: 13px;
                   font-weight: bolder;
                 }
 
@@ -343,16 +353,6 @@
                   margin-left: 10px;
                   background: #ff6600;
                 }
-
-                // .type1{
-                //     background: #0068db;
-                // }
-                // .type2{
-                //     background: #ff6600;
-                // }
-                // .type3{
-                //     background: #aeaeae;
-                // }
               }
             }
           }
@@ -361,7 +361,6 @@
             .counttime {
               margin-top: 20px;
               font-size: 13px;
-
               .timeStr {
                 padding: 0 3px;
                 margin: 0 3px;
@@ -376,11 +375,16 @@
         .goodsDetail {
           display: flex;
           text-align: left;
-
           img {
             display: block;
             width: 30px;
             margin-right: 10px;
+          }
+          &>div{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left:5px;
           }
         }
 
@@ -398,15 +402,11 @@
             width: 50%;
             text-align: center;
             white-space: nowrap;
-
             .btn {
-              border: 1px solid #0d94fb;
-              color: #0d98ff;
               border-radius: 3px;
               padding: 2px 5px;
               font-size: 14px;
               cursor: pointer;
-
               &:hover {
                 font-size: 15px;
                 font-weight: bolder;
@@ -415,7 +415,7 @@
             }
 
             .cancleBtn {
-              border-color: #b3b3b3;
+              border:1px solid #b3b3b3;
               color: #b3b3b3;
             }
           }
@@ -438,5 +438,47 @@
     margin:10px auto;
     width:120px;
     text-align: center;
+  }
+}
+.selectpayType{
+  .btn{
+    line-height: 40px;
+    width: 120px;
+    text-align: center;
+    margin-left:50px;
+    border:1px solid #e3e3e3;
+    background: #f5f5f5;
+    border-radius: 3px;
+    cursor: pointer;
+    &:hover{
+      font-weight: bold;
+      font-size:15px;
+      transition: all 0.2s;
+    }
+  }
+}
+.wrap{
+  .RemittancNotes{
+    .desc{
+      margin-top:10px;
+      .tishi{
+        color:peru;
+        font-size:14px;
+      }
+      &>p{
+        padding:0;
+        margin-bottom: 10px!important;
+        white-space: nowrap;
+        &>label{
+          font-weight: bolder;
+          width:80px;
+          display:inline-block;
+          text-align: right;
+        }
+        &>span{
+          color:red;
+        }
+      }
+    }
   }
 }

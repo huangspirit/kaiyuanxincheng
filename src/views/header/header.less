@@ -6,8 +6,9 @@
   position: absolute;
   width:100%;
   top:0;
-  left:0;
+  left:50%;
   border-bottom:1px solid #393d4d;
+  transform: translateX(-50%);
   z-index:100;
   &.headerFxed {
     position: fixed;
@@ -19,6 +20,7 @@
     position: relative;
     height:100%;
     white-space: nowrap;
+    display: flex;
     .login{
       margin-left:15px;
       cursor: pointer;
@@ -42,9 +44,16 @@
     }
     .searchInputWrap{
       padding-top:20px;
-      margin-left:20px;
-      width:25%;
-      max-width:600px;
+      flex:1;
+      /deep/.HeaderSearch{
+        width:80%;
+        margin:0 auto;
+        max-width: 600px;
+        transform: translateX(-10%);
+      }
+    }
+    .rightwrap{
+      display:flex;
     }
       .wrap{
         white-space: nowrap;
@@ -113,7 +122,7 @@
       // 个人中心
       .PersonalCenter-con {
         display:none;
-        width: 260px;
+        min-width: 260px;
         overflow: hidden;
         padding: 20px;
         background: #4A5A6A;
@@ -140,6 +149,7 @@
           .name {
             font-size: 24px;
             font-weight: bold;
+            margin-right:10px;
           }
           .tel {
             font-size: 18px;

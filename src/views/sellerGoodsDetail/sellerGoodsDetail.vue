@@ -27,7 +27,7 @@
                             <i class="el-icon-arrow-left"></i>
                         </span>
                         <div class="imgList">
-                            <div @mouseenter="handleEnter(item)" v-for="(item,k) in list"  :key="k" class="imgewrap" :class="selectedstr==item ? 'active':''" >
+                            <div @mouseenter="handleEnter(item)" v-for="(item,k) in  sellerGoodsImageUrlList"  :key="k" class="imgewrap" :class="selectedstr==item ? 'active':''" >
                                 <ImgE :src="item" :W="200" :H="200"  ></ImgE>
                             </div>
 
@@ -40,7 +40,7 @@
                         <span v-if="sellerGoodsInfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
                         <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
 <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
-                        <span class="btn"><i class="el-icon-position " ></i>&nbsp;分享给好友</span>
+                        <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span>
                         <span class="btn"><i class="el-icon-plus "></i>&nbsp;我有特价</span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <p class="brandDesc">{{sellerGoodsInfo.goodsDesc}}</p>
                     <p  class="brandDesc">
                         <span>制造商：{{sellerGoodsInfo.brandName}}</span>
-                        <span>官方参考价：暂无</span>
+<!--                        <span>官方参考价：暂无</span>-->
                         <span  @click="openBig">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
                     </p>
                     <div class="time clear bgColor" v-if="!sellerGoodsInfo.seller_always">
@@ -85,7 +85,7 @@
 
                         <div class="mpq">
                             <div class="fl">
-                                <p>已成单：暂无</p>
+                                <p>已售出：{{sellerGoodsInfo.sellerOrderCount}}只</p>
                                 <p>库存剩余：{{sellerGoodsInfo.goodsStockCount}}只</p>
                             </div>
                             <div ><p class="line"></p></div>
@@ -200,7 +200,7 @@
 </template>
 <script>
     import {mapMutations} from 'vuex';
-    import { baseURL, baseURL2 } from "@/config";
+    import { baseURL, baseURL2 ,baseURL3} from "@/config";
     import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
     import {TimeForma2} from "../../lib/utils";
     export default {
@@ -228,17 +228,21 @@
                 //详情图片
                 selectedstr:'',
                 bigImgstr:"",
-                list:[
-                    'http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg',
-                    'http://goodspicture.113ic.com/jy_1619_XC95288-15HQ208C.jpg',
-                    "http://brand.113ic.com/b03036313fd34836adfb0aa2f8066c45.jpg",
-                ]
+                sellerGoodsImageUrlList:[]
             }
         },
         created(){
            let obj=sessionStorage.getItem('sellerGoodsDetail');
             if(obj){
                 this.sellerGoodsInfo=JSON.parse(obj)
+                if(this.sellerGoodsInfo.sellerGoodsImageUrl){
+                    let arr=this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
+                    console.log("arr",arr)
+                    this.sellerGoodsImageUrlList=arr.map(item=>{
+                        return baseURL3+"/"+item
+                    })
+                    this.sellerGoodsImageUrlList.unshift(this.sellerGoodsInfo.goodsImageUrl)
+                }
                 this.bigImgstr=this.sellerGoodsInfo.goodsImageUrl;
                 this.purchaseObj={
                     goods_id: this.sellerGoodsInfo.goods_id,
@@ -271,15 +275,15 @@
         methods:{
             ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
             next(){
-                if(this.list.length>3){
-                    this.list.push(this.list[0])
-                    this.list.shift()
+                if(this.sellerGoodsImageUrlList.length>3){
+                    this.sellerGoodsImageUrlList.push(this.sellerGoodsImageUrlList[0])
+                    this.sellerGoodsImageUrlList.shift()
                 }
             },
             prev(){
-                if(this.list.length>3){
-                    this.list.unshift(this.list[this.length-1])
-                    this.list.pop()
+                if(this.sellerGoodsImageUrlList.length>3){
+                    this.sellerGoodsImageUrlList.unshift(this.sellerGoodsImageUrlList[this.sellerGoodsImageUrlList.length-1])
+                    this.sellerGoodsImageUrlList.pop()
                 }
             },
             handleEnter(k){
