@@ -1,5 +1,5 @@
 <template>
-  <div class="News">
+  <div class="News allWidth">
     <!-- 侧边栏 -->
     <div class="sideMenu">
       <ul class="menu-tab">

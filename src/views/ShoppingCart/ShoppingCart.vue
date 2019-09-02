@@ -11,7 +11,6 @@
           </div>
           <router-view></router-view>
       </div>
-
   </div>
 </template>
 <style lang="less" scoped>

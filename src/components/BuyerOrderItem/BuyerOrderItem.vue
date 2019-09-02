@@ -417,13 +417,13 @@
       lock-scroll
     >
       <p slot="title" class="title">确认收货</p>
-      <div class="con">
-        <p>请确认您已收到货品？</p>
+      <div class="con color">
+        <p>请确认您已收到货品</p>
         <p>确认后系统将会放款给卖家</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false">取 消</el-button>
-        <el-button type="primary" @click="ConfirmReceipt">确认收货</el-button>
+        <el-button class="bgColor" @click="ConfirmReceipt">确认收货</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -805,15 +805,12 @@ export default {
     },
     // 确认取消订单并提交
     DeliveryCancel() {
-      console.log(this.cancleOrderForm);
-
       this.CancleOrderSubmit({
         access_token: this.access_token,
         reason: this.cancleOrderForm.reason,
         orderId: this.cancleOrderForm.orderId,
         flag: this.cancleOrderForm.flag
       }).then(res => {
-        console.log("取消订单回调");
         this.dialogVisible2 = false;
         this.$emit("successFlagHandel");
       });
@@ -824,13 +821,12 @@ export default {
       },
     // 确认收货
     ConfirmReceipt() {
-      console.log("确认收货按钮");
       axios.request({...buyerOrderCenter.confirmRecieveGoods,params:{
           orderId:this.confirmRecieveGoodsId
           }}).then(res=>{
-              console.log(res)
           if(res){
               this.dialogVisible3=false;
+              this.$emit("successFlagHandel");
           }
       })
     },
@@ -929,7 +925,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.item, "1111");
   }
 };
 </script>

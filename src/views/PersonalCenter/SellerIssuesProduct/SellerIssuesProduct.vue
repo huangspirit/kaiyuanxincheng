@@ -452,8 +452,8 @@
                 handler() {
                     if (this.ruleForm.diliver_place === "香港") {
                         this.exchange=this.SellerCredit.exchange
-                        this.ruleForm.clude_bill = false;
-                        this.clude_billFlag = false;
+                       // this.ruleForm.clude_bill = false;
+                      //  this.clude_billFlag = false;
                         this.ruleForm.support_bill = true;
                         this.support_billFlag = false;
                         this.priceunit = "$美元";

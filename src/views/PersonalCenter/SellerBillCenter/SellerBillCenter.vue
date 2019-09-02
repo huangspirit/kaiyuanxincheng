@@ -4,13 +4,7 @@
       <el-breadcrumb-item>账单中心</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="SellerBillCenter">
-      <!-- 支出收入 -->
-      <!-- 账单明细 -->
       <div class="SellerBillCenter-detail">
-<!--        <p class="detail-tit">-->
-<!--          <span>当月收入详情</span>-->
-<!--          <span>（账期：2019-05-01—2019-05-30）</span>-->
-<!--        </p>-->
           <div class="search">
               <el-date-picker
                   v-model="value2"
@@ -22,7 +16,6 @@
                   align="right">
               </el-date-picker>
           </div>
-
           <el-table
               :data="tableData"
               style="width: 100%"
@@ -58,11 +51,28 @@
 <!--              </el-table-column>-->
               <el-table-column
                   prop="totalPay"
-                  label="数量/金额"
+                  label="金额/数量"
+                  align="center"
+              width="180">
+                  <template slot-scope="scope">
+                      <p><span  class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.totalPay}}</span> &nbsp;&nbsp; <span>/ &nbsp;&nbsp;{{scope.row.totalPayCount}}只</span></p>
+                      <p class="color">{{scope.row.clude_bill?'含税':'不含税'}} ，{{scope.row.support_bill?'商家开发票':'系统开发票'}}</p>
+                  </template>
+              </el-table-column>
+              <el-table-column
+                  prop="taxAmount"
+                  label="发票税额"
                   align="center">
                   <template slot-scope="scope">
-                      <p >{{scope.row.totalPayCount}}只</p>
-                      <p class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.totalPay}}({{scope.row.clude_bill?'含税':'不含税'}})</p>
+                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.taxAmount}}</span>
+                  </template>
+              </el-table-column>
+              <el-table-column
+                  label="违约金/违约天数"
+                  align="center">
+                  <template slot-scope="scope">
+                      <span class="color" v-if="scope.row.violate_count">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.violate_monney}}</span><span v-if="scope.row.violate_count">/{{scope.row.violate_count}}</span>
+                      <p v-if="scope.row.violate_count">违约开始日期{{scope.row.expireTime | formatDate}}</p>
                   </template>
               </el-table-column>
               <el-table-column
@@ -80,7 +90,13 @@
                   align="center">
                   <template slot-scope="scope">
                       <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.billServiceAmout}}</span>
-
+                  </template>
+              </el-table-column>
+              <el-table-column
+                  label="实际结算金额"
+                  align="center">
+                  <template slot-scope="scope">
+                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.realPayTotal}}</span>
                   </template>
               </el-table-column>
               <el-table-column
@@ -122,7 +138,6 @@
               :pageSize="pageSize"
               :total="total">
           </Pagination>
-
       </div>
     </div>
   </div>
@@ -216,11 +231,16 @@ export default {
                     return "未发货";
                 case 1:
                     return "已发货";
-                case 2:
-                    return '仓库核实不通过';
+                // case 2:
+                //     return '仓库核实不通过';
+                // case 3:
+                //     return '仓库核实通过'
                 case 3:
-                    return '仓库核实通过'
+                    return '已逾期'
             }
+        },
+        formatDate(val){
+            return TimeForma2(val)
         }
     }
 };

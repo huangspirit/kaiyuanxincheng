@@ -32,7 +32,8 @@
       </div>
     </div>
     <!-- 全部品牌 -->
-    <div class="all-brands allWidth">
+    <div class="allWidth">
+        <div class="all-brands">
       <p class="tit">全部品牌</p>
       <!-- 品牌列表 -->
       <ul class="list" id="topList">
@@ -67,6 +68,7 @@
         </ul>
       </div>
     </div>
+    </div>
       <div class="leftSlide" :style="'height:'+screenHeight+'px'" :class="siderListShow?'siderActive':''">
           <div class="siderList bgGray">
               <ul>
@@ -80,7 +82,6 @@
               <p @click="toTop" class="toTop bgGray"><i class="el-icon-upload2"></i></p>
           </div>
       </div>
-
   </div>
 </template>
 <style lang="less" scoped>

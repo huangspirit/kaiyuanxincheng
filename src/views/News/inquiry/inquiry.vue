@@ -33,7 +33,7 @@
         data(){
             return{
                 currentPage:1,
-                pageSize:10,
+                pageSize:5,
                 list:[],
                 total:0
             }
@@ -81,65 +81,71 @@
     }
 </script>
 <style lang="less" scoped>
-.wrap{
-    position:relative;
-    min-height:400px;
-    .nocontent{
-        text-align: center;
-        font-size:18px;
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%,-50%);
-        color:#a6a6a6;
-    }
-    .item{
-        color:rgba(102,102,102,1);
-        margin-top:64px;
-        line-height:1;
-        .title{
-            .time{
-                color:rgba(153,153,153,1);
-                font-size:16px;
-            }
-            h3{
-                font-weight:600;
-                font-size:24px;
-                margin-bottom:28px;
-            }
-        }
-        .cont{
+    .wrap{
+        position:relative;
+        min-height:400px;
+        .nocontent{
+            text-align: center;
             font-size:18px;
-            display:flex;
-            justify-items: end;
-            .mes{
-                width:90%;
-                line-height:1.4;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            color:#a6a6a6;
+        }
+        .item{
+            color:rgba(102,102,102,1);
+            margin-top:15px;
+            line-height:1;
+            padding:20px;
+            background:#fff;
+            border-radius: 5px;
+            &:hover{
+                box-shadow: 0 0 2px 2px #ddd;
             }
-            .del{
-                height: 100%;
-                position: relative;
-                text-align: right;
-                flex:1;
-                img{
-                    cursor: pointer;
+            .title{
+                .time{
+                    color:rgba(153,153,153,1);
+                    font-size:16px;
+                }
+                h3{
+                    font-weight:600;
+                    font-size:18px;
+                    margin-bottom:28px;
                 }
             }
-            .btn{
-                height: 100%;
-                position: relative;
-                text-align: right;
-                flex:1;
-                a{
-                    font-size:18px;
-                    color:#009FF5;
-                    /*position: absolute;*/
-                    /*bottom:0;*/
-                    /*right:0;*/
-                    /*white-space: nowrap;*/
+            .cont{
+                font-size:14px;
+                display:flex;
+                justify-items: end;
+                .mes{
+                    width:90%;
+                    line-height:1.4;
+                }
+                .del{
+                    height: 100%;
+                    position: relative;
+                    text-align: right;
+                    flex:1;
+                    img{
+                        cursor: pointer;
+                    }
+                }
+                .btn{
+                    height: 100%;
+                    position: relative;
+                    text-align: right;
+                    flex:1;
+                    a{
+                        font-size:18px;
+                        color:#009FF5;
+                        /*position: absolute;*/
+                        /*bottom:0;*/
+                        /*right:0;*/
+                        /*white-space: nowrap;*/
+                    }
                 }
             }
         }
     }
-}
 </style>

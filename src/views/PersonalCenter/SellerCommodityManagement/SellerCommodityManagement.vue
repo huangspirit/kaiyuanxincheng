@@ -82,7 +82,7 @@
                 <td style="width:7%;" class="price">
                   <div class="desc">
                       <span>{{item.priceType ? '阶梯价' : '一口价'}}</span>
-                      <span>({{item.includBill ? '含税价' : '含税' }})</span>
+                      <span>({{item.includBill? '含税价' : '不含税' }})</span>
                   </div>
                   <p
                     v-if="!item.priceType"
@@ -141,9 +141,8 @@
                 <td style="width:10%;">
                   <div class="wrapbtn">
                       <span v-if="item.downButton" @click="OffShelfMerchandise(item)" class="btn undone">下架该商品</span>
-                      <span v-if="item.upButton" class="btn" @click="ReLaunchingCommodities(item)" >重新上架</span>
+                      <span v-if="item.upButton" class="btn bgColor" @click="ReLaunchingCommodities(item)" >重新上架</span>
                   </div>
-
                 </td>
               </tr>
             </table>

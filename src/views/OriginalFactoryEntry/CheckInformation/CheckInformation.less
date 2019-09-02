@@ -1,23 +1,38 @@
+
 .CheckInformation {
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   position: relative;
+  background: #fff;
+  .tit{
+    padding-top:30px;
+    .wrap{
+      display:flex;
+      border-bottom:1px solid #ddd;
+      padding-bottom:10px;
+    }
+    .text{
+      font-size:24px;
 
-  .title {
-    line-height: 70px;
-    border-bottom: 2px solid #0068db;
-    padding: 0 30px;
-
-    >span {
-      font-size: 28px;
-      color: #ff9900;
+      width:50%;
+    }
+    .ShoppingCart-steps{
+      flex:1;
+      /deep/.is-success{
+        color:#df3f2f;
+        border-color:#df3f2f;
+        .el-step__line{
+          background: #df3f2f;
+        }
+      }
+      /deep/.is-process{
+        color:#df3f2f;
+        border-color:#df3f2f;
+      }
     }
   }
-
   .el-dialog__header {
     background: #fff !important;
     color: #4A5A6A;
-
   }
 
   .el-upload--picture-card {

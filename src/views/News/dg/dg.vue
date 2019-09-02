@@ -33,7 +33,7 @@
         data(){
             return{
                 currentPage:1,
-                pageSize:10,
+                pageSize:5,
                 list:[],
                 total:0
             }
@@ -95,8 +95,14 @@
     }
     .item{
         color:rgba(102,102,102,1);
-        margin-top:64px;
+        margin-top:15px;
         line-height:1;
+        padding:20px;
+        background:#fff;
+        border-radius: 5px;
+        &:hover{
+            box-shadow: 0 0 2px 2px #ddd;
+        }
         .title{
             .time{
                 color:rgba(153,153,153,1);
@@ -104,12 +110,12 @@
             }
             h3{
                 font-weight:600;
-                font-size:24px;
+                font-size:18px;
                 margin-bottom:28px;
             }
         }
         .cont{
-            font-size:18px;
+            font-size:14px;
             display:flex;
             justify-items: end;
             .mes{

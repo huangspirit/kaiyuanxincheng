@@ -458,15 +458,15 @@ export default [
                     title: '订单管理',
                     parentname:"SellerCenter"
                 },
-                // children: [{
-                //     path: 'SellerOrderDetail',
-                //     name: 'SellerOrderDetail',
-                //     component: () => import('@/views/PersonalCenter/sellerOrderDetail'),
-                //     meta: {
-                //         requireAuth: true,
-                //         title: '卖家中心'
-                //     }
-                // }, ]
+                children: [{
+                    path: 'SellerOrderDetail',
+                    name: 'SellerOrderDetail',
+                    component: () => import('@/views/PersonalCenter/sellerOrderDetail'),
+                    meta: {
+                        requireAuth: true,
+                        title: '卖家中心'
+                    }
+                }, ]
             },
             // 卖家商品管理
             {

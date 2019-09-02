@@ -210,34 +210,48 @@ export default {
             this.init()
         },
       init(){
-          axios.request({...buyerOrderCenter.vipOrderBill,params:{
-              is_checkout: this.is_checkout,
-                  startTime:this.startTime,
-                  endTime:this.endTime,
-                  length:this.pageSize,
-                  start:this.start
-              }}).then(res=>{
-                  if(res){
-                      this.obj=res.data;
-                      this.total=res.data.list.total
-                  }
-          })
+            if(this.is_checkout){
+                //获取已结算的订单
+                axios.request({...buyerOrderCenter.queryOrderBillCheckList,params:{
+                        beginTime :this.startTime,
+                        endTime:this.endTime,
+                        length:this.pageSize,
+                        start:this.start
+                    }}).then(res=>{
+                    if(res){
+                        this.obj=res.data;
+                        this.total=res.data.list.total
+                    }
+                })
+            }else {
+                axios.request({...buyerOrderCenter.vipOrderBill,params:{
+                        is_checkout: 0,
+                        startTime:this.startTime,
+                        endTime:this.endTime,
+                        length:this.pageSize,
+                        start:this.start
+                    }}).then(res=>{
+                    if(res){
+                        this.obj=res.data;
+                        this.total=res.data.list.total
+                    }
+                })
+            }
+
       },
         jiesuan(k){
-            let obj = this.obj.list.data[k]
+            let obj = this.obj.list.data[k];
             this.sendData={
                 orderNo:obj.orderNo,
+                payRealTotal:obj.payRealTotal
             }
             this.showDialog=true;
         },
         handleAvatarSuccess(res, file) {
             if(res.resultCode =='200'){
-                this.$message({
-                    type:'success',
-                    message:'上传成功，等待审核'
-                })
-                this.showDialog=false;
+                this.sendData.imageUrl=res.data.name
                 axios.request({...buyerOrderCenter.vipOrderBillCheck,data:this.sendData}).then(res=>{
+                    this.showDialog=false;
                     this.currentPage=1;
                     this.init()
                 })
@@ -258,7 +272,7 @@ export default {
         requestUrl() {
             return (
                 baseURL +
-                `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.sendData.order_no}`
+                `api-order/customerCenter/uploadCustomerBillCenterBankTransfer?access_token=${this.access_token}&orderNo=${this.sendData.orderNo}`
             );
         },
     }

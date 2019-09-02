@@ -186,9 +186,9 @@
             label-width="150px"
             class="demo-ruleForm"
           >
-            <el-form-item label="PI单号" prop="namePI">
-              <el-input v-model="ruleFormPI.bi_no"></el-input>
-            </el-form-item>
+<!--            <el-form-item label="PI单号" prop="namePI">-->
+<!--              <el-input v-model="ruleFormPI.bi_no"></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item label="上传PI单号">
               <el-upload
                 class="avatar-uploader"
@@ -400,20 +400,20 @@ export default {
       centerDialogVisible: false,
       // PI单发货
       ruleFormPI: {
-        bi_no: "",
+      //  bi_no: "",
         bi_url: "",
         id: ""
       },
       rulesPI: {
-        namePI: [
-          { required: true, message: "请输入PI单号", trigger: "blur" },
-          {
-            min: 5,
-            max: 30,
-            message: "PI单号长度在5 到 30 个字符",
-            trigger: "blur"
-          }
-        ]
+        // namePI: [
+        //   { required: true, message: "请输入PI单号", trigger: "blur" },
+        //   {
+        //     min: 5,
+        //     max: 30,
+        //     message: "PI单号长度在5 到 30 个字符",
+        //     trigger: "blur"
+        //   }
+        // ]
       },
       // 更改交期
       ruleFormChangeDue: {

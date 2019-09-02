@@ -7,10 +7,6 @@
           <span>购物车</span>
           <!--          <span class="num">()</span>-->
         </span>
-        <!--        <div class="searchInput">-->
-        <!--            <i class="el-icon-search"></i>-->
-        <!--            <input type="text" placeholder="搜索商品">-->
-        <!--        </div>-->
       </div>
       <!-- 列表 -->
       <div class="ShoppingCart-list">
@@ -194,8 +190,8 @@
                         ></CountTime>
                         <p
                           style="text-align: center;"
-                          v-if="!item1.seller_always && !item1.expireTime"
-                        >活动已结束</p>
+                          v-if="!item1.isenable"
+                        >商品已下架</p>
                       </div>
                     </div>
                   </li>

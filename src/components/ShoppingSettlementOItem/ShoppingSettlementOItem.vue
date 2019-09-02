@@ -40,9 +40,9 @@
     <div class="foot">
       <div class="foot-r">
           <span>店铺合计：</span>
-            <span class="color" v-if="totalPrice">￥{{this.totalPrice}}</span>
+            <span class="color" v-if="totalPrice">￥{{this.totalPrice | toFixed(2)}}</span>
             <span class="color" v-if="unittotalPrice && totalPrice">&nbsp;+&nbsp;</span>
-            <span class="color" v-if="unittotalPrice">${{this.unittotalPrice}}</span>
+            <span class="color" v-if="unittotalPrice">${{this.unittotalPrice | toFixed(2)}}</span>
       </div>
     </div>
   </li>
@@ -65,9 +65,11 @@ export default {
   },
   filters: {
     TimeFormaTime(x) {
-
       return TimeForma(x);
-    }
+    },
+      toFixed(val,num){
+        return Number(val).toFixed(num)
+      },
   },
   mounted() {
       console.log(this.item)

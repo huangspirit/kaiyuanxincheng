@@ -85,7 +85,8 @@ export default {
         max-width:1200px;
         margin:0 auto;
         padding:0 30px;
-        width:80%;
+        width:100%;
+        box-sizing: border-box;
     }
 
     a{

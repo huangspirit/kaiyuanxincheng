@@ -4,10 +4,11 @@ const mutations = {
         state.loginState=data
     },
     PFROMATION(state,data) {
+
         state.proInformation = data
     },
     EDITAPPLY(state,data) {
-        
+
         state.applyDetailEdit = data
     }
 }

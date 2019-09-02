@@ -68,9 +68,11 @@ const buyerOrderCenter = {
         url:"api-order/customerCenter/vipOrderBill"
     },
     vipOrderBillCheck :{
-    url:"api-order/customerCenter/vipOrderBillCheck",
-        method:"post"
-}
+        url:"api-order/customerCenter/vipOrderBillCheck",method:"post"
+    },
+    queryOrderBillCheckList:{
+        url:"api-order/customerCenter/queryOrderBillCheckList"
+    }
 }
 const sellerOrderCenter = {
     querySellerCenterSummary:{

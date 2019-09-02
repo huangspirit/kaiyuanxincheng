@@ -9,11 +9,10 @@
             v-model="searchBrandValue"
             placeholder="请输入搜索品牌名称"
           ></el-input>
-
-          <div class="sure" @click="SureSelectBrand">确定</div>
-          <div class="cancel" @click="CancelSelectBrand">取消</div>
+          <div class="sure bgColor" @click="SureSelectBrand">确定</div>
+          <div class="cancel bgLightGray" @click="CancelSelectBrand">取消</div>
         </div>
-        <span class="text">请选择您是哪个品牌的原厂</span>
+        <span class="text" v-if="maxBrandNum==1">请选择您是哪个品牌的原厂</span>
       </div>
       <div class="selectBrand-tit-r">
         <span class="text">当前选择：</span>
@@ -40,7 +39,7 @@
           v-for="item in brandList"
           :key="item"
           @click="selectBrandTitle(item)"
-          :class="{active: item === selectBrandSearchTitle}"
+          :class="{bgColor: item === selectBrandSearchTitle}"
         >{{item}}</li>
       </ul>
     </div>

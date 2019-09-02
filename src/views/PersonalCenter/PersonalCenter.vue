@@ -36,49 +36,50 @@ export default {
                   show:'hidden',
                   title: "卖家中心",
                   name:"SellerCenter",
-                  index: "1_-1",
+                  index: "1_0",
                   path: "",
               },
             {
               title: "订单管理",
                 name:"SellerOrderManagement",
-              index: "1_0",
+              index: "1_1",
               path: "/PersonalCenter/SellerOrderManagement",
               icon: require("@/assets/image/PersonalCenter/u10006.png")
             },
             {
               title: "商品管理",
-              index: "1_1",
+              index: "1_2",
               path: "/PersonalCenter/SellerCommodityManagement",
               icon: require("@/assets/image/PersonalCenter/u37933.png")
             },
             {
               title: "发布商品",
-              index: "1_2",
+              index: "1_3",
               path: "/PersonalCenter/SellerIssuesProduct",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
             {
+                name:"inquiryList",
               title: "询价单列表",
-              index: "1_3",
+              index: "1_4",
               path: "/PersonalCenter/inquiryList",
               icon: require("@/assets/image/PersonalCenter/u28037.png")
             },
             {
               title: "发票管理",
-              index: "1_4",
+              index: "1_5",
               path: "/PersonalCenter/SellerInvoiceManagement",
               icon: require("@/assets/image/PersonalCenter/u38134.png")
             },
             {
               title: "账单中心",
-              index: "1_5",
+              index: "1_6",
               path: "/PersonalCenter/SellerBillCenter",
               icon: require("@/assets/image/PersonalCenter/u28045.png")
             },
             {
               title: "代理资质",
-              index: "1_6",
+              index: "1_7",
               path: "/PersonalCenter/AgencyQualification",
               icon: require("@/assets/image/PersonalCenter/u28045.png")
             }
@@ -95,42 +96,42 @@ export default {
               {
                   show:"hidden",
                   title: "买家中心",
-                  index: "2_-1",
+                  index: "2_0",
                   path: "/PersonalCenter/BuyerCenter1",
               },
             {
               title: "我的订单",
-              index: "2_0",
+              index: "2_1",
               path: "/PersonalCenter/BuyerOrderManagement",
               icon: require("@/assets/image/PersonalCenter/u10006.png")
             },
             {
               title: "关注的商品",
-              index: "2_1",
+              index: "2_2",
               path: "/PersonalCenter/CommoditiesInterest",
               icon: require("@/assets/image/PersonalCenter/u9664.png")
             },
             {
               title: "关注的商家",
-              index: "2_2",
+              index: "2_3",
               path: "/PersonalCenter/MerchantsConcerned",
               icon: require("@/assets/image/PersonalCenter/u37925.png")
             },
             {
               title: "账单中心",
-              index: "2_3",
+              index: "2_4",
               path: "/PersonalCenter/BuyerBillCenter",
               icon: require("@/assets/image/PersonalCenter/u28045.png"),
             },
             {
               title: "发票管理",
-              index: "2_4",
+              index: "2_5",
               path: "/PersonalCenter/BuyerInvoiceManagement",
               icon: require("@/assets/image/PersonalCenter/u38134.png")
             },
             {
               title: "申请月结",
-              index: "2_5",
+              index: "2_6",
               path: "/PersonalCenter/UpgradeLevel",
               icon: require("@/assets/image/PersonalCenter/u44756.png")
             }
@@ -147,20 +148,20 @@ export default {
               {
                   show:'hidden',
                   title: "个人中心",
-                  index: "3_-1",
+                  index: "3_0",
                   name:'PersonalCenter',
                   path: "/PersonalCenter",
                   icon: require("@/assets/image/PersonalCenter/u37960.png")
               },
             {
               title: "收货地址",
-              index: "3_0",
+              index: "3_1",
               path: "/PersonalCenter/ShippingAddress",
               icon: require("@/assets/image/PersonalCenter/u37960.png")
             },
               {
                     title: "申请进度查询",
-                    index: "3_1",
+                    index: "3_2",
                     path: "/PersonalCenter/GetVipApplyDetail",
                     icon: require("@/assets/image/PersonalCenter/u38134.png")
               }
@@ -207,7 +208,13 @@ export default {
           item.diabled = !UserInforma.userTagMap.seller;
           if(UserInforma.userTagMap.seller == true) {
             if(UserInforma.userTagMap.tag != 1) {
-                 item.children.splice(3,1)
+             //   item.children.splice(3,1)
+                item.children=item.children.map(item0=>{
+                    if(item0.name=='inquiryList'){
+                        item0.show="hidden"
+                    }
+                    return item0;
+                })
             }
           }
         }

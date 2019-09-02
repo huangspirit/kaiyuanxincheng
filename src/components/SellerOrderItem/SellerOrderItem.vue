@@ -136,19 +136,15 @@
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">订单进程</span>
             </el-popover>
           </td>
-
           <td style="width:17%" class="wrapbtn">
             <!-- <div v-if="item.diliver_place === '香港' ">
               <el-button class="default" v-if="item.diliverButon" @click="DeliverGoodsPI">发货</el-button>
             </div> -->
             <div>
-              <el-button class="default bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
-              <!-- <p v-if="!item.diliverBuuton" class="no-change">已发货</p> -->
-              <el-button class="default  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
-              <!-- <p v-if="!item.diliverBuuton" class="no-change">已更改交期</p> -->
-              <el-button class="default  bgColor" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
+              <el-button class="btn bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
+              <el-button class="btn  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
+              <el-button class="btn  bgColor" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
                 <slot name="detail"></slot>
-<!--             <el-button class="default" >订单明细</el-button>-->
             </div>
           </td>
         </tr>

@@ -1,10 +1,21 @@
 <template>
-  <div class="BasicInforma">
+  <div class="BasicInforma allWidth">
     <!-- 平台入驻的基本信息 -->
+
     <div class="BasicInforma-con">
-      <p class="title">
-        <span>基本信息</span>
-      </p>
+        <div class="tit">
+            <div class="wrap">
+                <div class="text">商家入驻</div>
+                <div class="ShoppingCart-steps">
+                    <el-steps :active="this.$store.state.OriginalFactoryEntry.active" align-center finish-status="success">
+                        <el-step title="基本信息" description></el-step>
+                        <el-step title="详细信息"></el-step>
+                        <el-step title="等待审核"></el-step>
+                        <el-step title="入驻成功"></el-step>
+                    </el-steps>
+                </div>
+            </div>
+        </div>
       <div>
         <!-- 选择品牌 -->
         <div class="selectbrandWrap" v-if="selectBrandFlag">
@@ -59,18 +70,16 @@
           <el-form-item label="联系人电话：" prop="contactphone">
             <el-input v-model="ruleForm.contactphone"></el-input>
           </el-form-item>
+            <div class="BasicInforma-footer">
+                <div @click="submitForm('ruleForm')" class="sure bgColor">
+                    确定，下一步
+                </div>
+            </div>
         </el-form>
-        <div class="BasicInforma-footer">
-          <div @click="submitForm('ruleForm')" class="sure">
-            确定，下一步
-            <img src="@/assets/image/OriginalFactoryEntry/u197170.png" alt />
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 //  import "@/assets/css/label-checkbox.less";
 import { mapState, mapActions, mapMutations } from "vuex";
@@ -196,6 +205,7 @@ export default {
         if (valid) {
           //将数据保存到store
           this.setJoinForm(this.ruleForm);
+          this.$store.state.OriginalFactoryEntry.active = 1;
           this.$router.push({
             path: "/OriginalFactoryEntry/CheckInformation",
             query: {
@@ -270,7 +280,7 @@ export default {
         this.residencetype = res[0].id;
       });
     });
-    this.$store.state.OriginalFactoryEntry.active = 1;
+    this.$store.state.OriginalFactoryEntry.active = 0;
     this.ruleForm = { ...this.joinForm, ...this.ruleForm };
     this.residencetype = this.ruleForm.residencetype;
     let addBrandName = this.$route.query;

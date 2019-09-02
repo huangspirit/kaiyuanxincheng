@@ -1,11 +1,21 @@
 <template>
   <div>
     <!-- 入驻信息 -->
-    <div class="CheckInformation">
+    <div class="CheckInformation allWidth">
       <div class="CheckInformation-con">
-        <p class="title">
-          <span>详细信息</span>
-        </p>
+          <div class="tit">
+              <div class="wrap">
+                  <div class="text">商家入驻</div>
+                  <div class="ShoppingCart-steps">
+                      <el-steps :active="this.$store.state.OriginalFactoryEntry.active" align-center finish-status="success">
+                          <el-step title="基本信息" description></el-step>
+                          <el-step title="详细信息"></el-step>
+                          <el-step title="等待审核"></el-step>
+                          <el-step title="入驻成功"></el-step>
+                      </el-steps>
+                  </div>
+              </div>
+          </div>
         <div v-if="$route.query.residencetype != '3'">
           <el-form
             :model="ruleForm"
@@ -708,7 +718,6 @@ export default {
     },
     // 身份证反面
     successUpload3(response) {
-      console.log(response);
       this.ruleForm.identitynegimg = response.data;
       this.$message({
         message: "上传成功!",
@@ -759,7 +768,6 @@ export default {
     } else {
       this.AgentListFlag = true;
     }
-    this.$store.state.OriginalFactoryEntry.active = 2;
     // this.ruleForm = Object.assign(this.joinForm,this.ruleForm);
     this.ruleForm = { ...this.ruleForm, ...this.joinForm };
     this.limitNum = this.ruleForm.brandName.length;

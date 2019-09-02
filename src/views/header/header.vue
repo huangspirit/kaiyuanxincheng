@@ -14,7 +14,11 @@
                     <router-link to="/Brand">原厂直供</router-link>
                     <router-link to="/order">订货拼单</router-link>
                     <router-link to="/oldGoods">呆料掘金</router-link>
-                    <router-link to="/OriginalFactoryEntry" v-if="!(UserInforma && UserInforma.userTagMap && UserInforma.userTagMap.seller)">商家入驻</router-link>
+
+                    <router-link to="/OriginalFactoryEntry"
+                                 v-if="!(UserInforma && UserInforma.userTagMap && UserInforma.userTagMap.seller)">
+                        商家入驻</router-link>
+
                     <!--                <router-link to="/Brand" v-if="loginState">品牌</router-link>-->
                 </div>
                 <div class="wrap ">

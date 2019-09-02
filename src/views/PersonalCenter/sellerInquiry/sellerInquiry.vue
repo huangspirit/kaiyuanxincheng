@@ -1,9 +1,13 @@
 <template>
-  <div id="inquiry">
-    <p class="topStep">
-      卖家中心 > 询价单列表 >
-      <span>{{title}}</span>
-    </p>
+  <div id="inquiry" class="inquiry">
+<!--    <p class="topStep">-->
+<!--      卖家中心 > 询价单列表 >-->
+<!--      <span>{{title}}</span>-->
+<!--    </p>-->
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item>询价单列表</el-breadcrumb-item>
+          <el-breadcrumb-item>{{title}}</el-breadcrumb-item>
+      </el-breadcrumb>
     <div class="inquiryContent">
       <div class="topTab">
         <ul>
@@ -11,7 +15,7 @@
             tag="li"
             v-for="(item,index) in tabData"
             :key="index"
-            active-class="active"
+            active-class="bgColor"
             :to="item.path"
             @click.native="tabShow(item.name)"
           >{{item.name}}</router-link>
@@ -164,7 +168,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#inquiry {
+.inquiry {
   min-height: 100%;
   .topStep {
     width: 100%;
@@ -188,20 +192,22 @@ export default {
     .topTab {
       > ul {
         width: 100%;
-        height: 46px;
-
+        height: 40px;
         > li {
           float: left;
           height: 100%;
           line-height: 46px;
-          margin-right: 50px;
-
           padding: 0 10px;
+            background: #a6a9ad;
+            margin-right:1px;
+            color:#fff!important;
+           cursor: pointer;
+            &:hover{
+                font-weight: bold;
+                background: #df3f2f;
+            }
         }
-        .active {
-          color: #fff;
-          background: #0068b7;
-        }
+
       }
     }
   }

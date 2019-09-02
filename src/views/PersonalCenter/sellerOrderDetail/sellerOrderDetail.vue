@@ -84,7 +84,7 @@ export default {
       currentObj: {},
       tableData: [],
       total: 0,
-      pageSize: 2,
+      pageSize:10,
       pageIndex: 1,
       startNum: 0
     };

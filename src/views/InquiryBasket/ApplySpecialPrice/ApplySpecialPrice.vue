@@ -2,7 +2,7 @@
   <!-- 申请特价 -->
   <div class="ApplySpecialPrice">
     <div class="wrapper">
-      <p class="tit">申请特价</p>
+<!--      <p class="tit">申请特价</p>-->
       <!-- 商品价格信息 -->
       <div class="special-price" v-if="topShow">
         <div class="product-msg">

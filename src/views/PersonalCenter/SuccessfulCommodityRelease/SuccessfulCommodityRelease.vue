@@ -1,49 +1,53 @@
 <template>
-  <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item to="/PersonalCenter/SellerIssuesProduct">发布商品</el-breadcrumb-item>
-    <el-breadcrumb-item>发布完成</el-breadcrumb-item>
-  </el-breadcrumb>
-  <div class="SuccessfulCommodityRelease">
     <!-- 等待审核 -->
     <div class="WaitingAudit">
-      <div class="WaitingAudit-con">
-        <p class="sp_1">
-          <span class="img_">
-            <img src="@/assets/image/OriginalFactoryEntry/u15735.png" alt>
-          </span>
-          <span>该商品已成功发布</span>
-        </p>
-        <p>该商品已成功发布，敬请期待用户采购！</p>
-        <p>您可在订单管理中查看销售情况，如有新进展，系统将以如下方式通知您</p>
-        <p>
-          <span>
-            <img src="@/assets/image/OriginalFactoryEntry/u15745.png" alt>
-            系统通知
-          </span>
-          <span>
-            <img src="@/assets/image/OriginalFactoryEntry/u15748.png" alt>
-            短信通知
-          </span>
-<!--          <router-link to="/PersonalCenter/RemindSet" tag="span" class="Open-immediate">立即开通</router-link>-->
-        </p>
-          <router-link to="/PersonalCenter/SellerIssuesProduct" tag="p" class="link">继续发布 >></router-link>
-        <router-link to="/PersonalCenter/SellerOrderManagement" tag="p" class="link">去往订单管理 >></router-link>
-        <router-link to="/PersonalCenter/SellerCommodityManagement" tag="p" class="link">去往商品管理 >></router-link>
-        <router-link to="/" tag="p" class="link">返回首页>></router-link>
-      </div>
+        <div class="WaitingAudit-con">
+            <img src="@/assets/image/icon/bgSuccess.png" alt="">
+            <p class="color title">发布成功！</p>
+            <div class="desc">
+                <span>该商品已成功发布，敬请期待用户采购！</span><br>
+                <span>您可在订单管理中查看销售情况，如有新进展，系统将会以短信和系统消息通知您</span>
+
+            </div>
+            <p class="color">
+                <router-link to="/PersonalCenter/SellerIssuesProduct" class="color">继续发布 >></router-link>
+            </p>
+            <p class="btnwrap">
+                <el-button class="bgColor"> <router-link to="/PersonalCenter/SellerOrderManagement" tag="p" class="link">前往订单管理</router-link></el-button>
+                <el-button class="bgColor"><router-link to="/PersonalCenter/SellerCommodityManagement" tag="p" class="link">前往商品管理</router-link></el-button>
+            </p>
+        </div>
     </div>
-  </div>
-  </div>
 </template>
-<style lang="less" scoped>
-@import './SuccessfulCommodityRelease.less';
-</style>
 
 <script>
 
-export default {
-  name: "SuccessfulCommodityRelease"
-};
+    export default {
+        name: "WaitingAudit",
+        mounted() {
+            this.$store.state.OriginalFactoryEntry.active = 3;
+        }
+    };
 </script>
+<style lang="less" scoped>
+    .WaitingAudit{
+        background: #fff;
+        text-align: center;
+        color:#333;
+        .WaitingAudit-con{
+            min-height:500px;
+            padding:50px 0;
+            .title{
+                padding:30px;
+                font-size:30px;
+            }
+            .desc{
+                margin-bottom:40px;
+            }
+            .btnwrap{
+                margin-top:100px;
+            }
+        }
+    }
+</style>
 

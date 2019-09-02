@@ -22,7 +22,6 @@ const actions = {
   }, data) {
     return new Promise((resolve, reject) => {
       FindBrand(data).then(res => {
-
         if (res.resultCode === '200') {
           resolve(res.data.data)
         }
@@ -55,7 +54,7 @@ const actions = {
           reject(res.message)
         }
       }).catch(err => {
-        
+
         reject(err)
       })
     })
