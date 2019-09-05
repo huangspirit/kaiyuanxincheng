@@ -1,16 +1,16 @@
 <template>
   <!-- 申请特价 -->
-  <div class="ApplySpecialPrice">
+  <div class="ApplySpecialPrice allWidth">
     <div class="wrapper">
 <!--      <p class="tit">申请特价</p>-->
       <!-- 商品价格信息 -->
       <div class="special-price" v-if="topShow">
         <div class="product-msg">
           <div class="product-msg-img">
-            <img v-if="oneData.imageUrl!='-'" :src="oneData.imageUrl" alt />
-            <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-            <span v-if="oneData.focus==false" class="attention">未关注</span>
-            <span v-if="oneData.focus==true" class="attention">已关注</span>
+            <ImgE :src="oneData.imageUrl" :W="100" :H="100"></ImgE>
+
+            <!-- <span v-if="oneData.focus==false" class="attention">未关注</span>
+            <span v-if="oneData.focus==true" class="attention">已关注</span> -->
           </div>
           <div class="product-msg-text">
             <p class="name">{{oneData.productno}}</p>
@@ -33,52 +33,30 @@
               >{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
             </p>
           </div>
-          <div v-if="oneData.factorySellerInfo.priceType== undefined " class="LadderPrice">
-            <p class="tit" style="text-align: center">原厂报价</p>
-            <div class="LadderPrice-list">
-              <p style="text-align: center">暂无原厂报价</p>
-            </div>
-          </div>
           <div
             class="LadderPrice"
-            v-if="oneData.factorySellerInfo.priceType!=undefined && oneData.factorySellerInfo.priceType"
+            v-if="oneData.factorySellerInfo && oneData.factorySellerInfo.seller_goods_id"
           >
             <p class="tit">原厂报价</p>
-            <div class="LadderPrice-list">
+            <div class="LadderPrice-list" v-if="oneData.factorySellerInfo.priceType || oneData.factorySellerInfo.price_type">
               <div v-for="(item, k) in oneData.factorySellerInfo.priceList" :key="k">
-                <span>{{item.num}}+</span>--------
-                <span>
-                  <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
-                  <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
-                  {{item.price}}
-                </span>
+                <span>{{item.num}}+ -----</span>
+                <span class="color">{{oneData.factorySellerInfo.priceunit?'$':'￥'}}{{item.price}}</span>
               </div>
             </div>
-          </div>
-          <div
-            v-if="oneData.factorySellerInfo.priceType!=undefined&&!oneData.factorySellerInfo.priceType"
-            class="LadderPrice"
-          >
-            <p class="tit" style="text-align: center">原厂报价</p>
-            <div class="LadderPrice-list">
-              <p style="text-align: center">
-                <span v-if="oneData.factorySellerInfo.priceunit ==true">$</span>
-                <span v-if="oneData.factorySellerInfo.priceunit ==false">￥</span>
-                {{oneData.factorySellerInfo.seckilPrice}}
-              </p>
+            <div v-else class="color">
+              <span>{{oneData.factorySellerInfo.priceunit?'$':'￥'}}</span>
+               <!-- <span v-if="oneData.factorySellerInfo.seckilPrice">{{oneData.factorySellerInfo.seckilPrice}}</span>  -->
+               <span v-if="oneData.factorySellerInfo.seckil_price">{{oneData.factorySellerInfo.seckil_price}}</span> 
             </div>
+          </div>
+          <div v-if="oneData.factorySellerInfo && !oneData.factorySellerInfo.seller_goods_id">
+            暂无原厂报价
           </div>
         </div>
         <div class="brans-msg">
-          <img v-if="oneData.brandImageUrl!='-'" :src="oneData.brandImageUrl" class="bd-img" alt />
-          <img
-            v-else
-            src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg"
-            class="bd-img"
-            alt
-          />
+          <ImgE :src="oneData.brandImageUrl" :W="100" :H="50"></ImgE>
           <p>{{oneData.brand}}</p>
-          <p></p>
         </div>
       </div>
       <!-- 申请信息 -->
@@ -184,33 +162,36 @@
                     <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                     <span
                       v-if="listItem.map.totalSeller != 0"
-                    >￥{{listItem.map.minPrice | pointTwo(listItem.map.minPrice)}} ------ ￥{{listItem.map.maxPrice | pointTwo(listItem.map.maxPrice)}}</span>
+                    >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
                   </p>
                 </div>
                 <div class="goodPrice">
                   <h3>原厂报价</h3>
-                  <div v-if="listItem.factorySellerInfo.priceType == undefined">
-                    <p style="text-align: center">暂无原厂报价</p>
+                  <div v-if="!listItem.factorySellerInfo.seller_goods_id">
+                    <p>暂无原厂报价</p>
                   </div>
                   <div
-                    v-if="listItem.factorySellerInfo.priceType!=undefined && listItem.factorySellerInfo.priceType==true"
+                    v-if="listItem.factorySellerInfo.seller_goods_id && (listItem.factorySellerInfo.priceType || listItem.factorySellerInfo.price_type)"
                     v-for="(subitem,index) in listItem.priceList"
                     :key="index"
+                    class="color"
                   >
                     <span>{{subitem.num}}+</span> -------
-                    <span>
-                      <span v-if="listItem.priceUnit ==true">$</span>
-                      <span v-if="listItem.priceUnit ==false">￥</span>
-                      {{subitem.price}}
+                    <span >
+                      <span v-if="listItem.priceUnit|| listItem.priceunit" >$</span>
+                      <span v-else >￥</span>
+                      <span>{{subitem.price}}</span>
                     </span>
                   </div>
                   <div
-                    v-if="listItem.factorySellerInfo.priceType!= undefined && listItem.factorySellerInfo.priceType==false"
+                    v-if="listItem.factorySellerInfo.seller_goods_id && !(listItem.factorySellerInfo.priceType || listItem.factorySellerInfo.price_type)"
                     :key="index"
+                    class="color"
                   >
-                    <span v-if="listItem.priceUnit ==true">$</span>
-                    <span v-if="listItem.priceUnit ==false">￥</span>
-                    {{listItem.seckilPrice}}
+                    <span v-if="listItem.priceUnit || listItem.priceunit">$</span>
+                    <span v-else>￥</span>
+                    <span v-if="listItem.factorySellerInfo.seckilPrice">{{listItem.factorySellerInfo.seckilPrice}}</span>
+                    <span v-if="listItem.factorySellerInfo.seckil_price">{{listItem.factorySellerInfo.seckil_price}}</span>
                   </div>
                 </div>
                 <div class="edit" style="width:350px;">
@@ -226,6 +207,7 @@
                         placeholder="请输入价格"
                         v-model="listItem.acceptPrice"
                         class="input-with-select"
+                        size="mini"
                       >
                         <span slot="prepend" v-if="listItem.priceType=='false'">￥</span>
                         <span slot="prepend" v-else>$</span>
@@ -246,6 +228,7 @@
                         @input="listChange"
                         v-model="listItem.projectEau"
                         class="input-with-select unit"
+                        size="mini"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="竞争型号" class="contact" prop="insteadNo">
@@ -254,12 +237,13 @@
                         :key="k"
                         placeholder="请输入竞争型号"
                         v-model="listItem.insteadData[k]"
+                        size="mini"
                       >
-                        <el-button
-                          slot="append"
-                          @click="deleteInsteadNo(k,true,listItem)"
-                          icon="el-icon-delete"
-                        ></el-button>
+<!--                        <el-button-->
+<!--                          slot="append"-->
+<!--                          @click="deleteInsteadNo(k,true,listItem)"-->
+<!--                          icon="el-icon-delete"-->
+<!--                        ></el-button>-->
                       </el-input>
                       <el-input
                         placeholder="请输入竞争型号"
@@ -285,17 +269,17 @@
       </div>
 
       <div class="submit">
-        <el-button class="submitBtn" type="primary" @click="commitSprice">提交特价申请信息</el-button>
+        <el-button class="submitBtn bgColor"  @click="commitSprice">提交特价申请信息</el-button>
         <p style="margin-bottom:20px">特价申请有效期将为6个月，您可以在询价篮产看状态</p>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+//import { mapGetters } from "vuex";
 import { axios, shoppingCar } from "@/api/apiObj";
 import { formatAllDate } from "@/lib/utils";
-import { type } from "os";
+//import { type } from "os";
 export default {
   name: "ApplySpecialPrice",
   data() {
@@ -355,14 +339,27 @@ export default {
       topShow: false,
       checked: true,
       productData: [],
-      oneData: []
+      oneData: [],
+        proInformation:""
     };
   },
   computed: {
-    ...mapGetters(["proInformation"])
+   // ...mapGetters(["proInformation"])
+
   },
+    created(){
+
+    },
+    destroyed(){
+        localStorage.removeItem("proInformation");
+        localStorage.removeItem("applyDetailEdit")
+    },
   mounted() {
-    if (this.proInformation.length) {
+      this.proInformation=JSON.parse(localStorage.getItem("proInformation"))
+      if(!this.proInformation){
+          return;
+      }
+    if (this.proInformation instanceof Array && this.proInformation.length) {
       this.topShow = false;
       for (var i = 0; i < this.proInformation.length; i++) {
         this.proInformation[i]["priceType"] = "false";
@@ -372,17 +369,21 @@ export default {
         this.proInformation[i]["insteadData"] = [];
       }
       this.productData = this.proInformation;
-      console.log(this.productData);
     } else {
       if (this.proInformation.goodsbaseIno) {
+        console.log(this.proInformation.goodsbaseIno)
         this.oneData = this.proInformation.goodsbaseIno;
         this.formAlign = this.proInformation;
-        this.formAlign.insteadData = this.proInformation.insteadNo.split("@");
+        if(this.proInformation.insteadNo){
+            this.formAlign.insteadData = this.proInformation.insteadNo.split("@");
+        }else{
+            this.formAlign.insteadData = [];
+        }
+
       } else {
         this.oneData = this.proInformation;
       }
       this.topShow = true;
-      console.log(this.oneData, this.formAlign, "8888888888888");
     }
   },
   methods: {
@@ -548,31 +549,45 @@ export default {
 
 <style lang="less" scoped >
 .moreInquiry {
-  float: left;
-  width: 100%;
-  > p {
-    width: 100%;
-    line-height: 80px;
+  &> p {
+    line-height: 60px;
     text-align: center;
-    font-size: 28px;
+    font-size: 22px;
     color: #999;
     margin-bottom: 20px;
     font-weight: bold;
     background-color: rgba(222, 227, 233, 1);
   }
 }
-.el-input-group__append {
-  width: 50px;
-  color: #999;
+/deep/.el-form-item{
+    margin-bottom:10px;
+    .el-form-item__label{
+        line-height:30px;
+    }
+    .el-form-item__content{
+        line-height: 30px;
+        input{
+            height:30px;
+            line-height:30px;
+        }
+       .el-input-group__prepend{
+            padding:0 10px;
+        }
+
+    }
 }
-.unit .el-input-group__append {
-  width: 10px;
-  color: #999;
+.acceptPrice{
+    /deep/.el-input-group__append{
+        font-size:12px;
+        width:30px;
+        input{
+            font-size:12px!important;
+        }
+    }
 }
 .purchaseAmount {
   position: relative;
   overflow: initial !important;
-  margin-bottom: 30px !important;
 }
 .purchaseAmount .desc {
   position: absolute;
@@ -581,13 +596,8 @@ export default {
   bottom: -18px;
   color: #ff9900;
 }
-.el-input__inner,
-.el-textarea__inner,
-.el-input-group__append,
-.el-input-group__prepend {
-  border-color: #999;
-  color: #999;
-}
+
+
 // 记住操作
 .keep {
   width: 100%;
@@ -627,18 +637,27 @@ export default {
     height: auto;
     .listContent {
       display: flex;
-      padding: 0 30px;
+      padding:30px;
       box-sizing: border-box;
+        background:#f5f5f5;
+        margin-bottom:15px;
+        border-bottom:1px solid #ddd;
+        &:hover{
+            box-shadow: 0 0 5px 2px #ddd;
+        }
       .goodsImg {
-        width: 240px;
+        width: 150px;
         margin-right: 34px;
+          display: flex;
+          align-items: center;
+          background: #fff;
         > div {
           &:nth-of-type(1) {
-            width: 166px;
-            height: 152px;
-            background: rgba(232, 232, 232, 1);
+            width: 100%;
+
+              text-align: center;
             > img {
-              width: 100%;
+              width: 90%;
             }
           }
           &:nth-of-type(2) {
@@ -657,13 +676,12 @@ export default {
       }
       .goodsDetail {
         display: flex;
-        border-bottom: 1px solid rgba(232, 232, 232, 1);
-        margin-bottom: 52px;
-        min-height: 210px;
-
+          flex:1;
         .googsDesc {
           width: 50%;
-          min-width: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           > h3 {
             font-size: 20px;
             font-family: PingFangSC-Semibold;
@@ -673,13 +691,11 @@ export default {
           > h4 {
             font-size: 18px;
             color: rgba(51, 51, 51, 1);
-            margin: 18px 0;
           }
           > p {
             &:nth-of-type(1) {
               font-size: 16px;
               color: rgba(153, 153, 153, 1);
-              margin: 16px 0;
             }
             &:nth-of-type(2) {
               > span {
@@ -697,10 +713,11 @@ export default {
           }
         }
         .goodPrice {
-          padding: 0 76px 0 50px;
           box-sizing: border-box;
           width: 26%;
-          min-width: 333px;
+            text-align: center;
+            white-space: nowrap;
+            padding:0 20px;
           > h3 {
             width: 100%;
             text-align: center;

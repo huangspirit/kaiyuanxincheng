@@ -56,7 +56,7 @@
               width="180">
                   <template slot-scope="scope">
                       <p><span  class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.totalPay}}</span> &nbsp;&nbsp; <span>/ &nbsp;&nbsp;{{scope.row.totalPayCount}}只</span></p>
-                      <p class="color">{{scope.row.clude_bill?'含税':'不含税'}} ，{{scope.row.support_bill?'商家开发票':'系统开发票'}}</p>
+                      <p class="color">{{!scope.row.priceunit?'含税':'不含税'}} ，{{scope.row.support_bill?'商家开发票':'系统开发票'}}</p>
                   </template>
               </el-table-column>
               <el-table-column

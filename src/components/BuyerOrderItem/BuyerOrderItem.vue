@@ -160,7 +160,7 @@
               </div>
               <div
                 class="wrapbtn"
-                v-if="item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
+                v-if="item.orderVo.isMonth && item.orderVo.payButton"
               >
                 <span @click="vipPayment" class="bgColor">全额付款</span>
               </div>
@@ -259,7 +259,7 @@
                   <p
                     class="num"
                   >{{value.priceunit ? '$' : '￥'}}{{value.good_price}}x{{value.goods_count}}</p>
-                  <p class="num">({{value.clude_bill ? '含税' : '不含税'}})</p>
+                  <p class="num">({{value.priceunit ? '不含税' : '含税'}})</p>
                 </td>
                 <td>
                   <p>{{value.diliver_place}}</p>

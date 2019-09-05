@@ -16,7 +16,6 @@
 <!--                    <h3 class="small"><img src="@/assets/image/index/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>-->
                 </el-carousel-item>
             </el-carousel>
-
         </div>
         <div class="banner">
             <!-- <p class="tit">用芯链接世界</p> -->
@@ -49,6 +48,9 @@
                 <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" @click="chipSellerGoodsDetal(item)">
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
+                    </span>
+                     <span class="mark" v-if="item.tag==2">
+                        <img src="@/assets/image/index/tag1.png" alt="">
                     </span>
                     <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
                     <div class="wrapImg" >
@@ -119,7 +121,7 @@
                         </div>
                     </div>
                         <ul class="originGoodsList fl">
-                            <li v-for="item in originGoodsList" @click="chipSellerGoodsDetal(item)">
+                            <li v-for="(item ,index) in originGoodsList" @click="chipSellerGoodsDetal(item)" :key="index">
                                 <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  >
                                 </ImgE>
                                 <div class="goodsInfo">
@@ -135,12 +137,12 @@
                                 <div class="price">
                                     <div>
                                         <ol v-if="item.priceType">
-                                            <li v-for="item0 in item.priceList" class="color">
-                                                {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{item.includBill?'含税':'不含税'}})
+                                            <li v-for="(item0,index0) in item.priceList" class="color" :key="index0">
+                                                {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{!item.priceUnit?'含税':'不含税'}})
                                             </li>
                                         </ol>
                                         <p class="color" v-if="!item.priceType">
-                                            {{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}({{item.includBill?'含税':'不含税'}})
+                                            {{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}({{!item.priceUnit?'含税':'不含税'}})
                                         </p>
 <!--                                        <p class="bgColor btn" @click="addCar(item)">加入购物车</p>-->
                                         <p class="bgColor btn">立即跟单</p>
@@ -170,7 +172,7 @@
                         <li class="item">购买</li>
                     </ul>
                     <ol>
-                        <li v-for="(item,k) in oldProductList"  @click="chipSellerGoodsDetal(item)"   >
+                        <li v-for="(item,k) in oldProductList"  @click="chipSellerGoodsDetal(item)"  :key="k" >
                             <p  :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
                             <div @click.stop="chipbrand(k)">{{item.brandName}}</div>
                             <div>{{item.goodsStockCount}}</div>
@@ -179,8 +181,8 @@
                                 <div v-if="item.priceType" class="stepPrice">
                                     {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price']}}&nbsp;<i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
                                     <ul class="priceList">
-                                        <li v-for="item0 in item.priceList">
-                                            {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{item.includBill?'含税':'不含税'}})
+                                        <li v-for="(item0,index0) in item.priceList" :key="index0">
+                                            {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{!item.priceUnit?'含税':'不含税'}})
                                         </li>
                                     </ul>
                                 </div>
@@ -251,7 +253,7 @@
                         产品分类
                     </p>
                     <ul>
-                        <li v-for="(item,k) in CatergoryList" :class="selected==k?'color active':''" @click="selected=k">
+                        <li v-for="(item,k) in CatergoryList" :class="selected==k?'color active':''" @click="selected=k" :key="k">
 <!--                            <span class="fr el-icon-arrow-right"></span>-->
 <!--                            <ImgE :src="item.imgUrl" :W="30" :H="30" class="fl"></ImgE>-->
                             <span>{{item.name}}</span>
@@ -260,7 +262,7 @@
                 </div>
                 <div class="prodclass-m">
                     <div class="fl wrap">
-                        <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)">{{item.name}}</a>
+                        <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)" :key="k">{{item.name}}</a>
                     </div>
                 </div>
                 <div class="prodclass-r bgColor">

@@ -1,21 +1,21 @@
 <template>
-  <div class="WaitInquiry">
+  <div class="WaitInquiry allWidth">
     <div class="tit">
       <span>询价篮</span>
-      <span class="more">更多申请特价技巧</span>
+<!--      <span class="more">更多申请特价技巧</span>-->
     </div>
     <!-- 搜索内容部分 -->
     <div class="waitContent">
-      <div class="inquiryTab">
+      <ul class="inquiryTab">
         <li>
-          <span @click="waitInquiry" :class="tabShow? 'active':'' ">待询价</span>
-          <span @click="alreadyInquiry" :class="!tabShow? 'active':''">已询价</span>
+          <span @click="waitInquiry" :class="tabShow? 'bgColor':'' ">待询价</span>
+          <span @click="alreadyInquiry" :class="!tabShow? 'bgColor':''">已询价</span>
         </li>
-        <li class="search">
-          <img src="@/assets/image/inquirybasket/u26.png" alt />
-          <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>
-        </li>
-      </div>
+<!--        <li class="search">-->
+<!--          <img src="@/assets/image/inquirybasket/u26.png" alt />-->
+<!--          <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>-->
+<!--        </li>-->
+      </ul>
       <router-view></router-view>
     </div>
   </div>
@@ -25,7 +25,7 @@
 import WaitInquiry from "../WaitInquiry";
 import AleadyInquiry from "../ApplySpecialPrice";
 import { axios, shoppingCar } from "@/api/apiObj";
-import "./Inquiry.less";
+//import "./Inquiry.less";
 export default {
   name: "Inquiry",
   data() {
@@ -87,54 +87,28 @@ export default {
 </script>
 <style lang="less" scoped>
 .WaitInquiry {
-  width: 100%;
-  min-width: 850px;
-  max-width: 1350px;
-  margin: 0 auto;
-  overflow: hidden;
-  background: #fff;
-
+    background:#fff;
   > .tit {
-    width: 100%;
-    padding: 54px 0 28px 0;
-    display: flex;
-    background: #f4f4f4;
-    box-sizing: border-box;
-    justify-content: space-between;
-    span {
-      font-size: 28px;
-      font-weight: 600;
-      color: rgba(77, 154, 243, 1);
-    }
-
-    .more {
-      font-size: 20px;
-      color: rgba(153, 153, 153, 1);
-    }
+        font-size:18px;
+      color:#333;
+      font-weight: bold;
+      padding:25px 0;
   }
   .waitContent {
-    padding-top: 60px;
-    min-height: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
     .inquiryTab {
-      display: flex;
-      padding: 0 42px;
-      justify-content: space-between;
-      padding-bottom: 22px;
-      border-bottom: 1px solid #e8e8e8;
       > li {
-        span {
-          font-size: 16px;
-          color: rgba(153, 153, 153, 1);
-          margin-right: 78px;
-        }
-        .active {
-          font-size: 20px;
-          font-family: PingFangSC-Medium;
-          font-weight: 500;
-          color: rgba(244, 86, 24, 1);
-        }
+        background:#f5f5f5;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          line-height:60px;
+          overflow: hidden;
+         &>span{
+             padding:0 30px;
+             cursor: pointer;
+             &:hover{
+                 font-weight: bold;
+             }
+         }
       }
       .search {
         width: 360px;

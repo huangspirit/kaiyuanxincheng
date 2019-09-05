@@ -5,28 +5,36 @@
       <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
-          <el-row class="content">
-            <el-col :span="4">
-              <div class="goodsImg">
+        <el-row class="content">
+            <el-col class="goodsImg">
                 <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-              </div>
             </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
+            <el-col class="goodsProdu">
                 <h3>{{listItem.goodsName}}</h3>
                 <p>
                   品牌：
                   <span>{{listItem.brandName}}</span>
                 </p>
                 <p>
-                  公司描述：
+                  描述：
                   <span>{{listItem.goodsDesc}}</span>
                 </p>
-              </div>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                    <countTime
+                        class="color"
+                        v-on:end_callback="getAllReplyList()"
+                        :startTime="listItem.currentTime"
+                        dayTxt="天"
+                        hourTxt="时"
+                        minutesTxt="分"
+                        secondsTxt="秒"
+                        :endTime="listItem.effectEndTime"
+                        :currentTime="listItem.currentTime"
+                    ></countTime>
+                </p>
             </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
+            <el-col class="googsDesc">
                 <h3>
                   申请价格：
                   <span>{{listItem.acceptUnit==true?'$':'￥'}}{{listItem.acceptPrice}}</span>
@@ -43,21 +51,26 @@
                   年采购量：
                   <span>{{listItem.projectEau}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.insteadNo && listItem.insteadNo!='@'">
                   竞争型号：
                   <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.remark">
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
-              </div>
+                <p v-if="listItem.sheetEffective != false">
+                  申请有效期至：
+                  <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
+                </p>
             </el-col>
-            <el-col :span="5" class="goodsStatus">
-              <div class="applyStatus">
+           <el-col class="goodsStatus" >
+             <div class="applyStatus">
                 <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
-              </div>
-            </el-col>
+                <p class="isApproved" v-if="listItem.sheetEffective == true&&listItem.replayStates == true">已批复</p>
+                <p class="noApproved" v-if="listItem.sheetEffective == true&&listItem.replayStates == false">未批复</p>
+             </div>
+           </el-col>
           </el-row>
         </li>
       </div>
@@ -151,83 +164,160 @@ export default {
     text-align: center;
   }
   > div {
-    margin: 20px 0;
+      margin-top:15px;
+       border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        overflow: hidden;
+      &:hover{
+          box-shadow: 0 0 2px 2px #ddd;
+        }
     .allQuiryTop {
-      width: 100%;
-      padding: 0 20px;
-      height: 60px;
-      line-height: 60px;
-      background-color: rgb(74, 90, 106);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      overflow: hidden;
-      box-sizing: border-box;
-      position: relative;
-      > span {
-        background: #cc0000;
-        transform: rotate(45deg);
-        width: 100px;
-        height: 50px;
-        line-height: 74px;
-        text-align: center;
-        position: absolute;
-        right: -37px;
-        bottom: 20px;
-      }
+      padding:10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background:#ddd;
     }
     .inquiryList {
       width: 100%;
       .listContent {
-        border: 1px solid #dee3e9;
-        padding: 10px;
-        margin-bottom: 15px;
+          background:#f5f5f5;
+          position: relative;
+          overflow: hidden;
+          /deep/.counttime {
+            .timeStr{
+              background: none;
+              padding:0;
+              color:#df3f2f;
+
+            }
+          }
         > .content {
-          border-bottom: 1px solid #dee3e9;
-          padding: 10px 0;
-          min-height: 150px;
-          // &:hover {
-          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          // }
+            display: flex!important;
+            padding:20px;
+            &>div{
+                &.goodsProdu{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+            }
         }
         > .applyContent {
-          padding: 10px 0;
-          // &:hover {
-          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          // }
+          padding: 20px;
+            display:flex;
+            border-top:5px solid #fff;
+            .goodsImg {
+                width: 200px;
+                > img {
+                    width: 150px;
+                  
+                }
+            }
         }
         .goodsImg {
           width: 200px;
           text-align: center;
+            background:#fff;
+            display: flex;align-items: center;
+            margin-right:15px;
           > img {
             width: 150px;
           }
         }
 
         .goodsProdu {
+          overflow: hidden;
+          position: relative;
+            display:flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size:16px;
           > h3 {
             color: #cc0000;
+            font-size: 18px;
           }
           > p {
             color: #000;
             width: 80%;
-            line-height: 30px;
             > span {
               color: #4a5a6a;
             }
           }
+          
+          .merchant {
+            .companyName {
+              font-weight: 700;
+              font-size: 18px;
+              color:#333;
+            }
+            .identify{
+              border-radius: 3px;
+              font-size:12px;
+              padding:2px 12px;
+              margin-top:5px;
+            }
+          }
         }
         .googsDesc {
+          position: relative;
+            font-size:14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           h3 {
             color: #4a5a6a;
             > span {
               color: #cc0000;
             }
           }
+          .priceLevelTitle {
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            color: #4a5a6a;
+            text-align: right;
+            > span {
+              color: #cc0000;
+            }
+            > .priceLevelStyle {
+              position: absolute;
+              right: 0;
+              top: 34px;
+              > div {
+                display: flex;
+                justify-content: space-between;
+                > span {
+                  min-width: 38px;
+                  text-align: left;
+                  color: #cc0000;
+                }
+              }
+            }
+          }
           p {
             color: #4a5a6a;
             > span {
               color: #000;
+            }
+          }
+        }
+        .goodPrice {
+          height: 170px;
+          position: relative;
+          > div {
+            color: #4a5a6a;
+            > span {
+              color: #000;
+            }
+            p {
+              width: 155px;
+              background-color: rgba(74, 90, 106, 1);
+              font-size: 20px;
+              padding: 5px 0;
+              color: #fff;
+              text-align: center;
+              margin-top: 15px;
+              margin-left: 30%;
             }
           }
         }

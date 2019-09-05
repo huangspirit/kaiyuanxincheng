@@ -8,7 +8,15 @@
         label-width="180px"
         class="form-list"
       >
-        <el-form-item label="交货地：">
+      <el-form-item label="器件状态:">
+          <el-radio-group v-model="ruleForm.goods_type" class="defaultradioSquare">
+            <el-radio :label="true" :value="true">现货</el-radio>
+            <el-radio :label="false" :value="false">订货</el-radio>
+          </el-radio-group>
+          <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单两天内发货</p>
+          <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
+        </el-form-item>
+        <el-form-item label="交货地点：">
           <el-select v-model="ruleForm.diliver_place" placeholder="请选择交货地">
             <el-option
               :value="item.name"
@@ -17,21 +25,7 @@
             >{{item.name}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品价格是否含税:">
-          <el-radio-group v-model="ruleForm.clude_bill" class="defaultradioSquare">
-            <el-radio :label="true" :value="true">含税</el-radio>
-            <el-radio :label="false" :value="false">不含税</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="货物类型:">
-          <el-radio-group v-model="ruleForm.goods_type" class="defaultradioSquare">
-            <el-radio :label="true" :value="true">现货</el-radio>
-            <el-radio :label="false" :value="false">期货</el-radio>
-          </el-radio-group>
-          <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单两天内发货</p>
-          <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
-        </el-form-item>
-
+       
         <el-form-item label="出价方式:">
           <el-radio-group v-model="ruleForm.price_type" class="defaultradioSquare">
             <el-radio :label="true" :value="true" v-if="ruleForm.goods_type">阶梯价</el-radio>
@@ -41,6 +35,18 @@
           <div class="form-item" v-if="ruleForm.price_type">
             <!-- v-for="(item, k) in SteppedPriceList" :key="k" -->
             <div class="stepped-price" v-for="(item,k) in SteppedPriceListlength" :key="k">
+              <div class="steppedItem">
+                <label for>数量：</label>
+                <el-input
+                  @input="changeNum(k)"
+                  :placeholder="SteppedPriceListobj['placeholdernum'+k]"
+                  :name="k"
+                  v-model="SteppedPriceListobj['num'+k]"
+                  type="number"
+                  :min="SteppedPriceListobj['minnum'+k]"
+                  @blur="numblur($event)"
+                ></el-input>
+              </div>
               <div class="steppedItem">
                 <label for>价格：</label>
                 <el-input
@@ -54,58 +60,44 @@
                 >
                   <template slot="prepend">{{priceunitMark}}</template>
                 </el-input>
-              </div>
-              <div class="steppedItem">
-                <label for>数量：</label>
-                <el-input
-                  @input="changeNum(k)"
-                  :placeholder="SteppedPriceListobj['placeholdernum'+k]"
-                  :name="k"
-                  v-model="SteppedPriceListobj['num'+k]"
-                  type="number"
-                  :min="SteppedPriceListobj['minnum'+k]"
-                  @blur="numblur($event)"
-                ></el-input>
+                 <strong v-if="SteppedPriceListobj['price'+k] && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{SteppedPriceListobj['price'+k] | addPriceFilter}}</strong>
               </div>
             </div>
             <div class="add-stepped-price">
-              <p v-if="SteppedPriceListlength === 3" style="color:#ff6600">最多添加三个阶梯价格</p>
+              <p v-if="SteppedPriceListlength === 3" class="color">最多添加三个阶梯价格</p>
               <span @click="resetSteppedPrice" class="reset">重置阶梯价格</span>
             </div>
           </div>
         </el-form-item>
-
+ <el-form-item label="是否含税价:" v-if="priceunitMark!='$'">
+          <el-radio-group v-model="ruleForm.clude_bill" class="defaultradioSquare">
+            <el-radio :label="true" :value="true">含税</el-radio>
+            <el-radio :label="false" :value="false">不含税</el-radio>
+          </el-radio-group>
+          <p class="desc" v-if="ruleForm.clude_bill">提示：含13%增值税，需要您开具增值税专用发票</p>
+          <p class="desc" v-if="!ruleForm.clude_bill">重要提示：若为不含税价，则用户看到的商品价格会在您发布的价格上加价17%</p>
+        </el-form-item>
         <el-form-item label="价格：" prop="seckil_price" v-if="ruleForm.price_type === false">
-          <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" :min="0"></el-input>
+          <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" :min="0" style="width:50%"></el-input>
+          <strong v-if="ruleForm.seckil_price && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{ruleForm.seckil_price | addPriceFilter}}</strong>
         </el-form-item>
-        <el-form-item label="币种：">
-          <el-input v-model="priceunit" disabled>{{ruleForm.priceunit ? '$美元' : '￥人民币'}}</el-input>
+        
+       <el-form-item label="最小订购量MOQ：" prop="moq">
+            <el-input v-model="ruleForm.moq" placeholder="此数量为用户可买的最小数量" style="width:50%">
+                <template slot="append">只</template>
+            </el-input>
         </el-form-item>
-        <div class="setitem">
-          <label class="fl label">
-            <span class="requireMark">*</span>
-            MOQ：
-            <p class="desc">(最小装货量)</p>
-          </label>
-          <el-form-item prop="moq">
-            <el-input v-model="ruleForm.moq" placeholder></el-input>
-          </el-form-item>
-        </div>
-        <div class="setitem">
-          <label class="fl label">
-            <span class="requireMark">*</span>
-            MPQ：
-            <p class="desc">(最小订购量)</p>
-          </label>
-          <el-form-item prop="mpq">
-            <el-input v-model="ruleForm.mpq" placeholder></el-input>
-          </el-form-item>
-        </div>
-
-        <el-form-item label="数量（库存）：" prop="stock_count">
-          <el-input v-model="ruleForm.stock_count" @input="changeStockCount"></el-input>
+        <el-form-item label="最小增量MPQ：" prop="mpq">
+            <el-input v-model="ruleForm.mpq" placeholder="客户只能购买这个数量的整数倍+最小订购量" style="width:50%">
+                <template slot="append">只</template>
+            </el-input>
         </el-form-item>
-
+        <el-form-item label="可卖数量：" prop="stock_count">
+            <el-input v-model="ruleForm.stock_count" @input="changeStockCount" placeholder="请发布真实可卖数量" style="width:50%">
+                <template slot="append">只</template>
+            </el-input>
+            <p class="small" style="color:#ff6600" v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
+        </el-form-item>
         <el-form-item label="价格有效期至" prop="stock_count">
           <el-select v-model="ruleForm.effectiveValue" placeholder="请选择">
             <el-option
@@ -126,7 +118,6 @@
               :value="item.value"
             ></el-option>
           </el-select>
-
            <el-select v-if="!ruleForm.goods_type" v-model="ruleForm.complete_date" placeholder="请选择">
             <el-option
               v-for="item in futuresDate"
@@ -248,6 +239,8 @@ export default {
           label: "七周"
         }
       ],
+      //个人信誉
+      SellerCredit:{},
       //可设置库存
       selectedPrice: 0,
       // 币种
@@ -351,7 +344,10 @@ export default {
   filters: {
     toFixed(val, length) {
       return Number(val).toFixed(length);
-    }
+    }, 
+    addPriceFilter(val){
+                return (Number(val)*1.13).toFixed(2)
+            },
   },
   computed: {
     needCredit() {
@@ -370,8 +366,8 @@ export default {
     // 发货地发生变化
     "ruleForm.diliver_place": {
       handler() {
-        console.log("// 发货地发生变化");
         if (this.ruleForm.diliver_place === "香港") {
+          this.exchange=this.SellerCredit.exchange
           this.ruleForm.clude_bill = false;
           this.priceunit = "$美元";
           this.priceunitMark = "$";
@@ -394,6 +390,9 @@ export default {
     }
   },
   mounted() {
+    this.querySellerCredit().then(res=>{
+                this.SellerCredit=res
+            });
     this.GetSearchDataSelect({
       access_token: this.access_token,
       distinguish: "3",
@@ -408,7 +407,10 @@ export default {
       });
   },
   methods: {
-    ...mapActions("SellerIssuesProduct", ["GetSearchDataSelect"]),
+    ...mapActions("SellerIssuesProduct", [
+      "GetSearchDataSelect",
+      "querySellerCredit"]
+      ),
     cancel() {
       this.dialogVisible = false;
       this.$emit("dialogVisibleClose", false);

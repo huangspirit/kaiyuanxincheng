@@ -32,13 +32,7 @@ export default {
           icon: require("@/assets/image/PersonalCenter/u37925.png"),
           diabled: true,
           children: [
-              {
-                  show:'hidden',
-                  title: "卖家中心",
-                  name:"SellerCenter",
-                  index: "1_0",
-                  path: "",
-              },
+            
             {
               title: "订单管理",
                 name:"SellerOrderManagement",
@@ -93,12 +87,6 @@ export default {
           path: "/PersonalCenter/BuyerCenter",
           icon: require("@/assets/image/PersonalCenter/u9664.png"),
           children: [
-              {
-                  show:"hidden",
-                  title: "买家中心",
-                  index: "2_0",
-                  path: "/PersonalCenter/BuyerCenter1",
-              },
             {
               title: "我的订单",
               index: "2_1",
@@ -145,14 +133,7 @@ export default {
             name:"PersonalCenter",
           icon: require("@/assets/image/PersonalCenter/u1874.png"),
           children: [
-              {
-                  show:'hidden',
-                  title: "个人中心",
-                  index: "3_0",
-                  name:'PersonalCenter',
-                  path: "/PersonalCenter",
-                  icon: require("@/assets/image/PersonalCenter/u37960.png")
-              },
+             
             {
               title: "收货地址",
               index: "3_1",
@@ -222,8 +203,7 @@ export default {
           if(!UserInforma.userTagMap.vip) {
               item.children= item.children.map(item0=>{
                   if(item0.title=='账单中心'){
-                      console.log(item0)
-                        item0.show="hidden"
+                      item0.show="hidden"
                   }
                   return item0;
               })

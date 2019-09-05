@@ -3,30 +3,38 @@
     <p v-if="allInquiryData.length<=0">暂无数据</p>
     <div v-for="(item,index) in allInquiryData" :key="index">
       <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
-      <div class="inquiryList">
+      <ul class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
-            <el-col :span="4">
-              <div class="goodsImg">
+            <el-col class="goodsImg">
                 <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-              </div>
             </el-col>
-            <el-col :span="7">
-              <div class="goodsProdu">
+            <el-col class="goodsProdu">
                 <h3>{{listItem.goodsName}}</h3>
                 <p>
                   品牌：
                   <span>{{listItem.brandName}}</span>
                 </p>
                 <p>
-                  公司描述：
+                  描述：
                   <span>{{listItem.goodsDesc}}</span>
                 </p>
-              </div>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                    <countTime
+                        class="color"
+                        v-on:end_callback="getAllReplyList()"
+                        :startTime="listItem.currentTime"
+                        dayTxt="天"
+                        hourTxt="时"
+                        minutesTxt="分"
+                        secondsTxt="秒"
+                        :endTime="listItem.effectEndTime"
+                        :currentTime="listItem.currentTime"
+                    ></countTime>
+                </p>
             </el-col>
-            <el-col :span="8">
-              <div class="googsDesc">
+            <el-col class="googsDesc">
                 <h3>
                   申请价格：
                   <span>{{listItem.acceptUnit==true?'$':'￥'}}{{listItem.acceptPrice}}</span>
@@ -43,11 +51,11 @@
                   年采购量：
                   <span>{{listItem.projectEau}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.insteadNo && listItem.insteadNo!='@'">
                   竞争型号：
                   <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.remark">
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
@@ -55,95 +63,40 @@
                   申请有效期至：
                   <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
                 </p>
-                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
-                  <countTime
-                    v-on:end_callback="getAllReplyList()"
-                    :startTime="listItem.currentTime"
-                    dayTxt="天"
-                    hourTxt="时"
-                    minutesTxt="分"
-                    secondsTxt="秒"
-                    :endTime="listItem.effectEndTime"
-                    :currentTime="listItem.currentTime"
-                  ></countTime>
-                </p>
-              </div>
             </el-col>
-            <el-col :span="5" class="goodsStatus">
-              <div class="applyStatus">
+           <el-col class="goodsStatus" >
+             <div class="applyStatus">
                 <p class="failure" v-if="listItem.sheetEffective != true">已失效</p>
-                <p
-                  class="isApproved"
-                  v-if="listItem.sheetEffective == true&&listItem.replayStates == true"
-                >已批复</p>
-                <p
-                  class="noApproved"
-                  v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
-                >未批复</p>
-              </div>
-            </el-col>
+                <p class="isApproved" v-if="listItem.sheetEffective == true&&listItem.replayStates == true">已批复</p>
+                <p class="noApproved" v-if="listItem.sheetEffective == true&&listItem.replayStates == false">未批复</p>
+             </div>
+           </el-col>
           </el-row>
           <el-row
             v-if="listItem.replayStates == true&&listItem.sheetEffective == true"
             class="applyContent"
           >
-            <el-col :span="4">
-              <div class="goodsImg">
+            <el-col class="goodsImg">
                 <img
                   v-if="listItem.sellerInfoMap.headImgUrl!='-'"
                   :src="listItem.sellerInfoMap.headImgUrl"
                   alt
                 />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-              </div>
             </el-col>
-            <el-col :span="7">
-              <div class="goodsProdu">
-                <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span>
+            <el-col class="goodsProdu">
                 <div class="merchant">
-                  <span v-if="listItem.sellerInfoMap.tag == 1">原厂商户</span>
-                  <span v-if="listItem.sellerInfoMap.tag != 1">认证商户</span>
+                  <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span><br>
+                    <span class="bgColor identify">{{listItem.sellerInfoMap.tag | filterTag}}</span>
                 </div>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="googsDesc">
-                <h3 class="priceLevelTitle" v-if="listItem.priceType">
-                  批复价格：
-                  <div class="priceLevelStyle">
-                    <div v-for="(item,index) in listItem.priceLevel.split('@')">
-                      <span>{{item.split('-')[0]}}+</span> --- &nbsp;&nbsp;
-                      <span>${{item.split('-')[1]}}</span>
-                    </div>
-                  </div>
-                </h3>
-                <h3 v-if="!listItem.priceType">
-                  批复价格：
-                  <span>￥{{listItem.seckilPrice}}</span>
-                </h3>
                 <p>
-                  回复日期：
-                  <span>{{listItem.replyTime | formatDate(listItem.projectBeginTime)}}</span>
+                    回复日期：
+                    <span>{{listItem.replyTime | formatDate(listItem.projectBeginTime)}}</span>
                 </p>
-                <p>
-                  MOQ：
-                  <span>{{listItem.moq}}</span>
-                </p>
-                <p>
-                  MPQ：
-                  <span>{{listItem.mpq}}</span>
-                </p>
-                <p>
-                  交付周期：
-                  <span>{{listItem.priceIntervalDay}}</span>
-                </p>
-                <p>
-                  价格有效期至：
-                  <span>{{listItem.priceExpireTime | formatDate(listItem.priceExpireTime)}}</span>
-                </p>
-                <p>
+                 <p>
                   <countTime
                     v-on:end_callback="getAllReplyList()"
+                    class="color"
                     :startTime="listItem.currentTime"
                     dayTxt="天"
                     hourTxt="时"
@@ -153,18 +106,50 @@
                     :currentTime="listItem.currentTime"
                   ></countTime>
                 </p>
-              </div>
+                
             </el-col>
-            <el-col :span="5" class="goodPrice">
-              <div>
-                <p @click="purchase(listItem,item)">立即采购</p>
-                <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="purshase"></purChase>
-                <p @click="againSpecial(listItem,item)">重新申请</p>
+            <el-col class="googsDesc">
+                <h3 class="priceLevelTitle" v-if="listItem.priceType">
+                  批复价格：
+                  <div class="priceLevelStyle">
+                    <div v-for="(item,index) in listItem.priceLevel.split('@')" :key="index">
+                      <span>{{item.split('-')[0]}}+</span> --- &nbsp;&nbsp;
+                      <span>${{item.split('-')[1]}}</span>
+                    </div>
+                  </div>
+                </h3>
+                <h3 v-if="!listItem.priceType">
+                  批复价格：
+                  <span>￥{{listItem.seckilPrice}}</span>
+                </h3>
+
+                <p>
+                  MOQ：
+                  <span>{{listItem.moq}}</span>
+                   &nbsp;&nbsp; MPQ：
+                    <span>{{listItem.mpq}}</span>
+                </p>
+                <p>
+                  交付周期：
+                  <span>{{listItem.priceIntervalDay}}天</span>
+                </p>
+                <p>
+                  价格有效期至：
+                  <span>{{listItem.priceExpireTime | formatDate(listItem.priceExpireTime)}}</span>
+                </p>
+               
+            </el-col>
+            <el-col class="goodsStatus">
+              <div class="applyStatus">
+                 <el-button @click="againSpecial(listItem,item)" class="bgColor" size="mini">重新申请</el-button><br><br>
+                    <el-button @click="purchase(listItem,item)" class="bgColor" size="mini">立即采购</el-button>
               </div>
+                    <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="purshase"></purChase>
+
             </el-col>
           </el-row>
         </li>
-      </div>
+      </ul>
     </div>
     <div class="Pagination" v-if="allInquiryData.length>0">
       <!-- 分页 -->
@@ -187,7 +172,7 @@ import { axios, siderInquiryList } from "@/api/apiObj";
 import purChase from "@/components/purchase";
 import { ladderPrice } from "@/lib/utils";
 import "@/lib/filters";
-import "./AlreadyInquiry.less";
+
 export default {
   data() {
     return {
@@ -219,8 +204,17 @@ export default {
   },
   computed: {},
   filters: {
+      filterTag(val){
+          switch (val) {
+              case 1:
+                  return "原厂";
+              case 2:
+                  return "代理商";
+              case 3:
+                  return "普通商家"
+          }
+      },
     insteadFilter(val) {
-      console.log(val);
       return val.split("@");
     }
   },
@@ -267,7 +261,7 @@ export default {
       var levelPrice = ladderPrice(val.priceLevel);
       var obj = {
         goods_id: val.requestId,
-        goods_name: val.goods_name,
+        goods_name: val.goodsName,
         goodsDesc: val.goodsDesc,
         goodsImage: val.goodsImage,
         clude_bill: val.cludeBill,
@@ -301,8 +295,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+   @import "./AlreadyInquiry.less";
 .allQuiryList {
-  width: 100%;
   > p {
     width: 100%;
     min-height: 600px;
@@ -310,43 +304,61 @@ export default {
     text-align: center;
   }
   > div {
-    margin: 20px 0;
+      margin-top:15px;
+      border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        overflow: hidden;
+      &:hover{
+          box-shadow: 0 0 2px 2px #ddd;
+        }
     .allQuiryTop {
-      width: 100%;
-      padding: 0 20px;
-      height: 60px;
-      line-height: 60px;
-      background-color: rgb(74, 90, 106);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      overflow: hidden;
-      position: relative;
-      box-sizing: border-box;
+      padding:10px;
+        
+        background:#ddd;
     }
     .inquiryList {
       width: 100%;
       .listContent {
-        border: 1px solid #dee3e9;
-        padding: 10px;
-        margin-bottom: 15px;
+          background:#f5f5f5;
+          position: relative;
+          overflow: hidden;
+          /deep/.counttime {
+            .timeStr{
+              background: none;
+              padding:0;
+              color:#df3f2f;
+
+            }
+          }
         > .content {
-          border-bottom: 1px solid #dee3e9;
-          padding: 10px 0;
-          min-height: 150px;
-          // &:hover {
-          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          // }
+            display: flex!important;
+            padding:20px;
+            &>div{
+                &.goodsProdu{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+            }
         }
         > .applyContent {
-          padding: 15px 0;
-          // &:hover {
-          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          // }
+          padding: 20px;
+            display:flex;
+            border-top:5px solid #fff;
+            .goodsImg {
+                width: 200px;
+                > img {
+                    width: 150px;
+                  
+                }
+            }
         }
         .goodsImg {
           width: 200px;
           text-align: center;
+            background:#fff;
+            display: flex;align-items: center;
+            margin-right:15px;
           > img {
             width: 150px;
           }
@@ -355,56 +367,42 @@ export default {
         .goodsProdu {
           overflow: hidden;
           position: relative;
+            display:flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size:16px;
           > h3 {
             color: #cc0000;
-            margin-top: 30px;
-            font-size: 28px;
+            font-size: 18px;
           }
           > p {
             color: #000;
             width: 80%;
-            line-height: 35px;
             > span {
               color: #4a5a6a;
             }
           }
-          .companyName {
-            color: #cc0000;
-            font-weight: 700;
-            margin-top: 20px;
-            font-size: 28px;
-            display: inline-block;
-          }
+          
           .merchant {
-            position: absolute;
-            top: 26px;
-            right: 55px;
-            span {
-              &:nth-of-type(1) {
-                font-size: 12px;
-                font-weight: normal;
-                background-color: rgba(255, 102, 0, 1);
-                padding: 5px 10px;
-                border-radius: 5px;
-                margin-left: 20px;
-                color: #fff;
-                display: inline-block;
-              }
-              &:nth-of-type(2) {
-                font-size: 12px;
-                font-weight: normal;
-                background-color: rgba(13, 152, 255, 1);
-                padding: 5px 10px;
-                border-radius: 5px;
-                margin-left: 20px;
-                color: #fff;
-                display: inline-block;
-              }
+            .companyName {
+              font-weight: 700;
+              font-size: 18px;
+              color:#333;
+            }
+            .identify{
+              border-radius: 3px;
+              font-size:12px;
+              padding:2px 12px;
+              margin-top:5px;
             }
           }
         }
         .googsDesc {
           position: relative;
+            font-size:14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           h3 {
             color: #4a5a6a;
             > span {
@@ -462,6 +460,7 @@ export default {
             }
           }
         }
+        
       }
     }
   }

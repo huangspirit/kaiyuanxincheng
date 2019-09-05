@@ -110,16 +110,15 @@
           <td>预计交期</td>
           <td rowspan="3" v-if="!item.priceType">
             <p>{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</p>
-            {{item.priceType ? '阶梯价' : "一口价"}}({{item.includBill ? '含税' : "不含税"}})
+            {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含税' : "不含税"}})
           </td>
           <td rowspan="3" v-else>
             <div>
-              {{item.priceType ? '阶梯价' : "一口价"}}({{item.includBill ? '含税' : "不含税"}})
+              {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含税' : "不含税"}})
               <ul class="priceLevel">
                 <li v-for="val in priceLevel" :key="val[0]">
                   <span>{{val[0]}}</span>
                   <span class="num">{{item.priceUnit ? '$' : '￥'}}{{val[1]}}</span>
-                  <!-- <span>({{item.includBill ? '含税' : "不含税"}})</span> -->
                 </li>
               </ul>
             </div>

@@ -1,10 +1,23 @@
 <template>
   <div class="Login" :style="`height:${this.contHeight}px`">
+      <div class="carousel">
+          <el-carousel :interval="5000" height="100%" :loop="true">
+              <el-carousel-item>
+                  <img src="@/assets/image/Login/bg0.jpg" alt="">
+              </el-carousel-item>
+              <el-carousel-item>
+                 <img src="@/assets/image/Login/bg1.jpg" alt="">
+              </el-carousel-item>
+              <el-carousel-item>
+                  <img src="@/assets/image/Login/bg.jpg" alt="">
+              </el-carousel-item>
+          </el-carousel>
+      </div>
     <div v-if="!dialogVisible" class="cont">
-        <div class="formWrap" v-if="loginFlag">
-            <div class="form" >
+        <div class="formWrap allWidth clear" v-if="loginFlag">
+            <div class="form fr" >
                 <p class="type">
-                    <span @click="change(1)" class="color">手机免密登陆</span>
+                    <span @click="change(1)">手机免密登陆</span>
                 </p>
                 <div class="form-con">
                     <div class="form-con-list" v-if="flag === 1">
@@ -16,7 +29,7 @@
                             <span v-if="sendPhoneCodeFlag" class="spa bgColor" @click="sendPhoneCode" >发送验证码</span>
                             <span v-else class="spb bgGray">{{sentPhoneCodeTime}}s后重新发送</span>
                         </div>
-                        <div class="submit-login bgColor" @click="LoginPhone">登 录</div>
+                        <div class="submit-login" @click="LoginPhone">登 录</div>
                     </div>
                     <div class="code" v-if="flag === 2">
                         <img src="@/assets/image/Login/code_u36512.png" alt class="cod" v-if="codeFlag" />
@@ -28,6 +41,10 @@
                         <img src="@/assets/image/icon/qq.png" alt @click="qqLogin" />
                         <img src="@/assets/image/icon/weixin.png" alt @click="wxLogin" />
                 </p>
+            </div>
+            <div class="desc fl">
+                <p>最全面的芯片交易平台</p>
+                <p>引领行业潮流</p>
             </div>
         </div>
       <div class="bind-phone form" v-else>
@@ -200,7 +217,7 @@ export default {
       }
     },
     bindPhone() {
-        if(!(/^1[3456789]\d{9}$/.test(this.phoneLoginValue))){
+        if(!(/^1[3456789]\d{9}$/.test(this.qqPhoneValue))){
             this.$message.info("手机号码有误，请重填");
             return false;
         }
@@ -343,11 +360,7 @@ export default {
         this.GetPhoneLoginCode({
             phone: this.phoneLoginValue
         }).then(res => {
-            if(res.resultCode=="200"){
                 this.phoneKey = res.key;
-            }else {
-                this.$message.info(res.message)
-            }
         });
 
 

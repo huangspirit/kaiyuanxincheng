@@ -245,6 +245,21 @@
         </div>
       </div>
     </div>
+      <el-dialog
+          title="选择报关方式"
+          :visible.sync="showDeclareType"
+          width="30%"
+          >
+         <div>
+             <h3>您总共有<strong>{{declareTypeCount}}</strong>种商品需要报关，请选择合适的报关方式</h3><br>
+             <el-button  :class="declareType?'bgColor':'bgLightGray'" @click="declareType=true">合并报关</el-button>
+             <el-button :class="declareType?'bgLightGray':'bgColor'" @click="declareType=false">分开报关</el-button>
+         </div>
+          <span slot="footer" class="dialog-footer">
+    <el-button @click="showDeclareType = false">取 消</el-button>
+    <el-button type="primary" @click="onsubmit">确 定</el-button>
+  </span>
+      </el-dialog>
   </div>
 </template>
 <style lang="less" scoped>
@@ -264,7 +279,11 @@ export default {
       pageSize: 2,
       currentPage: 1,
       total: 0,
-      goodsList: []
+      goodsList: [],
+        showDeclareType:false,
+        declareType:true,//togetherPay  true 一起报关。false分开
+        sendData:{},//提交结算的对象
+        declareTypeCount:0
     };
   },
   methods: {
@@ -280,7 +299,6 @@ export default {
           } else {
             item0.checked = false;
           }
-
           return item0;
         });
         return item;
@@ -437,9 +455,14 @@ export default {
     submit() {
       //去结算
       let orderJson = [];
+      //计算有多少个美元产品
+      let count=0
       this.goodsList.forEach(item0 => {
         item0.list.forEach(item => {
           if (item.checked && item.isenable) {
+              if(item.priceUnit){
+                  count++;
+              }
             let obj = {
               seckill_goods_id: item.seller_goods_id,
               goods_id: item.goods_id,
@@ -477,7 +500,7 @@ export default {
         content_id: "1"
       };
       // 生成bill对象
-      let obj2 = {
+        this.sendData = {
         bill: JSON.stringify(billObj),
         dilivertype: "1",
         order: JSON.stringify(orderJson),
@@ -485,30 +508,65 @@ export default {
         type: 0,
         orderSource: 1
       };
-      this.$store
-        .dispatch("MerchantList/GetOrder", obj2)
-        .then(res => {
-          localStorage.setItem(
-            "buyOneGoodsDetail",
-            JSON.stringify({
-              data: JSON.stringify(res),
-              obj2: JSON.stringify(obj2)
-            })
-          );
-          this.setBuyOneGoodsDetail(
-            JSON.stringify({
-              data: JSON.stringify(res),
-              obj2: JSON.stringify(obj2)
-            })
-          );
-          this.$router.push({
-            path: "/ShoppingCart/ShoppingSettlement"
-          });
-        })
-        .catch(err => {
-          this.$message.error(err);
-        });
-    }
+      if(count>1){
+          //用户确认报关方式
+          this.declareTypeCount=count;
+            this.showDeclareType=true;
+            this.declareType=true;
+      }else{
+          this.sendData.togetherPay=false
+          this.$store
+              .dispatch("MerchantList/GetOrder", this.sendData)
+              .then(res => {
+                  localStorage.setItem(
+                      "buyOneGoodsDetail",
+                      JSON.stringify({
+                          data: JSON.stringify(res),
+                          obj2: JSON.stringify(this.sendData)
+                      })
+                  );
+                  this.setBuyOneGoodsDetail(
+                      JSON.stringify({
+                          data: JSON.stringify(res),
+                          obj2: JSON.stringify(this.sendData)
+                      })
+                  );
+                  this.$router.push({
+                      path: "/ShoppingCart/ShoppingSettlement"
+                  });
+              })
+              .catch(err => {
+                  this.$message.error(err);
+              });
+      }
+
+    },
+      onsubmit(){
+          this.sendData.togetherPay=this.declareType
+          this.$store
+              .dispatch("MerchantList/GetOrder", this.sendData)
+              .then(res => {
+                  localStorage.setItem(
+                      "buyOneGoodsDetail",
+                      JSON.stringify({
+                          data: JSON.stringify(res),
+                          obj2: JSON.stringify(this.sendData)
+                      })
+                  );
+                  this.setBuyOneGoodsDetail(
+                      JSON.stringify({
+                          data: JSON.stringify(res),
+                          obj2: JSON.stringify(this.sendData)
+                      })
+                  );
+                  this.$router.push({
+                      path: "/ShoppingCart/ShoppingSettlement"
+                  });
+              })
+              .catch(err => {
+                  this.$message.error(err);
+              });
+      }
   },
   filters: {
     toFixed(val, length) {

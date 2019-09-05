@@ -54,7 +54,7 @@
               </span>
               <span
                 class="price"
-              >{{item.priceUnit ? '$' : '￥'}}{{val.price}} {{item.includBill ? '(含税)' : '(不含税)'}}</span>
+              >{{item.priceUnit ? '$' : '￥'}}{{val.price}} {{item.priceUnit ? '(不含税)' : '(含税)'}}</span>
             </li>
           </ul>
         </div>

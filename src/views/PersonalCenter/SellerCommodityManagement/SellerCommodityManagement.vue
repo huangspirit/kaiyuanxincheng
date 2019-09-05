@@ -82,7 +82,7 @@
                 <td style="width:7%;" class="price">
                   <div class="desc">
                       <span>{{item.priceType ? '阶梯价' : '一口价'}}</span>
-                      <span>({{item.includBill? '含税价' : '不含税' }})</span>
+                      <span>({{!item.priceUnit? '含税价' : '不含税' }})</span>
                   </div>
                   <p
                     v-if="!item.priceType"
@@ -114,7 +114,7 @@
                 <td style="width:15%;">
                   <div v-if="item.seller_always">
                     <p>长期卖</p>
-                    <p>购买{{item.day_interval}}后发货</p>
+                    <p>购买{{item.day_interval}}天后发货</p>
                   </div>
                   <div v-else>
                     <p>限时卖</p>

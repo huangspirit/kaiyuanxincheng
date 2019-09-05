@@ -31,7 +31,7 @@
             </span>
             </p>
           <p>
-            <label>价格:</label><span class="num">{{value.price_unit ? '$' : '￥'}}{{value.goods_price}}<span class="clude_bill">({{value.clude_bill ? '含税' : '不含税'}})</span></span>
+            <label>价格:</label><span class="num">{{value.price_unit ? '$' : '￥'}}{{value.goods_price}}<span class="clude_bill">({{!value.price_unit ? '含税' : '不含税'}})</span></span>
             <span><label>数量:</label>{{value.goods_count}}</span>
           </p>
         </div>

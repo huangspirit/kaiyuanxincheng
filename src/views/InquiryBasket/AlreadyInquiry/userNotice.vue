@@ -5,15 +5,14 @@
       <div class="allQuiryTop">申请编号：{{item.inquirySheetNo}}</div>
       <div class="inquiryList">
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
+           
           <el-row class="content">
-            <el-col :span="4">
-              <div class="goodsImg">
+            <el-col class="goodsImg">
                 <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
                 <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-              </div>
             </el-col>
-            <el-col :span="8">
-              <div class="goodsProdu">
+            <el-col class="goodsProdu">
+
                 <h3>{{listItem.goodsName}}</h3>
                 <p>
                   品牌：
@@ -23,10 +22,21 @@
                   公司描述：
                   <span>{{listItem.goodsDesc}}</span>
                 </p>
-              </div>
+                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
+                    <countTime
+                        v-on:end_callback="getAllReplyList()"
+                        class="color"
+                        :startTime="listItem.currentTime"
+                        dayTxt="天"
+                        hourTxt="时"
+                        minutesTxt="分"
+                        secondsTxt="秒"
+                        :endTime="listItem.effectEndTime"
+                        :currentTime="listItem.currentTime"
+                    ></countTime>
+                </p>
             </el-col>
-            <el-col :span="7">
-              <div class="googsDesc">
+            <el-col  class="googsDesc">
                 <h3>
                   申请价格：
                   <span>{{listItem.acceptUnit==true?'$':'￥'}}{{listItem.acceptPrice}}</span>
@@ -43,11 +53,11 @@
                   年采购量：
                   <span>{{listItem.projectEau}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.insteadNo && listItem.insteadNo!='@'">
                   竞争型号：
                   <span>{{listItem.insteadNo | insteadFilter}}</span>
                 </p>
-                <p>
+                <p v-if="listItem.remark">
                   备注说明：
                   <span>{{listItem.remark}}</span>
                 </p>
@@ -55,27 +65,15 @@
                   申请有效期至：
                   <span>{{listItem.effectEndTime | formatDate(listItem.effectEndTime)}}</span>
                 </p>
-                <p v-if="listItem.sheetEffective == true&&listItem.replayStates == false">
-                  <countTime
-                    v-on:end_callback="getAllReplyList()"
-                    :startTime="listItem.currentTime"
-                    dayTxt="天"
-                    hourTxt="时"
-                    minutesTxt="分"
-                    secondsTxt="秒"
-                    :endTime="listItem.effectEndTime"
-                    :currentTime="listItem.currentTime"
-                  ></countTime>
-                </p>
-              </div>
+
             </el-col>
-            <el-col :span="5" class="goodsStatus">
-              <div class="applyStatus">
-                <p
-                  class="noApproved"
-                  v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
-                >未批复</p>
-              </div>
+             <el-col class="goodsStatus">
+                <div class="applyStatus">
+                    <p
+                        class="noApproved"
+                        v-if="listItem.sheetEffective == true&&listItem.replayStates == false"
+                    >未批复</p>
+                </div>
             </el-col>
           </el-row>
         </li>
@@ -99,7 +97,7 @@
 <script>
 import countTime from "@/components/countTime";
 import { axios, siderInquiryList } from "@/api/apiObj";
-import "./AlreadyInquiry.less";
+
 import "@/lib/filters";
 export default {
   data() {
@@ -126,7 +124,6 @@ export default {
   },
   filters: {
     insteadFilter(val) {
-      console.log(val);
       return val.split("@");
     }
   },
@@ -154,7 +151,6 @@ export default {
       console.log("11", val);
     },
     change(val) {
-      console.log(val);
       this.start = val * 2 - 2;
       this.getAllReplyList();
     }
@@ -163,8 +159,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    @import "./AlreadyInquiry.less";
 .allQuiryList {
-  width: 100%;
   > p {
     width: 100%;
     min-height: 600px;
@@ -172,33 +168,35 @@ export default {
     text-align: center;
   }
   > div {
-    margin: 20px 0;
+      margin-top:15px;
+       border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        overflow: hidden;
+      &:hover{
+          box-shadow: 0 0 2px 2px #ddd;
+        }
     .allQuiryTop {
-      width: 100%;
-      padding: 0 20px;
-      height: 60px;
-      line-height: 60px;
-      background-color: rgb(74, 90, 106);
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      overflow: hidden;
-      position: relative;
-      box-sizing: border-box;
+        padding:10px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background:#ddd;
     }
     .inquiryList {
       width: 100%;
       .listContent {
-        border: 1px solid #dee3e9;
-        padding: 10px;
-        margin-bottom: 15px;
+          background:#f5f5f5;
+          position: relative;
+          overflow: hidden;
         > .content {
-          border-bottom: 1px solid #dee3e9;
-          padding: 10px 0;
-          min-height: 150px;
-          // &:hover {
-          //   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
-          // }
+            display: flex!important;
+            padding:20px;
+            &>div{
+                &.goodsProdu{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+            }
         }
         > .applyContent {
           padding: 10px 0;
@@ -207,14 +205,23 @@ export default {
           // }
         }
         .goodsImg {
-          width: 200px;
-          text-align: center;
-          > img {
-            width: 150px;
-          }
+            width: 200px;
+            text-align: center;
+            background:#fff;
+            display: flex;align-items: center;
+            margin-right:15px;
+            > img {
+                width: 150px;
+            }
         }
 
         .goodsProdu {
+            overflow: hidden;
+            position: relative;
+            display:flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size:16px;
           > h3 {
             color: #cc0000;
           }
@@ -228,6 +235,10 @@ export default {
           }
         }
         .googsDesc {
+            font-size:14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           h3 {
             color: #4a5a6a;
             > span {

@@ -4,99 +4,133 @@
       <el-breadcrumb-item>账单中心</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="BuyerBillCenter">
-        <div class="tit clear">
-            <p class="fr" v-if="obj.orderToatl"><span>订单总额：</span><span class="color">￥{{obj.orderToatl}}</span><span class="color" v-if="obj.usdTotal">(包含 ${{obj.usdTotal}})</span></p>
-            <div class="clear search">
-                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">待结算</span>
-                <span class="fl btn" :class="{bgColor:is_checkout==true}" @click="is_checkout=true">已结算</span>
-                <el-date-picker
-                    class="fl"
-                    v-model="value2"
-                    type="datetimerange"
-                    :picker-options="pickerOptions"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    align="left">
-                </el-date-picker>
+        <div class="top">
+            <div>
+                <p class='title'> 订单总金额：</p>
+                <p ><strong>￥{{obj.orderToatl}}</strong>   &nbsp;<strong v-if="obj.usdTotal" style="font-size:14px;">(包含:${{obj.usdTotal}})</strong></p>
             </div>
+            <div>
+                <p class="title">到期应结算金额（RMB）</p>
+                <P><STRONG>￥{{obj.waitingPayTotal}}</STRONG></P>
+            </div>
+        
         </div>
-        <div class="cont">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>订单号</th>
-                    <th>订单总额</th>
-                    <th>商品列表</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,k) in obj.list.data" :key="k">
-                        <td>
-                            {{item.orderNo}}<br>
-                            总量：{{item.goodsCount}}只
-                        </td>
-                        <td>
-                            <p ><span class="color">￥{{item.orderAmount}}</span><span v-if="item.orderUsdAmount">（包含 <span class="color">${{item.orderUsdAmount}}</span>）</span></p>
-                            <p v-if="item.payRealTotal">实际结算：<strong>￥{{item.payRealTotal}}</strong></p>
-                        </td>
-                        <td>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>商品名称</th>
-                                    <th>购买单价/数量</th>
-                                    <th>状态</th>
-                                    <th>支付汇率/结算汇率</th>
-                                    <th>关税（￥）</th>
-                                    <th>
-                                        <span class="jian">商家应补货款</span> <br>
-                                        <span class="jia">系统应退货款</span>
+        <div class="tit clear">
+            <el-date-picker
+                class="fl"
+                v-model="value2"
+                type="datetimerange"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                align="left"
+                size="mini">
+            </el-date-picker>
+            <div class="clear search btn fl">
+                <span class="fl" @click="handleChangeAll" :class="{bgColor:changeAll==true}">全部</span>
+                <p class="fl">状态|<span :class="{bgColor:is_checkout==true}" @click="changeCheckout(true)">已结算</span>&nbsp;
+                    <span :class="{bgColor:is_checkout==false}" @click="changeCheckout(false)">未结算</span></p>
+                <p class="fl">发票|<span :class="{bgColor:isOpenBill==true}" @click="changeOpenBill(true)">已开票</span>&nbsp;
+                    <span :class="{bgColor:isOpenBill==false}" @click="changeOpenBill(false)">未开票</span></p>
+<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">全部</span>-->
+<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">待结算</span>-->
+<!--                <span class="fl btn" :class="{bgColor:is_checkout==true}" @click="is_checkout=true">已结算</span>-->
+<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">已开票</span>-->
+<!--                <span class="fl btn" :class="{bgColor:is_checkout==true}" @click="is_checkout=true">未开票</span>-->
+            </div>
 
-                                    </th>
-                                    <th>
-                                        <span class="jian">商家应补税款</span>
-                                        <br>
-                                        <span class="jia">系统应退税款</span>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="item0 in item.checkDetailList">
-                                    <td>{{item0.goodsName}}</td>
-                                    <td> <strong>{{item0.priceunit?"$":"￥"}}{{item0.price}}</strong> / {{item0.goodsCount}}只</td>
-                                    <td>{{item0.desc}}</td>
-                                    <td>{{item0.payExchange}}/{{item0.checkExchange}}</td>
-                                    <td>{{item0.guanshui}}</td>
-                                    <td>
-                                        <span v-if="item0.incomeGoods" class="jian">￥{{item0.incomeGoods}}</span>
-                                        <span v-if="item0.outTax" class="color jia">￥{{item0.outTax}}</span>
-                                        <span v-if="item0.incomeGoods==0 && item0.outTax==0">0</span>
-                                    </td>
-                                    <td>
-                                        <span v-if="item0.incomeTax" class="jian">￥{{item0.incomeTax}}</span>
-                                        <span v-if="item0.outGoods" class="color jia">￥{{item0.outGoods}}</span>
-                                        <span v-if="item0.incomeTax==0 && item0.outGoods==0">0</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <el-button class="bgColor" @click="jiesuan(k)" v-if="item.checkButton">结算</el-button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <Pagination
-                v-if="total>pageSize"
-                @current-change="handleCurrentChange"
-                :pageIndex.sync="currentPage"
-                :pageSize="pageSize"
-                :total="total">
-            </Pagination>
         </div>
+
+
+        <div class="content">
+            <div class="title clear">
+                <div class="left">总计</div>
+                <ul class="right clear">
+                <li>发货日期</li>
+                <li>商品</li>
+                <li>单价/数量</li>
+                <li><span>结算汇率</span><br>
+                    <span>支付汇率</span>
+                </li>
+                <li>清关费</li>
+                <li>运费</li>
+                <li>
+                    汇率差
+                </li>
+                <li>小计</li>
+                <li>操作</li>
+                </ul>
+            </div>
+            <div class="nocont" v-if="orderList.length==0" style="height:500px;
+            line-height:300px;text-align:center;">暂无数据</div>
+            <ul class="list" v-if="orderList.length">
+                <li class="item" v-for="(item,index) in orderList" :key='index'>
+                    <div class="left">
+                        <p class="blue">订单号：{{item.orderNo}}</p>
+                        <p><span>交易额：￥{{item.orderAmount}}</span><strong v-if="item.orderUsdAmount">(包含${{item.orderUsdAmount}})</strong></p>
+                         <p><span>实际结算：￥{{item.payRealTotal}}</span>   </p>
+                        <p v-if="item.guanshui">关税：￥{{item.guanshui}}</p>
+                        <p><span>运费：{{item.postage}}</span> <strong style="margin-left:15px;">{{item.isOpenBill?'已开票':'未开票'}}</strong></p>
+                    </div>
+                    <div class="right">
+                        <ol>
+                            <li class="item0" v-for="(item0,k) in item.checkDetailList" :key='k'>
+                                <div>{{item0.diliverTime}}</div>
+                                <div>{{item0.goodsName}}</div>
+                                <div>
+                                    {{item0.priceunit?'$':'￥'}}{{item0.price}}&nbsp;&nbsp;/&nbsp;&nbsp;{{item0.goodsCount}}只
+                                        <br><strong  style="font-size:8px;">({{!item0.priceunit?'含税':'不含税'}})</strong>
+                                    </div>
+                                <div>
+                                    <div v-if="item0.checkExchange || item0.payExchange">
+                                        <span >{{item0.checkExchange}}</span>
+                                        <hr style="width:60%;margin:3px auto">
+                                        <span >{{item0.payExchange}}</span></div>
+                                    </div>
+                                <div>{{item0.guanshui}}</div>
+                                <div >
+                                    <span v-if="item0.postPrice">￥{{item0.postPrice}}</span></div>
+                                <div><span v-if="item0.incomeGoods" class=" red">-￥{{item0.incomeGoods+item0.incomeTax}}</span>
+                                     <span v-if="item0.outTax" class="color blue">+￥{{item0.outTax+item0.outGoods}}</span>
+                                     <span v-if="item0.incomeGoods==0 && item0.outTax==0">0</span>
+                                </div>
+                                <div>
+                                    <p>{{item0.priceunit?'$':'￥'}}{{item0.orderAmount}}</p>
+                                    <strong>实付：￥{{item0.orderRealAmount}}</strong>
+                                </div>
+                                <div>
+                                    <span v-if="!item0.checkButton">{{item0.is_checkout_sys | filterCheckout}}</span>
+                                    <el-button v-if="item0.checkButton && item0.is_checkout_sys==0" size="mini" class="bgColor">结算</el-button>
+                                    <el-button v-if="item0.checkButton && item0.is_checkout_sys==2" size="mini" class=bgColor>重新结算</el-button>
+                                     <countTime
+                                        class="color"
+                                        v-on:end_callback="getAllReplyList()"
+                                        :startTime="item0.currentTime"
+                                        v-if="item0.expireTime"
+                                        dayTxt="天"
+                                        hourTxt="时"
+                                        minutesTxt="分"
+                                        secondsTxt="秒"
+                                        :endTime="item0.currentTime"
+                                        :currentTime="item0.expireTime"
+                                    ></countTime>
+                                </div>
+
+                            </li>
+                        </ol>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <Pagination
+            v-if="total>pageSize"
+            @current-change="handleCurrentChange"
+            :pageIndex.sync="currentPage"
+            :pageSize="pageSize"
+            :total="total">
+        </Pagination>
     </div>
       <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
           <div class="dialog-body" slot="dialog-body">
@@ -149,10 +183,12 @@ export default {
   name: "BuyerBillCenter",
     data(){
       return{
-          is_checkout:false,
+          changeAll:true,
+          is_checkout:null,
+          isOpenBill:null,
           startTime:"",
           endTime:"",
-          pageSize:10,
+          pageSize:5,
           total:0,
           currentPage:1,
           sendData:{},
@@ -160,6 +196,7 @@ export default {
           obj:{
               list:{}
           },
+          orderList:[],
           value2:"",
           pickerOptions: {
               shortcuts: [{
@@ -205,6 +242,35 @@ export default {
       this.init()
     },
     methods:{
+        handleChangeAll(){
+            this.is_checkout=null;
+             this.isOpenBill=null
+        },
+        getAllReplyList(){
+            this.init()
+        },
+      changeCheckout(val){
+          if(this.is_checkout==val){
+                this.is_checkout=null
+                if(this.isOpenBill!=false && this.isOpenBill!=true){
+                    this.changeAll=true
+                }
+          }else{
+              this.is_checkout=val
+               this.changeAll=false
+          }
+      },
+        changeOpenBill(val){
+          if(this.isOpenBill==val){
+                this.isOpenBill=null;
+                 if(this.is_checkout!=false && this.is_checkout!=true){
+                    this.changeAll=true
+                }
+          }else{
+              this.isOpenBill=val
+              this.changeAll=false
+          }
+        },
         handleCurrentChange(x){
             this.currentPage=x;
             this.init()
@@ -219,13 +285,13 @@ export default {
                         start:this.start
                     }}).then(res=>{
                     if(res){
-                        this.obj=res.data;
-                        this.total=res.data.list.total
+                        this.orderList=res.data.data;
+                        this.total=res.data.total
                     }
                 })
             }else {
                 axios.request({...buyerOrderCenter.vipOrderBill,params:{
-                        is_checkout: 0,
+                     
                         startTime:this.startTime,
                         endTime:this.endTime,
                         length:this.pageSize,
@@ -233,6 +299,7 @@ export default {
                     }}).then(res=>{
                     if(res){
                         this.obj=res.data;
+                        this.orderList=res.data.list.data
                         this.total=res.data.list.total
                     }
                 })
@@ -249,18 +316,29 @@ export default {
         },
         handleAvatarSuccess(res, file) {
             if(res.resultCode =='200'){
-                this.sendData.imageUrl=res.data.name
-                axios.request({...buyerOrderCenter.vipOrderBillCheck,data:this.sendData}).then(res=>{
-                    this.showDialog=false;
-                    this.currentPage=1;
-                    this.init()
-                })
+                this.$message.success("结算凭证已上传，请等待审核")
+                //this.sendData.imageUrl=res.data.name
+                // axios.request({...buyerOrderCenter.vipOrderBillCheck,data:this.sendData}).then(res=>{
+                //     this.showDialog=false;
+                //     this.currentPage=1;
+                //     this.init()
+                // })
                 //  this.$router.push("/PersonalCenter/BuyerOrderManagement")
             }
         },
         closeDialogCallBack(){
             this.showDialog=false
         },
+    },
+    filters:{
+        filterCheckout(val){
+            switch(val){
+                 case 0:
+                    return '系统待结算'
+                case 1:
+                    return '结算待审核'
+            }
+        }
     },
     computed:{
       start(){

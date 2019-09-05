@@ -86,6 +86,10 @@
             </p>
             <p>
               <label for="">报关服务费：</label>
+              <span class="num">￥{{priceTotalDetail.GuanshuiService}}</span>
+            </p>
+            <p>
+              <label for="">关税：</label>
               <span class="num">￥{{priceTotalDetail.Guanshui}}</span>
             </p>
             <p >

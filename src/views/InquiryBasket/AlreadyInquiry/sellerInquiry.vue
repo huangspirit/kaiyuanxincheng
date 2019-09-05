@@ -2,7 +2,7 @@
   <div id="inquiry">
     <div class="inquiryContent">
       <div class="topTab">
-        <ul>
+        <ul class="clear">
           <router-link
             tag="li"
             v-for="(item,index) in tabData"
@@ -10,15 +10,18 @@
             active-class="active"
             :to="item.path"
             @click.native="tabShow(item.name)"
+            class="btn"
           >{{item.name}}</router-link>
-          <el-select v-model="reppyValue" @change="getInquiryList(reppyValue)" placeholder="请选择">
-            <el-option
-              v-for="item in reppyData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
+            <li class="fl" style="padding-bottom:0;">
+                <el-select  size="small" v-model="reppyValue" @change="getInquiryList(reppyValue)" placeholder="请选择" >
+                    <el-option
+                        v-for="item in reppyData"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    ></el-option>
+                </el-select>
+            </li>
         </ul>
 
         <router-view></router-view>
@@ -36,7 +39,7 @@ export default {
       tabData: [
         {
           id: "1",
-          name: "全部待批复",
+          name: "全部",
           path: "/allApply"
         },
         {
@@ -88,10 +91,9 @@ export default {
   },
   methods: {
     tabShow(val) {
-      console.log(val);
     },
     getInquiryList(val) {
-      console.log(val);
+
       if (this.routeAlign.name == "allApply") {
         this.paramsInfo = {
           start: 0,
@@ -152,42 +154,41 @@ export default {
 
 <style lang="less" scoped>
 #inquiry {
-  min-height: 100%;
-  .topStep {
-    width: 100%;
-    height: 81px;
-    background: inherit;
-    background-color: rgba(255, 255, 255, 1);
-    line-height: 81px;
-    font-size: 28px;
-    color: #333333;
-    padding: 0 20px;
-    > span {
-      font-size: 28px;
-      color: #0d98ff;
-    }
-  }
+  /*.topStep {*/
+  /*  width: 100%;*/
+  /*  height: 81px;*/
+  /*  background: inherit;*/
+  /*  background-color: rgba(255, 255, 255, 1);*/
+  /*  line-height: 81px;*/
+  /*  font-size: 28px;*/
+  /*  color: #333333;*/
+  /*  padding: 0 20px;*/
+  /*  > span {*/
+  /*    font-size: 28px;*/
+  /*    color: #0d98ff;*/
+  /*  }*/
+  /*}*/
   .inquiryContent {
     padding: 20px;
-    min-height: 100%;
+    min-height:500px;
     background: #fff;
-    margin-top: 20px;
     .topTab {
       > ul {
         width: 100%;
-        height: 46px;
-
+          border-bottom:2px solid #ddd;
         > li {
           float: left;
-          height: 100%;
-          line-height: 46px;
-          margin-right: 50px;
-
-          padding: 0 10px;
-        }
-        .active {
-          color: #fff;
-          background: #0068b7;
+          padding: 20px;
+          border-bottom:2px solid transparent;
+            margin-bottom:-2px;
+            cursor: pointer;
+            &.active{
+                border-color:#df3f2f;
+            }
+            &.btn:hover{
+                border-color: #df3f2f;
+                color:#df3f2f;
+            }
         }
       }
     }

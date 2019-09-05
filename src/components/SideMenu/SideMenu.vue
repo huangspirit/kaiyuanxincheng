@@ -7,8 +7,7 @@
       text-color="#fff"
       active-text-color="#3da8f5"
       :unique-opened='true'
-      :default-openeds="defaultOpeneds"
-        :default-active="defaultActive"
+     
     >
       <template v-for="item in list">
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
@@ -82,23 +81,7 @@ export default {
   },
   methods: {
       fetchDate(){
-          console.log(this.$route)
-          var name=this.$route.meta.parentname;
-          this.list.forEach((item)=>{
-              if(name==item.name){
-                  this.defaultOpeneds=[item.index]
-                  item.children.forEach(item0=>{
-                      if(this.$route.path==item0.path){
-                          this.defaultActive=item0.index;
-                      }
-                  })
-              }
-          })
-          console.log(this.defaultOpeneds)
-          console.log( this.defaultActive)
-          if(!this.defaultActive){
-              this.defaultActive=this.defaultOpeneds[0]+"_-1"
-          }
+        
 
       },
     handleOpen(key, keyPath) {

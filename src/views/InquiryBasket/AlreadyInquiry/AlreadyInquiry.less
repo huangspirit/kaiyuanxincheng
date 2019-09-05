@@ -1,25 +1,31 @@
 .goodsStatus {
-    height: 170px;
-    position: relative;
-    overflow: hidden;
-
+   width:100px;
+    display: flex;
+    align-items: center;
     >.applyStatus {
-        color: #4a5a6a;
+        color: #fff;
+        width:100px;
+        text-align: center;
         p {
-            position: absolute;
-            right: -37px!important;
-            top: -8px!important;
-            -webkit-transform: rotate(45deg)!important;
-            transform: rotate(45deg)!important;
-            color: #fff!important;
-            width: 100px!important;
-            height: 45px!important;
-            text-align: center!important;
-            line-height: 60px!important;
-            margin-top: 0!important;
-            margin-left: 0!important;
-            padding: 0!important;
-            font-size: 14px!important;
+            width:82px;
+            // position: absolute;
+            // right: -37px!important;
+            // top: -8px!important;
+            // -webkit-transform: rotate(45deg)!important;
+            // transform: rotate(45deg)!important;
+            // color: #fff!important;
+            // width: 100px!important;
+            // height: 45px!important;
+            // text-align: center!important;
+            // line-height: 60px!important;
+            // margin-top: 0!important;
+            // margin-left: 0!important;
+            // padding: 0!important;
+            // font-size: 14px!important;
+            font-size:14px;
+            line-height: 28px;
+            border-radius: 3px;
+          
         }
 
         .failure {
@@ -33,5 +39,15 @@
         .noApproved {
             background-color: #ff9900!important;
         }
+    }
+}
+.listContent {
+    /deep/.counttime {
+      .timeStr{
+        background: none;
+        padding:0;
+        color:#df3f2f;
+
+      }
     }
 }

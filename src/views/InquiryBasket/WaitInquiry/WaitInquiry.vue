@@ -17,91 +17,94 @@
           总计已选
           <strong>{{allNum}}</strong> 件商品
         </span>
-        <span class="batchBtn" @click="batchApplication">批量申请</span>
+        <el-button class="batchBtn bgColor" @click="batchApplication" size="mini" v-show="allNum">批量申请</el-button>
         <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
       </div>
     </div>
     <div class="inquiryList">
       <ul class="listCheck" v-for="(item,k) in waitInquiryList" :key="k">
-        <div class="checkSub">
+        <div class="checkSub bgLightGray">
           <div class="allBtn">
-            <span @click="subCheck(k,item)">
+            <span @click="subCheck(k,item)" class="check">
               <img v-if="item.subCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
             </span>
             <span>{{item.sellerName}}</span>
-            <span>
-              <img :src="item.sellerUrl + '?imageView2/2/w/80/h/80'" alt />
-            </span>
+            <ImgE  :src="item.sellerUrl" :W="80" :H="20"></ImgE>
           </div>
           <div class="allNum">
             <span>
-              已选该商品
+              已选该商
               <strong>{{item.subNum}}</strong> 件商品
             </span>
-            <span class="batchBtn" @click="subSpecial">申请特价</span>
+            <el-button class="batchBtn bgColor" @click="subSpecial" size="mini" v-show="item.subNum">申请特价</el-button>
             <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
           </div>
         </div>
 
         <li class="listContent" v-for="(listItem,index) in item.baseList" :key="index">
-          <div class="goodsImg">
-            <div @click="listItemCheck($event,k,index,listItem)" class="itemCheck">
-              <img
+          <div @click="listItemCheck($event,k,index,listItem)" class="itemCheck">
+            <div class="wrap">
+                <img
                 v-if="listItem.itemCheck == true"
                 src="@/assets/image/inquirybasket/checked.png"
                 alt
               />
             </div>
-            <div>
-              <img v-if="listItem.imageUrl!='-'" :src="listItem.imageUrl " alt />
-              <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+              
             </div>
+          <div class="goodsImg">
+              <ImgE :src="listItem.imageUrl " :W="200" :H="200"></ImgE>
           </div>
           <div class="goodsDetail">
             <div class="googsDesc">
-              <h3>{{listItem.productno}}</h3>
+              <h3 class="color">{{listItem.productno}}</h3>
               <h4>品牌：{{listItem.brand}}</h4>
-              <el-button
-                class="attention"
-                @click="focusOn(listItem)"
-                v-if="listItem.focus == false"
-              >+ 关注</el-button>
-              <el-button
-                class="alredyAtten"
-                :disabled="disabled"
-                v-if="listItem.focus == true"
-              >+ 已关注</el-button>
+             
               <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
               <p>型号描述：{{listItem.productdesc}}</p>
               <p>
                 <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                 <span
-                  v-if="listItem.map.totalSeller != 0"
+                  v-if="listItem.map.totalSeller != 0" class="color"
                 >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
               </p>
             </div>
             <div class="goodPrice">
-              <h3 v-if="listItem.factorySellerInfo.price_level != undefined">原厂报价</h3>
-              <li
-                v-if="listItem.factorySellerInfo.price_level != undefined"
-                v-for="(subitem,index) in listItem.priceList"
-                :key="index"
-              >
-                <span>{{subitem.num}}+</span> -------
-                <span>￥{{subitem.price}}</span>
-              </li>
-              <li style="height:100%" v-if="listItem.factorySellerInfo.price_level == undefined">
+              <div v-if="listItem.factorySellerInfo && listItem.factorySellerInfo.seller_goods_id">
+                <h3>原厂报价</h3>
+                  <div
+                    v-if="listItem.factorySellerInfo && listItem.factorySellerInfo.price_level"
+                  >
+                    <div v-for="(subitem,index) in listItem.priceList"  :key="index">
+                        <strong>{{subitem.num}}+</strong> -------
+                        <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{subitem.price}}</strong>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{listItem.factorySellerInfo.seckil_price}}</strong>
+                    </div>
+              </div>
+               <div style="height:100%" v-else>
                 <p style="text-align: center;height:100%;line-height:200px;color:#d5d5d5;">暂无原厂报价</p>
-              </li>
+              </div>
             </div>
             <div class="goodEdit">
-              <img
-                @click="inquiryDelete(listItem)"
-                style="float:right;cursor: pointer;"
-                src="@/assets/image/inquirybasket/delete.png"
-                alt
-              />
-              <el-button class="special" @click="applySpecial(listItem)">申请特价</el-button>
+              <el-button class="bgColor" @click="applySpecial(listItem)" size="mini">申请特价</el-button><br>
+             
+               <el-button
+                class="bgColor"
+                @click="focusOn(listItem)"
+                v-if="listItem.focus == false"
+                size="mini"
+              >+&nbsp; 关注</el-button>
+              <el-button
+                class="bgLightGray"
+                :disabled="disabled"
+                v-if="listItem.focus == true"
+                size="mini"
+              > 已关注</el-button>
+              <br>
+               <el-button class="bgLightGray"  @click="inquiryDelete(listItem)" size="mini">删除</el-button>
             </div>
           </div>
         </li>
@@ -144,7 +147,7 @@ export default {
   mounted() {
     this.getInquiry();
     eventBus.$on("waitMoney", val => {
-      console.log(val);
+      
     });
   },
   beforeDestroy() {
@@ -316,11 +319,14 @@ export default {
       this.getInquiry();
     },
     applySpecial(val) {
-      console.log(val);
+      if(val.priceList){
+          val.factorySellerInfo.priceList= val.priceList
+      }
       this.$store.dispatch("promation", val);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
     subSpecial() {
+     
       this.$store.dispatch("promation", this.baseListData);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
@@ -341,11 +347,11 @@ export default {
 }
 .checkAll {
   width: 100%;
-  padding: 20px 42px;
   box-sizing: border-box;
-  margin: 20px 0;
+  line-height: 40px;
   display: flex;
   justify-content: space-between;
+  border-bottom:1px solid #eee;
   .allBtn {
     > span {
       width: 18px;
@@ -358,7 +364,7 @@ export default {
       &:nth-of-type(2) {
         width: auto;
         border: none;
-        font-size: 20px;
+        font-size: 14px;
         line-height: 25px;
         height: 25px;
         color: rgba(51, 51, 51, 1);
@@ -372,24 +378,16 @@ export default {
         margin-left: 12px;
       }
     }
+    
   }
   .allNum {
     span {
-      font-size: 18px;
+      font-size: 14px;
       color: #333333;
-      > strong {
-        font-size: 24px;
-        color: #f22e2e;
-      }
     }
-    .batchBtn {
-      margin: 0 42px 0 86px;
-      font-size: 18px;
-      color: rgba(102, 102, 102, 1);
-      cursor: pointer;
-      &:hover {
-        color: rgba(77, 154, 243, 1);
-      }
+    
+    .batchBtn{
+      margin-left:30px;
     }
   }
 }
@@ -397,151 +395,116 @@ export default {
   background: #eee;
   .listCheck {
     width: 100%;
-    background-color: #eee;
+    background-color: #fff;
     min-height: 100%;
-    padding-bottom: 50px;
     margin-bottom: 20px;
-    overflow: hidden;
     .checkSub {
       width: 100%;
-      padding: 30px 42px;
+      padding: 0 20px;
+      line-height: 40px;
       box-sizing: border-box;
       display: flex;
-      background-color: #fff;
-      margin-top: 20px;
       justify-content: space-between;
+      font-size:14px;
+      color:#333!important;
       .allBtn {
         > span {
-          width: 18px;
-          height: 18px;
-          border: 1px solid rgba(102, 102, 102, 1);
-          margin-right: 12px;
-          > img {
-            vertical-align: top;
-          }
-          &:nth-of-type(2) {
-            width: auto;
-            border: none;
-            font-size: 20px;
-            line-height: 25px;
-            height: 25px;
-            color: rgba(51, 51, 51, 1);
-            margin-left: 12px;
-          }
-          &:nth-of-type(3) {
-            vertical-align: top;
-            width: auto;
-            border: none;
-            height: 25px;
-            margin-left: 12px;
+          &.check{
+            width: 12px;
+            height: 12px;
+            border: 1px solid rgba(102, 102, 102, 1);
+            margin-right: 12px;
             > img {
-              height: 100%;
+              vertical-align: top;
+              width:13px;
             }
           }
         }
       }
       .allNum {
-        span {
-          font-size: 18px;
-          color: #333333;
-          > strong {
-            font-size: 24px;
-            color: #f22e2e;
-          }
-        }
         .batchBtn {
-          margin: 0 42px 0 86px;
-          font-size: 18px;
-          color: rgba(102, 102, 102, 1);
-          cursor: pointer;
-          &:hover {
-            color: rgba(77, 154, 243, 1);
-          }
+          margin-left:30px;
         }
       }
     }
     .listContent {
       display: flex;
-      padding: 20px 42px;
-      width: 95%;
-      margin: 0 auto 20px;
-      box-sizing: border-box;
-      background-color: #fff;
+      padding: 20px;
+      border-bottom:1px solid #ddd;
+      align-items: center;
+      background:#fff;
+      margin-bottom:5px;
       &:hover {
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 10px 5px #ddd;
       }
-      .goodsImg {
-        width: 265px;
-        margin-right: 34px;
-        display: flex;
-        .itemCheck {
-          width: 18px;
-          height: 18px;
-          margin-right: 25px;
-          margin-top: 125px;
+      .itemCheck {
+        .wrap{
+          width: 12px;
+          height: 12px;
           border: 1px solid rgba(201, 201, 201, 1);
           > img {
-            vertical-align: middle;
+            width:13px;
+            vertical-align: top;
           }
         }
-        > div {
-          float: left;
-          height: 100%;
-
-          &:nth-of-type(2) {
-            width: 166px;
-            height: 100%;
-            padding: 50px 0;
-            box-sizing: border-box;
-            > img {
-              width: 100%;
-              vertical-align: middle;
-            }
+        }
+      .goodsImg {
+        width: 190;
+        margin-right: 34px;
+        text-align: center;
+        margin-left:15px;
+        /deep/.ImgE{
+          width:100%;
+          height:100%;
+          position: relative;
+          &:after{
+            display:block;
+            content:"";
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.05);
+            position: absolute;
+            z-index:1;
+            top:0;
+            left:0;
           }
-          &:nth-of-type(3) {
-            width: 166px;
-            height: 38px;
-            margin: 6px 0 6px 68px;
-            display: flex;
-            justify-content: space-between;
-            > li {
-              width: 38px;
-              height: 38px;
-              border: 1px solid rgba(224, 224, 224, 1);
-            }
+          img{
+            width:90%;
+            height:90%;
           }
         }
       }
       .goodsDetail {
         display: flex;
-        border-bottom: 1px solid rgba(232, 232, 232, 1);
-        margin-bottom: 10px;
-        min-height: 210px;
+        flex:1;
+        text-align: center;
+        align-items: center;
         .googsDesc {
           width: 50%;
+          text-align:left;
           > h3 {
             font-size: 20px;
             font-family: PingFangSC-Semibold;
-            font-weight: 600;
-            color: rgba(244, 86, 24, 1);
+            font-weight: bolder;
+            margin-bottom:10px;
           }
           > h4 {
             font-size: 18px;
-            color: rgba(51, 51, 51, 1);
-            margin: 18px 0;
+            color:#333;
+            margin-bottom:10px;
           }
           > p {
             &:nth-of-type(1) {
               font-size: 16px;
               color: rgba(153, 153, 153, 1);
-              margin: 16px 0;
+              margin-bottom:15px;
             }
             &:nth-of-type(2) {
               > span {
                 &:nth-of-type(1) {
                   font-size: 16px;
                   color: rgba(102, 102, 102, 1);
-                  margin-right: 38px;
+                  margin-right: 10px;
                 }
                 &:nth-of-type(2) {
                   font-size: 18px;
@@ -552,18 +515,14 @@ export default {
           }
         }
         .goodPrice {
-          padding: 0 76px 0 50px;
-          box-sizing: border-box;
-          width: 26%;
-          min-width: 333px;
-          > h3 {
+          width:25%;
+          h3 {
             width: 100%;
             text-align: center;
             font-size: 20px;
             font-family: PingFangSC-Medium;
             font-weight: 500;
-            color: rgba(77, 154, 243, 1);
-            margin-bottom: 33px;
+            margin-bottom: 15px;
           }
           > li {
             margin-bottom: 20px;
@@ -582,6 +541,14 @@ export default {
                 margin-left: 24px;
               }
             }
+          }
+        }
+        .goodEdit{
+          width:25%;
+          text-align: right;
+          button{
+            width:70px;
+            margin-bottom:10px;
           }
         }
       }
