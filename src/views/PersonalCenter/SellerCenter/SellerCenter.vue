@@ -56,8 +56,8 @@
           </div>
       </div>
       <ul class="goods-state">
-          <router-link tag="li" to="">
-              <div>
+          <router-link tag="li" to="/PersonalCenter/SellerCommodityManagement">
+              <div class="color">
                   <p class="name">在售商品</p>
                       <p class="desc" >
                           您有<span class="color">{{obj.isSelling}}</span>件在售商品，立即查看

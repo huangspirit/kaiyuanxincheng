@@ -40,9 +40,9 @@
     <div class="foot">
       <div class="foot-r">
           <span>店铺合计：</span>
-            <span class="color" v-if="totalPrice">￥{{this.totalPrice | toFixed(2)}}</span>
+            <span class="color" v-if="totalPrice">￥{{this.totalPrice | toFixed(3)}}</span>
             <span class="color" v-if="unittotalPrice && totalPrice">&nbsp;+&nbsp;</span>
-            <span class="color" v-if="unittotalPrice">${{this.unittotalPrice | toFixed(2)}}</span>
+            <span class="color" v-if="unittotalPrice">${{this.unittotalPrice | toFixed(3)}}</span>
       </div>
     </div>
   </li>

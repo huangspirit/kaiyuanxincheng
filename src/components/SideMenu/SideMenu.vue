@@ -7,7 +7,6 @@
       text-color="#fff"
       active-text-color="#3da8f5"
       :unique-opened='true'
-     
     >
       <template v-for="item in list">
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>

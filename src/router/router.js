@@ -194,7 +194,17 @@ export default [
             requireAuth: true,
             title: '平台入驻'
         },
-        children: [{
+        children: [
+            {
+                path: '/',
+                name: 'BasicInforma',
+                component: () => import('@/views/OriginalFactoryEntry/firstPage'),
+                meta: {
+                    requireAuth: true,
+                    title: '平台入驻',
+                    keepAlive: true // 需要被缓存
+                }
+            },{
                 path: '/',
                 name: 'BasicInforma',
                 component: () => import('@/views/OriginalFactoryEntry/BasicInforma'),
