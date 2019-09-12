@@ -13,7 +13,7 @@
       </template>
       <template v-for="(v,index) in item.children">
         <SideMenuItem v-if="v.children" :item="v" :key="index"></SideMenuItem>
-        <router-link :to="v.path" v-else :key="index" tag="div" :class="{showStatus:v.show!='hidden'}">
+        <router-link :to="v.path" v-else :key="index" tag="div" v-show="v.show!='hidden'">
           <el-menu-item :index="v.index">
 <!--            <img :src="v.icon" alt>-->
             <span slot="title">{{v.title}}</span>

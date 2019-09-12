@@ -8,13 +8,13 @@
                 <div>
                     <div class="info">
                         <p class="goodsName">{{currentItem.goods_name}}</p>
-                        <p>库存:{{currentItem.goodsStockCount}}</p>
+                        <p>剩余:{{currentItem.goodsStockCount}}只</p>
                     </div>
                     <div>
                         购买量：<el-input-number  v-model="currentItem.count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="currentItem.moq"  :max="currentItem.goodsStockCount"  :step="currentItem.mpq"  step-strictly></el-input-number>
                     </div>
-                    <div>单价: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.price}}</strong></div>
-                    <div>总计: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.money | toFixed(4)}}</strong></div>
+                    <div>单价: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.price | toFixed(currentItem.priceUnit?3:2)}}</strong></div>
+                    <div>总计: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.money | toFixed(currentItem.priceUnit?3:2)}}</strong></div>
                     <div class="btnWrap"><span class="btn" @click="submitPurchase">提交结算</span></div>
                 </div>
             </div>

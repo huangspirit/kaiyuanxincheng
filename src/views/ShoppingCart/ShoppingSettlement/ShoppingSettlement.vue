@@ -106,18 +106,18 @@
             <p v-if="priceTotalDetail.isVIP">
                <label for="">剩余额度：</label>
               <span class="num">￥{{priceTotalDetail.restLine}}</span>
-
             </p>
-            <div class="payWayList">
+            <!-- <div class="payWayList">
               <label for="">邮费方式：</label>
               <el-radio v-model="dilivertype" label="0" border>到付</el-radio>
               <el-radio v-model="dilivertype" label="1" border>垫付</el-radio>
-            </div>
+            </div> -->
         <div class="payWayList" v-if="!(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough)">
                   <label for="">支付方式：</label>
                   <el-radio v-model="paytype" label="0" border>在线支付</el-radio>
                   <el-radio v-model="paytype" label="1" border>转账支付</el-radio>
               </div>
+                 <strong>提示：单个店铺货物总额超过￥500包邮，￥500以下到付</strong>
           </div>
           <div class="information">
             <p>

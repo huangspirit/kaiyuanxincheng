@@ -75,14 +75,14 @@
         扫码倒计时
         <span>{{count}}</span>s
       </div>
-      <iframe :src="qqSrc" frameborder="0" scrolling="no" width="100%" height="100%" v-if="!code"></iframe>
+      <iframe :src="qqSrc" frameborder="0" scrolling="no" width="100%" height="400px" v-if="!code"></iframe>
       <iframe
         :src="wxSrc"
         sandbox="allow-scripts allow-top-navigation allow-same-origin"
         frameborder="0"
         scrolling="no"
         width="100%"
-        height="100%"
+        height="380px"
         v-else
       ></iframe>
     </el-dialog>
@@ -256,7 +256,6 @@ export default {
       this.GetQqLogin()
         .then(res0 => {
           // 返回state
-
           this.qqSrc = res0.url;
           this.dialogVisible = true;
           this.count = 60;
@@ -486,7 +485,8 @@ export default {
   }
 };
 </script>
-<style lang="less"  >
+<style lang="less"  scoped>
+
 @import "./Login.less";
 </style>
 

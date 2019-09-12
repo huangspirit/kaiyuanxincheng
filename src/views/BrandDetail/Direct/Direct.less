@@ -4,7 +4,7 @@
   .BrandDetail-tit{
     margin:15px 0;
     background: #fff;
-    padding:15px 30px;
+    padding:15px 3vw;
     box-shadow: 0 0 2px 2px #dddd;
     /deep/.el-breadcrumb{
       font-size:14px;
@@ -14,14 +14,20 @@
     line-height:60px;
     color:#fff;
     padding-left:20px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    // border-top-left-radius: 10px;
+    // border-top-right-radius: 10px;
   }
   .res{
     font-size: 22px;
-    line-height: 60px;
     color:#333;
     font-weight: bolder;
+    padding-left:80px;
+    border-left:1px solid #ddd;
+  }
+  .cont{
+    width:100%;
+    padding:0 3vw;
+    box-sizing:border-box;
   }
   .screen{
     border:1px solid #dddd;
@@ -66,47 +72,6 @@
         width: 20px;
       }
     }
-    &>.list {
-      width: 1800px;
-      overflow: hidden;
-      background: #fff;
-      padding: 30px 60px;
-      display: flex;
-      flex-wrap: wrap;
-      .avtive {
-        border: 1px solid #4A5A6A;
-      }
-
-      li {
-        width: 189px;
-        height: 133px;
-        padding: 10px 0;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        background: rgb(242, 244, 247);
-        color: #4A5A6A;
-        font-size: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        cursor: pointer;
-
-        img {
-          width: 60px;
-          height: 60px;
-        }
-
-        &>.num {
-          font-size: 20px;
-        }
-
-        &:hover {
-          box-shadow: 2px -2px 2px 2px rgba(0, 0, 0, 0.2)
-        }
-      }
-
-    }
   }
 
   .SearchInput {
@@ -120,7 +85,9 @@
       background:#f5f5f5;
       overflow-x: scroll;
       white-space: nowrap;
-    color:#333;
+      color:#333;
+      margin-bottom:80px;
+     
       .item{
         float:left;
         max-width:300px;
@@ -184,6 +151,9 @@
   .selected{
     padding-left:15px;
     padding-bottom:15px;
+    border-right:1px solid #ddd;
+    padding-right:50px;
+    margin-right:-1px;
     ul{
       height:100%;
       margin-left:20px;
@@ -193,10 +163,13 @@
       button{
         margin-top:10px;
       }
+      label:first-of-type{
+        margin-bottom:20px;
+      }
     }
   }
   .showSelectedScreen{
-    padding:15px 30px;
+    padding-top:15px;
     span{
       border:1px solid #4a5a6a;
       padding:2px 5px 2px 15px;

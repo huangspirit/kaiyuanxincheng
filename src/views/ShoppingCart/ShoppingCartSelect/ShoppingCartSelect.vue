@@ -65,7 +65,7 @@
                 </div>
               </div>
               <template v-for="(item1,index) in item.list">
-                <ul class="listDetail">
+                <ul class="listDetail" :key="index">
                   <li class="imgWrap" style="width:15%;">
                     <label class="checkBox" v-if="item1.isenable">
                       <input
@@ -96,7 +96,7 @@
                   <li style="width:17%" class="place">
                     <p>{{item1.diliverPlace}}</p>
                     <template>
-                      <p v-if="item1.seller_always">{{item1.day_interval}}天内交货</p>
+                      <p v-if="item1.goods_type">{{item1.day_interval | filterhours}}小时内交货</p>
                       <p v-else>{{item1.expireTime | formatDate}}</p>
                     </template>
                     <template>
@@ -126,12 +126,12 @@
                   </li>
                   <template>
                     <li style="width:10%" class="price" v-if="item1.priceType">
-                      <p v-for="val in item1.priceList">
+                      <p v-for="val in item1.priceList" :key="val.price">
                         <span class="num">{{val.num}}+</span>---
                         <strong>{{item1.priceUnit?"$":"¥"}} {{val.price}}</strong>
                       </p>
                       <p class="goodsStockCount">
-                        库存：
+                        剩余：
                         <strong>{{item1.goodsStockCount}}</strong>
                       </p>
                     </li>
@@ -140,7 +140,7 @@
                         <strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong>
                       </p>
                       <p class="goodsStockCount">
-                        库存：
+                        剩余：
                         <strong>{{item1.goodsStockCount}}</strong>
                       </p>
                     </li>
@@ -162,7 +162,7 @@
                   <li style="width:23%" class="all">
                     <div class="top" :class="item1.currentTime?' ':'act'">
                       <div class="count">
-                        <strong>{{item1.priceUnit?"$":"¥"}}{{item1.money?item1.money:0 | toFixed(4)}}</strong>
+                        <strong>{{item1.priceUnit?"$":"¥"}}{{item1.money?item1.money:0 | toFixed(item1.priceUnit?3:2)}}</strong>
                       </div>
                       <div class="count">
                         <!--                                    <p class="add" @click="add(k,index)">添加询价篮</p>-->
@@ -569,6 +569,9 @@ export default {
       }
   },
   filters: {
+    filterhours(val){
+      return Number(val)*24
+    },
     toFixed(val, length) {
       return val.toFixed(length);
     },

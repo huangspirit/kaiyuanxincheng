@@ -6,7 +6,6 @@
     display: flex;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    margin-bottom:20px;
     li{
       flex:1;
       text-align: center;
@@ -26,19 +25,20 @@
   .item{
     display: flex;
     padding:15px 0;
-    font-size:14px;
+    font-size:12px;
     text-align: center;
     color:#333;
     background:#f5f5f5;
     align-items: center;
     position: relative;
     border-bottom:1px solid #e6e6e6;
+   
     &:hover{
-      background: #fff;
+      background: #fff!important;
       box-shadow: 0 0 5px 2px #ddd;
       }
     &.originFactory{
-      margin-bottom:15px;
+      background:#f0f0f0;
     }
     .count{
       p{
@@ -101,7 +101,17 @@
             font-size:12px;
             padding: 1px 5px;
             border-radius: 3px;
+            color:#fff;
+          }
+          .bgLightGray{
             cursor: pointer;
+          }
+          .orange{
+            background:#f78822;
+          
+          }
+          .blue{
+            background:#448aca
           }
         }
       }
@@ -180,6 +190,10 @@
         cursor: pointer;
         &.addCark{
           background:#ccc;
+          color:#fff;
+        }
+        &.specialPrice{
+          background:#f78822;
           color:#fff;
         }
       }

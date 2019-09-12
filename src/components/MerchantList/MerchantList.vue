@@ -10,18 +10,30 @@
       </ul>
       <div>
           <div v-if="showOriginFactory" class="originFactoryTitle">
-              <span>原厂直供</span>
-              <span class="fr" @click="specialPrice"><img src="@/assets/image/icon/specialPrice.png" alt="">&nbsp;申请特价</span>
+              <!-- <span>原厂直供</span> -->
+              <!-- <span class="fr" @click="specialPrice"><img src="@/assets/image/icon/specialPrice.png" alt="">&nbsp;申请特价</span> -->
           </div>
           <template v-for="(item,index) in MerchantList">
               <div v-if="item.tag==1" class="item originFactory clear" :key="index">
-                    <div>
-                        <ImgE :src="item.brandImageUrl" :W="180" :H="60"></ImgE>
-                    </div>
+                    <div class="info">
+                      <div>
+                          <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/>
+                          <div>
+                              <p>{{item.sellerName}}</p>
+                              <p>
+                                  <span class='tag bgColor' style="margin-right:10px;" v-if="item.tag">{{item.tag | tagFilter}}</span>
+                                  <span class="tag bgLightGray" style="color:#fff;" v-if="!item.focus">关注</span>
+                                  <span class="tag orange btn"  v-if="item.focus">已关注</span>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
                     <div  class="count">
-                        <p>MOQ：{{item.moq}}</p>
-                        <p>MPQ：{{item.mpq}}</p>
-                        <p>剩余：{{item.goodsStockCount}}</p>
+                        <p v-if="item.base_no">批次号：{{item.base_no}}</p>
+                        <p>起订量：{{item.moq}}只</p>
+                        <p>最小增量：{{item.mpq}}只</p>
+                        <p>总数量：{{item.goodsCount}}只</p>
+                         <p>(已成交：{{item.sellerCount}})</p>
                     </div>
                     <div class="timer">
                         <p><label>{{item.goods_type ? '现货' : '订货'}}</label></p>
@@ -34,12 +46,12 @@
                             {{item.deliverTime | formatDate}}
                         </span>
                         </p>
-                        <p>{{item.diliverPlace}}交货</p>
+                        <p>{{item.diliverPlace}}发货</p>
                     </div>
                   <div class="price">
                       <div class="stepped-price color" v-if="item.priceType && item.is_old_product">
                           <p class="color">
-                              {{item.priceUnit ? '$' : '￥'}} <strong class="price-num">{{item.priceList[item.priceList.length-1].price}}</strong>  <i class="el-icon-circle-plus-outline"></i>
+                              <span>{{item.priceUnit ? '$' : '￥'}} <strong class="price-num">{{item.priceList[item.priceList.length-1].price}}</strong>  <i class="el-icon-circle-plus-outline"></i></span>
                               <span class="btn oldProduct" v-if="item.is_old_product">呆料清仓</span>
                           </p>
                           <ul>
@@ -49,18 +61,18 @@
                                   <span class="fl">{{val.num}}+ </span>
                               </li>
                           </ul>
-                          <p >更多数量可申请特价</p>
+                        
                       </div>
                       <div class="stepped-price-origin color" v-if="item.priceType && !item.is_old_product">
-                          <ul>
+                          <ul class="clear">
                               <li v-for="(val, k) in item.priceList" :key="k" class="clear color">
                                   <span class="fr">{{item.priceUnit ? '$' : '￥'}}{{val.price}}
                                   </span>
                                   <span class="fl">{{val.num}}+ </span>
                               </li>
                           </ul>
-                          <p >更多数量可申请特价</p>
                       </div>
+                       
                       <div v-if="!item.priceType" class="goodsprice">
                           <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
                           <span class="price-num color">{{item.goodsPrice}}</span>
@@ -82,31 +94,39 @@
                               :secondsTxt="'秒'"
                           ></CountTime>
                       </div>
+                       <p style="margin-top:5px;"><a href="javascript:;"  @click="specialPrice">更多数量可申请特价</a> </p>
                   </div>
                   <div class="btnWrap">
                       <p class="bgColor"  @click="purchase(index)">购买</p>
+                      <p class="specialPrice" @click="specialPrice">申请特价</p>
                       <p class="addCark" @click="addCar(index)">加入购物车</p>
                       <Purchase :item="item.purchaseObj" v-if="item.showPurchase" @closeCallBack="item.showPurchase=false"></Purchase>
                   </div>
               </div>
-              <div v-else class="item clear">
+              <div class="item clear" v-else>
                   <div class="info">
                       <div>
                           <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/>
                           <div>
-                              <p>{{item.sellerName}}</p>
-                              <p v-if="item.focus"><span class="tag bgGray" style="color:#fff;">已关注</span></p>
-                              <p v-if="!item.focus" @click="focus(index)"><span class="tag bgColor btn">关注卖家</span></p>
+                               <p>{{item.sellerName}}</p>
+                               <p>
+                                  <span class='tag blue' style="margin-right:10px;">{{item.tag | tagFilter}}</span>
+                                  <span class="tag bgLightGray" style="color:#fff;" v-if="!item.focus" @click="focus(index)">关注</span>
+                                  <span class="tag orange btn"  v-if="item.focus">已关注</span>
+                              </p>
+                             
+                             
                           </div>
                       </div>
                   </div>
                   <div class="sellerInfo">
                       <ImgE :src="item.goodsImageUrl" :W="50" :H="50"></ImgE>
                       <div>
-                          <p>MOQ：{{item.moq}}</p>
-                          <p>MPQ：{{item.mpq}}</p>
-                          <p>总数量：{{item.goodsCount}}</p>
-                          <p>(剩余：{{item.goodsStockCount}})</p>
+                          <p v-if="item.base_no">批次号：{{item.base_no}}</p>
+                          <p>起订量：{{item.moq}}只</p>
+                          <p>最小增量：{{item.mpq}}只</p>
+                          <p>总数量：{{item.goodsCount}}只</p>
+                          <p>(已成交：{{item.sellerCount}})</p>
                       </div>
                   </div>
                   <div class="timer">
@@ -120,7 +140,7 @@
                             {{item.deliverTime | formatDate}}
                         </span>
                       </p>
-                      <p>{{item.diliverPlace}}交货</p>
+                      <p>{{item.diliverPlace}}发货</p>
                   </div>
                   <div  class="price">
                       <div class="stepped-price" v-if="item.priceType && item.is_old_product">
@@ -167,6 +187,7 @@
                               :secondsTxt="'秒'"
                           ></CountTime>
                       </div>
+                      <div v-if="item.customerCount" style="color:#448aca;">目前已有{{item.customerCount}}人参与</div>
                   </div>
                   <div class="btnWrap">
                       <p class="bgColor"  @click="purchase(index)">购买</p>
@@ -188,7 +209,7 @@
     @import "./MerchantList.less";
 </style>
 <script>
-import {TimeForma2,ladderPrice} from "../../lib/utils";
+import {TimeForma2,ladderPrice,TimeForma} from "../../lib/utils";
 import {axios,home,shoppingCar} from "../../api/apiObj";
 //import { mapState} from "vuex";
 // import { constants } from "crypto";
@@ -230,7 +251,6 @@ export default {
 
   methods: {
       focus(k){
-          console.log(this.MerchantList[k])
           let obj={
               favour_type:2,//标识关注卖家
               user_tag: this.MerchantList[k].tag,
@@ -252,7 +272,7 @@ export default {
               return;
           }
           this.$emit("specialPrice")
-          console.log(this.MerchantList[0])
+          
           // let factorySellerInfo=this.goodsinfo.factorySellerInfo
           // factorySellerInfo.priceType=factorySellerInfo.price_type
           // factorySellerInfo.priceLevel=factorySellerInfo.price_level
@@ -370,15 +390,18 @@ export default {
         tagFilter(val){
             switch (val) {
                 case 1:
-                    return "原厂商户";
+                    return "原厂";
                 case 2:
-                    return "代理商户";
+                    return "代理商";
                 case 3:
                     return "普通商户";
             }
         },
         formatDate(val){
-            return TimeForma2(val)
+            return TimeForma(val)
+        },
+        toFixed(val,length){
+            return Number(val).toFixed(length)
         }
     }
 };

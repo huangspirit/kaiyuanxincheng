@@ -16,7 +16,7 @@
             >
                 <el-form-item label="器件型号：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
-                    <ul class="selectProductList">
+                    <ul class="selectProductList" v-if="selectProductList.length">
                         <li
                             v-for="item in selectProductList"
                             @click="selectProduct(item)"
@@ -29,12 +29,12 @@
                             <div class="detail">
                                 <ImgE :src="selectProductObj.imgurl" :W="100" :H="100"></ImgE>
                                 <div >
-                                    <p ><span>名称：</span><span class="num">{{selectProductObj.productno}}</span></p>
+                                    <p ><span>型号：</span><span class="color">{{selectProductObj.productno}}</span></p>
                                     <p><span>品牌：</span>{{selectProductObj.branda}}</p>
                                 </div>
                             </div>
                             <p>
-                                <span>功能描述：</span>
+                                <span>描述：</span>
                                 {{selectProductObj.productdesc}}
                             </p>
                         </div>
@@ -56,15 +56,17 @@
                         <el-radio :label="true" :value="true">现货</el-radio>
                         <el-radio :label="false" :value="false">订货</el-radio>
                     </el-radio-group>
-                    <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单两天内发货</p>
+                    <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单24小时内发货</p>
                     <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
                 </el-form-item>
+                 <el-form-item label="批号：" prop="base_no" v-if="ruleForm.goods_type">
+                    <el-input v-model="ruleForm.base_no" style="width:35%"></el-input>
+                </el-form-item>
                 <el-form-item label="交货地点：">
-                    <el-select v-model="ruleForm.diliver_place" placeholder="请选择交货地">
-                        <el-option :value="item.name" v-for="item in diliverPlace" :key="item.name">{{item.name}}</el-option>
+                    <el-select v-model="diliver_place_flag" placeholder="请选择交货地" style="width:35%;">
+                        <el-option :value="item.flag" v-for="item in diliverPlace" :key="item.flag" :label="item.name">{{item.name}}</el-option>
                     </el-select>
                 </el-form-item>
-               
                 <!-- <el-form-item label="开票形式:">
                     <el-radio-group v-model="ruleForm.support_bill" class="defaultradioSquare">
                         <el-radio :label="true" :value="true">自己开</el-radio>
@@ -83,6 +85,14 @@
                         <p class="desc" v-if="ruleForm.is_old_product">器件发布后将会放到呆料区，有利于用户快速找到购买</p>
                     <!-- <span class="small-sp"  v-if="!ruleForm.clude_bill">是否系统提供发票,不提供发票增加2%手续费</span> -->
                 </el-form-item>
+                <el-form-item label="是否含税价：" v-if="priceunitMark!='$'">
+                    <el-radio-group v-model="ruleForm.clude_bill" class="defaultradioSquare">
+                        <el-radio :label="true" :value="true">含13%增值税</el-radio>
+                        <el-radio :label="false" :value="false">不含税价</el-radio>
+                    </el-radio-group>
+                    <p class="desc" v-if="ruleForm.clude_bill">提示：含13%增值税，需要您开具增值税专用发票</p>
+                    <p class="desc" v-if="!ruleForm.clude_bill">重要提示：若为不含税价，则用户看到的商品价格会在您发布的价格上加价13%，另外平台将收取您4%的服务费</p>
+                </el-form-item>
                 <el-form-item label="出价方式：">
                     <el-radio-group v-model="ruleForm.price_type" class="defaultradioSquare">
                         <el-radio :label="true" :value="true" v-if="ruleForm.goods_type">阶梯价</el-radio>
@@ -90,7 +100,6 @@
                     </el-radio-group>
                     <p class="desc" v-if="ruleForm.goods_type && ruleForm.price_type">只适合现货，价格降序填写，数量升序填写</p>
                     <div class="form-item" v-if="ruleForm.price_type">
-                        <!-- v-for="(item, k) in SteppedPriceList" :key="k" -->
                         <div class="stepped-price" v-for="(item,k) in SteppedPriceListlength" :key="k">
                             <div class="steppedItem">
                                 <label>数量：</label>
@@ -121,28 +130,25 @@
                     </el-input>
                     <strong v-if="ruleForm.seckil_price && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{ruleForm.seckil_price | addPriceFilter}}</strong>
                 </el-form-item>
-                 <el-form-item label="是否含税价：" v-if="priceunitMark!='$'">
-                    <el-radio-group v-model="ruleForm.clude_bill" class="defaultradioSquare">
-                        <el-radio :label="true" :value="true">含13%增值税</el-radio>
-                        <el-radio :label="false" :value="false">不含税价</el-radio>
-                    </el-radio-group>
-                    <p class="desc" v-if="ruleForm.clude_bill">提示：含13%增值税，需要您开具增值税专用发票</p>
-                    <p class="desc" v-if="!ruleForm.clude_bill">重要提示：若为不含税价，则用户看到的商品价格会在您发布的价格上加价17%</p>
-                </el-form-item>
+                 
                <el-form-item label="最小订购量MOQ：" prop="moq">
-                   <el-input v-model="ruleForm.moq" placeholder="此数量为用户可买的最小数量" style="width:35%">
+                   <el-input v-model="ruleForm.moq" style="width:35%">
                        <template slot="append">只</template>
                    </el-input>
+                   <span class="descRight">此数量为用户可买的最小数量</span>
                 </el-form-item>
                 <el-form-item label="最小增量MPQ：" prop="mpq">
-                    <el-input v-model="ruleForm.mpq" placeholder="客户只能购买这个数量的整数倍+最小订购量" style="width:35%">
+                    <el-input v-model="ruleForm.mpq"  style="width:35%">
                        <template slot="append">只</template>
                    </el-input>
+                     <span class="descRight">客户只能购买这个数量的整数倍+最小订购量</span>
+
                 </el-form-item>
                 <el-form-item label="可卖数量：" prop="stock_count">
-                    <el-input v-model="ruleForm.stock_count" @input="changeStockCount" placeholder="请发布真实可卖数量" style="width:35%">
+                    <el-input v-model="ruleForm.stock_count" @input="changeStockCount"  style="width:35%">
                        <template slot="append">只</template>
                     </el-input>
+                     <span class="descRight">请发布真实可卖数量</span>
                     <p class="small" style="color:#ff6600" v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
                 </el-form-item>
                 <el-form-item label="售卖期限：">
@@ -161,13 +167,16 @@
                         v-model="ruleForm.start_date"
                         type="datetime"
                         placeholder="开始时间"
-                        style="margin-right:100px"
+                
                         value-format="yyyy/MM/dd HH:mm:ss"
                         format="yyyy/MM/dd HH:mm:ss"
                         :picker-options="pickerOptions"
                            @change="handleTimeChange0"
+                           style="margin-right:30px;"
                     ></el-date-picker>
+                    <span>至</span>
                     <el-date-picker
+                        style="margin-left:30px;"
                         @change="handleTimeChange"
                         v-model="ruleForm.end_date"
                         value-format="yyyy/MM/dd HH:mm:ss"
@@ -177,7 +186,7 @@
                         :picker-options="pickerOptions1"
                     ></el-date-picker>
                 </el-form-item>
-                <el-form-item label="预计交期：" prop="complete_date" v-if="!ruleForm.seller_always">
+                <el-form-item label="预计交期：" prop="complete_date" v-if="!ruleForm.seller_always && !ruleForm.goods_type" class="clear">
                     <el-date-picker
                         v-model="ruleForm.complete_date"
                         type="date"
@@ -186,7 +195,9 @@
                         value-format="yyyy/MM/dd"
                         format="yyyy/MM/dd"
                         :picker-options="pickerOptions3"
+                        class="fl"
                     ></el-date-picker>
+                    <span class="descRight" style="margin-left:10px;">该预计交期为截止时间开始计算的第几周</span>
                 </el-form-item>
         
                 <el-form-item label="上传实物照片：">
@@ -216,7 +227,7 @@
                 </el-form-item>
                 <div class="form-item form-item-footer">
                     <label for></label>
-                    <div class="submit bgColor" @click="submitForm('ruleForm')">
+                    <div class="submit bgColor" @click="submitForm('ruleForm')" style="cursor:pointer;">
                         发布产品</div>
                 </div>
             </el-form>
@@ -273,6 +284,7 @@
                 dialogVisible: false,
                 // 交货地的列表
                 diliverPlace: [],
+                diliver_place_flag:1,
                 imageUrl: "",
                 selectProductList: [],
                 // 价格阶梯列表
@@ -288,7 +300,7 @@
                     placeholdernum0:"大于0"
                 },
                 // 含不含税
-                clude_billFlag: true,
+               // clude_billFlag: true,
                 // 是不是自己开发票
                 //support_billFlag: false,
                 // 是不是一口价
@@ -301,7 +313,8 @@
                     goods_id: "",
                     catergory_id: "",
                     // 交货地
-                    diliver_place: "内地",
+                    diliver_place: "",
+                  
                     // 货物类型
                     goods_type: true,
                     // 预计交期
@@ -449,28 +462,29 @@
         },
         watch: {
             // 发货地发生变化
-            "ruleForm.diliver_place": {
+            "diliver_place_flag": {
                 handler() {
-                    if (this.ruleForm.diliver_place === "香港") {
+                    this.diliverPlace.map(item=>{
+                        if(item.flag==this.diliver_place_flag){
+                            this.ruleForm.diliver_place=item.name;
+                            return;
+                        }
+                    })
+                    if(this.diliver_place_flag==1){
+                        //标识香港,不含税，系统开发票
                         this.exchange=this.SellerCredit.exchange
                        this.ruleForm.clude_bill = false;
-                       this.clude_billFlag = false;
                        this.ruleForm.support_bill = false;
-                      // this.support_billFlag = false;
                         this.priceunit = "$美元";
                         this.priceunitMark="$"
-                    } else if (this.ruleForm.diliver_place === "内地") {
+                        this.ruleForm.priceunit=true
+                    }else{
+                        //标志内地，如果不含税，则系统开发票
+                        //如果含税，则自己开增值税发票
                         this.exchange=1;
-                        this.clude_billFlag = true;
-                        // if (this.ruleForm.clude_bill) {
-                        //    // this.ruleForm.support_bill = true;
-                        //   //  this.support_billFlag = false;
-                        // } else {
-                        //   //  this.ruleForm.support_bill = true;
-                        //    // this.support_billFlag = true;
-                        // }
                         this.priceunitMark="￥"
                         this.priceunit = "￥人民币";
+                         this.ruleForm.priceunit=false
                     }
                 }
             },
@@ -512,16 +526,16 @@
             // 是不是长期售卖
             "ruleForm.seller_always": {
                 handler() {
-                    if (this.ruleForm.seller_always) {
-                        this.ruleForm.start_date = "2019/06/06";
-                        this.ruleForm.end_date = "2019/06/06";
-                        this.ruleForm.complete_date = "2019/06/06";
-                        this.ruleForm.day_interval="2"
-                    } else {
-                        this.ruleForm.start_date = "";
-                        this.ruleForm.end_date = "";
-                        this.ruleForm.complete_date = "";
-                    }
+                    // if (this.ruleForm.seller_always) {
+                    //     this.ruleForm.start_date = "2019/06/06";
+                    //     this.ruleForm.end_date = "2019/06/06";
+                    //     this.ruleForm.complete_date = "2019/06/06";
+                    //     this.ruleForm.day_interval="1"
+                    // } else {
+                    //     this.ruleForm.start_date = "";
+                    //     this.ruleForm.end_date = "";
+                    //     this.ruleForm.complete_date = "";
+                    // }
                 }
             }
 
@@ -551,16 +565,40 @@
                     return time.getTime() < nowData;
                 })
                 let arr=[
-                    {
-                        text: '一个月',
+                     {
+                        text: '1周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 30);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
                             picker.$emit('pick', date);
                         }
                     },
                      {
-                        text: '五个周',
+                        text: '2周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7*2);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                     {
+                        text: '3周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7*3);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                    {
+                        text: '4周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7*4);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                     {
+                        text: '5周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
                             date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 *5);
@@ -569,7 +607,7 @@
                     }
                     ,
                      {
-                        text: '六个周',
+                        text: '6周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
                             date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 6);
@@ -577,7 +615,7 @@
                         }
                     },
                      {
-                        text: '七个周',
+                        text: '7周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
                             date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 7);
@@ -585,29 +623,63 @@
                         }
                     },
                      {
-                        text: '二个月',
+                        text: '8周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 30*2);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 8);
                             picker.$emit('pick', date);
                         }
                     },
                     {
-                        text: '三个月',
+                        text: '9周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 30*3);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 9);
                             picker.$emit('pick', date);
                         }
                     },
                     {
-                        text: '六个月',
+                        text: '10周',
                         onClick(picker) {
                             const date = new Date(_this.ruleForm.end_date);
-                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 30*6);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 10);
                             picker.$emit('pick', date);
                         }
                     },
+                     {
+                        text: '11周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 11);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                     {
+                        text: '12周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 12);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                     {
+                        text: '13周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 13);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                     {
+                        text: '14周',
+                        onClick(picker) {
+                            const date = new Date(_this.ruleForm.end_date);
+                            date.setTime(date.getTime() + 3600 * 1000 * 24 * 7 * 14);
+                            picker.$emit('pick', date);
+                        }
+                    },
+                    
+
                 ]
                 this.$set(this.pickerOptions3,"shortcuts",arr)
             },
@@ -702,12 +774,13 @@
                             if (!retTimeFlag) {
                                 this.$message.error("售卖起止时间必须大于开始时间");
                                 flag2 = false;
-                            } else if (this.ruleForm.complete_date < this.ruleForm.end_date) {
-                                this.$message.error("交期时间必须大于售卖起止时间时间");
-                                flag2 = false;
-                            } else {
-                                flag2 = true;
                             }
+                            //  else if (this.ruleForm.complete_date < this.ruleForm.end_date) {
+                            //     this.$message.error("交期时间必须大于售卖起止时间时间");
+                            //     flag2 = false;
+                            // } else {
+                            //     flag2 = true;
+                            // }
                         }
                         let arr = [];
                         if(this.ruleForm.price_type){
@@ -727,15 +800,9 @@
 
                         this.ruleForm.price_level = arr.join("@");
                         this.ruleForm.goods_count = this.ruleForm.stock_count;
-                        if (this.priceunit == "$美元") {
-                            this.ruleForm.priceunit = true;
-                        } else {
-                            this.ruleForm.priceunit = false;
-                        }
                         this.ruleForm.access_token = this.access_token;
                         if(this.UserInforma.userTagMap.tag==1){
                             this.ruleForm.brand = this.UserInforma.userTagMap.brand;
-
                         }
                         this.ruleForm.brand_id=this.selectProductObj.brand;
                         if(this.needImg){
@@ -744,6 +811,22 @@
                                 return;
                             }
                         }
+                        if(!this.ruleForm.goods_type){
+                            //订货有交期，没批号
+                            delete this.ruleForm.base_no;
+                            delete this.ruleForm.day_interval;
+                         
+                        }else{
+                             //现货有批号，并且默认一天发货
+                             delete this.ruleForm.complete_date;
+                            this.ruleForm.day_interval="1"
+                        }
+                        if(this.ruleForm.seller_always){
+                            //长期卖
+                            delete this.ruleForm.start_date;
+                            delete this.ruleForm.end_date;
+                        }
+                        console.log(this.ruleForm)
                         if (flag2) {
                             this.GetPublishGoods(this.ruleForm)
                                 .then(res => {
@@ -868,6 +951,7 @@
                 .then(res => {
                     this.diliverPlace = res;
                     this.ruleForm.diliver_place = res[0].name;
+                    this.diliver_place_flag=res[0].flag
                 })
                 .catch(err => {
                     this.$message.error("数据请求错误！");

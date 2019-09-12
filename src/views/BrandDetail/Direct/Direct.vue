@@ -1,7 +1,7 @@
 <template>
   <div class="Direct">
     <div class="BrandDetail-tit">
-        <el-breadcrumb separator-class="el-icon-arrow-right" class="allWidth">
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="">
           <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item v-if="query.brandName"
                               :to="{
@@ -31,16 +31,8 @@
           <el-breadcrumb-item>{{query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
-      <div class="allWidth res">
-          符合条件的结果：
-          {{ScreenProductTotal}}
-      </div>
-      <div class="allWidth">
-          <div class="screen management-class">
-              <!--      <div class="tit">-->
-              <!--          <img src="@/assets/image/brandDetail/u8717.png" alt>-->
-              <!--          <span>筛选</span>-->
-              <!--      </div>-->
+      <div class="cont">
+          <div class="screen management-class clear">
               <div class="ScreenList clear">
                   <div class="item">
                       <div class="title">品牌</div>
@@ -62,16 +54,17 @@
                           </el-input>
                       </div>
                       <ul class="listwrap" :class="item.isSearch?'hasSearch':''">
-                          <li  v-for="(item0,index0) in item.childList" @click="selected(k,index0)" :class="selectedScreen[item.propertyId]==item0?'active':''">
-                              {{item0}}
-                          </li>
+                          <template  v-for="(item0,index0) in item.childList">
+                            <li  @click="selected(k,index0)" :class="selectedScreen[item.propertyId]==item0?'active':''" :key="index0">
+                                {{item0}}
+                            </li>
+                          </template>
+                          
                       </ul>
                   </div>
               </div>
-              <div class="selected clear">
-                  <div class="showSelectedScreen">
-                      <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
-                  </div>
+              <div class="clear">
+                <div class="selected clear fl">
                   <ul class="fl">
                       <li>
                           <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
@@ -102,26 +95,29 @@
                   <!--                    <strong>{{ScreenProductTotal}}</strong>个结果-->
                   <!--                </li>-->
                   <!--            </ul>-->
+                </div>
+                <div class="res fl">
+                    符合条件的结果：
+                    {{ScreenProductTotal}}
+                    <div class="showSelectedScreen">
+                      <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
+                  </div>
+                </div>
+               
               </div>
-<!--              <ul class="clear btn">-->
-<!--                  <li>-->
-<!--                      <el-button type="info" plain class="fl"  @click="resetScreen" size="mini">清除已选参数</el-button>-->
-<!--                      <el-button type="primary" class="fl" plain @click="changeType" size="mini" v-if="propertyCount>0">应用已选参数</el-button>-->
-<!--                  </li>-->
-<!--              </ul>-->
               <div class="btnWrap">
-                  <span @click="resetScreen" class="gray btn">清除已选参数</span>
-                  <span @click="changeType"  v-if="propertyCount>0 && ScreenProductTotal" class="btn bgColor">应用已选参数</span>
-                  <span  v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
-              </div>
+                    <span @click="resetScreen" class="gray btn">清除已选参数</span>
+                    <span @click="changeType"  v-if="propertyCount>0 && ScreenProductTotal" class="btn bgColor">应用已选参数</span>
+                    <span  v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
+                </div>
           </div>
       </div>
 
-    <div class="allWidth">
+    <div class="cont">
       <!-- 经营品类 -->
       <div class="brand-hot brand-msg">
             <div class="tit bgGray">
-<!--                <img src="@/assets/image/brandDetail/u4832.png" alt>-->
+
                 <span>商品列表</span>
 <!--                <SearchInput-->
 <!--                    class="clear fr"-->
@@ -140,9 +136,9 @@
             </div>
         </div>
       <div class="management-class">
-       <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList>
+          <SubstituModelListTable :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelListTable>
+       <!-- <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList> -->
           <div class="nocontent" v-if="total==0">暂无此类产品</div>
-<!--      <SubstituModelList :list="ScreenProductList" v-if="ScreenProductList.length "></SubstituModelList>-->
         <Pagination
             v-if="total"
           :currentPage.sync="currentPage"
@@ -161,6 +157,7 @@
 import {axios,BrandDetail} from "../../../api/apiObj";
 import { mapGetters, mapActions, mapState} from "vuex";
 import SubstituModelList from "_c/SubstituModelList";
+import SubstituModelListTable from "_c/SubstituModelListTable";
 import ScreenItem from "_c/ScreenItem";
 export default {
   name: "Direct",
@@ -169,19 +166,19 @@ export default {
         SpecialPrice:"",
         isOLdProduct:"",
         brandList:[],
-      currentPage: 1,
-      pageSize:10,
-      ProductnformaList:[],
-      total:0,
-      query:{},
-      screenTypeList:[],
-        propertyCount:0,
-        //
-      limitNum:12,
-      showScreenList:true,
-      selectedScreen:{},
-      selectedGoods:{},
-      ScreenProductTotal:0,
+        currentPage: 1,
+        pageSize:10,
+        ProductnformaList:[],
+        total:0,
+        query:{},
+        screenTypeList:[],
+            propertyCount:0,
+            //
+        limitNum:12,
+        showScreenList:true,
+        selectedScreen:{},
+        selectedGoods:{},
+        ScreenProductTotal:0,
         //搜索类型1：标识按照筛查条件搜索0：是按照热搜搜索
         searchType:0,
         valueName:"",
@@ -220,6 +217,7 @@ export default {
       }
   },
   components: {
+    SubstituModelListTable,
     SubstituModelList,
     ScreenItem
   },
@@ -337,6 +335,7 @@ export default {
       this.getChangeTypeGoodsList();
     },
       getChangeTypeGoodsList(){
+          this.$loading(this.$store.state.loading);
           let obj={
               parent_id:this.query.documentid? this.query.documentid:this.query.parentId,
               start:this.start,
@@ -417,6 +416,7 @@ export default {
       },
       //按照brandId 搜索
       getSearchByBrandId(){
+           this.$loading(this.$store.state.loading);
           let obj={
               type:3,
               parent_id:this.query.documentid?this.query.documentid:this.query.parentId,

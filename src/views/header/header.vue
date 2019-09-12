@@ -10,10 +10,10 @@
             </div>
             <div class="rightwrap clear">
                 <div class="nav ">
-                    <router-link to="/specialPrice">现货特价</router-link>
-                    <router-link to="/Brand">原厂直供</router-link>
-                    <router-link to="/order">订货拼单</router-link>
-                    <router-link to="/oldGoods">呆料掘金</router-link>
+                    <router-link to="/specialPrice">现货直通车</router-link>
+                    <router-link to="/Brand">原厂直营店</router-link>
+                    <router-link to="/order">订货跟单区</router-link>
+                    <router-link to="/oldGoods">呆料掘金池</router-link>
                     <router-link to="/OriginalFactoryEntry"
                                  v-if="!(UserInforma && UserInforma.userTagMap && UserInforma.userTagMap.seller)">
                         商家入驻</router-link>
@@ -21,9 +21,10 @@
                     <!--                <router-link to="/Brand" v-if="loginState">品牌</router-link>-->
                 </div>
                 <div class="wrap ">
-                    <router-link to="/InquiryBasket">询价篮</router-link>&nbsp;|&nbsp;
-                    <router-link to="/ShoppingCart">购物车</router-link>&nbsp;|&nbsp;
+                    <router-link to="/InquiryBasket" class="busket"><i style="display:inline-block;height:15px; vertical-align: middle;"></i>询价篮</router-link>&nbsp;|&nbsp;
+                    <router-link to="/ShoppingCart" class="shoppingCar"><i></i>购物车</router-link>&nbsp;|&nbsp;
                     <router-link to="/News"  class="messageCountWrap">
+                    <i></i>
                         消息
                         <span v-if="UserInforma.messageCount" class="mess">{{UserInforma.messageCount}}</span>
                     </router-link>

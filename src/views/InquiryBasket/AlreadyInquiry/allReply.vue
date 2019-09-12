@@ -114,24 +114,24 @@
                   <div class="priceLevelStyle">
                     <div v-for="(item,index) in listItem.priceLevel.split('@')" :key="index">
                       <span>{{item.split('-')[0]}}+</span> --- &nbsp;&nbsp;
-                      <span>${{item.split('-')[1]}}</span>
+                      <span>{{listItem.priceUnit?'$':'￥'}}{{item.split('-')[1]}}</span>
                     </div>
                   </div>
                 </h3>
                 <h3 v-if="!listItem.priceType">
                   批复价格：
-                  <span>￥{{listItem.seckilPrice}}</span>
+                  <span>{{listItem.priceUnit?'$':'￥'}}{{listItem.seckilPrice}}</span>
                 </h3>
 
                 <p>
-                  MOQ：
+                  起订量：
                   <span>{{listItem.moq}}</span>
-                   &nbsp;&nbsp; MPQ：
+                   &nbsp;&nbsp; 最小增量：
                     <span>{{listItem.mpq}}</span>
                 </p>
                 <p>
                   交付周期：
-                  <span>{{listItem.priceIntervalDay}}天</span>
+                  <span>{{listItem.diliverIntervalDay}}天</span>
                 </p>
                 <p>
                   价格有效期至：
@@ -283,10 +283,9 @@ export default {
       this.purshaseData = obj;
     },
     currentPage(val) {
-      console.log("11", val);
+     
     },
     change(val) {
-      console.log(val);
       this.start = val * 2 - 2;
       this.getAllReplyList();
     }

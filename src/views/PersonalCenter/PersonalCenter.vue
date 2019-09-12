@@ -107,6 +107,7 @@ export default {
             },
             {
               title: "账单中心",
+              name:'BuyerBillCenter',
               index: "2_4",
               path: "/PersonalCenter/BuyerBillCenter",
               icon: require("@/assets/image/PersonalCenter/u28045.png"),
@@ -119,6 +120,7 @@ export default {
             },
             {
               title: "申请月结",
+              name:'UpgradeLevel',
               index: "2_6",
               path: "/PersonalCenter/UpgradeLevel",
               icon: require("@/assets/image/PersonalCenter/u44756.png")
@@ -202,12 +204,19 @@ export default {
       }else if(item.index==2){
           if(!UserInforma.userTagMap.vip) {
               item.children= item.children.map(item0=>{
-                  if(item0.title=='账单中心'){
+                  if(item0.name=='BuyerBillCenter'){
                       item0.show="hidden"
                   }
                   return item0;
               })
 
+          }else if(UserInforma.userTagMap.vip){
+            item.children= item.children.map(item0=>{
+                  if(item0.name=='UpgradeLevel'){
+                      item0.show="hidden"
+                  }
+                  return item0;
+              })
           }
       }
       return item;

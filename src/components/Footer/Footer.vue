@@ -47,7 +47,7 @@
             <li>怎么更新库存</li>
           </ul>
         </div>
-        <div class="item">
+        <div class="item" style="margin-right:13%;">
           <p>关于我们</p>
           <ul>
             <li>关于我们</li>

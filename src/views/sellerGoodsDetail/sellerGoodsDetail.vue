@@ -45,10 +45,26 @@
                     </div>
                 </div>
                 <div class="fl right">
-                    <p class="goodsName">{{sellerGoodsInfo.goods_name}}</p>
-                    <p class="brandDesc">{{sellerGoodsInfo.goodsDesc}}</p>
+                    <router-link tag="p" class="goodsName" :to="{
+                        path:'/BrandDetail/GoodsDetails',
+                        query:{
+                            tag:'goodsinfo',
+                            documentid:sellerGoodsInfo.goods_id,
+                            name:sellerGoodsInfo.goods_name,
+
+                        }
+                    }">
+                    {{sellerGoodsInfo.goods_name}}</router-link>
+                    <p class="brandDesc" style="word-break:break-all;">{{sellerGoodsInfo.goodsDesc}}</p>
                     <p  class="brandDesc">
-                        <span>制造商：{{sellerGoodsInfo.brandName}}</span>
+                        <router-link tag="span" class="brand" :to="{
+                            path:'BrandDetail',
+                            query:{
+                                tag:'brand',
+                                documentid:sellerGoodsInfo.brandId,
+                                name:sellerGoodsInfo.brandName
+                            }
+                        }">制造商：{{sellerGoodsInfo.brandName}}</router-link>
 <!--                        <span>官方参考价：暂无</span>-->
                         <span  @click="openBig">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
                     </p>
@@ -74,64 +90,65 @@
                             <div class="priceList">
                                 <p v-for="(item,index) in sellerGoodsInfo.priceList" :key="index">{{item.num}}+ ~ {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{item.price}}</p>
                             </div>
-                            <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含税)':'(不含税)'}}</span>
+                            <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含13%增值税)':'(不含税)'}}</span>
                             
                         </div>
                         <p class="price color" v-if="!sellerGoodsInfo.priceType">
                             一口价：{{sellerGoodsInfo.priceUnit?'$':'￥'}}{{sellerGoodsInfo.goodsPrice}}
-                               <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含税)':'(不含税)'}}</span>
+                               <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含13%增值税)':'(不含税)'}}</span>
                         </p>
-
                         <div class="mpq">
                             <div class="fl">
                                 <p>已售出：{{sellerGoodsInfo.sellerOrderCount}}只</p>
-                                <p>库存剩余：{{sellerGoodsInfo.goodsStockCount}}只</p>
+                                <p>剩余：{{sellerGoodsInfo.goodsStockCount}}只</p>
                             </div>
                             <div ><p class="line"></p></div>
                             <div class="fl">
                                 <p v-if="sellerGoodsInfo.deliverTime ">预计交期：{{sellerGoodsInfo.deliverTime | formatDate}}</p>
-                                <p v-if="sellerGoodsInfo.day_interval ">预计交期：{{sellerGoodsInfo.day_interval}}天后交货</p>
+                                <p v-if="sellerGoodsInfo.day_interval ">预计交期：{{sellerGoodsInfo.day_interval | filterHours}}小时内发货</p>
                                 <p>交货地址：{{sellerGoodsInfo.diliverPlace}}</p>
                             </div>
                             <div ><p class="line"></p></div>
                             <div class="fl">
-                                <p>MOQ：{{sellerGoodsInfo.moq}}</p>
-                                <p>MPQ：{{sellerGoodsInfo.mpq}}</p>
+                                <p>起订量：{{sellerGoodsInfo.moq}}只</p>
+                                <p>最小增量：{{sellerGoodsInfo.mpq}}只</p>
                             </div>
                         </div>
                     </div>
-                    <div class="seller">
+                    <div class="seller fl">
                         此器件以下供应商提供：
                         <img :src="sellerGoodsInfo.userImgeUrl" alt="">
                         <span>{{sellerGoodsInfo.sellerName}}</span>
-<!--                        <router-link-->
-<!--                            tag="p"-->
-<!--                            class="brandName"-->
-<!--                            :to="{-->
-<!--                            path:'/BrandDetail',-->
-<!--                             query:{-->
-<!--                                tag:'brand',-->
-<!--                                documentid:sellerGoodsInfo.brandId,-->
-<!--                                name:sellerGoodsInfo.brandName-->
-<!--                                }-->
-<!--                            }"-->
-<!--                        >-->
-<!--                            品牌：{{sellerGoodsInfo.brandName}}-->
-<!--                            <ImgE :src="sellerGoodsInfo.brandImageUrl" :W="500" :H="200"></ImgE>-->
-<!--                        </router-link>-->
+                         <!-- <div class="wrapInfo clear">
+                                    <div class="clear">
+                                        <div class="wrap">
+                                            <img :src="sellerGoodsInfo.userImgeUrl" alt="" >
+                                            <p>
+                                                {{sellerGoodsInfo.sellerName}}<br>
+                                               <span class="tag bgColor">{{sellerGoodsInfo.tag | filterTag}}</span> 
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p>发布商品量：{{sellerGoodsInfo.publisCount}}</p>
+                                    <p>历史成交量：{{sellerGoodsInfo.historyCount}} </p>
+                                    <p>
+                                        <el-button class="btn0" size="mini" v-if="!sellerGoodsInfo.focus" @click.stop="addFocus(k)">关注</el-button>
+                                        <el-button class="bglight" size="mini" v-if="sellerGoodsInfo.focus">已关注</el-button>
+                                        </p>
+                                </div> -->
                     </div>
-                    <div class="count">
+                    <div class="count fl" style="width:100%;">
                         数量：
                         <el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="sellerGoodsInfo.moq"  :max="sellerGoodsInfo.goodsStockCount"  :step="sellerGoodsInfo.mpq"  step-strictly></el-input-number>
                         <span>可买数量：{{sellerGoodsInfo.goodsStockCount}}只</span>
                     </div>
-                    <div class="btnwrap">
+                    <div class="btnwrap fl" style="width:100%">
                         <span class=" btn bgColor" @click="submitPurchase">立即购买</span>
-<!--                        <span class="btn orange" @click="specialPrice">申请特价</span>-->
+                       <span class="btn orange" @click="pushlishspecialPrice">我有特价</span>
                         <span class="btn gray" @click="addShopingCar">加入购物车</span>
                         <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>
                     </div>
-                    <div class="mark">
+                    <div class="mark fl" style="width:100%;">
                         * 标注现货字样的商品需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准
                     </div>
                 </div>
@@ -143,8 +160,8 @@
                 <div class="detail-informan-con">
                     <p class="tit">
                         <span>技术参数</span>
-                        <span>产品手册
-<!--                            <i class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></i>-->
+                        <span>数据手册
+                           <a class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></a>
                         </span>
                     </p>
                     <ul class="parameter clear">
@@ -201,7 +218,7 @@
     import {mapMutations} from 'vuex';
     import { baseURL, baseURL2 ,baseURL3} from "@/config";
     import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
-    import {TimeForma2} from "../../lib/utils";
+    import {TimeForma2,TimeForma} from "../../lib/utils";
     export default {
         data(){
             return{
@@ -227,7 +244,8 @@
                 //详情图片
                 selectedstr:'',
                 bigImgstr:"",
-                sellerGoodsImageUrlList:[]
+                sellerGoodsImageUrlList:[],
+                UserInforma:sessionStorage.getItem('UserInforma')
             }
         },
         created(){
@@ -469,6 +487,26 @@
                 this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
                 this.$router.push("/InquiryBasket/ApplySpecialPrice");
             },
+            pushlishspecialPrice(){
+            //发布特价
+                if(!this.loginState){
+                        this.$router.push('/Login')
+                        return;
+                    } 
+                if(this.UserInforma){
+                    this.UserInforma=JSON.parse(this.UserInforma)
+                    if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct");
+                    }else{
+                        this.$router.push("/OriginalFactoryEntry");
+                    }
+                }else{
+                    this.UserInforma={
+                        userTagMap:{}
+                    }
+                }
+                
+            },
             searchDatasheet(id) {
                 let ret = baseURL + "api-g/gods-anon/queryGoodsDatesheet?id=" + id;
                 this.downDatasheet = ret;
@@ -487,8 +525,21 @@
             }
         },
         filters:{
+            filterHours(val){
+                return Number(val)*24
+            },
+            filterTag(val){
+                switch(val){
+                    case 1:
+                        return '原厂';
+                    case 2:
+                        return '代理商';
+                    case 3:
+                        return '普通商户';
+                }
+            },
             formatDate(val){
-                return TimeForma2(val)
+                return TimeForma(val)
             },
             tagFilter(val){
                 switch (val) {

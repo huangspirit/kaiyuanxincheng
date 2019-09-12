@@ -42,14 +42,15 @@
       .list{
         display:flex;
         flex-wrap:wrap;
+       
         .item{
-          background: #fff;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          background:#fff;
           width:32%;
           margin-right:2%;
-          overflow: hidden;
+        
           position: relative;
           text-align: left;
           color:#656565;
@@ -58,7 +59,7 @@
           border-radius: 10px;
           &:hover{
             box-shadow: 0 0 10px 2px #ddd;
-            transform: scale(1.003);
+            transform: scale(1.003,1.003,1);
             transition: all 0.2s;
           }
           &.noMargin{
@@ -90,6 +91,7 @@
             position: relative;
             margin-bottom:15px;
             text-align: center;
+            cursor: pointer;
             &:after{
               content: "";
               display: block;
@@ -113,9 +115,9 @@
               overflow: hidden;
               background: rgba(0,0,0,0.05);
               font-size:14px;
-              font-weight: bold;
               text-align: left;
               padding:10px;
+              font-weight: bold;
             }
           }
           .info{
@@ -128,13 +130,84 @@
               flex-direction: column;
               justify-content: space-between;
               height:100%;
-              margin-left:10px;
+              padding-left:10px;
+              position: relative;
+              align-items: center;
+              min-height:0;
+              &:hover{
+                .wrapInfo{
+                  display:block;
+                }
+              }
+              .wrapInfo{
+                position: absolute;
+                background:#fff;
+                top:80%;
+                box-shadow: 0 0 5px 2px #ddd;
+                z-index:100;
+                right:-20px;
+                min-width:200px;
+                padding-bottom:15px;
+                display: none;
+                &>div{
+                  background:#f5f5f5;
+                  padding:15px;
+                  .wrap{
+                    float: left;
+                    display: flex;
+                    white-space: nowrap;
+                    align-items: center;
+                    text-align: left;
+                    font-weight: bolder;
+                    p{
+                      width:130px;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    }
+                    img{
+                      width:45px;
+                      height:45px;
+                      border-radius: 100%;
+                      margin-right:15px;
+                    }
+                    .tag{
+                      font-size:12px;
+                      padding:1px 10px;
+                      border-radius: 3px;
+                    }
+                  }
+                  
+                }
+                &>p{
+                  margin-top:10px;
+                  padding:0 15px;
+                  white-space: nowrap;
+                  text-align: left;
+                  float: left;
+                  width:100%;
+                  box-sizing: border-box;
+                  .btn0{
+                    width:100%;
+                    line-height:20px;
+                  }
+                }
+                
+              }
+              .sellerName{
+                width:80px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height:20px;
+                font-size:12px;
+                line-height:20px;
+              }
               .img{
                 height:45px;
                 width:45px;
                 border-radius: 100%;
                 overflow: hidden;
                 margin-bottom:5px;
+                cursor: pointer;
                 img{
                   width:100%;
                 }
@@ -145,20 +218,25 @@
               font-size:14px;
               margin-bottom:15px;
               font-weight: bold;
-              /deep/.timeStr{
-                background: #fff;
-                color:#ff7e0d;
-                margin:0;
-                padding:0;
+              /deep/.counttime{
                 font-size:14px;
-                font-weight: bold;
+                .timeStr{
+                  background: #fff;
+                  color:#ff7e0d;
+                  margin:0;
+                  padding:0;
+                  font-size:16px;
+                  font-weight: bold;
+                }
               }
+             
             }
             .goodsName{
               font-size: 18px;
               font-weight:bold;
               color:#333;
               cursor: pointer;
+              margin-bottom:3px;
               &:hover{
                 color:#df3f2f
               }
@@ -184,10 +262,10 @@
             }
           }
           .btn{
-            line-height: 40px;
-            margin-top:10px;
-            cursor: pointer;
+            margin-top:15px;
+            line-height: 50px;
             text-align: center;
+            cursor: pointer;
             &:hover{
               font-weight: bold;
               font-size:18px;

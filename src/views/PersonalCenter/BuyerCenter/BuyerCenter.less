@@ -6,10 +6,12 @@
         margin-bottom: 10px;
         display:flex;
         .username {
-            padding:50px 70px;
+            padding:20px;
             background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
             background-size:auto 100%;
             box-sizing: border-box;
+            display: flex;
+            align-items: center;
             .head-portrait {
                 width: 90px;
                 height:90px;
@@ -54,6 +56,8 @@
                         height:100%;
                         border-radius: 10px;
                         text-align: center;
+                        padding-bottom:10px;
+                        box-sizing: border-box;
                         .money{
                             color:#999;
                             font-size:48px;
@@ -102,22 +106,25 @@
         display: flex;
         flex-wrap: wrap;
         li {
-            width: 20%;
+            width: 25%;
             font-size: 20px;
             color: #4a5a6a;
             font-weight: bold;
             cursor: pointer;
-            padding-right: 10px;
+            padding-right: 1%;
             padding-bottom: 10px;
             text-align: center;
             box-sizing:border-box;
-            min-width:300px;
             &>div{
                 background: #fff;
                 padding:20px;
                 border-radius: 5px;
-                min-height:140px;
+                min-height:190px;
                 text-align:left;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                box-sizing:border-box;
                 .desc{
                     font-size:14px;
                     margin-bottom:20px;

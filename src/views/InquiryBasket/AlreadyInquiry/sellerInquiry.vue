@@ -129,7 +129,7 @@ export default {
       axios
         .request({ ...siderInquiryList.allReply, params: this.paramsInfo })
         .then(res => {
-          console.log(res);
+          
           if (res.resultCode == "200") {
             if (res.data != null) {
               this.allInquiryData = res.data;

@@ -64,7 +64,7 @@
         class="table"
       >
         <tr>
-          <td style="width:20%;" class="receiverInfo">
+          <td style="width:30%;" class="receiverInfo">
             <div class="text_left">
               <label for>收件人：</label>
               <p>{{item.orderVo.receivingName}}</p>
@@ -78,11 +78,11 @@
               <p>{{item.orderVo.address}}{{item.orderVo.detailedAddress}}</p>
             </div>
           </td>
-          <td style="width:15%">
+          <!-- <td style="width:15%">
             <p>{{item.orderVo.goods_type ? '$' : '￥'}}{{item.orderVo.postage}}</p>
             <span v-if="item.orderVo.postage">(预付邮费)</span>
             <span v-else>(到付)</span>
-          </td>
+          </td> -->
           <td style="width:15%" class="operation">
             <div>
               <span style="font-weight:bolder;" class="color">{{item.orderVo.orderStatesDesc}}</span>
@@ -118,15 +118,15 @@
             >
 <!--                {{item.orderVo.goods_type ? '$' : '￥'}}-->
                 ￥
-                {{item.orderVo.order_prepay}}
+                {{item.orderVo.order_prepay | toFixed(2)}}
             </p>
           </td>
           <td style="width:15%">
-            <p class="num">总额：￥{{item.orderVo.order_amount}}</p>
-            <span>附加发票金额（￥{{item.orderVo.order_bill}}）</span><br>
-            <span>关税（￥{{item.orderVo.guanshui}}）</span>
+            <p class="num">总额：￥{{item.orderVo.order_amount | toFixed(2) }}</p>
+            <span v-if="item.orderVo.order_bill">附加发票金额（￥{{item.orderVo.order_bill | toFixed(2)}}）</span><br>
+            <span v-if="item.orderVo.guanshui">关税（￥{{item.orderVo.guanshui | toFixed(2)}}）</span>
           </td>
-          <td style="width:20%" class="operation">
+          <td style="width:25%" class="operation">
             <!-- 是不是月结 -->
               <div class="box-con">
                   <div class="wrapbtn" v-if="item.orderVo.download">
@@ -258,8 +258,8 @@
                 <td>
                   <p
                     class="num"
-                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price}}x{{value.goods_count}}</p>
-                  <p class="num">({{value.priceunit ? '不含税' : '含税'}})</p>
+                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}x{{value.goods_count}}</p>
+                  <p class="num">({{value.priceunit ? '不含税' : '含13%增值税'}})</p>
                 </td>
                 <td>
                   <p>{{value.diliver_place}}</p>
@@ -268,7 +268,7 @@
                 <td>
                   <p
                     class="num"
-                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price}}（{{value.goods_type ? '现货' : '期货'}}）</p>
+                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}（{{value.goods_type ? '现货' : '订货'}}）</p>
                   <!-- <span>需预付款：（{{value.priceunit ? '$' : '￥'}}{{value.pre_pay}}）</span>
                 <span>发票扣税额（￥{{value.bill_price}}）</span>
 
@@ -457,7 +457,7 @@
       </el-dialog>
       <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
           <div class="dialog-body" slot="dialog-body">
-              <div class="RemittancNotes" >
+              <div class="RemittancNotes">
                   <el-form  label-width="80px">
                       <el-form-item label="汇款凭证:">
                           <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
@@ -478,7 +478,7 @@
                           </el-upload>
                       </el-form-item>
                       <el-form-item label="汇款金额:">
-                          <strong class="color" style="font-size:20px;">￥{{item.orderVo.order_prepay}}</strong>
+                          <strong class="color" style="font-size:20px;">￥{{item.orderVo.order_prepay | toFixed(2)}}</strong>
                       </el-form-item>
                   </el-form>
                   <div class="desc">
@@ -624,7 +624,7 @@ export default {
       axios
         .request({ ...buyerOrderCenter.confirmChangeDiliverTime, params: obj })
         .then(res => {
-          console.log(res);
+       
           if (res.resultCode == "200") {
             this.dialogVisible = false;
             this.$emit("successFlagHandel");
@@ -640,17 +640,17 @@ export default {
         contractUrl +
         "&access_token=" +
         this.access_token;
-      console.log("ret:", ret);
+ 
       // this.downloadUrl3 = ret;
       let res =
         baseURL2 + "static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
-      console.log(res);
+   
       this.downloadUrl2 = res;
     },
     getDiliverInfo(orderId) {
-      console.log("物流信息");
+    
       this.queryExpress({ orderId }).then(res => {
-        console.log(res);
+      
         this.expressList = res.data;
       });
     },
@@ -870,6 +870,9 @@ export default {
     }
   },
   filters: {
+    toFixed(val,length){
+        return Number(val).toFixed(length)
+    },
     tagfilter(val) {
       console.log("tagfilter:", val);
       switch (Number(val)) {

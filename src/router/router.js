@@ -197,7 +197,7 @@ export default [
         children: [
             {
                 path: '/',
-                name: 'BasicInforma',
+                name: 'firstPage',
                 component: () => import('@/views/OriginalFactoryEntry/firstPage'),
                 meta: {
                     requireAuth: true,
@@ -205,7 +205,7 @@ export default [
                     keepAlive: true // 需要被缓存
                 }
             },{
-                path: '/',
+                path: 'BasicInforma',
                 name: 'BasicInforma',
                 component: () => import('@/views/OriginalFactoryEntry/BasicInforma'),
                 meta: {
@@ -537,22 +537,24 @@ export default [
             {
                 path: 'inquiryList',
                 name: 'inquiryList',
-                redirect:"/personalallApply",
+           // redirect:"/personalallApply",
                 component: () => import('@/views/PersonalCenter/sellerInquiry'),
                 meta: {
                     requireAuth: true,
-                    title: '询价单列表'
+                    title: '询价单列表',
+                    parentname:"SellerCenter"
                 },
-                children: [{
-                    path: '/personalallApply',
+                children: [
+                    {
+                    path: '/',
                     name: 'personalallApply',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/allReply.vue'),
                     meta: {
                         requireAuth: true,
-                        title: '全部待批复'
+                        title: '全部'
                     },
                 }, {
-                    path: '/personaluserNotice',
+                    path: 'personaluserNotice',
                     name: 'personaluserNotice',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/userNotice.vue'),
                     meta: {
@@ -560,7 +562,7 @@ export default [
                         title: '用户提醒'
                     },
                 }, {
-                    path: '/personalalreadyReply',
+                    path: 'personalalreadyReply',
                     name: 'personalalreadyReply',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyReply.vue'),
                     meta: {
@@ -568,7 +570,7 @@ export default [
                         title: '已批复'
                     },
                 }, {
-                    path: '/personalalreadyOverdue',
+                    path: 'personalalreadyOverdue',
                     name: 'personalalreadyOverdue',
                     component: () => import('@/views/PersonalCenter/sellerInquiry/alreadyOverdue.vue'),
                     meta: {

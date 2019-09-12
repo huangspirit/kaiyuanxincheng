@@ -10,6 +10,15 @@ const common = {
     querySysMessage: {
         url: "api-n/notification-anon/querySysMessage"
     },
+    resetme:{
+        url:"api-u/users/me"
+    },
+    refresh_token:{
+        url:"sys/refresh_token"
+    },
+    getuserInfo:{
+        url:"api-u/users/current"
+    }
 
 }
 const home = {
@@ -72,6 +81,9 @@ const buyerOrderCenter = {
     },
     queryOrderBillCheckList:{
         url:"api-order/customerCenter/queryOrderBillCheckList"
+    },
+    vipOrderBillForPay:{
+        url:"api-order/customerCenter/vipOrderBillForPay"
     }
 }
 const sellerOrderCenter = {
@@ -104,7 +116,7 @@ const sellerCenter = {
     //卖家账单中心查询
     queryAccountDetail: {
         url: "/api-order/sellerCenter/queryAccountDetail"
-    }
+    },
 }
 const personCenter = {
     //买家中心汇总页面

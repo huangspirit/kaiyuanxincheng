@@ -25,29 +25,30 @@
               </div>
               <div class="fl right">
                   <p class="goodsName">{{goodsinfo.productno}}</p>
-                  <p class="goodsdesc">{{goodsinfo.productdesc}}</p>
-                  <p class="brandDesc">
+                  <p class="brandDesc" >
+                      制造商：
                       <router-link
-                          tag="span"
+                          tag="a"
                           class="brandName"
                           :to="{
-                      path:'/BrandDetail',
-                       query:{
-                          tag:'brand',
-                          documentid:goodsinfo.brandId,
-                          name:goodsinfo.brand
-                          }
-                      }"
+                            path:'/BrandDetail',
+                            query:{
+                                tag:'brand',
+                                documentid:goodsinfo.brandId,
+                                name:goodsinfo.brand
+                                }
+                            }"
                       >
-                          制造商：{{goodsinfo.brand}}
+                          {{goodsinfo.brand}}
+                          <ImgE :src="goodsinfo.brandImageUrl" :W='50' :H='25' style="margin-left:15px;"></ImgE>
                       </router-link>
-                      <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
+                      <!-- <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> -->
                   </p>
-
-
-<!--                  <div class="cont1">-->
-<!--                      <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：暂无</span>-->
-<!--                  </div>-->
+                  <p class="goodsdesc" style="word-break:break-all;">描述：{{goodsinfo.productdesc}}</p>
+                  <P class='goodsdesc'>器件状态：{{showSelling?'在售':'暂未出售'}}</P>
+                 <div class="cont1">
+                    <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：<span style="text-decoration:line-through;">{{goodsinfo.referPrice}}</span></span>
+                 </div>
                   <div class="icon">
                       <span v-if="goodsinfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
                       <span @click="addFocus" v-if="!goodsinfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
@@ -57,8 +58,9 @@
 <!--                      <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>-->
                   </div>
                   <div class="btnwrap">
+                        <span class="btn bgColor" @click="pushlishspecialPrice">发布特价</span>
                       <span class="btn orange" @click="specialPrice">申请特价</span>
-                      <span class="btn gray" @click="addInquiry">询价蓝</span>
+                      <span class="btn gray" @click="addInquiry">加入询价蓝</span>
 <!--                      <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>-->
                   </div>
 <!--                  <div class="mark">-->
@@ -86,7 +88,9 @@
       <div class="detail-informan-con">
           <p class="tit">
             <span>技术参数</span>
-            <span>产品手册</span>
+            <span>数据手册
+                 <a class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></a>
+            </span>
           </p>
           <ul class="parameter clear">
             <li>
@@ -147,7 +151,7 @@ import {TimeForma2,ladderPrice} from "../../../lib/utils";
 import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
 import { baseURL, baseURL2 } from "@/config";
-import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
+import { axios, shoppingCar,BrandDetail,home} from "@/api/apiObj";
 
 export default {
   name: "GoodsDetails",
@@ -162,7 +166,9 @@ export default {
       // loading
       loading: true,
       showPurchase:false,
-        dialogVisible:false
+        dialogVisible:false,
+        showSelling:false,
+        UserInforma:sessionStorage.getItem('UserInforma')
     };
   },
   components: {
@@ -170,6 +176,39 @@ export default {
     SubstituModelList
   },
   methods: {
+      pushlishspecialPrice(){
+            //发布特价
+                if(!this.loginState){
+                        this.$router.push('/Login')
+                        return;
+                    } 
+                if(this.UserInforma){
+                    this.UserInforma=JSON.parse(this.UserInforma)
+                    if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct");
+                    }else{
+                        this.$router.push("/OriginalFactoryEntry");
+                    }
+                }else{
+                    this.UserInforma={
+                        userTagMap:{}
+                    }
+                }
+                
+            },
+       GetMerchantList(){
+        let obj={
+            goods_id: this.goodsinfo.id,
+            start: 0,
+            length: 1,
+            status: "1"
+        };
+        axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
+            if(res.data.total>0){
+                this.showSelling=true
+            }
+        })
+    },
       openBig(){
           this.loading=true;
           this.dialogVisible=true;
@@ -299,6 +338,7 @@ export default {
               seller_id: res.factorySellerInfo.seller_id,
               tag: 1,
           }
+          this.GetMerchantList()
           this.searchDatasheet(res.id)
       })
 

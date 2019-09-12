@@ -5,28 +5,27 @@
           <el-breadcrumb-item>申请记录查询</el-breadcrumb-item>
       </el-breadcrumb>
     <el-table :data="list" border style="width: 100%">
-      <el-table-column fixed prop="applyType" label="申报类型" width="150" align="center">
+      <el-table-column fixed prop="applyType" label="申报类型"  align="center">
         <template slot-scope="scope">
           <span>{{scope.row.applyType | applyStatus}}</span>
         </template>
       </el-table-column>
-
-      <el-table-column prop="applyTime" label="申报时间" width="300" align="center">
+      <el-table-column prop="applyTime" label="申报时间"  align="center">
         <template slot-scope="scope">
           <span>{{scope.row.applyTime | formatDate}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="contactName" label="联系人" width="300" align="center"></el-table-column>
-      <el-table-column prop="contactPhone" label="联系人手机号" width="270" align="center"></el-table-column>
-      <el-table-column prop="checkStatus" label="申报状态" width="100" align="center">
+      <el-table-column prop="contactName" label="联系人"  align="center"></el-table-column>
+      <el-table-column prop="contactPhone" label="联系人手机号"  align="center"></el-table-column>
+      <el-table-column prop="checkStatus" label="申报状态"  align="center">
         <template slot-scope="scope">
           <span
             :class="'status'+scope.row.checkStatus"
           >{{scope.row.checkStatus | checkStatusFilter}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="mark" label="审核备注" width="300" align="center"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="150" align="center">
+      <el-table-column prop="mark" label="审核备注"  align="center"></el-table-column>
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <el-button @click="handleDetail(scope.row)" type="text" size="small">详情</el-button>
           <el-button
@@ -52,7 +51,7 @@
             <span>{{detailList.companyname}}</span>
           </li>
           <li>
-            <span>工商营业执照注册号：</span>
+            <span>营业执照注册号：</span>
             <span>{{detailList.businesslicensenum}}</span>
           </li>
           <li>
@@ -115,7 +114,7 @@
             </span>
           </li>
           <li>
-            <span>纳税人资格证</span>
+            <span>纳税人资格证：</span>
             <span>
               <img
                 style="margin: 10px 0;"

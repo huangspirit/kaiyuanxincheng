@@ -74,7 +74,7 @@ export const TimeForma = (value) => {
     m = m < 10 ? '0' + m : m
     let s = date.getSeconds()
     s = s < 10 ? '0' + s : s
-    return y + '-' + MM + '-' + d + ' ' + h + ":" + m + ":" + s
+    return y + '-' + MM + '-' + d 
 }
 // 时间格式化（带时秒分）
 export const TimeForma2 = (value) => {

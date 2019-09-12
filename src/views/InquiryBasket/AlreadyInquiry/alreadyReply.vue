@@ -105,27 +105,27 @@
                   <div class="priceLevelStyle">
                     <div v-for="(item,index) in listItem.priceLevel.split('@')" :key="index">
                       <span>{{item.split('-')[0]}}+</span> --- &nbsp;&nbsp;
-                      <span>${{item.split('-')[1]}}</span>
+                      <span>{{listItem.priceUnit?'$':'￥'}}{{item.split('-')[1]}}</span>
                     </div>
                   </div>
                 </h3>
                 <h3 v-if="!listItem.priceType">
                   批复价格：
-                  <span>￥{{listItem.seckilPrice}}</span>
+                  <span>{{listItem.priceUnit?'$':'￥'}}{{listItem.seckilPrice}}</span>
                 </h3>
                 <p>
                   回复日期：
                   <span>{{listItem.replyTime | formatDate(listItem.priceExpireTime)}}</span>
                 </p>
                 <p>
-                   MOQ：
+                   起订量：
                   <span>{{listItem.moq}}</span>
-                   &nbsp;&nbsp; MPQ：
+                   &nbsp;&nbsp; 最小增量：
                     <span>{{listItem.mpq}}</span>
                 </p>
                 <p>
                   交付周期：
-                  <span>{{listItem.priceIntervalDay}}天</span>
+                  <span>{{listItem.diliverIntervalDay}}天</span>
                 </p>
                 <p>
                   价格有效期至：
@@ -221,7 +221,6 @@ export default {
         type: true
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
-        console.log(res);
         if (res.resultCode == "200") {
           if (res.data != null) {
             this.allInquiryData = res.data.data;
@@ -233,7 +232,6 @@ export default {
       });
     },
     againSpecial(val, val1) {
-      console.log(val, val1);
       this.$confirm("是否确认重新申请?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -277,13 +275,13 @@ export default {
         tag: val.sellerInfoMap.tag
       };
       this.purshaseData = obj;
-      console.log(this.purshaseData);
+  
     },
     currentPage(val) {
-      console.log("11", val);
+     
     },
     change(val) {
-      console.log(val);
+   
       this.start = val * 2 - 2;
       this.getAllReplyList();
     }

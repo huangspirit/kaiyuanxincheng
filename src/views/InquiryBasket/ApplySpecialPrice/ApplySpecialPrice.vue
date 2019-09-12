@@ -77,7 +77,7 @@
           </el-form-item>
           <el-form-item label="预计量产时间" prop="projectBeginTime">
             <div class="product-time">
-              <el-date-picker v-model="formAlign.projectBeginTime" type="month" placeholder="选择年月"></el-date-picker>
+              <el-date-picker v-model="formAlign.projectBeginTime" type="month" placeholder="选择年月" size="mini"></el-date-picker>
             </div>
           </el-form-item>
           <el-form-item v-if="topShow" class="acceptPrice" label="接受价格" prop="acceptPrice">
@@ -170,9 +170,10 @@
                   <div v-if="!listItem.factorySellerInfo.seller_goods_id">
                     <p>暂无原厂报价</p>
                   </div>
-                  <div
+                  <template   v-for="(subitem,index) in listItem.priceList">
+                    <div
                     v-if="listItem.factorySellerInfo.seller_goods_id && (listItem.factorySellerInfo.priceType || listItem.factorySellerInfo.price_type)"
-                    v-for="(subitem,index) in listItem.priceList"
+                  
                     :key="index"
                     class="color"
                   >
@@ -183,6 +184,7 @@
                       <span>{{subitem.price}}</span>
                     </span>
                   </div>
+                  </template>
                   <div
                     v-if="listItem.factorySellerInfo.seller_goods_id && !(listItem.factorySellerInfo.priceType || listItem.factorySellerInfo.price_type)"
                     :key="index"
@@ -229,6 +231,7 @@
                         v-model="listItem.projectEau"
                         class="input-with-select unit"
                         size="mini"
+                        type="number"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="竞争型号" class="contact" prop="insteadNo">
@@ -252,7 +255,7 @@
                       >
                         <el-button
                           slot="append"
-                          @click.native="addInsteadNo(listItem,true)"
+                          @click.native.stop="addInsteadNo(listItem,true)"
                           icon="el-icon-circle-plus"
                         ></el-button>
                       </el-input>
@@ -362,18 +365,18 @@ export default {
     if (this.proInformation instanceof Array && this.proInformation.length) {
       this.topShow = false;
       for (var i = 0; i < this.proInformation.length; i++) {
-        this.proInformation[i]["priceType"] = "false";
-        this.proInformation[i]["acceptPrice"] = "";
-        this.proInformation[i]["projectEau"] = "";
-        this.proInformation[i]["insteadNo"] = "";
-        this.proInformation[i]["insteadData"] = [];
+        this.proInformation[i]={priceType:"false",
+        acceptPrice:'',
+        projectEau:'',
+        insteadNo:'',
+        insteadData:[],
+        ...this.proInformation[i]};
       }
       this.productData = this.proInformation;
     } else {
       if (this.proInformation.goodsbaseIno) {
-        console.log(this.proInformation.goodsbaseIno)
         this.oneData = this.proInformation.goodsbaseIno;
-        this.formAlign = this.proInformation;
+        this.formAlign = {...this.formAlign,...this.proInformation};
         if(this.proInformation.insteadNo){
             this.formAlign.insteadData = this.proInformation.insteadNo.split("@");
         }else{
@@ -477,9 +480,10 @@ export default {
       });
     },
     addInsteadNo(val, type) {
-      console.log(val, type, "0000");
+      //type==false,标志单个添加，true,标识多个添加
+      console.log(val)
       if (!type) {
-        if (val == "") {
+        if (!val) {
           this.$message({
             message: "请填写竞争型号",
             type: "warning"
@@ -491,30 +495,33 @@ export default {
               type: "warning"
             });
           } else {
-            this.formAlign.insteadData.push(val);
+            let arr=this.formAlign.insteadData;
+            arr.push(val)
+            this.$set(this.formAlign,'insteadData', arr)
           }
         }
       } else {
-        if (val == "") {
-          this.$message({
-            message: "请填写竞争型号",
-            type: "warning"
-          });
-        } else {
-          for (var i = 0; i < this.productData.length; i++) {
-            if (this.productData[i].id == val.id) {
-              if (this.productData[i].insteadData.length >= 2) {
-                this.$message({
-                  message: "最多添加三个竞争型号",
-                  type: "warning"
-                });
-              } else {
-                this.productData[i].insteadData.push(val.insteadNo);
-              }
-            }
-          }
-          this.productData = Object.assign([], this.productData)
-        }
+         for(var i=0;i<this.productData.length;i++){
+           if(this.productData[i].id==val.id){
+              if(!val.insteadNo){
+                  this.$message({
+                    message: "请填写竞争型号",
+                    type: "warning"
+                  });
+                }else{
+                    if(val.insteadData.length>=2){
+                      this.$message({
+                            message: "最多添加三个竞争型号",
+                            type: "warning"
+                          });
+                    }else{
+                      this.productData[i].insteadData.push(val.insteadNo);
+                    }
+                }
+                return
+           }
+         }
+         
       }
     },
     deleteInsteadNo(index, type, val) {
@@ -560,7 +567,7 @@ export default {
   }
 }
 /deep/.el-form-item{
-    margin-bottom:10px;
+    
     .el-form-item__label{
         line-height:30px;
     }

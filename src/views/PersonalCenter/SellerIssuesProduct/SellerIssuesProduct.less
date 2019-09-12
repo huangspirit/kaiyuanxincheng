@@ -10,8 +10,13 @@
     width:80%;
     box-shadow: 0 0 10px 10px #e3e3e3;
     // background:#f7f7f7;
+    .descRight{
+      margin-left:10px;
+      color:#F56C6C;
+    }
     .setitem{
         display: flex;
+      
         .label{
           font-size: 14px;
           color: #606266;
@@ -20,7 +25,7 @@
           padding-right:15px;
           box-sizing:border-box;
           .desc{
-            color: #ff6600;
+            color: #F56C6C;
             font-size:12px;
           }
           .requireMark{
@@ -48,6 +53,7 @@
         border:1px solid #d5d5d5;
         li{
           padding:3px 10px;
+          cursor: pointer;
           &:hover{
             background: #d5d5d5;
             color:#fff;
@@ -65,6 +71,18 @@
         box-sizing: border-box;
         width:45%;
         min-width:250px;
+        .product-t{
+          &>p{
+            line-height: 1.4!important;
+            margin-top:10px;
+          }
+        }
+        .product-b{
+          &>p{
+            line-height: 1.4!important;
+            margin-top:10px;
+          }
+        }
         .detail{
           display:flex;
           .ImgE{
@@ -74,9 +92,17 @@
               vertical-align: middle;
             }
           }
-          .num{
-            color: #cc0000;
+         
+          &>div{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            p{
+              word-break: break-all;
+              line-height: 1.2
+            }
           }
+          
         }
 
       }
@@ -107,7 +133,7 @@
       .desc{
         position: absolute;
         top:40px;
-        color:#ff6600;
+        color:#F56C6C;
         font-size:12px;
         line-height:1;
       }

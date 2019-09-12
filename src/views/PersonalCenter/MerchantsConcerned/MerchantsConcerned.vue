@@ -25,7 +25,8 @@
         <li v-for="(item, k) in list.data" :key="k">
           <!-- 品牌信息 -->
           <div class="brand-information">
-            <img :src="item.headUrl" class="bd-img">
+            <!-- <img :src="item.headUrl" class="bd-img"> -->
+            <ImgE :src="item.headUrl" :W="100" :H="100" style="width:10vw;text-align:center;"></ImgE>
             <p class="name">{{item.sellerName}}<span class="tag yc bgColor">{{item.user_tag | catergoryIdFilter}}</span></p>
             <span class="focus-on" @click="deleteGoodsFavourite(item.id)">取消关注</span>
           </div>

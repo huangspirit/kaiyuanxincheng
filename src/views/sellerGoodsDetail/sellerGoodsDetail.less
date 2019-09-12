@@ -161,7 +161,7 @@
         }
         .icon{
           text-align: left;
-          color:#999;
+          color:#000;
           font-size:14px;
           span{
             margin-right:20px;
@@ -189,6 +189,10 @@
           font-size:30px;
           font-weight: bold;
           margin-bottom:7px;
+          cursor: pointer;
+          &:hover{
+            color: #df3f2f;
+          }
         }
         .time{
             line-height:35px;
@@ -224,7 +228,7 @@
           }
 
           background: #fafafa;
-          padding: 25px;
+          padding: 15px;
           margin-top:10px;
           border:1px solid #eee;
           .mpq{
@@ -248,8 +252,74 @@
         }
         .seller{
           font-size:14px;
-          padding:20px 0;
+          padding:15px 0;
           border-bottom:1px dashed #eee;
+          position: relative;
+          &:hover{
+           // color:#df3f2f;
+            .wrapInfo{
+              display:block;
+            }
+          }
+          .wrapInfo{
+            position: absolute;
+            background:#fff;
+            top:80%;
+            box-shadow: 0 0 5px 2px #ddd;
+            z-index:100;
+            left:0px;
+            min-width:200px;
+            padding-bottom:15px;
+            display: none;
+            width:150px;
+            &>div{
+              background:#f5f5f5;
+              padding:15px;
+              .wrap{
+                float: left;
+                transform: translateX(25%);
+                display: flex;
+                white-space: nowrap;
+                align-items: center;
+                text-align: left;
+                font-weight: bolder;
+                img{
+                  width:45px;
+                  height:45px;
+                  border-radius: 100%;
+                  margin-right:15px;
+                }
+                .tag{
+                  font-size:12px;
+                  padding:1px 10px;
+                  border-radius: 3px;
+                }
+              }
+              
+            }
+            &>p{
+              margin-top:10px;
+              padding:0 15px;
+              white-space: nowrap;
+              text-align: left;
+              float: left;
+              width:100%;
+              box-sizing: border-box;
+              .btn0{
+                width:100%;
+                line-height:20px;
+                background: #f3281e;
+                color:#fff;
+              }
+              .bglight{
+                width:100%;
+                line-height:20px;
+                background: #ddd;
+                color:#fff;
+              }
+            }
+            
+          }
           img{
             width:25px;
             height:25px;
@@ -258,7 +328,7 @@
           }
         }
         .count{
-          line-height:80px;
+          line-height:60px;
           span{
             margin-left:20px;
           }
@@ -282,8 +352,13 @@
           line-height:1.7;
           color:#999;
           margin-bottom:7px;
+        
           span{
             width:30%;
+            cursor: pointer;
+            &:hover{
+              color: #df3f2f;
+            }
           }
         }
         .icon{
@@ -304,7 +379,7 @@
           position: relative;
             span{
               width:150px;
-              line-height: 50px;
+              line-height: 45px;
               text-align: center;
               border-radius:5px;
               margin-right:10px;

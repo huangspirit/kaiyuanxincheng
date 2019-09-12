@@ -2,9 +2,20 @@
   <div class="SellerCenter">
       <div class="user clear">
           <div class="username clear fl">
-              <img :src="UserInforma.headImgUrl" class="head-portrait fl" alt />
+            <el-upload
+                class="upload-demo fl"
+                :action="requestUrl"
+                 :on-success="handleAvatarSuccess"
+                  :show-file-list="false"
+                  title="点击更换"
+                >
+            <img :src="UserInforma.headImgUrl" class="head-portrait " alt />
+            </el-upload>
               <div class="info fl">
-                  <p class="name">{{UserInforma.nickname}}</p>
+                  <p class="name">
+                      {{UserInforma.nickname}}
+                        <img src="@/assets/image/icon/edit.png" style="height:15px;margin-left:15px;cursor:pointer;" @click="editUserName" title="更新用户名称"/>
+                  </p>
                   <p>
                       <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
                       <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
@@ -175,7 +186,8 @@
     //var echarts = require('echarts/lib/echarts');
     import echarts from "echarts";
     import {mapActions } from "vuex";
-    import {axios,sellerOrderCenter,personCenter } from "../../../api/apiObj";
+    import {axios,sellerOrderCenter,personCenter, common } from "../../../api/apiObj";
+    import { baseURL } from "@/config";
     export default {
         name: "BuyerCenter",
         data(){
@@ -192,7 +204,9 @@
                 selectedBank:0,
                 source0:[],
                 source1:[],
-                obj:{}
+                obj:{},
+                access_token:sessionStorage.getItem("access_token"),
+                refresh_token:sessionStorage.getItem("refresh_token")
                 // note: {
                 //     backgroundImage: "url(" + require("./assets/bg.jpg") + ")",
                 //     backgroundRepeat: "no-repeat",
@@ -234,12 +248,62 @@
                 if(this.UserInforma.userTagMap && this.UserInforma.userTagMap['credit-seller']){
                     return parseFloat(((this.UserInforma.userTagMap['restcredit-seller']/this.UserInforma.userTagMap['credit-seller'])*100).toFixed(1));
                 }
-            }
+            },
+            requestUrl() {
+                return (
+                    baseURL +
+                    `api-f/files/uploadHead?access_token=${this.access_token}`
+                );
+            },
         },
         methods:{
             ...mapActions("Login",[
                 "GetUserInforma"
             ]),
+            editUserName(){
+                     this.$prompt('更新用户昵称', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        inputValue:this.UserInforma.nickname
+                        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+                        // inputErrorMessage: '邮箱格式不正确'
+                        }).then(({ value }) => {
+                             axios.request({...common.resetme,method:"put",data:{nickname:value}}).then(res=>{
+                        if(res){
+                            //更新用户信息
+                           // this.all()
+                            axios.request({url:common.refresh_token.url+"?refresh_token="+this.refresh_token,method:'post',data:{refresh_token:this.refresh_token}}).then(res=>{
+                                console.log(res)
+                                sessionStorage.setItem("refresh_token",res.refresh_token);
+                                sessionStorage.setItem("access_token",res.access_token);
+                                this.refresh_token=res.refresh_token;
+                                this.access_token=res.access_token;
+                                  this.all()
+                            })
+                           
+                        }
+                    })
+                        }).catch(() => {
+                             
+                        });
+            },
+            handleAvatarSuccess(res){
+                    axios.request({...common.resetme,method:"put",data:{headImgUrl:res.data}}).then(res=>{
+                        if(res){
+                            //更新用户信息
+                           // this.all()
+                            axios.request({url:common.refresh_token.url+"?refresh_token="+this.refresh_token,method:'post',data:{refresh_token:this.refresh_token}}).then(res=>{
+                                console.log(res)
+                                sessionStorage.setItem("refresh_token",res.refresh_token);
+                                sessionStorage.setItem("access_token",res.access_token);
+                                this.refresh_token=res.refresh_token;
+                                this.access_token=res.access_token;
+                                  this.all()
+                            })
+                           
+                        }
+                    })
+            },
             changewithdrawApplyTotal(k){
                 let obj =this.withdrawApplyTotal;
                 obj = obj.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符
@@ -326,6 +390,7 @@
             },
             all() {
                 this.GetUserInforma().then(res => {
+                    sessionStorage.setItem("UserInforma",JSON.stringify(res))
                     this.UserInforma=res;
                 });
             },

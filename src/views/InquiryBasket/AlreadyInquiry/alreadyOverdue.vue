@@ -104,7 +104,6 @@ export default {
   },
   filters: {
     insteadFilter(val) {
-      console.log(val);
       return val.split("@");
     }
   },
@@ -133,7 +132,6 @@ export default {
         sheet_effective: false
       };
       axios.request({ ...siderInquiryList.allReply, params: obj }).then(res => {
-        console.log(res);
         if (res.resultCode == "200") {
           if (res.data != null) {
             this.allInquiryData = res.data.data;
@@ -146,7 +144,6 @@ export default {
     },
     currentPage(val) {},
     change(val) {
-      console.log(val);
       this.start = val * 2 - 2;
       this.getAllReplyList();
     }

@@ -63,12 +63,12 @@
         <!-- 列表的内容 -->
         <div class="tab-list-con">
           <p class="tab-list-con-tit">
-            <span style="width:20%">收货地址</span>
-            <span style="width:15%">邮费</span>
+            <span style="width:30%">收货地址</span>
+            <!-- <span style="width:15%">邮费</span> -->
             <span style="width:15%">订单状态</span>
             <span style="width:15%">当前应付款</span>
             <span style="width:15%">金额明细</span>
-            <span style="width:20%">操作</span>
+            <span style="width:25%">操作</span>
           </p>
           <BuyerOrderItem
             v-for="item in BuyerOrderList"

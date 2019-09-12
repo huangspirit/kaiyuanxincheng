@@ -1,21 +1,46 @@
 // 卖家账单中心
 .BuyerBillCenter {
     color:#333;
+    input[type='checkbox']{
+        width:16px;
+        height:16px;
+        color:#df3f2f;
+        vertical-align: middle;
+    }
     .top{
         display:flex;
         margin-bottom:10px;
         &>div{
             flex:1;
             text-align: center;
-            max-width:200px;
+            max-width:250px;
             margin-right:50px;
             background:#fff;
             padding:20px;
             font-size:16px;
+            cursor: pointer;
             .title{
                 text-align:left;
                 font-size:14px;
                 margin-bottom:20px;
+            }
+            .desc{
+                font-size:12px;
+                text-align: left;
+                margin-top:10px;
+            }
+            &.active{
+                background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
+                background-size:auto 100%;
+                p{
+                    color:#fff;
+                    strong{
+                        color:#fff;
+                    }
+                    a{
+                        color:#fff;
+                    }
+                }
             }
         }
     }
@@ -133,12 +158,17 @@
         }
         .list{
             .item{
+                label{
+                    width:100%;
+                    display:block;
+                    
+                }
                 .red{
                     color:#df3f2f;
                     text-decoration: underline;
                 }
                 .blue{
-                    color:#0d94fb;
+                    color:#046f04;
                    text-decoration: underline;
                 }
                 margin-bottom:10px;
@@ -146,17 +176,43 @@
                 border:1px solid #e3e3e3;
                 display: flex;
                 align-items: center;
+                position: relative;
                 &>div{
                     font-size:12px;
+                    &.mark{
+                        position: absolute;
+                        overflow: hidden;
+                        left:0;
+                        top:0;
+                        width:100px;
+                        height:100px;
+                        .togetherPay{
+                            transform: rotate(-45deg);
+                            background:#ddd;
+                            line-height: 60px;
+                            height:40px;
+                            position: absolute;
+                            left:-40px;
+                            top:-8px;
+                            width:100px;
+                            text-align: center;
+                            font-size:8px;
+                            &.undo{
+                                color:#333!important;
+                            }
+                        }
+                    }
                     &.left{
                         padding:0 10px;
                         width: 15%;
                         border-right:1px solid #e3e3e3;
                         margin-right:-1px;
                         box-sizing: border-box;
+                        padding-left:40px;
                         p{
                             line-height: 1.7;
                         }
+                        
                     }
                     &.right{
                         text-align: center;
@@ -168,14 +224,91 @@
                             border-top:1px solid #e3e3e3;
                             margin-top:-1px;
                             align-items: center;
+                            &:hover{
+                                background:#f5f5f5;
+                            }
                             &>div{
                                 flex:1;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                &.dataDesc{
+                                    position: relative;
+                                    overflow: initial;
+                                    &:hover{
+                                        .wrap{
+                                            display: block;
+                                        }
+                                    }
+                                    .wrap{
+                                        position: absolute;
+                                        background:#fff;
+                                        top:100%;
+                                        left:50%;
+                                        display: none;
+                                        box-shadow: 0 0 2px 2px #ddd;
+                                        white-space: nowrap;
+                                        padding:15px;
+                                        z-index: 1;
+                                        line-height: 1.7;
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+    .table{
+        width:100%;
+        border-left:1px solid #ddd;
+        border-top:1px solid #ddd;
+        text-align: center;
+        font-size:12px;
+        label{
+            width:100%;
+            display:block;
+            
+        }
+        .red{
+            color:#df3f2f;
+            text-decoration: underline;
+        }
+        .blue{
+            color:#0d94fb;
+           text-decoration: underline;
+        }
+        tr,td{
+            border-bottom:1px solid #ddd;
+            border-right:1px solid #ddd;
+            padding:5px;
+        }
+        thead{
+            line-height:40px;
+            
+        }
+        tbody{
+            background:#fff;
+        }
+        .dataDesc{
+            position: relative;
+            overflow: initial;
+            &:hover{
+                .wrap{
+                    display: block;
+                }
+            }
+            .wrap{
+                position: absolute;
+                background:#fff;
+                top:100%;
+                left:50%;
+                display: none;
+                box-shadow: 0 0 2px 2px #ddd;
+                white-space: nowrap;
+                padding:15px;
+                z-index: 1;
+                line-height: 1.7;
             }
         }
     }

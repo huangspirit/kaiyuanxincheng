@@ -1,84 +1,110 @@
 <template>
   <div class="SubstituModelList">
-    <ul class="substitu-model-list clear clear" v-if="modelList.length">
-      <li v-for="(item,k) in modelList" :key="`list_${item.id}`" >
-        <div class="product clear">
-<!--            <div class="model-list-b fr">-->
-<!--                <ButtonIcon :width="100" :height="40" @click="specialPrice(k)">-->
-<!--                    <img src="@/assets/image/brandDetail/u4504.png" alt />-->
-<!--                    申请特价-->
-<!--                </ButtonIcon>-->
-<!--                <span @click="addInquiry(k)">-->
-<!--                  <img src="@/assets/image/brandDetail/_u4518.png" alt />-->
-<!--                </span>-->
-<!--                <span @click="focus(k)" v-if="!item.focus">-->
-<!--                  <img src="@/assets/image/brandDetail/_u4510.png" alt />-->
-<!--                </span>-->
-<!--            </div>-->
-          <div class="model-list-t clear">
-            <div class="TabImage">
-              <ImgE :src="item.imageUrl" :W="190" :H="190"></ImgE>
-            </div>
-            <div class="text">
-              <router-link
+    <el-table
+    :data="modelList"
+    border
+    style="width: 100%"
+    max-height="500">
+    <el-table-column
+      fixed
+      prop="date"
+      label="图片"
+      width="150"
+      align="center">
+      <template slot-scope="scope">
+            <ImgE :src="scope.row.imageUrl" :W="190" :H="190"></ImgE>
+      </template>
+    </el-table-column>
+    <el-table-column
+     fixed
+      prop="name"
+      label="器件描述"
+      width="300"
+      >
+      <template slot-scope="scope">
+            <router-link
                 :to="{
                 path:'/BrandDetail/GoodsDetails',
                 query:{
                   tag:'goodsinfo',
-                  name:item.productno,
-                  documentid:item.id
+                  name:scope.row.productno,
+                  documentid:scope.row.id
                 }
               }"
-                class="name"
+                class="name color"
                 tag="p"
-              >{{item.productno}}</router-link>
-              
+              >{{scope.row.productno}}</router-link>
                 <p>
-                    <span>品牌：</span>
+                    <span>制造商：</span>
                     <router-link
-                      :to="{
-                      path:'/BrandDetail',
-                      query:{
-                        tag:'goodsinfo',
-                        name:item.brand,
-                        documentid:item.brandId
-                      }
-                    }"
-                    > {{item.brand}}</router-link>
+                :to="{
+                path:'/BrandDetail',
+                query:{
+                  tag:'brand',
+                  name:scope.row.brand,
+                  documentid:scope.row.brandId
+                }
+              }"
+                class=""
+                
+              > {{scope.row.brand}}</router-link>
+                   
                 </p>
               <p>
                 <span>型号描述：</span>
-                {{item.productdesc}}
+                {{scope.row.productdesc}}
               </p>
-              <p v-if="item.map">
-                <span v-if="!item.map.totalSeller">
+              <p v-if="scope.row.map">
+                <span v-if="!scope.row.map.totalSeller">
                   <span class="nolist">暂无供应商报价</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
-                  <span class="color">{{item.map.totalSeller}}</span>
+                  <span class="color">{{scope.row.map.totalSeller}}</span>
                   <span>供应商报价</span>
                   <span
                     class="color"
-                  >{{ item.map.minPrice}} --- {{item.map.maxPrice}}</span>
+                  >{{ scope.row.map.minPrice}} --- {{scope.row.map.maxPrice}}</span>
                 </span>
               </p>
-                <p class="btnWrap">
-                    <span class="bgColor btn" @click="addInquiry(k)">询价篮</span>
-                    <span class="orange btn "  @click="specialPrice(k)">申请特价</span>
-                    <span v-if="!item.focus" class="gray btn" @click="focus(k)">收藏商品</span>
-                    <span v-if="item.focus" class="gray">已收藏</span>
-                </p>
-            </div>
-          </div>
-        </div>
-<!--        <MerchantList :id="item.id" v-if="item.map.totalSeller"></MerchantList>-->
-      </li>
-    </ul>
+      </template>
+    </el-table-column>
+     <el-table-column
+      fixed
+      label="操作"
+      width="150"
+      align="center">
+      <template slot-scope="scope">
+        <p class="btnWrap">
+            <el-button class="orange btn" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button><br>
+            <el-button class="orange btn "  @click="specialPrice(scope.$index)" size="mini">申请特价</el-button><br>
+            <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">收藏商品</el-button>
+            <span v-if="scope.row.focus" class="bgLightGray btn">已收藏</span>
+        </p>
+      </template>
+    </el-table-column>
+    <template v-for="(item,k) in titleList">
+         <el-table-column
+            prop="list"
+            :label="item.name"
+            width="150"
+            :key="item.id"
+            align="center"
+            >
+            <template slot-scope="scope">
+          <span >
+            {{scope.row.list[k].value}}
+          </span>
+      </template>
+    </el-table-column>
+    </template>
+    
+   
+  </el-table>
   </div>
 </template>
 <style lang="less" scoped>
-    @import "./SubstituModelList.less";
+    @import "./SubstituModelListTable.less";
 </style>
 <script>
 //import Pdf from "_c/Pdf";
@@ -94,7 +120,8 @@ export default {
       dialogTableVisible: false,
       dialogTableVisible2: false,
       loading: true,
-      modelList:[]
+      modelList:[],
+      titleList:[]
     };
   },
   props: {
@@ -113,6 +140,7 @@ export default {
     },
     mounted(){
       this.modelList=this.list
+      this.titleList=this.list[0].list
     },
   methods: {
     viewDocument() {

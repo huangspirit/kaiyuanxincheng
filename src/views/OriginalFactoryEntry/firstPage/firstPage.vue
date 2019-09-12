@@ -1,7 +1,7 @@
 <template>
     <div class="originFactoryEntry" :style="`height:${this.contHeight}px`">
         <router-link to="/OriginalFactoryEntry/BasicInforma">
-            <img src="@/assets/image/OriginalFactoryEntry/bg.jpg" alt=""  >
+            <img src="@/assets/image/OriginalFactoryEntry/bg1.jpg" alt=""  >
         </router-link>
     </div>
 </template>

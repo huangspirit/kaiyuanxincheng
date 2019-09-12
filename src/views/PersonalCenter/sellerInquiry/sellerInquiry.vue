@@ -15,7 +15,6 @@
             tag="li"
             v-for="(item,index) in tabData"
             :key="index"
-            active-class="bgColor"
             :to="item.path"
             @click.native="tabShow(item.name)"
           >{{item.name}}</router-link>
@@ -44,23 +43,23 @@ export default {
       tabData: [
         {
           id: "1",
-          name: "全部待批复",
-          path: "/personalallApply"
+          name: "全部",
+          path: "/PersonalCenter/inquiryList/"
         },
         {
           id: "2",
           name: "未批复",
-          path: "/personaluserNotice"
+          path: "/PersonalCenter/inquiryList/personaluserNotice"
         },
         {
           id: "3",
           name: "已批复",
-          path: "/personalalreadyReply"
+          path: "/PersonalCenter/inquiryList/personalalreadyReply"
         },
         {
           id: "4",
           name: "已过期",
-          path: "/personalalreadyOverdue"
+          path: "/PersonalCenter/inquiryList/personalalreadyOverdue"
         }
       ],
       reppyValue: "",
@@ -205,6 +204,9 @@ export default {
             &:hover{
                 font-weight: bold;
                 background: #df3f2f;
+            }
+            &.router-link-exact-active{
+              background:#df3f2f;
             }
         }
 
