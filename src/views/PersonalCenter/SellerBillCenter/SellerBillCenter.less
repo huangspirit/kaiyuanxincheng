@@ -1,8 +1,65 @@
 // 卖家账单中心
+.withdrawApplyTotal{
+  line-height:20px;
+  .withdrawApplyTotalCont{
+    max-height:700px;
+    min-height:400px;
+    overflow-y: auto;
+    .band{
+      margin-top:15px;
+      display:block;
+    }
+    .withdrawCharge{
+      margin-top:10px;
+      .desc{
+        position: relative;
+        display: inline-block;
+        &:hover{
+          .cont{
+            display: block;
+          }
+        }
+        .cont{
+          display: none;
+          position: absolute;
+          background:#fff;
+          left:100%;
+          top:100%;
+          white-space: nowrap;
+          padding:20px;
+          box-shadow: 0 0 5px 2px #ddd;
+          p{
+            margin-top:5px;
+          }
+        }
+      }
+    }
+    p{
+      margin-top:10px;
+      width:100%;
+    }
+    ul>li{
+      line-height: 35px;
+      margin-top:10px;
+      background:#f5f5f5;
+      padding:0 20px;
+      cursor: pointer;
+      display:inline-flex;
+      width:100%;
+      box-sizing: border-box;
+      justify-content: space-around;
+      &.title{
+        font-weight: bolder;
+        cursor:none;
+      }
+    }
+  }
+}
 .SellerBillCenter {
   padding: 20px;
   background: #fff;
   min-height: 500px;
+ 
   .search{
     margin-bottom:10px;
   }
@@ -23,14 +80,19 @@
         font-weight: bold;
         margin-bottom:5px;
         font-size:15px;
+        text-align: left;
       }
       .info{
-        display: inline-flex;
+        display: flex;
         text-align: left;
         font-size:12px;
+        width:100%;
         /deep/.ImgE{
           position: relative;
           margin-right:5px;
+          display: flex;
+          align-items: center;
+         padding:0 10px;
           &:after{
             content: "";
             width:100%;
@@ -40,6 +102,13 @@
             z-index:1;
             left:0;
             top:0;
+          }
+        }
+        &>div{
+          flex:1;
+          p{
+            width:100%;
+            white-space: normal;
           }
         }
       }

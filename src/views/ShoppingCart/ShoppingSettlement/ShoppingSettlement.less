@@ -2,6 +2,10 @@
 .ShoppingSettlement {
   color:#333;
   padding:60px 0;
+  .blue{
+    color:#3d46ff;
+    cursor: pointer;
+  }
   .Order-information {
     .title{
       line-height:50px;
@@ -51,6 +55,95 @@
       }
       .color{
         margin-top:15px;
+      }
+      .showallInvoice{
+        display: flex;
+        flex-wrap:wrap;
+        border-top:1px dashed #ddd;
+        margin-top:20px;
+        li{
+          width:50%;
+          box-sizing: border-box;
+          padding-top:20px;
+          .wrap{
+            border:1px solid transparent;
+            background:#f5f5f5;
+            padding:15px 30px;
+            box-sizing: border-box;
+            width:100% ;
+            cursor: pointer;
+            p{
+              height:30px;
+              line-height: 30px;
+            }
+            &:hover{
+              border-color:#df3f2f;
+              box-shadow: 0 0 8px 3px #ddd;
+            }
+          }
+          &:nth-of-type(odd){
+            padding-right:10px;
+          }
+          &.active{
+            .wrap{
+              border-color:#df3f2f;
+            }
+          }
+          &.default{
+            .wrap{
+              position: relative;
+              overflow: hidden;
+              .mark{
+                position: absolute;
+                transform: rotate(-45deg);
+                font-size:12px;
+                width:100px;
+                text-align: center;
+                left:-100%;
+                height:30px;
+                line-height:40px;
+                left:-40px;
+                top:-5px;
+
+              }
+            }
+            
+          }
+        }
+      }
+    }
+    .payType{
+      
+      .type{
+        margin-left:20px;
+        margin-bottom:10px;
+        li{
+          padding:10px 0;
+          &.typeone{
+            span{
+              margin-right:20px;
+              img{
+                width:20px;
+                margin-right:10px;
+              }
+            }
+            
+          }
+          &.typetwo{
+            .desc{
+              display:inline-block;
+              vertical-align: top;
+              margin-top:20px;
+              background:#f5f5f5;
+              padding:15px;
+              line-height: 30px;
+              font-size:14px;
+              .downbtn{
+                margin-left:200px;
+              }
+            }
+          }
+        }
       }
     }
     //.Order-title {
@@ -197,26 +290,14 @@
           margin-left:10px;
         }
       }
-
       .product-total {
         width: 100%;
         font-size: 28px;
         color: #4a5a6a;
-
-        .num {
-          margin-left:10px;
-          color: #cc0000;
-          font-size:20px;
-        }
       }
 
       &>ul {
-        width: 100%;
-        overflow: hidden;
-        float: left;
         margin-top: 30px;
-
-
       }
 
       // <!-- 开具发票 -->
@@ -270,7 +351,6 @@
       .Invoice-content {
         width: 100%;
         overflow: hidden;
-
         p {
           width: 100%;
           display: flex;
@@ -315,8 +395,6 @@
           white-space: nowrap;
           overflow: hidden;
           float: right;
-
-
           .Payment-amount {
             span {
               font-weight: bold;
@@ -337,13 +415,55 @@
         text-align: center;
         color: #fff;
         font-size: 18px;
-        background: #cc0000;
         float: right;
         cursor: pointer;
         font-weight: bolder;
+        margin-top:20px;
         &:hover{
           font-size:20px;
           transition: all 0.2s;
+        }
+      }
+      .totalDetail{
+        background :#f5f5f5;
+        padding:20px;
+        display:flex;
+        font-size:14px;
+        .left{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        
+        }
+        .count{
+          flex:1;
+          text-align: right;
+          p{
+            &:after{
+              content: "";
+              clear: both;
+              display: block;
+            }
+            span{
+                min-width:40%;
+                margin-bottom:10px;
+            }
+          }
+        }
+      }
+      .totalCount{
+        background:#eee;
+        display: flex;
+        font-size:14px;
+  
+        .fl{
+          flex:1;
+          padding:20px;
+        }
+        .fr{
+          background:#515151;
+          color:#fff;
+          padding:20px;
         }
       }
     }

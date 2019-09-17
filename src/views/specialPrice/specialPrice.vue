@@ -15,7 +15,7 @@
             </div>
             <div class="goodsList" >
                 <ul class="list">
-                    <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  @click="chipSellerGoodsDetal(item)" >
+                 <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  @click="chipSellerGoodsDetal(item)" >
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
@@ -60,7 +60,7 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | filterTag}}</span> 
+                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                         <div class="count"><span>起订量：&nbsp;{{item.moq}}只</span><span>最小增量：&nbsp;{{item.mpq}}只</span></div>
                         <div class="place" style="margin-top:3px;">
                             <span v-if="item.deliverTime">预计于{{item.deliverTime | formatDate}}</span>
-                            <span v-if="item.day_interval">{{item.day_interval}}天后</span>
+                            <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span>
                             &nbsp;<span>{{item.diliverPlace}}发货</span>
                         </div>
                         </div>
@@ -120,15 +120,8 @@
             }
         },
         filters:{
-            filterTag(val){
-                switch(val){
-                    case 1:
-                        return '原厂';
-                    case 2:
-                        return '代理商';
-                    case 3:
-                        return '普通商户';
-                }
+            filterHours(val){
+                return parseFloat(val)*24
             }
         },
         mounted(){

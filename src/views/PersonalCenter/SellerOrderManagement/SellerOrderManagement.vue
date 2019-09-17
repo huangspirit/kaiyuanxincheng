@@ -92,7 +92,7 @@
             <el-button slot="detail" class=" bgColor" @click="storageItem(item)">
               <router-link
                   tag="span"
-                :to="{path:'/PersonalCenter/SellerOrderManagement/SellerOrderDetail',query:{id:item.id}}"
+                :to="{path:'/PersonalCenter/SellerOrderManagement/SellerOrderDetail',query:{id:item.goods_seller_id}}"
               >订单明细</router-link>
             </el-button>
           </SellerOrderItem>

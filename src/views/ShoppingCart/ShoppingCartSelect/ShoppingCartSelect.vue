@@ -21,7 +21,7 @@
             </label>
           </span>
           <span style="width:20%">商品</span>
-          <span style="width:17%">交期/交地</span>
+          <span style="width:17%">交货地/交期</span>
           <span style="width:10%">单价/库存</span>
           <span style="width:15%">数量</span>
           <span style="width:10%">总计</span>
@@ -96,7 +96,7 @@
                   <li style="width:17%" class="place">
                     <p>{{item1.diliverPlace}}</p>
                     <template>
-                      <p v-if="item1.goods_type">{{item1.day_interval | filterhours}}小时内交货</p>
+                      <p v-if="item1.goods_type && item1.day_interval">{{item1.day_interval | filterhours}}小时内交货</p>
                       <p v-else>{{item1.expireTime | formatDate}}</p>
                     </template>
                     <template>
@@ -112,7 +112,7 @@
                         >(限时卖)</span>
                       </p>
                       <p v-else>
-                        期货
+                        订货
                         <span
                           style="font-size:12px;color:#F22E2E;"
                           v-if="item1.seller_always"
@@ -128,20 +128,20 @@
                     <li style="width:10%" class="price" v-if="item1.priceType">
                       <p v-for="val in item1.priceList" :key="val.price">
                         <span class="num">{{val.num}}+</span>---
-                        <strong>{{item1.priceUnit?"$":"¥"}} {{val.price}}</strong>
+                        <strong>{{item1.priceUnit?"$":"¥"}} {{val.price | toFixed(item1.priceUnit?3:2) }}</strong>
                       </p>
                       <p class="goodsStockCount">
-                        剩余：
-                        <strong>{{item1.goodsStockCount}}</strong>
+                        剩余:
+                        <strong>{{item1.goodsStockCount}}</strong>只
                       </p>
                     </li>
                     <li style="width:10%;" class="price" v-else>
                       <p style="text-align: center;">
-                        <strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice}}</strong>
+                        <strong>{{item1.priceUnit?"$":"¥"}}{{item1.goodsPrice | toFixed(item1.priceUnit?3:2)}}</strong>
                       </p>
                       <p class="goodsStockCount">
-                        剩余：
-                        <strong>{{item1.goodsStockCount}}</strong>
+                        剩余:
+                        <strong>{{item1.goodsStockCount}}</strong>只
                       </p>
                     </li>
                   </template>
@@ -156,8 +156,8 @@
                       :step="item1.mpq"
                       step-strictly
                     ></el-input-number>
-                    <p>Moq:{{item1.moq}}</p>
-                    <p>Mpq:{{item1.mpq}}</p>
+                    <p>起订量:{{item1.moq}}只</p>
+                    <p>最小增量:{{item1.mpq}}只</p>
                   </li>
                   <li style="width:23%" class="all">
                     <div class="top" :class="item1.currentTime?' ':'act'">
@@ -222,8 +222,8 @@
             </p>
             <p class="price">
               总价：
-              <span>￥{{unMoney | toFixed(4)}}</span>+
-              <span>${{unitMoney | toFixed(4)}}</span>
+              <span>￥{{unMoney | toFixed(2)}}</span>+
+              <span>${{unitMoney | toFixed(3)}}</span>
             </p>
           </div>
           <span @click="submit">去结算</span>
@@ -269,7 +269,7 @@
 import { mapMutations } from "vuex";
 import shoppingCarProductItem from "_c/shoppingCarProductItem";
 import { axios, shoppingCar } from "../../../api/apiObj";
-import { TimeForma2, ladderPrice } from "@/lib/utils";
+import { TimeForma2, ladderPrice,TimeForma} from "@/lib/utils";
 
 export default {
   name: "ShoppingCartSelect",
@@ -570,23 +570,26 @@ export default {
   },
   filters: {
     filterhours(val){
-      return Number(val)*24
-    },
-    toFixed(val, length) {
-      return val.toFixed(length);
-    },
-    tagFilter(val) {
-      switch (Number(val)) {
-        case 1:
-          return "原厂";
-        case 2:
-          return "代理商";
-        case 3:
-          return "普通商户";
+      if(val){
+        return Number(val)*24
       }
+      
     },
+    // toFixed(val, length) {
+    //   return val.toFixed(length);
+    // },
+    // tagFilter(val) {
+    //   switch (Number(val)) {
+    //     case 1:
+    //       return "原厂";
+    //     case 2:
+    //       return "代理商";
+    //     case 3:
+    //       return "普通商户";
+    //   }
+    // },
     formatDate(val) {
-      return TimeForma2(val);
+      return TimeForma(val);
     }
   },
   watch: {

@@ -7,7 +7,7 @@
     >
       <template slot="title">
         <div @click="send(item)">
-<!--          <img :src="item.icon" alt>-->
+         <img :src="item.icon" alt>
           <span>{{item.title}}</span>
         </div>
       </template>
@@ -15,7 +15,7 @@
         <SideMenuItem v-if="v.children" :item="v" :key="index"></SideMenuItem>
         <router-link :to="v.path" v-else :key="index" tag="div" v-show="v.show!='hidden'">
           <el-menu-item :index="v.index">
-<!--            <img :src="v.icon" alt>-->
+           <img :src="v.icon" alt>
             <span slot="title">{{v.title}}</span>
           </el-menu-item>
         </router-link>

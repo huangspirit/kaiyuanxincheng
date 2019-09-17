@@ -351,12 +351,17 @@ export default {
     };
   },
   filters: {
-    toFixed(val, length) {
-      return Number(val).toFixed(length);
-    }, 
+    // toFixed(val, length) {
+    //   return Number(val).toFixed(length);
+    // }, 
     addPriceFilter(val){
-                return (Number(val)*1.13).toFixed(3)
-            },
+      if(this.ruleForm.priceunit){
+        return (Number(val)*1.13).toFixed(3)
+      }else{
+        return (Number(val)*1.13).toFixed(2)
+      }
+        
+    },
   },
   computed: {
     needCredit() {

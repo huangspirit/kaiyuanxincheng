@@ -10,8 +10,8 @@
                 <div>
                     购买量：<el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
                 </div>
-                <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
-                <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
+                <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong></div>
+                <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong></div>
                 <div class="btnWrap"><span class="btn bgColor" @click="submitPurchase">提交结算</span></div>
             </div>
             <div v-if="mini" class="mini">
@@ -25,8 +25,8 @@
                     <div>
                         <el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
                     </div>
-                    <div> <strong>{{item.priceUnit?"$":"￥"}}{{price}}</strong></div>
-                    <div><strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(4)}}</strong></div>
+                    <div> <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong></div>
+                    <div><strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong></div>
                     <div class="btnWrap"><span class="btn bgColor" @click="submitPurchase">提交结算</span></div>
                 </div>
             </div>
@@ -90,9 +90,9 @@
             this.money=this.count*this.price
         },
         filters:{
-            toFixed(val,length){
-                return parseFloat(val).toFixed(length)
-            }
+            // toFixed(val,length){
+            //     return parseFloat(val).toFixed(length)
+            // }
         },
         methods:{
             ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),

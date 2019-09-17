@@ -1,21 +1,16 @@
 <template>
   <div class="ShoppingSettlement">
     <div class="Order-information">
-<!--      <div class="Order-title">-->
-<!--        <img src="@/assets/image/inquirybasket/u26965.png" alt />-->
-<!--        <span>核对订单信息</span>-->
-<!--      </div>-->
-      <!-- 配送地址 -->
         <div class="address">
             <div class="title">
-                <div class="fr" @click="showResetAddress=true" v-if="allAddress.length>1">
-                    <span class="btn bgColor" >选择</span>
-                </div>
+               
                 <span>配送地址</span>
             </div>
             <div class="cont" v-if="allAddress.length">
+                  <span v-if="defaultAddress.isdefault">默认</span>&nbsp;&nbsp;
                   <span>{{defaultAddress.receivingName}}&nbsp;&nbsp; {{defaultAddress.phone}}</span>&nbsp;&nbsp;
                   <span>{{defaultAddress.address}} {{defaultAddress.detailedAddress}}</span>&nbsp;&nbsp;
+                  <span class="btn blue" @click="showResetAddress=true">地址管理</span>
             </div>
             <div  v-else class="cont">
                 暂无收货地址 &nbsp;&nbsp;<a href="javascript:;" class="btn bgColor" @click="addNewAdrress">添加</a>
@@ -23,58 +18,128 @@
         </div>
         <div class="setinvoice">
             <div class="title">
-                <div class="fr" @click="showResetVoice=true" v-if="allInvoice.length>1">
+                <!-- <div class="fr" @click="showResetVoice=true" v-if="allInvoice.length>1">
                     <span class="btn bgColor" >选择</span>
-                </div>
+                </div> -->
                 <span>发票信息</span>
             </div>
             <div class="cont">
+              <p style="margin-bottom:20px;">
+                发票公司：{{DefaultInvoiceObject.corporatename}}
+                <span class="btn blue"  @click="addInvoiceInforma">添加发票信息</span>
+              </p>
                 <p>
 <!--                    是否需要发票：-->
 <!--                        <el-radio-group v-model="needInvoice">-->
 <!--                            <el-radio :label="true" :value="true">是</el-radio>-->
 <!--                            <el-radio :label="false" :value="false">否</el-radio>-->
 <!--                        </el-radio-group>-->
-                  选择发票类型：
+                  <!-- 选择发票类型： -->
                     <el-radio-group v-model="selectedGoodsBillSetOff" @change="handleChangeGoodsBillSetOff">
                         <el-radio v-for="item in GoodsBillSetOffList" :value="item.id" :label="item.id" :key="item.id">{{item.name}}</el-radio>
                     </el-radio-group>
                    </p>
-                <div v-if="needInvoice">
+                <!-- <div v-if="needInvoice">
                     <p v-if="allInvoice.length" class="invoice">
                         <span>发票类型：{{selectedGoodsBillSetOffObj.name}}</span>
                         <span>发票抬头：{{DefaultInvoiceObject.corporatename}}</span>
                         <span>统一信用代码：{{DefaultInvoiceObject.billno}}</span>
-<!--                        <span>发票内容：商品明细</span>-->
                     </p>
                     <p v-else class="invoice">暂无开票信息 &nbsp;&nbsp; <a href="javascript:;" class="btn bgColor" @click="addInvoiceInforma">添加</a></p>
-                </div>
+                </div> -->
                 <p class="color">
                     提醒：订单提交后不可更改！如有疑问或其他需求请先联系客服人员，否则相关损失由客户自行承担。
                 </p>
+                <ul class="showallInvoice">
+                  <li v-for="item in allInvoice" :key="item.id" :class="{default:item.isdefault,active:item.id==DefaultInvoiceObject.id}">
+                            <div class="wrap" @click="resetInvoce(item)">
+                            <span class="mark bgColor" v-if="item.isdefault">默认</span>
+                            <p>公司名称： {{item.corporatename}}</p>
+                            <p>税号/统一信用代码证号：{{item.billno}}</p>
+                            <p>开户银行：{{item.openingbank}}</p>
+                            <p>银行账户：{{item.bankaccount}}</p>
+                            <p>开票地址：{{item.registeredaddress}}</p>
+                            <p>开票电话：{{item.registeredphone}}</p>
+                          </div>
+                         
+                  </li>
+                </ul>
             </div>
+        </div>
+        <div class="payType">
+          <p class="title">
+            <span>支付方式</span>
+          </p>
+          <ul class="type">
+            <li class="typeone">
+              <el-radio v-model="paytype" label="0">在线支付</el-radio>
+                <span><img src="../../../assets/image/icon/weichat.png" alt="">微信</span>
+                <span><img src="../../../assets/image/icon/zhifubao.png" alt="">支付宝</span>
+            </li>
+            <li class="typetwo clear">
+              <el-radio v-model="paytype" label="1"> 电汇，公对公转账</el-radio><br>
+              <div v-if='paytype==1' class="desc clear">
+                  <p><strong>*请务必用对应收票公司汇款至：</strong><a href="" class="blue fr downbtn" >下载汇款信息</a></p>
+                  <p><span>公&nbsp;司&nbsp;名&nbsp;称&nbsp;：</span><span>北京易智造科技有限公司</span></p>
+                  <p><span>开&nbsp;户&nbsp;银&nbsp;行&nbsp;：</span><span>9111014781708107A</span></p>
+                  <p><span>银&nbsp;行&nbsp;账&nbsp;号&nbsp;：</span><span>01100141700221177</span></p>
+                  <p>请您按以上汇款信息汇款，汇款完成后上传汇款底单或转账凭证</p>
+              </div>
+            </li>
+            <li class="typethree" >
+              <!-- v-if="this.priceTotalDetail.isVIP" -->
+                <el-radio v-model="paytype" label="2" v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough">月结白条</el-radio>
+                 <el-radio v-model="paytype" label="2" v-if="(!this.priceTotalDetail.isVIP) || !this.priceTotalDetail.isEnough" disabled="">月结白条</el-radio>
+             <span v-if="this.priceTotalDetail.isVIP">
+               目前剩余月结白条额度￥{{priceTotalDetail.restLine}}元;
+               <router-link class="blue" to="/PersonalCenter/deposit">提升额度</router-link>
+               </span> 
+               <span v-if="!this.priceTotalDetail.isVIP">
+               目前您还不是月结用户; <router-link class="blue" to="/PersonalCenter/UpgradeLevel">申请月结</router-link>
+               </span>
+            </li>
+          </ul>
         </div>
       <!-- 订单商品 -->
       <div class="order-product">
         <p class="title">
-          <span>订单商品</span>
-          <span class="color">x{{goodsCount}}</span>
+          <span>采购清单</span>
+          <router-link to="/ShoppingCart" class="fr">返回购物车</router-link>
+          <!-- <span class="color">x{{goodsCount}}</span> -->
         </p>
         <ul>
           <ShoppingSettlementOItem v-for="(item,k) in DetaileData" :key="k" :item="item"></ShoppingSettlementOItem>
         </ul>
         <!-- 开具发票 -->
         <!-- 结算金额明细 -->
-        <div class="place-order">
+        <div class="totalDetail clear">
+          <div class="left">
+            <p>目前平台暂不支持用户自行报关，国内交货所有货物将折算成人民币价格；</p>
+            <div class="desc">
+              <p>*海关增值税13%；与国内产品销售暂行税率一致； </p>
+              <p>*关税：是依据海关公布的产品来对应关税，若有关税疑问，请联系客服</p>
+              <p>*清关服务费；按本批次总货值的0.5%收取，不足300元按300收取；每报关一次收取一次费用；</p>
+            </div>
+          </div>
+           <div class="count">
+              <p><span class="fr">￥{{priceTotalDetail.rmbtotalPrice | toFixed(2)}}</span><strong>人民币</strong>共{{unuscount}}种器件，金额小计： </p>
+               <p><strong>美元</strong>共{{UScount}}种器件，金额小计：<span class="fr">US${{priceTotalDetail.usdTotalPrice | toFixed(3)}}</span></p>
+               <p>今日美元汇率牌价：<span class="fr">{{priceTotalDetail.exchange}}</span></p>
+               <!-- <p>13%增值税：<span class="fr">{{}}</span></p> -->
+               <p>关税：<span class="fr">￥{{priceTotalDetail.Guanshui}}</span></p>
+               <p>清关服务费：<span class="fr">￥{{priceTotalDetail.GuanshuiService}}</span></p>
+          </div>
+        </div>
+        <div class="clear totalCount" >
+          <p class="fl">*运费说明，单一供应商购买金额500元以上为包国内邮费，500元以下为顺丰到付</p>
+            <p class="fr">应付人民币总额：￥{{priceTotalDetail.totalPrice | toFixed(2)}}</p>
+        </div>
+        <!-- <div class="place-order">
           <div class="detail">
             <p v-if="priceTotalDetail.Postage">
               <label for="">运费合计：</label>
               <span class="num">￥{{priceTotalDetail.Postage}}</span>
             </p>
-<!--            <p v-if="priceTotalDetail.usdTotalPrice">-->
-<!--              <label for="">美元金额：</label>-->
-<!--              <span class="num">${{priceTotalDetail.usdTotalPrice}}</span>-->
-<!--            </p>-->
             <p v-if="priceTotalDetail.exchange">
               <label for="">美元汇率：</label>
               <span class="num">1：{{priceTotalDetail.exchange}}</span>
@@ -106,20 +171,20 @@
             <p v-if="priceTotalDetail.isVIP">
                <label for="">剩余额度：</label>
               <span class="num">￥{{priceTotalDetail.restLine}}</span>
-            </p>
+            </p> -->
             <!-- <div class="payWayList">
               <label for="">邮费方式：</label>
               <el-radio v-model="dilivertype" label="0" border>到付</el-radio>
               <el-radio v-model="dilivertype" label="1" border>垫付</el-radio>
             </div> -->
-        <div class="payWayList" v-if="!(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough)">
-                  <label for="">支付方式：</label>
-                  <el-radio v-model="paytype" label="0" border>在线支付</el-radio>
-                  <el-radio v-model="paytype" label="1" border>转账支付</el-radio>
-              </div>
-                 <strong>提示：单个店铺货物总额超过￥500包邮，￥500以下到付</strong>
+          <!-- <div class="payWayList" v-if="!(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough)">
+              <label for="">支付方式：</label>
+              <el-radio v-model="paytype" label="0" border>在线支付</el-radio>
+              <el-radio v-model="paytype" label="1" border>转账支付</el-radio>
           </div>
-          <div class="information">
+          <strong>提示：单个店铺货物总额超过￥500包邮，￥500以下到付</strong>
+        </div> -->
+        <!-- <div class="information">
             <p>
               <label for="">配送地址：</label>
               <span>{{defaultAddress.address}}{{defaultAddress.detailedAddress}}</span>
@@ -131,10 +196,15 @@
             <p>
               <label for="">电话：</label>
               <span>{{defaultAddress.phone}}</span>
-            </p>
+            </p> 
           </div>
-        </div>
-        <p class="submit" @click="submit">提交订单</p>
+        </div>-->
+        <p class="clear">
+          <span class="fl" style="margin-top:20px;">
+             <input type="checkbox" checked>  同意接受《<span class="blue" @click="showxieyi=true">开元芯城用户协议</span>》和《<span class="blue" @click='showhetong=true'>开元芯城销售合同</span>》
+          </span>
+          <span class="submit bgColor fr" @click="submit">提交订单</span> 
+        </p>
         <!-- <p class="submit" @click="submit">直接付款</p> -->
       </div>
     </div>
@@ -192,12 +262,7 @@
     <!-- 选择管理发票 -->
       <el-dialog
           :visible.sync="dialogVisibleAddInvoice"
-          width="900px"
-          :lock-scroll="false"
-          class="Add-Invoice-shpoing"
-          top="10vh"
-          @close="handleClose2('ruleForm')"
-          append-to-body
+          width="700px"
       >
           <p slot="title" class="title">{{dialogTitleAddInvoice ? "新增开票信息" : '编辑开票信息'}}</p>
           <div class="dialo-body">
@@ -209,7 +274,7 @@
                   class="demo-ruleForm"
               >
                   <el-form-item label="公司名称：" prop="corporatename">
-                      <el-input v-model="ruleFormAddInvoice.corporatename"></el-input>
+                      <el-input v-model="ruleFormAddInvoice.corporatename" ></el-input>
                   </el-form-item>
                   <el-form-item label="税号/统一信用代码证号：" prop="billno">
                       <el-input v-model="ruleFormAddInvoice.billno"  maxlength="18"
@@ -234,8 +299,8 @@
               </el-form>
           </div>
           <div slot="footer" class="dialo-footer">
-              <span @click="dialogVisibleAddInvoice = false" class="cancel">取消</span>
-              <span @click="submitFormAddInvoice('ruleForm')" class="ensure">确认发票信息</span>
+              <el-button @click="dialogVisibleAddInvoice = false">取 消</el-button>
+              <el-button type="primary" @click="submitFormAddInvoice('ruleForm')">确认发票信息</el-button>
           </div>
       </el-dialog>
     <el-dialog :visible.sync="dialogInvoice" width="1000px" center class="dialog-ruleForm-Invoice">
@@ -256,23 +321,9 @@
                 <p>开户银行：{{item.openingbank}}</p>
                 <p>开票电话：{{item.registeredphone}}</p>
                 <p>
-                  <!-- <label class="label">
-                    <input type="radio" :value="item.id" v-model="DefaultDefaultInvoice" />
-                    <span>
-                      <img
-                        src="@/assets/image/OriginalFactoryEntry/_u11446.png"
-                        alt
-                        v-if="item.id === DefaultInvoice"
-                      />
-                    </span>
-                  </label>
-                  <span>设为默认的开票信息</span> -->
                   <el-radio-group v-model="DefaultInvoice" class="defaultradioSquare">
                     <el-radio :label="item.id" :value="item.id" name="defaultInvoice">设为开票信息</el-radio>
                   </el-radio-group>
-                   <!-- <el-checkbox-group v-model="DefaultInvoice">
-                    <el-checkbox :label="item.id" :value="item.id">选为开票信息</el-checkbox>
-                  </el-checkbox-group> -->
                 </p>
               </div>
             </div>
@@ -301,8 +352,12 @@
           <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">个人中心>>>我的订单</a>下载上传合同 </p>
       </div>
     </SetTankuang>
-      <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
-          <div class="dialog-body" slot="dialog-body">
+    <el-dialog
+          title="银行汇款"
+          :visible.sync="showDialog"
+          width="60%"
+          >
+          <div class="dialog-body">
               <div class="RemittancNotes" >
                   <el-form  label-width="80px">
                       <el-form-item label="汇款凭证:">
@@ -333,10 +388,10 @@
                   </el-form>
                   <div class="desc">
                       <p class="tishi">温馨提示:</p>
-                      <p><label for="">汇款方式：</label> <span>1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
-                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
-                      <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
-                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>
+                      <p><label for="">汇款方式：</label> <span class="color">1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
+                      <p><label for="">查看结果：</label><span  class="color">平台审核结果会以短信或者微信公众号推送给您</span></p>
+                      <P><label for="">开户银行：</label> <span  class="color">招商银行上地支行</span> </p>
+                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span  class="color">110 906 335 410 201</span> </P>
                   </div>
               </div>
           </div>
@@ -344,7 +399,8 @@
               <!-- <el-button @click="showDialog = false">取 消</el-button>
               <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
           </div>
-      </SetTankuang>
+    
+       </el-dialog>
       <el-dialog
           title="选择收货地址"
           :visible.sync="showResetAddress"
@@ -388,8 +444,18 @@
               </ul>
           </div>
           <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
-  </span>
+            <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
+          </span>
+      </el-dialog>
+      <el-dialog  title="开元芯城用户协议"
+          :visible.sync="showxieyi"
+          width="70%">
+        <div>暂无内容</div>
+      </el-dialog>
+      <el-dialog  title="开元芯城销售合同"
+          :visible.sync="showhetong"
+          width="70%">
+        <div>暂无内容</div>
       </el-dialog>
   </div>
 </template>
@@ -406,6 +472,8 @@ export default {
   name: "ShoppingSettlement",
   data() {
     return {
+        showxieyi:false,
+        showhetong:false,
         showResetVoice:false,
         showResetAddress:false,
         timer:null,
@@ -554,6 +622,8 @@ export default {
       OrderInformation: {},
       // 是不是VIP
       isVIP: false,
+      unuscount:0,
+      UScount:0
     };
   },
 
@@ -608,6 +678,10 @@ export default {
       "GetAllPersonalInvoice",
       "GetOrderCreater"
     ]),
+    resetInvoce(item){
+       this.DefaultInvoice=item.id;
+        this.DefaultInvoiceObject=item;
+    },
       //修改发票类型
       handleChangeGoodsBillSetOff(e){
           this.GoodsBillSetOffList.map(item=>{
@@ -687,8 +761,39 @@ export default {
       this.OrderInformation.dilivertype = this.dilivertype;
       this.OrderInformation.type = "1";
       this.OrderInformation.bill = JSON.stringify(bill);
-      console.log(this.OrderInformation)
       // 进行下单,三种情况
+      if(this.paytype==0){
+        //在线支付
+        this.GetOrderCreater(this.OrderInformation).then(res=>{
+              this.orderNumber=res.data;
+              this.$router.push({
+                  path: "/ShoppingCart/PaymentOrders",
+                  query: {
+                      orderNumber:res.data,
+                  }
+              });
+            })
+      }else if(this.paytype==1){
+          //对公转账
+          this.GetOrderCreater(this.OrderInformation).then(res=>{
+              this.orderNumber=res.data;
+              this.getOrderType()
+            })
+      }else if(this.paytype==2){
+        //白条支付
+        this.GetOrderCreater(this.OrderInformation).then(res=>{
+          this.showGoIndex=true;
+          var _this=this;
+          this.chipCenterOrderCount=setInterval(function(){
+            if(_this.count==0){
+                _this.chipCenterOrder()
+            }else{
+              _this.count--
+            }
+          },1000)
+        })
+      }
+      return;
       if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
         //月结用户直接生成订单，去往个人中心
         this.GetOrderCreater(this.OrderInformation).then(res=>{
@@ -1016,8 +1121,8 @@ export default {
         axios.request({...shoppingCar.queryGoodsBillSetOffList,params:{isenable:true,start:0,length:100}}).then(res=>{
             if(res){
                     this.GoodsBillSetOffList=res.data.data;
-                    res.data.data.forEach(item=>{
-                        if(item.name=='增值税发票'){
+                    res.data.data.forEach((item,index)=>{
+                        if(index==res.data.data.length-1){
                             this.selectedGoodsBillSetOff=item.id;
                             this.selectedGoodsBillSetOffObj=item
                             return;
@@ -1028,11 +1133,13 @@ export default {
       }
     },
   filters: {
-    ToFixed(x) {
-      if (x) {
-        return x.toFixed(2);
-      }
-    }
+    // ToFixed(x,length) {
+    //   if(length){
+    //       return Number(x).toFixed(length);
+    //   }else{
+    //       return  Number(x).toFixed(2);
+    //   }
+    // }
   },
   computed: {
     ...mapState({
@@ -1073,13 +1180,20 @@ export default {
       // this.OrderInformation = JSON.parse(this.$route.query.obj2);
       // this.priceTotalDetail = JSON.parse(this.$route.query.data);
       let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
-      console.log(JSON.parse(this.buyOneGoodsDetail.data))
       this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
       this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
       this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
+      let UScount=0;
+      let unuscount=0
       for (var key in DetailData) {
           DetailData[key].forEach(item => {
-              console.log(item)
+            if(item.price_unit){
+            //  UScount+=Number(item.goods_count)
+            UScount++;
+            }else{
+            //  unuscount+=Number(item.goods_count)
+            unuscount++;
+            }
               this.goodsCount = this.goodsCount + Number(item.goods_count)
           })
           this.DetaileData.push({
@@ -1087,6 +1201,8 @@ export default {
               list: DetailData[key]
           });
       }
+      this.UScount=UScount;
+      this.unuscount=unuscount
   }
 }
 </script>

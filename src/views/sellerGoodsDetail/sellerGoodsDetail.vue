@@ -41,7 +41,7 @@
                         <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
 <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
                         <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span>
-                        <span class="btn"><i class="el-icon-plus "></i>&nbsp;我有特价</span>
+                        <span class="btn" @click="pushlishspecialPrice"><i class="el-icon-plus "></i>&nbsp;我有特价</span>
                     </div>
                 </div>
                 <div class="fl right">

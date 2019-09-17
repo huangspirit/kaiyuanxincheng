@@ -41,6 +41,19 @@ Vue.filter('effective', (val, value1) => {
     }
 
 })
+Vue.filter('toFixed', (value,length) => {
+        return Number(value).toFixed(length);
+})
+Vue.filter('tagFilter', (value) => {
+    switch (Number(value)) {
+        case 1:
+          return "原厂";
+        case 2:
+          return "代理商";
+        case 3:
+          return "商家";
+      }
+})
 // 毫秒转化正常日期格式
 const formatDate = function (date, fmt) {
     if (/(y+)/.test(fmt)) {

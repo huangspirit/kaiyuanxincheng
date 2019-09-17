@@ -103,22 +103,22 @@
       </div>
       <table class="table">
         <tr class="title">
-          <td>MOQ</td>
-          <td>MPQ</td>
+          <td>起订量</td>
+          <td>最小增量</td>
           <td>货源</td>
           <td>交货地</td>
           <td>预计交期</td>
           <td rowspan="3" v-if="!item.priceType">
-            <p>{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</p>
-            {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含税' : "不含税"}})
+            <p>{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</p>
+            {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含13%增值税' : "不含税"}})
           </td>
           <td rowspan="3" v-else>
             <div>
-              {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含税' : "不含税"}})
+              {{item.priceType ? '阶梯价' : "一口价"}}({{!item.priceUnit ? '含13%增值税' : "不含税"}})
               <ul class="priceLevel">
                 <li v-for="val in priceLevel" :key="val[0]">
                   <span>{{val[0]}}</span>
-                  <span class="num">{{item.priceUnit ? '$' : '￥'}}{{val[1]}}</span>
+                  <span class="num">{{item.priceUnit ? '$' : '￥'}}{{val[1] | toFixed(item.priceUnit?3:2)}}</span>
                 </li>
               </ul>
             </div>
@@ -174,7 +174,7 @@
           </div>
           <div class="total">
             <span>总计：</span>
-            <span>￥{{purchaseObj.total}}</span>
+            <span>￥{{purchaseObj.total | toFixed(2)}}</span>
           </div>
         </div>
         <p class="error-number" v-if="numberFlag">*数量必须是MOQ的整数倍</p>
@@ -227,23 +227,23 @@ export default {
       var data = new Date(time);
       return formatDate(data, "yyyy-MM-dd");
     },
-      tagFilter(val){
-        switch (val) {
-            case 1:
-                return "原厂商户";
-            case 2:
-                return "代理商户";
-            case 3:
-                return "普通商户";
-        }
-      }
+      // tagFilter(val){
+      //   switch (val) {
+      //       case 1:
+      //           return "原厂商户";
+      //       case 2:
+      //           return "代理商户";
+      //       case 3:
+      //           return "普通商户";
+      //   }
+      // }
   },
   watch: {
     "purchaseObj.num": {
       handler() {
         this.purchaseObj.total = (
           this.purchaseObj.num * this.purchaseObj.price
-        ).toFixed(4);
+        );
       }
     }
   },
@@ -403,7 +403,7 @@ export default {
 
     this.purchaseObj.total = (
       this.purchaseObj.num * this.purchaseObj.price
-    ).toFixed(4);
+    );
   }
 };
 </script>

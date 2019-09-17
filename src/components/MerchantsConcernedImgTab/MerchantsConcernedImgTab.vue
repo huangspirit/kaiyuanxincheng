@@ -80,11 +80,11 @@ export default {
         currentItem:{}
     };
   },
-    filters:{
-      toFixed(val,length){
-          return parseFloat(val).toFixed(length)
-      }
-    },
+    // filters:{
+    //   toFixed(val,length){
+    //       return parseFloat(val).toFixed(length)
+    //   }
+    // },
     mounted(){
         this.total=this.list.total;
         this.goodsList=this.list.data.map(item=>{

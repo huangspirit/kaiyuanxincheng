@@ -575,11 +575,13 @@ export default {
                     return '待审核'
                 case 2:
                     return '被驳回'
+                case 3:
+                    return '已结算'
             }
         },
-        toFixed(val,length){
-            return val.toFixed(length)
-        },
+        // toFixed(val,length){
+        //     return val.toFixed(length)
+        // },
         filterExchang_make(val){
             return (0-val).toFixed(2)
         }

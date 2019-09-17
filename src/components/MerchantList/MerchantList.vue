@@ -40,8 +40,8 @@
                         <p>
                             预计于
                             <span v-if="item.seller_always">
-                            {{item.day_interval}}天后
-                        </span>
+                                {{item.day_interval | filterHours}}小时内
+                            </span>
                             <span v-else>
                             {{item.deliverTime | formatDate}}
                         </span>
@@ -134,7 +134,7 @@
                       <p>
                           预计于
                           <span v-if="item.seller_always">
-                            {{item.day_interval}}天后
+                            {{item.day_interval |filterHours}}小时内
                         </span>
                           <span v-else>
                             {{item.deliverTime | formatDate}}
@@ -387,22 +387,25 @@ export default {
     this.GetMerchantList()
   },
     filters:{
-        tagFilter(val){
-            switch (val) {
-                case 1:
-                    return "原厂";
-                case 2:
-                    return "代理商";
-                case 3:
-                    return "普通商户";
-            }
-        },
+        // tagFilter(val){
+        //     switch (val) {
+        //         case 1:
+        //             return "原厂";
+        //         case 2:
+        //             return "代理商";
+        //         case 3:
+        //             return "普通商户";
+        //     }
+        // },
         formatDate(val){
             return TimeForma(val)
         },
-        toFixed(val,length){
-            return Number(val).toFixed(length)
+        filterHours(val){
+            return Number(val)*24
         }
+        // toFixed(val,length){
+        //     return Number(val).toFixed(length)
+        // }
     }
 };
 </script>

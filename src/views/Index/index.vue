@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="specialGoods allWidth">
-            <router-link tag="div" class="title" to="/specialPrice">现货直通车</router-link>
+            <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
             <div class="desc color">跟着特价买，越来越便宜</div>
             <ul class="list">
                 <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" @click="chipSellerGoodsDetal(item)">
@@ -91,14 +91,14 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | filterTag}}</span> 
+                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>
                                     <p>发布商品量：{{item.publisCount}}</p>
                                     <p>历史成交量：{{item.historyCount}} </p>
                                     <p>
-                                        <el-button class="btn0 bgColor" size="mini" v-if="!item.focus" @click.stop="addFocus(k)">关注</el-button>
+                                        <el-button class="btn0 bgColor" size="mini" v-if="!item.focus" @click.stop="addFocus(k,'special')">关注</el-button>
                                         <el-button class="bgLightGray btn0" size="mini" v-if="item.focus">已关注</el-button>
                                         </p>
                                 </div>
@@ -122,6 +122,7 @@
                     </div>
                 </li>
             </ul>
+            <router-link tag="div" class="more bluebtn" to="/specialPrice" style="height:60px;line-height:60px;background:#f5f5f5;margin-bottom:35px;">查看更多特价</router-link>
         </div>
         <div class="origin specialGoods">
             <router-link tag="div" class="title" to="/brand">原厂直营店</router-link>
@@ -139,52 +140,60 @@
                             </div>
                         </div>
                     </div> -->
-                        <ul class="originGoodsList fl">
-                            <li v-for="(item ,index) in originGoodsList" @click="chipSellerGoodsDetal(item)" :key="index">
-                                <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  >
-                                </ImgE>
-                                <div class="goodsInfo">
-                                    <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
-                                    <div class="desc">{{item.goodsDesc}}</div>
-                                    <div class="count"><span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;<span>最小增量:&nbsp;{{item.mpq}}只</span></div>
-                                    <div class="marking">
-                                        <span>原厂</span>
-                                        <span>{{item.diliverPlace}}</span>
-                                        <span>{{item.goods_type?'现货':'订货'}}</span>
-                                    </div>
-                                </div>
-                                <div class="price">
-                                    <div>
-                                        <ol v-if="item.priceType">
-                                            <li v-for="(item0,index0) in item.priceList" class="color" :key="index0">
-                                                {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price | toFixed(item.priceUnit?3:2)}}
-                                            </li>
-                                        </ol>
-                                        <p class="color" v-if="!item.priceType">
-                                            {{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}
-                                        </p>
-<!--                                        <p class="bgColor btn" @click="addCar(item)">加入购物车</p>-->
-                                        <p style="color:#354cd9;font-size:12px;">({{!item.priceUnit?'含13%增值税':'不含税'}})</p> 
-                                        <p class="bgColor btn">立即跟单</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                <div class="fl left">
+                    <img src="@/assets/image/banner/4.jpg" alt="">
                 </div>
+                <ul class="originGoodsList fl">
+                    <li v-for="(item ,index) in originGoodsList" @click="chipSellerGoodsDetal(item)" :key="index">
+                        <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  >
+                        </ImgE>
+                        <div class="goodsInfo">
+                            <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
+                            <div class="desc">{{item.goodsDesc}}</div>
+                            <div class="count"><span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;<span>最小增量:&nbsp;{{item.mpq}}只</span></div>
+                            <div class="marking">
+                                <span>原厂</span>
+                                <span>{{item.diliverPlace}}</span>
+                                <span>{{item.goods_type?'现货':'订货'}}</span>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <ol v-if="item.priceType">
+                                    <li v-for="(item0,index0) in item.priceList" class="color" :key="index0">
+                                        {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price | toFixed(item.priceUnit?3:2)}}
+                                    </li>
+                                </ol>
+                                <p class="color" v-if="!item.priceType">
+                                    {{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}
+                                </p>
+<!--                                        <p class="bgColor btn" @click="addCar(item)">加入购物车</p>-->
+                                <p style="color:#354cd9;font-size:12px;">({{!item.priceUnit?'含13%增值税':'不含税'}})</p> 
+                                <p class="bgColor btn">立即跟单</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>    
+            </div>
+               <div class="allWidth">
+                                  <router-link tag="div" class="more bluebtn" to="/brand" style="height:60px;line-height:60px;background:#fff;margin-bottom:35px;margin-top:20px;">查看更多原厂商品</router-link>
+</div> 
             </div>
         <div class="specialGoods origin oldProduct">
             <router-link tag="div" class="title" to="/oldGoods">呆料掘金池</router-link>
             <div class="desc color">呆料里也有宝贝，库里的呆料本身已没有价值，卖了换钱吧......</div>
             <div class="allWidth clear">
-                <span class="fr dailiao bgColor" @click="pulish">我有呆料</span>
+                <!-- <span class="fr dailiao bgColor" @click="pulish">我有呆料</span> -->
+                <span class="fr btn dailiao" @click="pulish">我有呆料</span>
             </div>
             <div class="cont clear allWidth">
-                <div class="fl left">
+                <!-- <div class="fl left">
                     <img src="@/assets/image/banner/4.jpg" alt="">
-                </div>
+                </div> -->
                 <div class="goodsList fl">
                     <ul class="titleList bgColor">
-                        <li class="goodsName">名称</li>
+                        <li class="goodsName">供应商</li>
+                        <li class="goodsName">型号</li>
                         <li class="item">品牌</li>
                         <li class="item">数量</li>
                         <li class="item">交货地点</li>
@@ -193,11 +202,22 @@
                     </ul>
                     <ol>
                         <li v-for="(item,k) in oldProductList"  @click="chipSellerGoodsDetal(item)"  :key="k" >
+                            <div class="goodsName taginfo">
+                                <img :src="item.userImgeUrl" alt="">
+                                <div>
+                                    <p>{{item.sellerName}}</p>
+                                    <p>
+                                        <span class="btn blue"> {{item.tag | tagFilter}}</span> 
+                                        <span v-if="item.focus" class="btn orange">已关注</span>
+                                        <span v-if="!item.focus" class="btn focus"  @click.stop="addFocus(k,'oldProduct')">关注</span>
+                                    </p>
+                                </div>
+                            </div>
                             <p  :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
-                            <div @click.stop="chipbrand1(k)">{{item.brandName}}</div>
-                            <div>{{item.goodsStockCount}}</div>
-                            <div>{{item.diliverPlace}}</div>
-                            <div class="color stepPriceWrap">
+                            <div class="oneitem brand" @click.stop="chipbrand1(k)">{{item.brandName}}</div>
+                            <div class="oneitem">{{item.goodsStockCount}}</div>
+                            <div class="oneitem">{{item.diliverPlace}}</div>
+                            <div class="color stepPriceWrap oneitem">
                                 <div v-if="item.priceType" class="stepPrice">
                                     {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price'] | toFixed(item.priceUnit?3:2)}}&nbsp;<i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
                                     <ul class="priceList">
@@ -211,7 +231,7 @@
                                      {{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}
                                 </span>
                             </div>
-                            <div  @click="chipSellerGoodsDetal(item)"   class="color">购买</div>
+                            <div  @click="chipSellerGoodsDetal(item)"   class="color oneitem purchase" >购买</div>
                         </li>
                     </ol>
                 </div>
@@ -224,7 +244,7 @@
                     <span class="bgColor" @click="settle">立即入驻</span>
                 </div>
                 <div class="fl left clear">
-                    <div class="count color fl"><countTo :endVal="1000" :duration="4"></countTo><span class="jia">+</span></div>
+                    <div class="count color fl"><countTo :endVal="brandTotal"  :duration="4"></countTo><span class="jia">+</span></div>
                     <div class="fl right">
                         <p class="tit">已入驻原厂</p>
                         <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
@@ -268,13 +288,13 @@
         <!-- 产品分类 -->
         <div class="prodclass">
             <div class="prodclass-con clear allWidth">
-                <div class="prodclass-l bgColor">
+                <div class="prodclass-l">
                     <p>
                         <img src="@/assets/image/index/u1491.png" alt>
                         产品分类
                     </p>
                     <ul>
-                        <li v-for="(item,k) in CatergoryList" :class="selected==k?'color active':''" @click="selected=k" :key="k">
+                        <li v-for="(item,k) in CatergoryList" :class="selected==k?'active':''" @click="selected=k" :key="k">
 <!--                            <span class="fr el-icon-arrow-right"></span>-->
 <!--                            <ImgE :src="item.imgUrl" :W="30" :H="30" class="fl"></ImgE>-->
                             <span>{{item.name}}</span>
@@ -286,7 +306,7 @@
                         <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)" :key="k">{{item.name}}</a>
                     </div>
                 </div>
-                <div class="prodclass-r bgColor">
+                <div class="prodclass-r">
                     <p>入驻厂商</p>
                     <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
                         <ul :class="{anim:animate==true}">
@@ -361,25 +381,25 @@
             }
         },
         filters:{
-            toFixed(val,length){
-                return Number(val).toFixed(length)
-            },
+            // toFixed(val,length){
+            //     return Number(val).toFixed(length)
+            // },
             formatDate(val){
                 return TimeForma(val)
             },
             filterHours(val){
                 return Number(val)*24
             },
-            filterTag(val){
-                switch(val){
-                    case 1:
-                        return '原厂';
-                    case 2:
-                        return '代理商';
-                    case 3:
-                        return '普通商户';
-                }
-            }
+            // filterTag(val){
+            //     switch(val){
+            //         case 1:
+            //             return '原厂';
+            //         case 2:
+            //             return '代理商';
+            //         case 3:
+            //             return '商家';
+            //     }
+            // }
         },
         methods:{
             ...mapActions("Login", ["GetUserInforma"]),
@@ -436,8 +456,8 @@
                 let obj={
                     start:0,
                     length:6,
-                 //  special_price:false,
-                    goods_type:true,
+                   special_price:false,
+                   // goods_type:true,
                     status:1
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
@@ -654,28 +674,42 @@
                 sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))
                 this.$router.push("/sellerGoodsDetail")
             },
-            addFocus(index){
+            addFocus(index,mark){
                  if(!this.loginState){
                     this.$router.push('/Login')
                     return;
                 }
-                let obj={
-                    user_tag:this.specialList[index].tag,
-                    seller_id :this.specialList[index].sellerId,
-                    favour_type:2,//标识关注卖家
-                };
+                let obj={};
+                if(mark=='oldProduct'){
+                     obj={
+                        user_tag:this.oldProductList[index].tag,
+                        seller_id :this.oldProductList[index].sellerId,
+                        favour_type:2,//标识关注卖家
+                    };
+                }else if(mark=='special'){
+                     obj={
+                        user_tag:this.specialList[index].tag,
+                        seller_id :this.specialList[index].sellerId,
+                        favour_type:2,//标识关注卖家
+                    };
+                }
+               
                 var _this=this;
                 axios
                     .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
                     .then(res => {
-                        _this.$set(_this.specialList[index],"focus",true)
+                        if(mark=='oldProduct'){
+                              _this.$set(_this.oldProductList[index],"focus",true)
+                        }else if(mark=='special'){
+                             _this.$set(_this.specialList[index],"focus",true)
+                            
+                        }
                         _this.$message.success("已关注");
                     });
             }
 
         },
         mounted(){
-            console.log(window.innerHeight)
             this.bannerHeight=window.innerHeight+'px'
             if (sessionStorage.getItem("access_token")) {
                 this.setloginState(true)

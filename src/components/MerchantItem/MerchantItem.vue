@@ -6,9 +6,10 @@
 
         <div>
           <p>{{item.sellerName}}</p>
-          <span v-if="item.tag === 1" class="tag y-con">原厂商户</span>
+          <span  class="tag y-con">{{item.tag | tagFilter}}</span>
+          <!-- <span v-if="item.tag === 1" class="tag y-con">原厂商户</span>
           <span v-if="item.tag === 2" class="tag y-con">代理商</span>
-          <span v-if="item.tag === 3" class="tag r-con">商城买家</span>
+          <span v-if="item.tag === 3" class="tag r-con">商城买家</span> -->
         </div>
       </div>
     </td>
@@ -119,7 +120,7 @@
           <div class="total price">
             <p>
               <span>总计:</span>
-              <span class="num">{{item.priceUnit ? '$' : '￥'}}{{purchaseObj.total}}</span>
+              <span class="num">{{item.priceUnit ? '$' : '￥'}}{{purchaseObj.total | toFixed(item.priceUnit ? 3:2)}}</span>
             </p>
             <p class="small">含13%增值税</p>
           </div>
@@ -212,7 +213,7 @@ export default {
       handler() {
         this.purchaseObj.total = (
           this.purchaseObj.num * this.purchaseObj.price
-        ).toFixed(4);
+        )
       }
     }
   },

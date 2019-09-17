@@ -205,9 +205,9 @@ export default {
       }
   },
     filters:{
-      tofixed(val,length){
-          return Number(val).toFixed(length);
-      }
+      // tofixed(val,length){
+      //     return Number(val).toFixed(length);
+      // }
     }
 };
 </script>

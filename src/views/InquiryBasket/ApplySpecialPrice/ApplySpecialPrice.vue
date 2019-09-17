@@ -13,10 +13,26 @@
             <span v-if="oneData.focus==true" class="attention">已关注</span> -->
           </div>
           <div class="product-msg-text">
-            <p class="name">{{oneData.productno}}</p>
+            <router-link tag="p" class="name" :to="{
+              path:'/BrandDetail/GoodsDetails',
+              query:{
+                tag:'goodsinfo',
+                documentid:oneData.id,
+                name:oneData.productno
+              }
+            }">
+              {{oneData.productno}}
+            </router-link>
             <P>
               <label>品牌：</label>
-              {{oneData.brand}}
+              <router-link :to="{
+                path:'/BrandDetail',
+                query:{
+                  tag:'brand',
+                  documentid:oneData.brandId,
+                  name:oneData.brand
+                }
+              }"> {{oneData.brand}}</router-link>
             </P>
             <p>
               <label>型号描述：</label>
@@ -25,11 +41,11 @@
 
             <p>
               共有
-              <span class="num">{{oneData.map.totalSeller}}</span>
+              <span class="color">{{oneData.map.totalSeller}}</span>
               个供应商报价
               <span
                 v-if="oneData.map.totalSeller != 0"
-                class="num"
+                class="color"
               >{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
             </p>
           </div>
@@ -41,23 +57,31 @@
             <div class="LadderPrice-list" v-if="oneData.factorySellerInfo.priceType || oneData.factorySellerInfo.price_type">
               <div v-for="(item, k) in oneData.factorySellerInfo.priceList" :key="k">
                 <span>{{item.num}}+ -----</span>
-                <span class="color">{{oneData.factorySellerInfo.priceunit?'$':'￥'}}{{item.price}}</span>
+                <span class="color">{{oneData.factorySellerInfo.priceunit?'$':'￥'}}{{item.price | toFixed(oneData.factorySellerInfo.priceunit?3:2)}}</span>
               </div>
             </div>
             <div v-else class="color">
               <span>{{oneData.factorySellerInfo.priceunit?'$':'￥'}}</span>
                <!-- <span v-if="oneData.factorySellerInfo.seckilPrice">{{oneData.factorySellerInfo.seckilPrice}}</span>  -->
-               <span v-if="oneData.factorySellerInfo.seckil_price">{{oneData.factorySellerInfo.seckil_price}}</span> 
+               <span v-if="oneData.factorySellerInfo.seckil_price">{{oneData.factorySellerInfo.seckil_price | toFixed(oneData.factorySellerInfo.priceunit?3:2)}}</span> 
             </div>
           </div>
           <div v-if="oneData.factorySellerInfo && !oneData.factorySellerInfo.seller_goods_id">
             暂无原厂报价
           </div>
         </div>
-        <div class="brans-msg">
-          <ImgE :src="oneData.brandImageUrl" :W="100" :H="50"></ImgE>
-          <p>{{oneData.brand}}</p>
-        </div>
+        <router-link class="brans-msg" tag="div" :to="{
+          path:'/BrandDetail',
+          query:{
+            tag:'brand',
+            documentid:oneData.brandId,
+            name:oneData.brand
+          }
+
+        }">
+            <ImgE :src="oneData.brandImageUrl" :W="100" :H="50"></ImgE>
+            <p>{{oneData.brand}}</p>
+        </router-link>
       </div>
       <!-- 申请信息 -->
       <div class="apply-inform">
@@ -143,23 +167,26 @@
             <li class="listContent" v-for="(listItem,index) in productData" :key="index">
               <div class="goodsImg">
                 <div>
-                  <img v-if="listItem.imageUrl!='-'" :src="listItem.imageUrl " alt />
-                  <img
-                    v-else
-                    src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg"
-                    class="bd-img"
-                    alt
-                  />
+                  <ImgE :src="listItem.imageUrl " :W="50" :H="50"></ImgE>
                 </div>
               </div>
               <div class="goodsDetail">
                 <div class="googsDesc">
                   <h3>{{listItem.productno}}</h3>
-                  <h4>品牌：{{listItem.brand}}</h4>
+                  <router-link tag="h4" :to="{
+                    path:'/BrandDetail',
+                    query:{
+                      tag:'brand',
+                      documentid:listItem.brandId,
+                      name:listItem.brand
+                    }
+                  }">
+                      品牌：{{listItem.brand}}
+                  </router-link>
                   <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
                   <p>型号描述：{{listItem.productdesc}}</p>
                   <p>
-                    <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
+                    <span>共有<strong>{{listItem.map.totalSeller}}</strong>个供应商报价</span>
                     <span
                       v-if="listItem.map.totalSeller != 0"
                     >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
@@ -181,7 +208,7 @@
                     <span >
                       <span v-if="listItem.priceUnit|| listItem.priceunit" >$</span>
                       <span v-else >￥</span>
-                      <span>{{subitem.price}}</span>
+                      <span>{{subitem.price | toFixed((listItem.priceUnit|| listItem.priceunit)?3:2)}}</span>
                     </span>
                   </div>
                   </template>
@@ -192,8 +219,8 @@
                   >
                     <span v-if="listItem.priceUnit || listItem.priceunit">$</span>
                     <span v-else>￥</span>
-                    <span v-if="listItem.factorySellerInfo.seckilPrice">{{listItem.factorySellerInfo.seckilPrice}}</span>
-                    <span v-if="listItem.factorySellerInfo.seckil_price">{{listItem.factorySellerInfo.seckil_price}}</span>
+                    <span v-if="listItem.factorySellerInfo.seckilPrice">{{listItem.factorySellerInfo.seckilPrice | toFixed((listItem.priceUnit || listItem.priceunit)?3:2)}}</span>
+                    <span v-if="listItem.factorySellerInfo.seckil_price">{{listItem.factorySellerInfo.seckil_price  | toFixed((listItem.priceUnit || listItem.priceunit)?3:2)}}</span>
                   </div>
                 </div>
                 <div class="edit" style="width:350px;">
@@ -354,11 +381,12 @@ export default {
 
     },
     destroyed(){
-        localStorage.removeItem("proInformation");
-        localStorage.removeItem("applyDetailEdit")
+        // localStorage.removeItem("proInformation");
+        // localStorage.removeItem("applyDetailEdit")
     },
   mounted() {
       this.proInformation=JSON.parse(localStorage.getItem("proInformation"))
+      console.log(this.proInformation)
       if(!this.proInformation){
           return;
       }
@@ -376,6 +404,7 @@ export default {
     } else {
       if (this.proInformation.goodsbaseIno) {
         this.oneData = this.proInformation.goodsbaseIno;
+     
         this.formAlign = {...this.formAlign,...this.proInformation};
         if(this.proInformation.insteadNo){
             this.formAlign.insteadData = this.proInformation.insteadNo.split("@");

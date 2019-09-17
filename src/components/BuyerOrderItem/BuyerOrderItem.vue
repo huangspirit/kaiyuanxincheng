@@ -870,20 +870,19 @@ export default {
     }
   },
   filters: {
-    toFixed(val,length){
-        return Number(val).toFixed(length)
-    },
-    tagfilter(val) {
-      console.log("tagfilter:", val);
-      switch (Number(val)) {
-        case 1:
-          return "原厂";
-        case 2:
-          return "代理商";
-        case 3:
-          return "普通商户";
-      }
-    },
+    // toFixed(val,length){
+    //     return Number(val).toFixed(length)
+    // },
+    // tagfilter(val) {
+    //   switch (Number(val)) {
+    //     case 1:
+    //       return "原厂";
+    //     case 2:
+    //       return "代理商";
+    //     case 3:
+    //       return "普通商户";
+    //   }
+    // },
     payStatus(val) {
       switch (val) {
         case 0:

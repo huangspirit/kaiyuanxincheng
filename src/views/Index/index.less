@@ -1,5 +1,12 @@
 .index{
   background:#fff;
+  .bluebtn{
+    cursor: pointer;
+    color:#333;
+    &:hover{
+      color:#df3f2f;
+    }
+  }
   .message{
     position: absolute;
     top:80px;
@@ -47,6 +54,16 @@
   }
   .banner{
     position: relative;
+    &:after{
+      content:"";
+      position:absolute;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.2);
+      top:0;
+      left:0;
+      z-index: 90;
+    }
     /deep/.el-carousel{
       .el-carousel__container{
         height:auto;
@@ -69,6 +86,7 @@
       left:50%;
       top:55%;
       transform: translate(-50%,-50%);
+      z-index:91;
       .tit{
         font-size:60px;
       }
@@ -101,9 +119,13 @@
       color:#000;
       font-size:48px;
       font-weight: bold;
+      cursor: pointer;
+      &:hover{
+        color:#df3f2f;
+      }
     }
     &>.desc{
-      margin:15px 0 30px;
+      margin:15px 0 20px;
     }
     .list{
       display:flex;
@@ -114,7 +136,6 @@
         justify-content: space-between;
         width:32%;
         margin-right:2%;
-      
         position: relative;
         text-align: left;
         color:#656565;
@@ -179,10 +200,11 @@
             text-overflow: ellipsis;
             overflow: hidden;
             background: rgba(0,0,0,0.05);
-            font-size:14px;
+            font-size:16px;
             text-align: left;
             padding:10px;
             font-weight: bold;
+            color:#333;
           }
         }
         .info{
@@ -344,7 +366,8 @@
     }
   }
   .origin{
-    background: #f5f5f5;
+    background:url("../../assets/image/banner/bg_3.jpg") 0 0 no-repeat;
+    background-size: 100% 100%;
     padding-bottom:40px;
       .cont{
         display: flex;
@@ -356,6 +379,7 @@
             float: left;
             padding:10px 20px;
             box-sizing:border-box;
+           
             p {
               font-size: 28px;
               text-align: center;
@@ -499,11 +523,12 @@
     background: #fff;
     .dailiao{
       padding:0 10px;
-      line-height:30px;
+      line-height:25px;
       border-radius: 25px;
       font-size:16px;
       cursor: pointer;
-      margin-bottom:20px;
+      margin-bottom:5px;
+      color:#333;
       &:hover{
         font-weight: bold;
         transition: all 0.2s;
@@ -520,6 +545,8 @@
         display:flex;
         line-height: 60px;
         font-size:18px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
         li{
           &.item{
             flex:1;
@@ -534,6 +561,8 @@
         &>li{
           display: flex;
           line-height:60px;
+          color:#333;
+          border-bottom:1px solid #fff;
           &:hover{
             background:#fff;
           }
@@ -542,8 +571,59 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            cursor: pointer;
+            &:hover{
+              color:#df3f2f;
+            }
           }
-          &>div{
+          .brand{
+            cursor: pointer;
+            &:hover{
+              color:#df3f2f;}
+          }
+          .purchase{
+
+            &:hover{
+              font-weight: bold;
+            }
+          }
+          .taginfo{
+            display: inline-flex;
+            align-items: center;
+            img{
+              width:50px;
+              height:50px;
+              border-radius: 100%;
+              overflow: hidden;
+              margin:0 15px;
+            }
+            div{
+              text-align: left;
+              line-height:1.2;
+              .btn{
+                margin-right:10px;
+                padding:3px 10px;
+                border-radius: 3px;
+                color:#fff;
+                font-size:12px;
+                margin-top:6px;
+                &.blue{
+                  background:#448aca;
+                }
+                &.orange{
+                  background:#f78822;
+                }
+                &.focus{
+                  cursor: pointer;
+                  background:#ccc;
+                  &:hover{
+                    color:#df3f2f;
+                  }
+                }
+              }
+            }
+          }
+          &>.oneitem{
             flex:1;
             text-align:center;
             overflow: hidden;
@@ -705,12 +785,15 @@
         padding: 20px 0;
         float: left;
         box-sizing: border-box;
+        background:#999;
+        color:#fff;
         p {
           font-size: 24px;
           cursor: pointer;
           white-space: nowrap;
           padding:0 20px;
           margin-bottom:20px;
+          color:#fff;
           img {
             width: 25px;
             vertical-align: top;
@@ -719,14 +802,14 @@
         ul {
           li {
             font-size:16px;
-            margin-left: 25px;
+            // margin-left: 25px;
             white-space: nowrap;
-            line-height:30px;
-            border-bottom-left-radius: 40px;
-            border-top-left-radius: 40px;
+            line-height:50px;
+            // border-bottom-left-radius: 40px;
+            // border-top-left-radius: 40px;
             padding-left:20px;
             cursor: pointer;
-            margin-bottom:5px;
+           
             &:hover{
               background: #fff;
               color:#df3f2f;
@@ -742,6 +825,7 @@
             }
             &.active{
               background: #fff;
+              color:#333;
             }
           }
         }
@@ -772,14 +856,16 @@
         padding: 30px 20px;
         width:200px;
         box-sizing: border-box;
+        background:#999;
         p {
           font-size: 28px;
           text-align: center;
           margin-bottom: 20px;
+          color:#fff;
         }
         .slideWrap {
           width:100%;
-          height: 600px;
+          height: 460px;
           overflow: hidden;
           ul {
             &.anim{
@@ -788,7 +874,7 @@
             }
             width:100%;
             &.active{
-              top:-100px;
+              top:-80px;
               transition:top 3s;
             }
             li {

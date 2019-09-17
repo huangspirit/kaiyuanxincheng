@@ -14,8 +14,8 @@
             <img :src="UserInforma.headImgUrl" class="head-portrait " alt />
             </el-upload>
               <div class="info fl">
-                  <p class="name">
-                      {{UserInforma.nickname}}
+                  <p class="name" style="max-width:200px;">
+                      {{UserInforma.nickname}}<span style="color:#fff;font-size:12px;">(个人中心)</span>
                         <img src="@/assets/image/icon/edit.png" style="height:15px;margin-left:15px;cursor:pointer;" @click="editUserName" title="更新用户名称"/>
                   </p>
             <p>

@@ -60,7 +60,7 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | filterTag}}</span> 
+                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>
@@ -78,14 +78,14 @@
                         <div class="count"><span>起订量：&nbsp;{{item.moq}}只</span><span>最小增量：&nbsp;{{item.mpq}}只</span></div>
                         <div class="place" style="margin-top:3px;">
                             <span v-if="item.deliverTime">预计于{{item.deliverTime | formatDate}}</span>
-                            <span v-if="item.day_interval">{{item.day_interval}}天后</span>
+                            <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span>
                             &nbsp;<span>{{item.diliverPlace}}发货</span>
                         </div>
                         </div>
                         <div class="stockCount">
                             <span>剩余{{item.goodsStockCount}}只</span>
-                            <strong class="color fr" v-if="!item.priceType">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice}}</strong>
-                             <strong class="color fr" v-if="item.priceType">起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price}}</strong>
+                            <strong class="color fr" v-if="!item.priceType">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
+                             <strong class="color fr" v-if="item.priceType">起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
                         </div>
                         <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
                     </div>
@@ -97,7 +97,7 @@
     </div>
 </template>
 <script>
-    import {ladderPrice} from "../../lib/utils";
+    import {ladderPrice, TimeForma} from "../../lib/utils";
     import {axios,home} from "../../api/apiObj";
     export default {
         data(){
@@ -116,15 +116,11 @@
             }
         },
         filters:{
-            filterTag(val){
-                switch(val){
-                    case 1:
-                        return '原厂';
-                    case 2:
-                        return '代理商';
-                    case 3:
-                        return '普通商户';
-                }
+            formatDate(val){
+                return TimeForma(val)
+            },
+            filterHours(val){
+                return parseFloat(val)*24
             }
         },
         mounted(){

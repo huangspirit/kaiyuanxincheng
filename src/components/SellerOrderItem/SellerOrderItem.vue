@@ -55,14 +55,14 @@
           </td>
           <td style="width:10%">
               <div v-if="item.price_type" class="jieti">
-                    <p v-for="item0 in priceList"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price}}</strong> </p>
+                    <p v-for="item0 in priceList"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price | toFixed(item.priceunit?3:2)}}</strong> </p>
               </div>
               <div v-else>
                   <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price}}</strong>
               </div>
           </td>
             <td style="width:10%;" >
-                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay}}</strong>&nbsp;/
+                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay | toFixed(item.priceunit?3:2)}}</strong>&nbsp;/
                 <strong class="price">{{item.totalPayCount | toFixed(0)}}</strong>
             </td>
           <td style="width:15%">
@@ -269,9 +269,9 @@ export default {
     Countdown
   },
   filters: {
-    toFixed(x,y) {
-      return Number(x).toFixed(y);
-    },
+    // toFixed(x,y) {
+    //   return Number(x).toFixed(y);
+    // },
     pay_channel(x) {
       switch (x) {
         case 1:

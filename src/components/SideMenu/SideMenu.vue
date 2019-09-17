@@ -14,13 +14,13 @@
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
         <router-link :to="item.path" v-else-if="!item.children && item.isShow" :key="`list_${item.index}`" tag="div">
           <el-menu-item :index="item.index">
-<!--            <img :src="item.icon" alt>-->
+           <img :src="item.icon" alt>
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </router-link>
         <div v-else-if="!item.isShow" :key="`list_${item.index}`" @click="dialogVisible = true">
           <el-menu-item :index="item.index">
-<!--            <img :src="item.icon" alt>-->
+           <img :src="item.icon" alt>
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </div>

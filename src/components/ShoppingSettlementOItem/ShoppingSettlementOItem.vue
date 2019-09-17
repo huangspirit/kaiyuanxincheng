@@ -4,47 +4,70 @@
       <img :src="item.list[0].sellerHeader" alt>
       <div>
         <p>{{item.name}}</p>
-        <span v-if="item.list[0].tag === '1'">原厂商户</span>
+        <span class="bgColor">{{item.list[0].tag | filterTag}}</span>
+        <!-- <span v-if="item.list[0].tag === '1'">原厂商户</span>
         <span v-if="item.list[0].tag === '2'">代理商</span>
-        <span v-if="item.list[0].tag === '3'">商家</span>
+        <span v-if="item.list[0].tag === '3'">商家</span> -->
       </div>
     </div>
     <div class="list">
+      <ul class="title">
+        <li class="desc">器件信息</li>
+        <li class="item">单价</li>
+        <li class="item">数量</li>
+        <li class="item">金额</li>
+        <li class="item">关税</li>
+        <li class="item">交货</li>
+      </ul>
       <div class="item" v-for="value in item.list" :key="value.goods_id">
-        <span class="img">
-          <ImgE :src="value.goodsImage" :W="158" :H="158"></ImgE>
-        </span>
-        <div class="text">
-          <p class="name">{{value.goods_name}}</p>
-          <p class="desc">{{value.goodsDesc}}</p>
-          <p>
-            <span>
-              <label>交货地:</label>
-              {{value.diliver_place}}
+        <div class="desc">
+            <span class="img">
+              <ImgE :src="value.goodsImage" :W="158" :H="158"></ImgE>
             </span>
-
-          </p>
-          <p v-if="value.diliver_date">
-            <span >
-              <label>预计交期:</label>
-              {{value.diliver_date | TimeFormaTime}}
+            <div class="text">
+              <router-link 
+              :to="{
+                  path:'/BrandDetail/GoodsDetails',
+                  query:{
+                    tag:'goodsinfo',
+                    documentid:value.goods_id,
+                    name:value.goods_name
+                  }
+              }"  class="name color"
+              tag="p">
+                {{value.goods_name}}
+              </router-link>
+              <p class="desc">{{value.goodsDesc}}</p>
+              <p class="btnwrap">
+                <span>{{value.tag | tagFilter}}</span>
+                <span>{{value.diliver_place}}交货</span>
+                <span>{{value.seller_always?'现货':'订货'}}</span>
+              </p>
+            </div>
+        </div>
+       <div class="oneitem">
+            <span class="color">{{value.price_unit ? '$' : '￥'}}{{value.goods_price | toFixed(item.price_unit?3:2)}}
+              <br><span class="clude_bill">({{!value.price_unit ? '含13%增值税' : '不含税'}})</span>
             </span>
-            </p>
-          <p>
-            <label>价格:</label><span class="num">{{value.price_unit ? '$' : '￥'}}{{value.goods_price}}<span class="clude_bill">({{!value.price_unit ? '含税' : '不含税'}})</span></span>
-            <span><label>数量:</label>{{value.goods_count}}</span>
-          </p>
+       </div>
+        <div class="oneitem">{{value.goods_count}}只</div>
+        <div class="oneitem">{{value.price_unit ? '$' : '￥'}}{{value.total_price | toFixed(item.price_unit?3:2)}}</div>
+        <div class="oneitem">￥{{value.guanshuiTotal | toFixed(2)}}</div>
+        <div class="oneitem">
+          <span v-if="value.diliver_date">{{value.diliver_date | TimeFormaTime}}</span>
+          <span v-if="value.goods_type">{{value.day_interval | filterhours}}小时内</span>
+           <br>{{value.diliver_place}}交货
         </div>
       </div>
     </div>
-    <div class="foot">
+    <!-- <div class="foot">
       <div class="foot-r">
           <span>店铺合计：</span>
             <span class="color" v-if="totalPrice">￥{{this.totalPrice | toFixed(3)}}</span>
             <span class="color" v-if="unittotalPrice && totalPrice">&nbsp;+&nbsp;</span>
             <span class="color" v-if="unittotalPrice">${{this.unittotalPrice | toFixed(3)}}</span>
       </div>
-    </div>
+    </div> -->
   </li>
 </template>
 <style lang="less" scoped>
@@ -67,12 +90,24 @@ export default {
     TimeFormaTime(x) {
       return TimeForma(x);
     },
-      toFixed(val,num){
-        return Number(val).toFixed(num)
+      // toFixed(val,num){
+      //   return Number(val).toFixed(num)
+      // },
+      filterhours(val){
+        return Number(val)*24;
       },
+      // filterTag(val){
+      //     switch(Number(val)){
+      //       case 1:
+      //         return '原厂商户';
+      //       case 2:
+      //         return '代理商';
+      //       case 3:
+      //         return '商家'
+      //     }
+      // }
   },
   mounted() {
-      console.log(this.item)
     this.item.list.forEach(item => {
         if(item.price_unit){
             this.unittotalPrice += item.total_price;

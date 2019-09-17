@@ -10,8 +10,8 @@
             </div>
             <div class="rightwrap clear">
                 <div class="nav ">
+                     <router-link to="/Brand">原厂直营店</router-link>
                     <router-link to="/specialPrice">现货直通车</router-link>
-                    <router-link to="/Brand">原厂直营店</router-link>
                     <router-link to="/order">订货跟单区</router-link>
                     <router-link to="/oldGoods">呆料掘金池</router-link>
                     <router-link to="/OriginalFactoryEntry"
