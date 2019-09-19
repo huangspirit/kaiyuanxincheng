@@ -6,7 +6,7 @@
       <el-breadcrumb-item>关注的商家</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="MerchantsConcerned">
-      <ul class="tab-list clear">
+      <ul class="tab-list clear" v-if="total">
         <li
             v-for="(item, k) in title"
           :class="{active:item.catergoryId === catergory_id}"

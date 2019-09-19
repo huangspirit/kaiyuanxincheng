@@ -38,17 +38,15 @@
       </div>
       <table width="100%" border="1" cellpadding="0" cellspacing="0" style="table-layout:fixed">
         <tr>
-          <td style="width:20%">
+          <td style="width:24%">
             <!-- <img :src="item.goods_image" alt> -->
             <div class="goodsInfo">
               <ImgE :src="item.goods_image" :W="50" :H="50"></ImgE>
               <div class="detail">
                 <p>
-                  <label for="">名称：</label>
-                  <span class="goodsname">{{item.goods_name}}</span>
+                  <span class="goodsname color">{{item.goods_name}}</span>
                 </p>
                 <p>
-                  <label for=""> 品牌：</label>
                 <span>{{item.goods_brand}}</span></p>
               </div>
             </div>
@@ -58,8 +56,9 @@
                     <p v-for="item0 in priceList"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price | toFixed(item.priceunit?3:2)}}</strong> </p>
               </div>
               <div v-else>
-                  <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price}}</strong>
+                  <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price | toFixed(item.priceunit?3:2)}}</strong>
               </div>
+              <strong>({{item.priceunit?'含13%增值税':'不含税'}})</strong>
           </td>
             <td style="width:10%;" >
                 <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay | toFixed(item.priceunit?3:2)}}</strong>&nbsp;/
@@ -92,10 +91,10 @@
               <p v-else style="color:#ff6600">已过交期：{{item.completeDate }}天</p>
             </div> -->
           </td>
-          <td style="width:5%">
+          <td style="width:6%">
             <p>{{item.diliver_place}}</p>
           </td>
-          <td style="width:13%" class="place">
+          <td style="width:15%" class="place">
               <template v-if="item.status==1">
                   <div v-if="item.diliver_place!='香港'" style="text-align: left;padding:0 5px;">
                       <p><strong>收货人</strong>：{{item.warehouseRecipient}}</p>
@@ -136,14 +135,14 @@
               <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">订单进程</span>
             </el-popover>
           </td>
-          <td style="width:17%" class="wrapbtn">
+          <td style="width:10%" class="wrapbtn">
             <!-- <div v-if="item.diliver_place === '香港' ">
               <el-button class="default" v-if="item.diliverButon" @click="DeliverGoodsPI">发货</el-button>
             </div> -->
             <div>
-              <el-button class="btn bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton">发货</el-button>
-              <el-button class="btn  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton">更改交期</el-button>
-              <el-button class="btn  bgColor" @click="DeliverGoodsInvoice(item)" v-if="item.billButton">确认开票</el-button>
+              <el-button class="btn bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton" size="mini">发货</el-button>
+              <el-button class="btn  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton" size="mini">更改交期</el-button>
+              <el-button class="btn  bgColor" @click="DeliverGoodsInvoice(item)" v-if="item.billButton" size="mini">确认开票</el-button>
                 <slot name="detail"></slot>
             </div>
           </td>

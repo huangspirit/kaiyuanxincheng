@@ -39,46 +39,17 @@
             :borderColor="'#e3e3e3'"
           ></SearchInput>-->
         </div>
-        <!-- 二级切换 -->
-        <!--        <div class="tab-list-b">-->
-        <!--          <ul>-->
-        <!--            <li v-if="tabFirstFlag === 0">-->
-        <!--              <span>可发货</span>-->
-        <!--              <span>-->
-        <!--                <el-badge :value="12">备货中</el-badge>-->
-        <!--              </span>-->
-        <!--              <span>待付尾款</span>-->
-        <!--              <el-dropdown class="all-time" @command="command">-->
-        <!--                <span class="el-dropdown-link">-->
-        <!--                  {{commandValue}}-->
-        <!--                  <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-        <!--                </span>-->
-        <!--                <el-dropdown-menu slot="dropdown" class="el-dropdown-menu">-->
-        <!--                  <el-dropdown-item command="可变更交期">可变更交期</el-dropdown-item>-->
-        <!--                  <el-dropdown-item command="临近交期">临近交期</el-dropdown-item>-->
-        <!--                  <el-dropdown-item command="超出交期">超出交期</el-dropdown-item>-->
-        <!--                  <el-dropdown-item command="已违约">已违约</el-dropdown-item>-->
-        <!--                </el-dropdown-menu>-->
-        <!--              </el-dropdown>-->
-        <!--            </li>-->
-        <!--            <li v-if="tabFirstFlag === 2">-->
-        <!--              <span>付款待确认</span>-->
-        <!--              <span>到货单待确认</span>-->
-        <!--            </li>-->
-        <!--          </ul>-->
-        <!--        </div>-->
-        <!-- 列表的内容 -->
         <div class="tab-list-con">
           <p class="tab-list-con-tit">
-            <span style="width:20%">商品信息</span>
+            <span style="width:24%">商品信息</span>
             <span style="width:10%">单价</span>
             <span style="width:10%">总金额/总数量</span>
             <span style="width:15%">交期</span>
-            <span style="width:5%">交货地</span>
-            <span style="width:13%">收货仓库地址</span>
+            <span style="width:6%">交货地</span>
+            <span style="width:15%">收货仓库地址</span>
             <span style="width:10%">当前状态</span>
 
-            <span style="width:17%">操作</span>
+            <span style="width:10%">操作</span>
           </p>
           <SellerOrderItem
             v-for="item in SellerOrderManagementList"
@@ -89,7 +60,7 @@
             @DeliverGoodsInvoice="DeliverGoodsInvoice(item)"
             @reload="all"
           >
-            <el-button slot="detail" class=" bgColor" @click="storageItem(item)">
+            <el-button slot="detail" class=" bgColor" @click="storageItem(item)" size="mini">
               <router-link
                   tag="span"
                 :to="{path:'/PersonalCenter/SellerOrderManagement/SellerOrderDetail',query:{id:item.goods_seller_id}}"
@@ -574,7 +545,7 @@ export default {
     submitForm(formName) {
       this.deliveryInfo.goodsName = this.currentOrder_item.goods_name;
       this.deliveryInfo.id = this.currentOrder_item.id;
-      console.log(this.deliveryInfo);
+    
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
@@ -583,7 +554,7 @@ export default {
               params: this.deliveryInfo
             })
             .then(res => {
-              console.log(res);
+          
               this.centerDialogVisible = false;
               this.all();
             });
@@ -597,7 +568,7 @@ export default {
     submitFormPI(formName) {
       this.ruleFormPI.id = this.currentItem.id;
       this.ruleFormPI.goodsName = this.currentItem.goods_name;
-      console.log(this.ruleFormPI);
+    
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
@@ -606,7 +577,7 @@ export default {
               params: this.ruleFormPI
             })
             .then(res => {
-              console.log(res);
+           
               this.centerDialogVisiblePI = false;
               this.all();
             });
@@ -629,7 +600,7 @@ export default {
             goods_name: this.currentItem.goods_name,
             goods_seller_no: this.currentItem.goods_seller_no
           }).then(res => {
-            console.log(res);
+           
             this.centerDialogVisibleChangeDue = false;
             this.all();
             this.$message({
@@ -675,10 +646,18 @@ export default {
       CenterChangeAddress: state => state.Common.CenterChangeAddress
     })
   },
+  created(){
+    if(this.$route.query.status=='0'){
+        this.tabFirstFlag=0;
+        this.$router.push(this.$route.path)
+    }
+  },
   mounted() {
     this.orderParams = {
       start: this.start,
-      length: this.pageSize
+      length: this.pageSize,
+        status: this.tabFirstFlag
+
     };
     this.all();
   }

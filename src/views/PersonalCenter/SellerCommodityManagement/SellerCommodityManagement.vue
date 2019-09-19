@@ -44,14 +44,14 @@
         <div class="tab-list-con">
           <p class="tab-list-con-tit">
             <span style="width:20%">商品信息</span>
-            <span style="width:7%">售价</span>
-            <span style="width:5%">MOQ</span>
-            <span style="width:5%">MPQ</span>
-            <span style="width:10%">交货信息</span>
-            <span style="width:10%">总库存</span>
-            <span style="width:10%">剩余</span>
+            <span style="width:10%">售价</span>
+            <span style="width:6%">起订量</span>
+            <span style="width:6%">最小增量</span>
+            <span style="width:6%">交货地</span>
+             <span style="width:10%">货源</span>
+            <span style="width:8%">总库存</span>
+            <span style="width:8%">剩余</span>
             <span style="width:15%">类型详情</span>
-            <span style="width:8%">货源</span>
             <span style="width:10%">操作</span>
           </p>
           <div class="list-item" v-for="item in PublishGoodsList" :key="item.id">
@@ -71,50 +71,53 @@
                   <div class="wrap">
                     <img :src="item.goodsImageUrl" alt />
                     <div>
-                      <p class="num">
-                        <label for="">名称：</label>{{item.goods_name}}</p>
-                      <p><label for="">品牌：</label>
+                      <p style="word-break:break-all;margin-bottom:5px;">
+                        {{item.goods_name}}</p>
+                      <p >
                         {{item.brandName}}</p>
                     </div>
                   </div>
 
                 </td>
-                <td style="width:7%;" class="price">
-                  <div class="desc">
-                      <span>{{item.priceType ? '阶梯价' : '一口价'}}</span>
-                      <span>({{!item.priceUnit? '含税价' : '不含税' }})</span>
-                  </div>
+                <td style="width:10%;" class="price">
+                  
                   <p
                     v-if="!item.priceType"
-                    class="num"
-                  >{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice}}</p>
+                    class="color"
+                  >{{item.priceUnit ? '$' : '￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</p>
                   <ul class="list" v-if="item.priceLevel">
                     <li v-for="(val, k) in item.priceLevel" :key="k">
-                      <span>{{val[0]}}</span>
-                      <span class="num">{{item.priceUnit ? '$' : '￥'}}{{val[1]}}</span>
+                      <span>{{val[0]}}</span>---
+                      <span class="color">{{item.priceUnit ? '$' : '￥'}}{{val[1] | toFixed(item.priceUnit?3:2)}}</span>
                     </li>
                   </ul>
+                  <div class="blue">
+                      <span>({{item.includBill? '含13%增值税' : '不含税' }})</span>
+                  </div>
                 </td>
-                <td style="width:5%;">
-                  <p>{{item.moq}}</p>
+                <td style="width:6%;">
+                  <p>{{item.moq}}只</p>
                 </td>
-                <td style="width:5%;">
-                  <p>{{item.mpq}}</p>
+                <td style="width:6%;">
+                  <p>{{item.mpq}}只</p>
                 </td>
-                <td style="width:10%;">
+                <td style="width:6%;">
                   <p>{{item.diliverPlace}}</p>
-                  <p v-if="item.deliverTime">预计交期{{item.deliverTime | deliverTime}}</p>
                 </td>
-                <td style="width:10%;">
-                  <span>{{item.goodsCount}}</span>
+                   <td style="width:10%;">
+                    <span>{{item.goods_type ? '现货' : '期货'}}</span>
+                    <p v-if="!item.goods_type">预计交期{{item.deliverTime | deliverTime}}</p>
+                    <p v-if="item.goods_type">下单后{{item.day_interval | filterHours}}小时内发货</p>
+                  </td>
+                <td style="width:8%;">
+                  <span>{{item.goodsCount}}只</span>
                 </td>
-                <td style="width:10%;">
-                  <span>{{item.goodsStockCount}}</span>
+                <td style="width:8%;">
+                  <span>{{item.goodsStockCount}}只</span>
                 </td>
                 <td style="width:15%;">
                   <div v-if="item.seller_always">
                     <p>长期卖</p>
-                    <p>购买{{item.day_interval}}天后发货</p>
                   </div>
                   <div v-else>
                     <p>限时卖</p>
@@ -135,9 +138,7 @@
                       <!-- <el-button slot="reference">剩余售卖时间</el-button> -->
                   </div>
                 </td>
-                <td style="width:8%;">
-                  <span>{{item.goods_type ? '现货' : '期货'}}</span>
-                </td>
+             
                 <td style="width:10%;">
                   <div class="wrapbtn">
                       <span v-if="item.downButton" @click="OffShelfMerchandise(item)" class="btn undone">下架该商品</span>
@@ -185,11 +186,10 @@ export default {
           isenable: false
         }
       ],
-      tabFirstFlag: 0,
       currentPage: 1,
       PublishGoodsList: [],
       total: 0,
-        pageSize:10,
+      pageSize:10,
     };
   },
   methods: {
@@ -267,32 +267,6 @@ this.GetUpdatePublishGoodsSatus({
     },
     countDownS_cb() {},
     countDownE_cb() {},
-    // all2(isenable) {
-    //   this.GetPublishGoodsListByUser({
-    //     start: this.start,
-    //     length: 10,
-    //     isenable: isenable
-    //   })
-    //     .then(res => {
-    //       let arr = res.data;
-    //       arr.forEach((item, idx) => {
-    //         if (item.priceType) {
-    //           let ret = item.priceLevel.split("@");
-    //           ret.forEach((items, index) => {
-    //             let ar2 = items.split("-");
-    //             ret[index] = ar2;
-    //           });
-    //           arr[idx].priceLevel = ret;
-    //         }
-    //       });
-    //       this.PublishGoodsList = arr;
-    //       console.log(this.PublishGoodsList);
-    //       this.total = res.total;
-    //     })
-    //     .catch(err => {
-    //       this.$message.error(err);
-    //     });
-    // },
     all() {
       this.GetPublishGoodsListByUser({
         start: this.start,
@@ -323,14 +297,13 @@ this.GetUpdatePublishGoodsSatus({
   components: {
     Countdown
   },
-  watch: {
-    currentPage() {
-      //this.all();
-    }
-  },
+ 
   filters: {
     deliverTime(x) {
       return TimeForma(x);
+    },
+    filterHours(val){
+      return Number(val)*24
     }
   },
   computed: {
@@ -340,6 +313,12 @@ this.GetUpdatePublishGoodsSatus({
     //
     start() {
       return (this.currentPage - 1) * this.pageSize;
+    }
+  },
+  created(){
+    if(this.$route.query.status){
+        this.currentModlue=this.tabFirstList[this.$route.query.status=='0'?1:0]
+        this.$router.push(this.$route.path)
     }
   },
   mounted() {

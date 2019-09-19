@@ -316,6 +316,7 @@ export default {
           if(res.factorySellerInfo.price_type){
               res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
           }
+          console.log(res)
           this.goodsinfo = res
           this.purchaseObj={
               goods_id: res.id,

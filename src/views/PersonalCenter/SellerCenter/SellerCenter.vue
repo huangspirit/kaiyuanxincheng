@@ -13,12 +13,12 @@
             </el-upload>
               <div class="info fl">
                   <p class="name" style="max-width:200px;">
-                      {{UserInforma.nickname}}<span style="color:#fff;font-size:12px;">(卖家中心)</span>
+                      {{UserInforma.nickname}}
                         <img src="@/assets/image/icon/edit.png" style="height:15px;margin-left:15px;cursor:pointer;" @click="editUserName" title="更新用户名称"/>
                   </p>
                   <p>
                       <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
-                      <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                      <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                       <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
                   </p>
                   <p>信用等级：{{UserInforma.userTagMap.userLevel}}</p>
@@ -52,7 +52,7 @@
                   </li>
                   <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
                       <div class="cont circle clear">
-                          <el-progress type="circle" :width="80" :percentage="creditsellerPercente"  class="fl"></el-progress>
+                          <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
                           <div class="text fl">
                               <p class="desc">
                                   售卖额度：{{UserInforma.userTagMap['credit-seller']}}
@@ -67,7 +67,7 @@
           </div>
       </div>
       <ul class="goods-state">
-          <router-link tag="li" to="/PersonalCenter/SellerCommodityManagement">
+          <router-link tag="li" to="/PersonalCenter/SellerCommodityManagement?status=1">
               <div class="color">
                   <p class="name">在售商品</p>
                       <p class="desc" >
@@ -77,8 +77,8 @@
                   <p class="num">{{obj.isSelling}} <i class="el-icon-arrow-right fr"></i>    </p>
               </div>
           </router-link>
-              <router-link tag="li" to="">
-                  <div>
+              <router-link tag="li" to="/PersonalCenter/SellerCommodityManagement?status=0">
+                  <div class="color">
                       <p class="name">已下架商品</p>
                       <p class="desc" >
                           <br>
@@ -87,8 +87,8 @@
                       <p class="num">{{obj.noSelling}} <i class="el-icon-arrow-right fr"></i>    </p>
                   </div>
               </router-link>
-              <router-link tag="li" to="">
-                  <div>
+              <router-link tag="li" to="/PersonalCenter/SellerOrderManagement?status=0">
+                  <div class="color">
                       <p class="name">待发货订单数</p>
                       <p class="desc" >
                           您有<span class="color">{{obj.undiliver}}</span>个待发货的订单，立即查看
@@ -97,8 +97,8 @@
                       <p class="num">{{obj.undiliver}} <i class="el-icon-arrow-right fr"></i>    </p>
                   </div>
               </router-link>
-              <router-link tag="li" to="">
-                  <div>
+              <router-link tag="li" to="" @click.native='getbilldetail()'>
+                  <div class="color">
                       <p class="name">待结算货款</p>
                       <p class="desc" style="white-space: nowrap">
                         结算金额以卖家发货为准，立即查看
@@ -112,9 +112,9 @@
           :visible.sync="showinputPassword"
           width="500px"
       >
-          <p slot="title" class="title">输入密码</p>
+          <p slot="title" class="title">输入交易密码</p>
           <div >
-              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+              <el-input placeholder="请输入交易密码" v-model="inputpassword" show-password></el-input>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="showinputPassword = false">取 消</el-button>
@@ -206,7 +206,9 @@
                 source1:[],
                 obj:{},
                 access_token:sessionStorage.getItem("access_token"),
-                refresh_token:sessionStorage.getItem("refresh_token")
+                refresh_token:sessionStorage.getItem("refresh_token"),
+
+                chipBillMark:false,//标志着提现或者结算账单的跳转
                 // note: {
                 //     backgroundImage: "url(" + require("./assets/bg.jpg") + ")",
                 //     backgroundRepeat: "no-repeat",
@@ -216,16 +218,7 @@
             }
         },
         filters:{
-            typeFilter(val) {
-                switch (val) {
-                    case 1:
-                        return "原厂";
-                    case 2:
-                        return "代理商";
-                    case 3:
-                        return "商家";
-                }
-            },
+         
             filterBankCode(val){
                 switch (val) {
                     case "ICBC":
@@ -273,7 +266,7 @@
                             //更新用户信息
                            // this.all()
                             axios.request({url:common.refresh_token.url+"?refresh_token="+this.refresh_token,method:'post',data:{refresh_token:this.refresh_token}}).then(res=>{
-                                console.log(res)
+                               
                                 sessionStorage.setItem("refresh_token",res.refresh_token);
                                 sessionStorage.setItem("access_token",res.access_token);
                                 this.refresh_token=res.refresh_token;
@@ -293,7 +286,7 @@
                             //更新用户信息
                            // this.all()
                             axios.request({url:common.refresh_token.url+"?refresh_token="+this.refresh_token,method:'post',data:{refresh_token:this.refresh_token}}).then(res=>{
-                                console.log(res)
+                             
                                 sessionStorage.setItem("refresh_token",res.refresh_token);
                                 sessionStorage.setItem("access_token",res.access_token);
                                 this.refresh_token=res.refresh_token;
@@ -328,6 +321,7 @@
             //提现的相关操作
             withDraw(){
                 //先验证是否设置提现密码
+                this.chipBillMark=false
                 this.inputpassword="";
                 axios.request(personCenter.checkSetPassword).then(res=>{
                     if(res.data==1){
@@ -348,7 +342,6 @@
                                             start:0,
                                             length:100,
                                         }}).then(res=>{
-                                        console.log(res)
                                         this.bankList=res.data.data;
                                     })
                                 }
@@ -361,17 +354,19 @@
             },
             checkpassword(){
                 axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
-                    console.log(res)
                     if(res){
                         this.showinputPassword=false;
-                        this.showinputwithdrawTotal=true;
-                        axios.request({...personCenter.getBankList,params:{
-                                start:0,
-                                length:100,
-                            }}).then(res=>{
-                            console.log(res)
-                            this.bankList=res.data.data;
-                        })
+                        if(this.chipBillMark){
+                            this.$router.push("/PersonalCenter/SellerBillCenter")
+                        }else{
+                            this.showinputwithdrawTotal=true;
+                            axios.request({...personCenter.getBankList,params:{
+                                    start:0,
+                                    length:100,
+                                }}).then(res=>{
+                                this.bankList=res.data.data;
+                            })
+                        }
                     }
 
                 })
@@ -385,6 +380,31 @@
                     if(res){
                         this.showinputwithdrawTotal=false;
                         this.all();
+                    }
+                })
+            },
+            getbilldetail(){
+                this.inputpassword="";
+                this.chipBillMark=true
+                axios.request(personCenter.checkSetPassword).then(res=>{
+                    if(res.data==1){
+                        this.showinputPassword=true;
+                    }else{
+                        //需要新增
+                        this.$prompt('请设置提现密码', '', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                        }).then(({ value }) => {
+                            //校验密码
+                            axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
+                                if(res){
+                                    this.showinputPassword=false;
+                                    this.$router.push("/PersonalCenter/SellerBillCenter")
+                                }
+                            })
+                        }).catch(() => {
+
+                        });
                     }
                 })
             },

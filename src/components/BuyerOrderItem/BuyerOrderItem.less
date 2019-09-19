@@ -314,7 +314,21 @@
                 margin-right: 10px;
                 vertical-align: middle;
               }
-
+              .info{
+                display:inline-block;
+                vertical-align: middle;
+                margin-left:0px;
+                text-align: left;
+                span{
+                  color:#333;
+                  &.type{
+                    background: #ff6600;
+                    color:#fff;
+                    padding:1px 6px;
+                    border-radius: 3px;
+                  }
+                }
+              }
               .hisinfo {
                 border-radius: 5px;
                 white-space: nowrap;
@@ -324,7 +338,7 @@
                 background: rgb(74, 90, 106);
                 color: #fff;
                 padding: 15px;
-                right: 100%;
+                left: 100%;
                 top: 80%;
 
                 &>p {

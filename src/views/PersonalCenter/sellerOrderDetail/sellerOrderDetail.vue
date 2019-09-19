@@ -42,7 +42,7 @@
       <el-table-column prop="goods_count" label="商品数量" align="center"></el-table-column>
       <el-table-column prop="total_price" label="商品总价" align="center">
         <template slot-scope="scope">
-          <span style="color:#f40;">{{scope.row.price_unit?"$":"¥"}}{{scope.row.total_price}}</span>
+          <span style="color:#f40;">{{scope.row.price_unit?"$":"¥"}}{{scope.row.total_price | toFixed(scope.row.price_unit?3:2)}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="create_time" label="下单时间" align="center">
@@ -72,7 +72,7 @@
 @import "./sellerOrderDetail.less";
 </style>
 <script>
-import { TimeForma } from "@/lib/utils";
+import { TimeForma,TimeForma2 } from "@/lib/utils";
 import { mapActions } from "vuex";
 export default {
   name: "sellerOrderDetail",
@@ -97,7 +97,7 @@ export default {
   },
   filters: {
     formatDate(value) {
-      return TimeForma(value);
+      return TimeForma2(value);
     },
     orderStatusFilter(val) {
       switch (val) {

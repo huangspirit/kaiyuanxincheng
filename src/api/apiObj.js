@@ -51,6 +51,11 @@ const home = {
 
 }
 const buyerOrderCenter = {
+    //提升额度
+    increaseCredit:{
+        url:'api-b/vipApply/increaseCredit',
+        method:'post'
+    },
     //获取买家订单
     queryOrderPersonal:{
         url:"api-order/customerCenter/queryOrderPersonal"
@@ -173,6 +178,7 @@ const message = {
     }
 }
 const shoppingCar = {
+
     queryGoodsBillSetOffList:{
         url:"api-g/goods-b/queryGoodsBillSetOffList"
     },

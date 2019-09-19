@@ -6,7 +6,7 @@
       <el-breadcrumb-item>关注的商品</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="CommoditiesInterest">
-      <ul class="tab-list">
+      <ul class="tab-list" v-if="total">
         <li
           v-for="(item,k) in tabList"
           :class="{active:catergoryId === item.catergoryId}"
@@ -22,7 +22,7 @@
       </ul>
         <p v-if="goodsList.length==0" class="nocontent">您还没有关注的商品</p>
       <ul class="interes-list">
-        <li v-for="(item,index) in goodsList" class="clear">
+        <li v-for="(item,index) in goodsList" class="clear" :key="index">
 <!--          <TabImage :width="146"></TabImage>-->
             <div class="left">
                 <div class="imgwrap fl">

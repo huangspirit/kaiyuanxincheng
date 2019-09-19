@@ -5,7 +5,7 @@
       <div class="list-item-tit">
         <span>
           <strong>下单时间:</strong>
-          {{item.orderVo.createtime | formatDate}}
+          {{item.orderVo.createtime | formatDate1}}
         </span>
         <span>
           <strong>订单号：</strong>
@@ -128,7 +128,7 @@
           </td>
           <td style="width:25%" class="operation">
             <!-- 是不是月结 -->
-              <div class="box-con">
+              <div class="box-con" v-if="item.orderVo.download">
                   <div class="wrapbtn" v-if="item.orderVo.download">
                     <span class="downloadContract bgLightGray"  @click="downLoadOrderContract(item.orderVo.contractUrl)">
                      下载合同
@@ -223,13 +223,17 @@
             <template v-for="(value ,index) in item.orderInfoList">
               <tr :key="index">
                 <td colspan="6" class="sellerInfo">
-                  <div class="fr sellerInfowrap">
+                  <div class="fl sellerInfowrap">
                     <!-- <span>{{value.sellerName}}</span> -->
                     <img :src="value.headImgUrl" alt class="sellerImg" />
+                    <div class="info">
+                        <span class="sellername">{{value.username}}</span><br>
+                        <span class="type" :class="'type'+value.tag">{{value.tag | tagFilter }}</span>
+                    </div>
                     <div class="hisinfo">
                       <p>
                         <span class="sellername">{{value.username}}</span>
-                        <span class="type" :class="'type'+value.tag">{{value.tag | tagfilter }}</span>
+                        <span class="type" :class="'type'+value.tag">{{value.tag | tagFilter }}</span>
                       </p>
                       <p>
                         成交量
@@ -250,25 +254,24 @@
                       </ImgE>
 <!--                    <img :src="value.goods_image" :W="50" :H="50" />-->
                     <div>
-                      <p class="num">{{value.goods_name}}</p>
+                      <p class="color">{{value.goods_name}}</p>
                       <p>品牌：{{value.goods_brand}}</p>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <p
-                    class="num"
-                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}x{{value.goods_count}}</p>
-                  <p class="num">({{value.priceunit ? '不含税' : '含13%增值税'}})</p>
+                  <strong
+                  
+                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}x{{value.goods_count}}</strong>
+                  <br><strong>({{value.priceunit ? '不含税' : '含13%增值税'}})</strong>
                 </td>
                 <td>
                   <p>{{value.diliver_place}}</p>
                   <p>{{value.complete_date | formatDate}}</p>
                 </td>
                 <td>
-                  <p
-                    class="num"
-                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}（{{value.goods_type ? '现货' : '订货'}}）</p>
+                  <strong
+                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}（{{value.goods_type ? '现货' : '订货'}}）</strong>
                   <!-- <span>需预付款：（{{value.priceunit ? '$' : '￥'}}{{value.pre_pay}}）</span>
                 <span>发票扣税额（￥{{value.bill_price}}）</span>
 
@@ -500,7 +503,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { TimeForma } from "@/lib/utils";
+import { TimeForma,TimeForma2 } from "@/lib/utils";
 import Countdown from "_c/Countdown";
 import { baseURL, baseURL2 } from "@/config";
 import { axios, buyerOrderCenter } from "@/api/apiObj";
@@ -870,19 +873,7 @@ export default {
     }
   },
   filters: {
-    // toFixed(val,length){
-    //     return Number(val).toFixed(length)
-    // },
-    // tagfilter(val) {
-    //   switch (Number(val)) {
-    //     case 1:
-    //       return "原厂";
-    //     case 2:
-    //       return "代理商";
-    //     case 3:
-    //       return "普通商户";
-    //   }
-    // },
+  
     payStatus(val) {
       switch (val) {
         case 0:
@@ -921,6 +912,9 @@ export default {
     },
     formatDate(value) {
       return TimeForma(value);
+    },
+    formatDate1(value) {
+      return TimeForma2(value);
     },
     countdown(x, y) {
       return x + y;

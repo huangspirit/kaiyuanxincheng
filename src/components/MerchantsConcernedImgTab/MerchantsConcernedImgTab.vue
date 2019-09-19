@@ -26,9 +26,12 @@
           :key='k'
         >
             <div class="wrap" @click="open(item)">
-                <p class="price">{{item.currentPrice}}</p>
-                <ImgE :src="item.goodsImageUrl" class="prod-img" :W="150" :H="150"></ImgE>
-                <p class="goodsName">{{item.goods_name}}</p>
+                <p class="price">
+                    <strong v-if="item.priceType">{{item.priceUnit?'$':'￥'}}{{item.priceList[0].price | toFixed(item.priceUnit?3:2)}}&nbsp;~&nbsp;{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
+                    <strong v-if="!item.priceType">{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
+                </p>
+                <ImgE :src="item.goodsImageUrl" class="prod-img" :W="100" :H="100"></ImgE>
+                <p class="goodsName color">{{item.goods_name}}</p>
                 <p class="goodsDesc">{{item.goodsDesc}}</p>
                 <span class="btn bgColor" @click.stop="purchase(k)">
 <!--                    <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
@@ -80,20 +83,11 @@ export default {
         currentItem:{}
     };
   },
-    // filters:{
-    //   toFixed(val,length){
-    //       return parseFloat(val).toFixed(length)
-    //   }
-    // },
     mounted(){
         this.total=this.list.total;
         this.goodsList=this.list.data.map(item=>{
-            let moneyType=item.priceUnit?"$":"¥"
             if(item.priceType){
-                let arr=ladderPrice(item.priceLevel)
-                item.currentPrice=`${moneyType}${arr[arr.length-1].price}-${moneyType}${arr[0].price}`
-            }else{
-                item.currentPrice=`${moneyType}${item.goodsPrice}`
+                 item.priceList = ladderPrice(item.priceLevel)
             }
             return item;
         })

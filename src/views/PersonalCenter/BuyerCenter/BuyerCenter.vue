@@ -14,12 +14,12 @@
             </el-upload>
               <div class="info fl">
                   <p class="name" style="overflow:hidden;max-width:200px;">
-                      {{UserInforma.nickname}}<span style="color:#fff;font-size:12px;">(买家中心)</span>
+                      {{UserInforma.nickname}}
                         <img src="@/assets/image/icon/edit.png" style="height:15px;margin-left:15px;cursor:pointer;" @click="editUserName" title="更新用户名称"/>
                   </p>
                     <p>
                         <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
-                        <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                        <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                         <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
                     </p>
                     <p>信用等级：{{UserInforma.userTagMap.userLevel}}</p>
@@ -42,7 +42,7 @@
                     </li>
                     <li v-if="UserInforma.userTagMap.vip">
                         <div class="cont circle clear">
-                            <el-progress type="circle" :width="80" :percentage="creditvipPercente"  class="fl"></el-progress>
+                            <el-progress type="circle" :width="70" :percentage="creditvipPercente"  class="fl"></el-progress>
                             <div class="text fl">
                                 <p class="desc">
                                     月结额度:{{UserInforma.userTagMap['credit-vip'] }}
@@ -93,9 +93,9 @@
           :visible.sync="showinputPassword"
           width="500px"
       >
-          <p slot="title" class="title">输入密码</p>
+          <p slot="title" class="title">输入交易密码</p>
           <div >
-              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+              <el-input placeholder="请输入交易密码" v-model="inputpassword" show-password></el-input>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="showinputPassword = false">取 消</el-button>
@@ -236,16 +236,6 @@ export default {
     }
   },
     filters:{
-        typeFilter(val) {
-            switch (val) {
-                case 1:
-                    return "原厂";
-                case 2:
-                    return "代理商";
-                case 3:
-                    return "认证商";
-            }
-        },
         filterBankCode(val){
             switch (val) {
                 case "ICBC":

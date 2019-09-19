@@ -20,7 +20,7 @@
               </p>
               <p>开户银行：{{item.openingbank}}</p>
               <p>开票电话：{{item.registeredphone}}</p>
-              <p>
+              <!-- <p>
                 <label class="label">
                   <input disabled type="checkbox" v-model="item.isdefault" />
                   <span>
@@ -32,7 +32,7 @@
                   </span>
                 </label>
                 <span>设为默认的开票信息</span>
-              </p>
+              </p> -->
             </div>
           </div>
           <div class="item-r">
@@ -41,11 +41,11 @@
               <p>银行账户：{{item.bankaccount}}</p>
               <p>开票地址：{{item.registeredaddress}}</p>
             </div>
-            <p class="item-r-t">
-              <span class="del" @click="delInvoiceInforma(item)">删除</span>
-              <span class="edit" @click="editInvoiceInforma(item)">编辑</span>
-            </p>
           </div>
+           <p class="item-r-t">
+              <el-button class="edit bgColor" @click="editInvoiceInforma(item)" size="mini">编辑</el-button>
+              <el-button class="del" @click="delInvoiceInforma(item)" size="mini">删除</el-button>
+            </p>
         </li>
       </ul>
     </div>

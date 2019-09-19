@@ -4,7 +4,7 @@
       <img :src="item.list[0].sellerHeader" alt>
       <div>
         <p>{{item.name}}</p>
-        <span class="bgColor">{{item.list[0].tag | filterTag}}</span>
+        <span class="bgColor">{{item.list[0].tag | tagFilter}}</span>
         <!-- <span v-if="item.list[0].tag === '1'">原厂商户</span>
         <span v-if="item.list[0].tag === '2'">代理商</span>
         <span v-if="item.list[0].tag === '3'">商家</span> -->
@@ -13,6 +13,7 @@
     <div class="list">
       <ul class="title">
         <li class="desc">器件信息</li>
+        <li class="item">状态</li>
         <li class="item">单价</li>
         <li class="item">数量</li>
         <li class="item">金额</li>
@@ -38,13 +39,16 @@
                 {{value.goods_name}}
               </router-link>
               <p class="desc">{{value.goodsDesc}}</p>
-              <p class="btnwrap">
+              <!-- <p class="btnwrap">
                 <span>{{value.tag | tagFilter}}</span>
                 <span>{{value.diliver_place}}交货</span>
                 <span>{{value.seller_always?'现货':'订货'}}</span>
-              </p>
+              </p> -->
             </div>
         </div>
+         <div class="oneitem">
+            <strong>{{value.seller_always?'现货':'订货'}}</strong>
+       </div>
        <div class="oneitem">
             <span class="color">{{value.price_unit ? '$' : '￥'}}{{value.goods_price | toFixed(item.price_unit?3:2)}}
               <br><span class="clude_bill">({{!value.price_unit ? '含13%增值税' : '不含税'}})</span>

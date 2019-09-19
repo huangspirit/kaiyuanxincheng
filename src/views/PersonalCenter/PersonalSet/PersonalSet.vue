@@ -15,7 +15,7 @@
             </el-upload>
               <div class="info fl">
                   <p class="name" style="max-width:200px;">
-                      {{UserInforma.nickname}}<span style="color:#fff;font-size:12px;">(个人中心)</span>
+                      {{UserInforma.nickname}}
                         <img src="@/assets/image/icon/edit.png" style="height:15px;margin-left:15px;cursor:pointer;" @click="editUserName" title="更新用户名称"/>
                   </p>
             <p>
@@ -55,7 +55,7 @@
                 </li>
                 <li v-if="UserInforma.userTagMap.vip">
                     <div class="cont circle clear">
-                        <el-progress type="circle" :width="80" :percentage="creditvipPercente"  class="fl"></el-progress>
+                        <el-progress type="circle" :width="70" :percentage="creditvipPercente"  class="fl"></el-progress>
                         <div class="text fl">
                             <p class="desc">
                                 月结额度:{{UserInforma.userTagMap['credit-vip'] }}
@@ -67,7 +67,7 @@
                 </li>
                 <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
                     <div class="cont circle clear">
-                        <el-progress type="circle" :width="80" :percentage="creditsellerPercente"  class="fl"></el-progress>
+                        <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
                         <div class="text fl">
                             <p class="desc">
                                 售卖额度：{{UserInforma.userTagMap['credit-seller']}}
@@ -92,7 +92,7 @@
                         <p>
                             <span>信用等级</span><span>预付款比列</span>
                         </p>
-                        <p v-for="item in levelList" :class="item.level==UserInforma.userTagMap.userLevel ? 'color':''">
+                        <p v-for="item in levelList" :class="item.level==UserInforma.userTagMap.userLevel ? 'color':''" :key="item.val">
                             <span>{{item.level}}</span><span>{{item.val}}</span>
                         </p>
                         <div class="color">提示：系统会根据您购买商品的能力进行等级的调整</div>
@@ -122,7 +122,7 @@
           <div class="cont">
               <div class="name">绑定微信</div>
               <p class="desc" v-if="!UserInforma.bindWeChat">你还没有绑定微信，快去绑定吧</p>
-              <p class="bind"v-if="!UserInforma.bindWeChat" @click="dialogVisibleWeChatBindHandle">
+              <p class="bind" v-if="!UserInforma.bindWeChat" @click="dialogVisibleWeChatBindHandle">
                   <span>去绑定</span>
                   <span class="el-icon-arrow-right fr"></span></p>
               <p class="marginTop" v-if="UserInforma.bindWeChat">已绑定</p>
@@ -220,9 +220,9 @@
           :visible.sync="showinputPassword"
           width="500px"
       >
-          <p slot="title" class="title">输入密码</p>
+          <p slot="title" class="title">输入交易密码</p>
           <div >
-              <el-input placeholder="请输入密码" v-model="inputpassword" show-password></el-input>
+              <el-input placeholder="请输入交易密码" v-model="inputpassword" show-password></el-input>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="showinputPassword = false">取 消</el-button>

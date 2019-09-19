@@ -4,8 +4,26 @@
       <el-breadcrumb-item>账单中心</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="SellerBillCenter">
+        <div class="top">
+             <div  :class="{active:modules==0}" @click="modules=0" v-if="obj.total">
+                <p class="title">可提现金额合计：</p>
+                <P><STRONG>{{obj.total}}</STRONG></P>
+            </div>
+            <div  :class="{active:modules==2}" @click="modules=2" v-if="obj.currentPay">
+                <p class='title'> 账单到期可提现金额：</p>
+                <p ><strong>{{obj.currentPay}}</strong> 
+                </p>
+                <p class="desc">当前结算周期：{{obj.day}}天（以发货时间为准）</p>
+            </div>
+            <div  :class="{active:modules==1}"  @click="modules=1" v-if="obj.unCurrentPay">
+                <p class="title">已发货未到期提现金额：</p>
+                <P><STRONG>{{obj.unCurrentPay}}</STRONG>  </P>
+             
+            </div>
+           
+        </div>
       <div class="SellerBillCenter-detail">
-          <div class="search">
+          <!-- <div class="search">
               <el-date-picker
                   v-model="value2"
                   type="datetimerange"
@@ -15,16 +33,42 @@
                   end-placeholder="结束日期"
                   align="right">
               </el-date-picker>
-          </div>
+          </div> -->
+            <div class="tit clear">
+            <el-date-picker
+                class="fl"
+                v-model="value2"
+                type="datetimerange"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                align="left"
+                size="mini">
+            </el-date-picker>
+            <div class="clear search btn fl" >
+                <span class="fl" @click="handleChangeAll" :class="{bgColor:changeAll==true}">全部</span>
+                <p class="fl">
+                    状态|
+                    <span :class="{bgColor:is_checkout==0}" @click="changeCheckout(0)">未结账</span>&nbsp;
+                    <span :class="{bgColor:is_checkout==1}" @click="changeCheckout(1)">已结账</span>&nbsp;
+                    <span :class="{bgColor:is_checkout==2}" @click="changeCheckout(2)">待审核</span>&nbsp;
+                    
+                    
+                    <!-- <span :class="{bgColor:is_checkout==2}" @click="changeCheckout(2)">结算被驳回</span> -->
+                    </p>
+            </div>
+
+        </div>
           <el-table
               :data="tableData"
-              style="width: 100%"
               border
+              width="100%"
              >
               <el-table-column
                   label="商品详情"
                   align="center"
-                  width="350"
+                  width="300"
                   >
                   <template slot-scope="scope" >
                       <div class="infoWrap">
@@ -71,7 +115,7 @@
                   label="违约金/违约天数"
                   align="center">
                   <template slot-scope="scope">
-                      <span class="color" v-if="scope.row.violate_count">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.violate_monney}}</span><span v-if="scope.row.violate_count">/{{scope.row.violate_count}}</span>
+                      <span class="color" v-if="scope.row.violate_count">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.violate_monney | toFixed(scope.row.priceunit ? 3:2)}}</span><span v-if="scope.row.violate_count">/{{scope.row.violate_count}}</span>
                       <p v-if="scope.row.violate_count">违约开始日期{{scope.row.expireTime | formatDate}}</p>
                   </template>
               </el-table-column>
@@ -80,7 +124,7 @@
                   label="服务费"
                   align="center">
                   <template slot-scope="scope">
-                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.bonusServiceAmout}}</span>
+                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.bonusServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
 
                   </template>
               </el-table-column>
@@ -89,14 +133,14 @@
                   label="代开票服务费"
                   align="center">
                   <template slot-scope="scope">
-                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.billServiceAmout}}</span>
+                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.billServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
                   </template>
               </el-table-column>
               <el-table-column
                   label="实际结算金额"
                   align="center">
                   <template slot-scope="scope">
-                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.realPayTotal}}</span>
+                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.realPayTotal | toFixed(scope.row.priceunit ? 3:2)}}</span>
                   </template>
               </el-table-column>
               <el-table-column
@@ -109,16 +153,14 @@
               </el-table-column>
               <el-table-column
                   prop="is_checkout"
-                  label="是否结算"
+                  label="结算状态"
                   align="center">
                   <template slot-scope="scope">
-                      <span>{{scope.row.is_checkout?'已结算':'待结算'}}</span>
+                      <span>{{scope.row.is_checkout | checkoutFilter}}</span>
                   </template>
               </el-table-column>
               <el-table-column
-                  fixed="right"
                   label="操作"
-                  width="100"
               align="center">
                   <template slot-scope="scope" v-if="!scope.row.is_checkout">
                       <el-button
@@ -147,9 +189,11 @@
           class="withdrawApplyTotal"
       >
           <div class="withdrawApplyTotalCont">
-              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal" disabled=""></el-input>
+              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal" disabled="">
+                    <template slot="prepend">{{withdrawApplyTotalType?'$':'￥'}}</template>
+              </el-input>
               <div v-if="withdrawApplyTotal" class="clear">
-                  <div class="withdrawCharge">
+                  <!-- <div class="withdrawCharge">
                       手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
                       <div class="desc">
                           <i class="el-icon-question color" ></i>
@@ -170,7 +214,7 @@
                       </div>
                   </div>
                   <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
-                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p> -->
                   <ul v-if="bankList.length">
                       <li class="title">
                           <span>提现方式</span>
@@ -207,7 +251,9 @@ export default {
           pageSize:10,
           currentPage:1,
           total:0,
+          modules:0,
           tableData:[],
+          obj:{},
           pickerOptions: {
               shortcuts: [{
                   text: '最近一周',
@@ -238,6 +284,10 @@ export default {
           value2: '',
           startTime:"",
           endTime:"",
+          changeAll:true,
+          is_checkout:null,
+       
+          withdrawApplyTotalType:false,
             showinputwithdrawTotal:false,
             withdrawApplyTotal:"",
             withdrawApplyTotalObj:{},
@@ -259,23 +309,46 @@ export default {
           this.startTime=TimeForma2(val[0]);
           this.endTime=TimeForma2(val[1])
           this.init()
-      }
+      },
+        is_checkout(val){
+            this.currentPage=1
+            this.init();
+        },
+
     },
     methods:{
       init(){
           let obj={
                 start:this.start,
                 length:this.pageSize,
-                startTime:this.startTime,
-                endTime:this.endTime
+                beginTime:this.startTime,
+                endTime:this.endTime,
+                is_checkout:this.is_checkout
           };
           axios.request({...sellerCenter.queryAccountDetail,params:obj}).then(res=>{
               if(res){
-                  this.tableData=res.data.data;
-                  this.total=res.data.total;
+                  this.obj=res.data
+                  if(res.data.list){
+                    this.tableData=res.data.list.data;
+                    this.total=res.data.list.total;
+                  }
               }
           })
         
+      },
+        handleChangeAll(){
+            this.is_checkout=null;
+          
+             this.changeAll=true;
+        },
+        changeCheckout(val){
+
+          if(this.is_checkout==val){
+                this.is_checkout=null
+          }else{
+              this.is_checkout=val
+              this.changeAll=false
+          }
       },
         handleCurrentChange(x){
           this.currentPage=x;
@@ -284,9 +357,10 @@ export default {
         despost(index){
             this.showinputwithdrawTotal=true;
             this.withdrawApplyTotal=this.tableData[index].realPayTotal;
-            axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal}}).then(res=>{
-                        this.withdrawApplyTotalObj=res.data;
-                    })
+            this.withdrawApplyTotalType=this.tableData[index].priceunit;
+            // axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal}}).then(res=>{
+            //             this.withdrawApplyTotalObj=res.data;
+            //         })
         },
          //提现的相关操作
             withDraw(){
@@ -359,6 +433,20 @@ export default {
       }
     },
     filters:{
+        checkoutFilter(val){
+            switch (Number(val)) {
+                case 0:
+                    return "未结账";
+                case 1:
+                    return "已结账";
+                // case 2:
+                //     return '仓库核实不通过';
+                // case 3:
+                //     return '仓库核实通过'
+                case 2:
+                    return '待审核'
+            }
+        },
         statusFilter(val){
             switch (val) {
                 case 0:

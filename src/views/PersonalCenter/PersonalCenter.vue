@@ -1,7 +1,7 @@
 <template>
   <div class="PersonalCenter" id="PersonalCenter">
     <div class="sideMenu">
-      <SideMenu :list="list"></SideMenu>
+      <sideMenu :list="list"></sideMenu>
     </div>
     <div class="content">
       <div>
@@ -15,6 +15,7 @@
 </style>
 <script>
 import SideMenu from "_c/SideMenu";
+import sideMenu from "../sideMenu"
 import { mapState } from "vuex";
 import { stat } from "fs";
 export default {
@@ -31,7 +32,6 @@ export default {
           icon: require("@/assets/image/sidemenuicon/sellerCenter.png"),
           diabled: true,
           children: [
-            
             {
               title: "订单管理",
                 name:"SellerOrderManagement",
@@ -67,6 +67,7 @@ export default {
             {
               title: "账单中心",
               index: "1_6",
+              name:'SellerBillCenter',
               path: "/PersonalCenter/SellerBillCenter",
               icon: require("@/assets/image/sidemenuicon/BuyerBillCenter.png")
             },
@@ -131,7 +132,7 @@ export default {
           title: "个人中心",
           index: "3",
           path: "/PersonalCenter",
-            name:"PersonalCenter",
+          name:"PersonalCenter",
           icon: require("@/assets/image/sidemenuicon/personal.png"),
           children: [
              
@@ -179,7 +180,7 @@ export default {
   },
 
   components: {
-    SideMenu
+    sideMenu
   },
   mounted() {
     var UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
@@ -190,10 +191,19 @@ export default {
           item.diabled = !UserInforma.userTagMap.seller;
           if(UserInforma.userTagMap.seller == true) {
             if(UserInforma.userTagMap.tag != 1) {
-             //   item.children.splice(3,1)
                 item.children=item.children.map(item0=>{
                     if(item0.name=='inquiryList'){
                         item0.show="hidden"
+                    }
+                    if(item0.name=='SellerBillCenter'){
+                      item0.isPassWord=true
+                    }
+                    return item0;
+                })
+            }else{
+              item.children=item.children.map(item0=>{
+                    if(item0.name=='SellerBillCenter'){
+                      item0.isPassWord=true
                     }
                     return item0;
                 })
@@ -213,6 +223,9 @@ export default {
             item.children= item.children.map(item0=>{
                   if(item0.name=='UpgradeLevel'){
                       item0.show="hidden"
+                  }
+                   if(item0.name=='BuyerBillCenter'){
+                      item0.isPassWord=true
                   }
                   return item0;
               })

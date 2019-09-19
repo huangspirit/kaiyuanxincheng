@@ -88,13 +88,13 @@
                     <div class="cont1 clear">
                         <div class="price color jieti clear" v-if="sellerGoodsInfo.priceType">
                             <div class="priceList">
-                                <p v-for="(item,index) in sellerGoodsInfo.priceList" :key="index">{{item.num}}+ ~ {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{item.price}}</p>
+                                <p v-for="(item,index) in sellerGoodsInfo.priceList" :key="index">{{item.num}}+ ~ {{sellerGoodsInfo.priceUnit?'$':'￥'}}{{item.price | toFixed(sellerGoodsInfo.priceUnit?3:2)}}</p>
                             </div>
                             <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含13%增值税)':'(不含税)'}}</span>
                             
                         </div>
                         <p class="price color" v-if="!sellerGoodsInfo.priceType">
-                            一口价：{{sellerGoodsInfo.priceUnit?'$':'￥'}}{{sellerGoodsInfo.goodsPrice}}
+                            一口价：{{sellerGoodsInfo.priceUnit?'$':'￥'}}{{sellerGoodsInfo.goodsPrice | toFixed(sellerGoodsInfo.priceUnit?3:2)}}
                                <span class="includBill">{{!sellerGoodsInfo.priceUnit?'(含13%增值税)':'(不含税)'}}</span>
                         </p>
                         <div class="mpq">

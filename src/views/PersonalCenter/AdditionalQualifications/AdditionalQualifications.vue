@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
 <!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item to="/PersonalCenter/AgencyQualification">代理资质</el-breadcrumb-item>
-      <el-breadcrumb-item>新增资质</el-breadcrumb-item>
+      <el-breadcrumb-item>{{this.applyDetailEdit.id?'编辑资质':'新增资质'}}</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="AdditionalQualifications">
       <!-- 选择品牌 -->
@@ -190,8 +190,6 @@ export default {
         this.ruleForm.brandName = arrName;
         this.ruleForm.brand = arr.join("@");
       }
-
-      console.log(this.ruleForm);
     },
     // 取消选择的品牌
     CancelBrand() {
@@ -227,16 +225,17 @@ export default {
     // 保存并提交
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        console.log(valid);
         var brandNameInfo = this.ruleForm.brandName.join("@");
         if (valid) {
           var obj = {
             brandId: this.ruleForm.brand,
             brandName: brandNameInfo,
-            qualificationImg: this.ruleForm.qualificationMap,
             startTime: formatAllDate(this.ruleForm.timeStart, "/")[0],
             endTime: formatAllDate(this.ruleForm.timeEnd, "/")[0]
           };
+          if(this.ruleForm.qualificationMap){
+            obj.qualificationImg=this.ruleForm.qualificationMap
+          }
           if (this.applyDetailEdit.id) {
             obj["id"] = this.applyDetailEdit.id;
             axios
@@ -245,7 +244,7 @@ export default {
                 params: obj
               })
               .then(res => {
-                console.log(res);
+              
                 if (res.resultCode == "200") {
                   this.$router.push({
                     path: "/PersonalCenter/AgencyQualification"
@@ -259,7 +258,7 @@ export default {
                 params: obj
               })
               .then(res => {
-                console.log(res);
+             
                 if (res.resultCode == "200") {
                   this.$router.push({
                     path: "/PersonalCenter/AgencyQualification"
@@ -279,7 +278,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.ruleForm, this.applyDetailEdit, baseURL);
+   
     if (this.applyDetailEdit.id) {
       this.ruleForm.brand = this.applyDetailEdit.brandId;
       this.ruleForm.brandName = this.applyDetailEdit.brandName.split(",");

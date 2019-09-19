@@ -12,13 +12,19 @@
     >
       <template v-for="item in list">
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
-        <router-link :to="item.path" v-else-if="!item.children && item.isShow" :key="`list_${item.index}`" tag="div">
+        <router-link :to="item.path" v-else-if="!item.children && item.isShow && !item.isPassWord" :key="`list_${item.index}`" tag="div">
           <el-menu-item :index="item.index">
            <img :src="item.icon" alt>
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </router-link>
         <div v-else-if="!item.isShow" :key="`list_${item.index}`" @click="dialogVisible = true">
+          <el-menu-item :index="item.index">
+           <img :src="item.icon" alt>
+            <span slot="title">{{item.title}}</span>
+          </el-menu-item>
+        </div>
+        <div v-else-if="item.isPassWord" :key="`list_${item.index}`" @click="withDraw">
           <el-menu-item :index="item.index">
            <img :src="item.icon" alt>
             <span slot="title">{{item.title}}</span>
@@ -48,12 +54,14 @@
         <span @click="ensure" class="ensure">立刻进行商家入驻</span>
       </span>
     </el-dialog>
+   
   </div>
 </template>
 
 <script>
 //import SideMenu from "./SideMenu";
 import SideMenuItem from "../SideMenuItem/SideMenuItem";
+import {axios,personCenter}  from "@/api/apiObj";
 // import '@/assets/css/dialog-delect.less'
 export default {
   name: "SideMenu",
@@ -62,6 +70,7 @@ export default {
           defaultOpeneds:[],
           defaultActive:"",
           dialogVisible: false,
+         
       }
     },
   props: {
@@ -72,7 +81,6 @@ export default {
   },
     created(){
       this.fetchDate()
-
     },
   mounted(){
 
@@ -81,6 +89,7 @@ export default {
     SideMenuItem
   },
   methods: {
+  
       fetchDate(){
           console.log(this.$route)
           var name=this.$route.meta.parentname;
@@ -94,8 +103,6 @@ export default {
                   })
               }
           })
-          console.log(this.defaultOpeneds)
-          console.log( this.defaultActive)
           if(!this.defaultActive){
               this.defaultActive=this.defaultOpeneds[0]+"_0"
           }
