@@ -27,7 +27,7 @@
             <!-- 文字信息 -->
             <div class="brand-msg-con-r">
               <div class="tit">
-                <span>{{brandInfo.name}}</span><span class="mark">品牌专场</span>
+                <span>{{brandInfo.name}}</span>
 <!--                  <span class="bgColor btn">收藏</span>-->
               </div>
               <p>

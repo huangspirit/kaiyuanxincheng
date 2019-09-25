@@ -128,6 +128,13 @@
             this.getSpecialList(-1)
         },
         methods:{
+            countDownE_cb(){
+                 let category;
+                if(this.categoryList[this.selectedK]){
+                    category=this.categoryList[this.selectedK].id
+                }
+                this.getSpecialOfferList(category)
+            },
             chipBrand(k){
                 let obj=this.specialList[k]
                 //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.

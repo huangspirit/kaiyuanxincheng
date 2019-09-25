@@ -7,9 +7,6 @@
         <div>
           <p>{{item.sellerName}}</p>
           <span  class="tag y-con">{{item.tag | tagFilter}}</span>
-          <!-- <span v-if="item.tag === 1" class="tag y-con">原厂商户</span>
-          <span v-if="item.tag === 2" class="tag y-con">代理商</span>
-          <span v-if="item.tag === 3" class="tag r-con">商城买家</span> -->
         </div>
       </div>
     </td>

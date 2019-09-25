@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position:relative;">
     <el-breadcrumb separator-class="el-icon-arrow-right">
 <!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item class="itemActive">我的订单</el-breadcrumb-item>
@@ -75,7 +75,13 @@
             :item="item"
             :key="item.id"
             @successFlagHandel="all()"
-          ></BuyerOrderItem>
+          >
+            <el-button slot="buyerOrderDetail"  @click.native="storageItem(item)" size="mini">
+              <router-link
+                tag="span"
+                :to="{path:'/PersonalCenter/BuyerOrderManagement/buyerOrderDetail',query:{id:item.id}}"
+              >订单详情</router-link>
+            </el-button></BuyerOrderItem>
         </div>
       </div>
       <Pagination
@@ -86,6 +92,7 @@
         @current-change="handleCurrentPageChange"
       ></Pagination>
     </div>
+     <router-view></router-view>
   </div>
 </template>
 <script>
@@ -239,6 +246,9 @@ export default {
   },
   methods: {
     ...mapActions("BuyerOrderManagement", ["GetBuyerOrderManagement"]),
+    storageItem(item){
+          localStorage.setItem("buyerOrderDetail",JSON.stringify(item))
+    },
     handleCurrentPageChange(x) {
       this.currentPage = x;
       this.all();
@@ -347,6 +357,7 @@ export default {
     }
   },
   mounted() {
+    
     if (this.$route.query.code == "success") {
       let path = this.$route.path;
       this.$message.success("订单支付成功");

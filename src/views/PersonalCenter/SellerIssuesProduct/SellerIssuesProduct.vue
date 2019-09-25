@@ -433,9 +433,6 @@
             };
         },
         filters:{
-            // toFixed(val,length){
-            //     return Number(val).toFixed(length)
-            // },
             addPriceFilter(val){
                 return (Number(val)*1.13).toFixed(3)
             },

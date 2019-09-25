@@ -38,8 +38,10 @@
             </td>
             <td>
               <div>
-                <p v-if="item.isEnable == true">已审核</p>
-                <p v-if="item.isEnable == false">未审核</p>
+                <p>{{item.isEnable | filterIsenabled}}</p>
+                <!-- <p v-if="item.isEnable == true">已审核</p>
+                <p v-if="item.isEnable == false">未审核</p> -->
+                <p v-if="item.reason && item.isEnable==2" class="color">原因：{{item.reason}}</p>
               </div>
             </td>
             <td>
@@ -102,8 +104,22 @@ export default {
   mounted() {
     this.getQualificationList();
   },
-  filters: {},
+  filters: {
+    filterIsenabled(val){
+      switch(val){
+        case 0:
+          return "待审核";
+        case 1:
+          return "已通过";
+        case 2:
+          return "已拒绝";
+      }
+    }
+  },
   methods: {
+    resetQualifica(item){
+
+    },
     getQualificationList() {
       axios
         .request({

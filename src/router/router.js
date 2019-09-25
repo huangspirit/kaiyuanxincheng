@@ -646,12 +646,44 @@ export default [
             {
                 path: 'BuyerOrderManagement',
                 name: 'BuyerOrderManagement',
-                component: () => import('@/views/PersonalCenter/BuyerOrderManagement'),
+                component: () => import('@/views/PersonalCenter/buyerOrder'),
                 meta: {
                     requireAuth: true,
                     title: '买家订单',
                     parentname:"BuyerCenter"
-                }
+                },
+                children: [{
+                    path: 'buyerOrderDetail',
+                    name: 'buyerOrderDetail',
+                    component: () => import('@/views/PersonalCenter/buyerOrderDetail'),
+                    meta: {
+                        requireAuth: true,
+                        title: '买家订单详情',
+                        parentname:"BuyerCenter"
+                    }
+                }, ]
+              
+            },
+            {
+                path: 'buyerOrderDetail',
+                name: 'buyerOrderDetail',
+                component: () => import('@/views/PersonalCenter/buyerOrderDetail'),
+                meta: {
+                    requireAuth: true,
+                    title: '买家订单详情',
+                    parentname:"BuyerCenter"
+                },
+            },
+            //买家询价
+            {
+                path: 'myInquire',
+                name: 'myInquire',
+                component: () => import('@/views/PersonalCenter/myInquire'),
+                meta: {
+                    requireAuth: true,
+                    title: '买家询价',
+                    parentname:"BuyerCenter"
+                },
             },
             // 关注的商品
             {

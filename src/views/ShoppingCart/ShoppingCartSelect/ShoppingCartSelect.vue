@@ -51,6 +51,7 @@
                 <!--                    <span>{{item.sellerName}} <span style="font-size:12px">({{item.sellerTag | tagFilter}})</span></span>-->
                 <div class="ImgE">
                   <img :src="item.sellerUrl" alt />
+                  <span style="margin-left:10px;font-size:14px;">{{item.sellerName}}</span>
                   <div class="content">
                     <div class="top">
                       <img :src="item.sellerUrl" alt />
@@ -79,6 +80,7 @@
                     </label>
                     <div>
                       <ImgE :src="item1.goodsImageUrl" :W="86" :H="86"></ImgE>
+                      
                     </div>
                   </li>
                   <li style="width:20%;" class="info">
@@ -91,7 +93,7 @@
                         <span>关注</span>
                       </p>
                     </template>
-                    <p class="desc">型号描述：{{item1.goodsDesc}}</p>
+                    <p class="desc">品牌：{{item1.brand}}</p>
                   </li>
                   <li style="width:17%" class="place">
                     <p>{{item1.diliverPlace}}</p>
@@ -102,10 +104,6 @@
                     <template>
                       <p v-if="item1.goods_type">
                         现货
-                        <span
-                          style="font-size:12px;color:#F22E2E;"
-                          v-if="item1.seller_always"
-                        >(长期卖)</span>
                         <span
                           style="font-size:12px;color:#F22E2E;"
                           v-if="!item1.seller_always"
@@ -358,7 +356,6 @@ export default {
     },
     //关注
     guanzhu(favour_type, k, index) {
-      console.log(this.goodsList[k]);
       let obj = {
         favour_type: favour_type
       };

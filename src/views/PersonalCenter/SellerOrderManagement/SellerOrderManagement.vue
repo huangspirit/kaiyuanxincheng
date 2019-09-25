@@ -2,7 +2,6 @@
   <!-- 订单管理 -->
   <div style="position:relative">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-<!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>订单管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="OrderManagement">

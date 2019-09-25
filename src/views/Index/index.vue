@@ -106,15 +106,19 @@
                             <div  class="brand" @click.stop="chipbrand(k)">
                                 {{item.brandName}}
                             </div>
-                        <div class="count" style="white-space:nowrap;"><span>起订量：&nbsp;{{item.moq}}只</span><span>最小增量：&nbsp;{{item.mpq}}只</span></div>
+                        <div class="count" style="white-space:nowrap;">
+                            <span>起订量：&nbsp;{{item.moq}}只</span>
+                            <!-- <span>最小增量：&nbsp;{{item.mpq}}只</span> -->
+                        </div>
                         <div class="place" style="margin-top:3px;">
                             <span v-if="item.deliverTime">预计于 {{item.deliverTime | formatDate}}</span>
-                            <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span>
+                            <span v-if="item.goods_type">现货</span>
+                            <!-- <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span> -->
                             &nbsp;<span>{{item.diliverPlace}}交货</span>
                         </div>
                         </div>
                         <div class="stockCount">
-                            <span>剩余{{item.goodsStockCount}}只</span>
+                            <span>剩余{{item.goodsStockCount}}</span>
                             <strong class="color fr" v-if="!item.priceType">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
                              <strong class="color fr" v-if="item.priceType">起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
                         </div>
@@ -244,7 +248,7 @@
                     <span class="bgColor" @click="settle">立即入驻</span>
                 </div>
                 <div class="fl left clear">
-                    <div class="count color fl"><countTo :endVal="brandTotal"  :duration="4"></countTo><span class="jia">+</span></div>
+                    <div class="count color fl"><countTo :endVal="100"  :duration="4"></countTo><span class="jia">+</span></div>
                     <div class="fl right">
                         <p class="tit">已入驻原厂</p>
                         <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
@@ -307,7 +311,7 @@
                     </div>
                 </div>
                 <div class="prodclass-r">
-                    <p>入驻厂商</p>
+                    <p>热门厂商</p>
                     <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
                         <ul :class="{anim:animate==true}">
                             <li v-for="(item,k) in catergoryBrandList" :key="item.id" @click="chipBrand(k)">

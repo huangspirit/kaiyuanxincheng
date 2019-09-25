@@ -130,6 +130,13 @@
         },
         methods:{
             ...mapMutations(['setloginState']),
+            countDownE_cb(){
+                let category;
+                if(this.categoryList[this.selectedK]){
+                    category=this.categoryList[this.selectedK].id
+                }
+                this.getSpecialOfferList(category)
+            },
             addFocus(index){
                  if(!this.loginState){
                     this.$router.push('/Login')

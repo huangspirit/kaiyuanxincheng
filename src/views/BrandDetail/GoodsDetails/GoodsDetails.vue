@@ -40,42 +40,37 @@
                             }"
                       >
                           {{goodsinfo.brand}}
-                          <ImgE :src="goodsinfo.brandImageUrl" :W='50' :H='25' style="margin-left:15px;"></ImgE>
+                          <ImgE :src="goodsinfo.brandImageUrl" :W='50' :H='25' style="margin-left:25px;"></ImgE>
                       </router-link>
                       <!-- <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> -->
                   </p>
                   <p class="goodsdesc" style="word-break:break-all;">描述：{{goodsinfo.productdesc}}</p>
-                  <P class='goodsdesc'>器件状态：{{showSelling?'在售':'暂未出售'}}</P>
+                  <P class='goodsdesc'>封装：{{showSelling?'在售':'暂未出售'}}</P>
                  <div class="cont1">
                     <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：<span style="text-decoration:line-through;">{{goodsinfo.referPrice}}</span></span>
                  </div>
                   <div class="icon">
                       <span v-if="goodsinfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
                       <span @click="addFocus" v-if="!goodsinfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
-                      <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
                       <span class="btn"><img src="@/assets/image/icon/share.png" alt="" style="height:13px;">&nbsp;分享</span>
-<!--                      <span class="btn"><i class="el-icon-plus "></i>&nbsp;我有特价</span>-->
-<!--                      <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>询价蓝</span>-->
                   </div>
                   <div class="btnwrap">
                         <span class="btn bgColor" @click="pushlishspecialPrice">发布特价</span>
-                      <span class="btn orange" @click="specialPrice">申请特价</span>
-                      <span class="btn gray" @click="addInquiry">加入询价蓝</span>
-<!--                      <Purchase :item="purchaseObj" @closeCallBack="showPurchase=false" v-if="showPurchase" :mini="true"></Purchase>-->
+                        <template v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.seller_goods_id">
+                            <span class="btn orange" @click="specialPrice">申请特价</span>
+                            <span class="btn gray" @click="addInquiry">加入询价蓝</span>
+                        </template>
+                        <template v-else>
+                            <span class="btn" style=" cursor: unset;background:#bbb" >申请特价</span>
+                            <span class="bt" style=" cursor: unset;background:#bbb" >加入询价蓝</span>
+                        </template>
+                        
                   </div>
-<!--                  <div class="mark">-->
-<!--                      * 标注现货字样的商品需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准-->
-<!--                  </div>-->
               </div>
           </div>
       </div>
     <!-- 特价共享区 -->
     <div class="special-offer allWidth">
-<!--      <div class="tit-h" v-if="goodsinfo.id">-->
-<!--          <span>特价共享区</span>-->
-<!--      </div>-->
-<!--      <p class="StatementStatus">* 标注现货货字样的需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准</p>-->
-      <!-- 商家信息列表 -->
       <MerchantList :id="goodsinfo.id" v-if="goodsinfo.id" @specialPrice="specialPrice"></MerchantList>
     </div>
     <!-- 详细信息 -->

@@ -1,0 +1,39 @@
+.myInquireCont{
+    .myInquire{
+    // 一级分类
+        .tab-list-t {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 10px;
+            &>ul {
+                overflow: hidden;
+                float: left;
+                li {
+                    height: 40px;
+                    padding: 0 35px;
+                    line-height: 40px;
+                    text-align: center;
+                    background: #f2f2f2;
+                    font-size: 16px;
+                    color: #4a5a6a;
+                    margin-right: 1px;
+                    float: left;
+                    cursor: pointer;
+                }
+
+                .active {
+                    background: #0068B7;
+                    color: #fff;
+                }
+            }
+            &>.all-time {
+            float: left;
+            margin-left: 20px;
+            font-size: 16px;
+            color: #4a5a6a;
+            cursor: pointer;
+            line-height: 40px;
+            }
+        }
+    }
+}

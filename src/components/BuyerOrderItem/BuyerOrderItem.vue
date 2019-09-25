@@ -87,29 +87,7 @@
             <div>
               <span style="font-weight:bolder;" class="color">{{item.orderVo.orderStatesDesc}}</span>
             </div>
-            <el-popover placement="top-start" width="500" trigger="hover" @show="showPopover(item)">
-              <div class="orderpress">
-                <p style="margin-bottom:15px;font-size:20px">订单号：{{item.orderVo.order_no}}</p>
-                <p style="margin-bottom:15px;font-size:20px">当前订单状态</p>
-                <el-timeline>
-                  <el-timeline-item
-                    :timestamp="val.createtime"
-                    placement="top"
-                    v-for="(val, k) in OrderProcessList"
-                    :key="val.id"
-                    type="success"
-                    :class="k === val.length - 1 ? 'lastfood' : '' "
-                  >
-                    <el-card>
-                      <h4>{{val.ordesc}}</h4>
-                    </el-card>
-                  </el-timeline-item>
-                </el-timeline>
-              </div>
-              <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-top:10px">查看订单进程</span>
-            </el-popover>
-            <!-- 合同的按钮 -->
-
+            <slot name="buyerOrderDetail"></slot>
           </td>
           <td style="width:15%">
             <p
@@ -151,7 +129,6 @@
                   </el-upload>
               </div>
             <div class="box-con">
-
               <div class="wrapbtn " v-if="item.orderVo.prePayButton">
                 <span @click="payment(0)" class="bgColor">去付定金</span>
               </div>
@@ -200,7 +177,7 @@
         </tr>
       </table>
       <!-- list的详细 -->
-      <div class="list-detail" v-if="flag">
+      <!-- <div class="list-detail" v-if="flag">
         <table
           width="100%"
           border="1"
@@ -220,76 +197,70 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(value ,index) in item.orderInfoList">
+            <template v-for="(value,index) in orderInfoList">
               <tr :key="index">
                 <td colspan="6" class="sellerInfo">
                   <div class="fl sellerInfowrap">
-                    <!-- <span>{{value.sellerName}}</span> -->
-                    <img :src="value.headImgUrl" alt class="sellerImg" />
+                
+                    <img :src="value.info.headImgUrl" alt class="sellerImg" />
                     <div class="info">
-                        <span class="sellername">{{value.username}}</span><br>
-                        <span class="type" :class="'type'+value.tag">{{value.tag | tagFilter }}</span>
+                        <span class="sellername">{{value.info.username}}</span><br>
+                        <span class="type" :class="'type'+value.info.tag">{{value.info.tag | tagFilter }}</span>
                     </div>
                     <div class="hisinfo">
                       <p>
-                        <span class="sellername">{{value.username}}</span>
-                        <span class="type" :class="'type'+value.tag">{{value.tag | tagFilter }}</span>
+                        <span class="sellername">{{value.info.username}}</span>
+                        <span class="type" :class="'type'+value.info.tag">{{value.info.tag | tagFilter }}</span>
                       </p>
                       <p>
                         成交量
-                        <span>{{value.finishOrder}}</span>
+                        <span>{{value.info.finishOrder}}</span>
                       </p>
                       <p>
                         发布产品
-                        <span>{{value.historyPublish}}</span>
+                        <span>{{value.info.historyPublish}}</span>
                       </p>
                     </div>
                   </div>
                 </td>
               </tr>
-              <tr :key="value.id">
+              <tr  v-for="item1 in value.list" :key="item1.id">
                 <td>
                   <div class="goodsDetail">
-                      <ImgE :src="value.goods_image" :W="50" :H="50">
+                      <ImgE :src="item1.goods_image" :W="50" :H="50">
                       </ImgE>
-<!--                    <img :src="value.goods_image" :W="50" :H="50" />-->
+
                     <div>
-                      <p class="color">{{value.goods_name}}</p>
-                      <p>品牌：{{value.goods_brand}}</p>
+                      <p class="color">{{item1.goods_name}}</p>
+                      <p>品牌：{{item1.goods_brand}}</p>
                     </div>
                   </div>
                 </td>
                 <td>
                   <strong
                   
-                  >{{value.priceunit ? '$' : '￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}x{{value.goods_count}}</strong>
-                  <br><strong>({{value.priceunit ? '不含税' : '含13%增值税'}})</strong>
+                  >{{item1.priceunit ? '$' : '￥'}}{{item1.good_price | toFixed(item1.priceunit?3:2)}}x{{item1.goods_count}}</strong>
+                  <br><strong>({{item1.priceunit ? '不含税' : '含13%增值税'}})</strong>
                 </td>
                 <td>
-                  <p>{{value.diliver_place}}</p>
-                  <p>{{value.complete_date | formatDate}}</p>
+                  <p>{{item1.diliver_place}}</p>
+                  <p>{{item1.complete_date | formatDate}}</p>
                 </td>
                 <td>
                   <strong
-                  >总额：{{value.priceunit ? '$' : '￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}（{{value.goods_type ? '现货' : '订货'}}）</strong>
-                  <!-- <span>需预付款：（{{value.priceunit ? '$' : '￥'}}{{value.pre_pay}}）</span>
-                <span>发票扣税额（￥{{value.bill_price}}）</span>
-
-                <div v-if="value.priceunit">
-                  <span>预付款汇率汇率（${{value.pre_exchange}}）</span>
-                  <span v-if="value.fi_exchange">最终付款汇率（${{value.fi_exchange}}）</span>
-                  </div>-->
+                  >总额：{{item1.priceunit ? '$' : '￥'}}{{item1.total_price | toFixed(item1.priceunit?3:2)}}（{{item1.goods_type ? '现货' : '订货'}}）</strong>
+              
                 </td>
                 <td>
-                  <div v-if="value.expressButton">
+                  <div v-if="item1.expressButton">
                     <el-popover
                       placement="top-start"
                       width="500"
                       trigger="hover"
-                      @show="getDiliverInfo(value.id)"
+                      @show="getDiliverInfo(item1.id)"
                     >
                       <div class="orderpress">
-                        <p style="margin-bottom:15px;font-size:20px">物流单号：{{value.trans_no}}</p>
+                        <p style="margin-bottom:15px;font-size:20px">物流单号：{{item1.trans_no}}</p>
                         <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
                         <el-timeline>
                           <el-timeline-item
@@ -309,43 +280,42 @@
                       <span
                         slot="reference"
                         style="color:#0d98ff; cursor: pointer;margin-top:10px"
-                      >{{value.trans_no}}</span>
+                      >{{item1.trans_no}}</span>
                     </el-popover>
                   </div>
                   <p v-else>暂无物流编号</p>
                 </td>
                 <td>
                   <div class="operaBtn">
-                    <div v-if="value.reason" class="cancleReason">取消原因：{{value.reason}}</div>
+                    <div v-if="item1.reason" class="cancleReason">取消原因：{{item1.reason}}</div>
                     <div class="wrapbtn" v-else>
                       <span
-                        v-if="value.confirmChangeDiliverTimeButton"
-                        @click="confirmChangeDiliverTime(value)"
+                        v-if="item1.confirmChangeDiliverTimeButton"
+                        @click="confirmChangeDiliverTime(item1)"
                         class="btn bgColor"
                       >确认新交期</span>
-                      <!-- <span v-else class="yjs">已接受新交期</span> -->
+                
                       <span
-                        v-if="value.cancleButton"
+                        v-if="item1.cancleButton"
                         class="btn cancleBtn"
-                        @click="cancleOrder(2,value.id)"
+                        @click="cancleOrder(2,item1.id)"
                       >取消订单</span>
                       <span
-                        @click="confirmRecieveGoods(value.id)"
-                        v-if="value.receivingGoodsButton"
+                        @click="confirmRecieveGoods(item1.id)"
+                        v-if="item1.receivingGoodsButton"
                         class="btn bgColor"
                       >确认收货</span>
-                      <!-- <p>交期延期至{{value.complete_date | formatDate}}</p> -->
+                 
                     </div>
                   </div>
-                  <div v-if="item.expireTime" class="counttimewrap">
-                    <!-- <p>订单剩余有效时间：</p> -->
-
+                  <div v-if="item1.expireTime" class="counttimewrap">
+                  
                     <CountTime
                       class="CountTime"
                       v-on:end_callback="countDownE_cb()"
-                      :currentTime="value.currentTime"
-                      :startTime="value.currentTime"
-                      :endTime="value.expireTime"
+                      :currentTime="item1.currentTime"
+                      :startTime="item1.currentTime"
+                      :endTime="item1.expireTime"
                       :tipText="'距离开始文字1'"
                       :tipTextEnd="''"
                       :endText="'订单已失效'"
@@ -360,7 +330,7 @@
             </template>
           </tbody>
         </table>
-        <!-- </div> -->
+    
       </div>
       <div class="list-detail-bar" @click="DetailList(item)">
         <span class="bgColor btn">
@@ -368,7 +338,7 @@
         <i class="el-icon-caret-bottom" v-if="!flag"></i>
         <i class="el-icon-caret-top" v-else></i>
         </span>
-      </div>
+      </div> -->
     </div>
     <!-- 确认交期模态框 -->
     <SetTankuang :title="'更新交期提示'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
@@ -498,6 +468,7 @@
               <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
           </div>
       </SetTankuang>
+   
   </div>
 </template>
 
@@ -530,6 +501,7 @@ export default {
           title: "白条支付"
         }
       },
+      orderInfoList:{},
       downloadUrl2: "",
       //取消订单需要的传参
       cancleOrderForm: {},
@@ -560,15 +532,17 @@ export default {
       currentSecondOrder: {},
       dialogImageUrl: "",
       imgDialogVisible: false,
-        payType:1,
-        selectedPayType:false,
-        showDialog:false,
+      payType:1,
+      selectedPayType:false,
+      showDialog:false,
     };
   },
   props: {
     item: {
       type: Object,
-      default: () => ({})
+      default: () => ({
+
+      })
     }
   },
   components: {
@@ -582,6 +556,7 @@ export default {
       "CancleOrderSubmit",
       "queryExpress"
     ]),
+
       closeDialogCallBack(){
           this.showDialog=false
       },
@@ -668,7 +643,6 @@ export default {
         access_token: this.access_token,
         type: this.currentStatus
       };
-      console.log(obj);
       this.$store
         .dispatch("SignContract/GetWeChatPay", obj)
         .then(codeResp => {
@@ -921,6 +895,24 @@ export default {
     }
   },
   mounted() {
+    let obj={}
+   this.item.orderInfoList.forEach(item=>{
+        if(obj[item.username]){
+          obj[item.username].list.push(item)
+        }else{
+            obj[item.username]={
+              info:{
+                headImgUrl:item.headImgUrl,
+                username:item.username,
+                tag:item.tag,
+                historyPublish:item.historyPublish,
+                finishOrder:item.finishOrder
+              },
+              list:[item]
+            }
+        }
+    })
+    this.orderInfoList=obj
   }
 };
 </script>

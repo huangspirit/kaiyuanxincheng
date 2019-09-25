@@ -155,6 +155,7 @@ export default {
       if (this.EndselectBrandList.length === this.maxBrandNum) {
       } else {
         let ret = this.EndselectBrandList.find(item => item.id === val.id);
+        console.log(this.EndselectBrandList)
         if (ret) {
           this.RepeatedAddFlag = true;
         } else {

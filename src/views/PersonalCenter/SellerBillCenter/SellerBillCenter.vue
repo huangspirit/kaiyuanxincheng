@@ -5,19 +5,19 @@
     </el-breadcrumb>
     <div class="SellerBillCenter">
         <div class="top">
-             <div  :class="{active:modules==0}" @click="modules=0" v-if="obj.total">
+             <div  :class="{active:modules==0}" @click="modules=0" >
                 <p class="title">可提现金额合计：</p>
-                <P><STRONG>{{obj.total}}</STRONG></P>
+                <P><STRONG>{{obj.total?obj.total:0}}</STRONG></P>
             </div>
-            <div  :class="{active:modules==2}" @click="modules=2" v-if="obj.currentPay">
+            <div  :class="{active:modules==2}" @click="modules=2">
                 <p class='title'> 账单到期可提现金额：</p>
-                <p ><strong>{{obj.currentPay}}</strong> 
+                <p ><strong>{{obj.currentPay?obj.currentPay:0}}</strong>&nbsp;&nbsp; <a href="javascript:;" @click="despost" v-if="obj.flag">结账</a>
                 </p>
                 <p class="desc">当前结算周期：{{obj.day}}天（以发货时间为准）</p>
             </div>
-            <div  :class="{active:modules==1}"  @click="modules=1" v-if="obj.unCurrentPay">
+            <div  :class="{active:modules==1}"  @click="modules=1" >
                 <p class="title">已发货未到期提现金额：</p>
-                <P><STRONG>{{obj.unCurrentPay}}</STRONG>  </P>
+                <P><STRONG>{{obj.unCurrentPay?obj.unCurrentPay:0}}</STRONG>  </P>
              
             </div>
            
@@ -121,7 +121,7 @@
               </el-table-column>
               <el-table-column
                   prop="bonusServiceAmout"
-                  label="服务费"
+                  label="平台服务费"
                   align="center">
                   <template slot-scope="scope">
                       <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.bonusServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
@@ -130,7 +130,7 @@
               </el-table-column>
               <el-table-column
                   prop="billServiceAmout"
-                  label="代开票服务费"
+                  label="增值服务费"
                   align="center">
                   <template slot-scope="scope">
                       <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.billServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
@@ -159,7 +159,7 @@
                       <span>{{scope.row.is_checkout | checkoutFilter}}</span>
                   </template>
               </el-table-column>
-              <el-table-column
+              <!-- <el-table-column
                   label="操作"
               align="center">
                   <template slot-scope="scope" v-if="!scope.row.is_checkout">
@@ -172,7 +172,7 @@
                           提现
                       </el-button>
                   </template>
-              </el-table-column>
+              </el-table-column> -->
           </el-table>
           <Pagination
               v-if="total>pageSize"
@@ -189,32 +189,6 @@
           class="withdrawApplyTotal"
       >
           <div class="withdrawApplyTotalCont">
-              <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal" disabled="">
-                    <template slot="prepend">{{withdrawApplyTotalType?'$':'￥'}}</template>
-              </el-input>
-              <div v-if="withdrawApplyTotal" class="clear">
-                  <!-- <div class="withdrawCharge">
-                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
-                      <div class="desc">
-                          <i class="el-icon-question color" ></i>
-                          <div class="cont">
-                              <p><strong>手续费说明</strong></p>
-                              <p>
-                                  当单笔提现金额<1500元，y=2元+提现金额*0.55%
-                              </p>
-                              <p>
-                                  当单笔提现金额≥1500元，y=提现金额*0.7%
-                              </p>
-                              <br>
-                              <p>当天17:00点前申请提现的，提现金额当日到账；</p>
-                              <p>当天17:00点后申请提现的，提现金额次日到账；</p>
-                              <p>周末及节假日申请提现的，提现金额将在下个工作日到账；</p><br>
-                              <p>温馨提示：单笔提现金额≥1500为最优提现方案</p>
-                          </div>
-                      </div>
-                  </div>
-                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
-                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p> -->
                   <ul v-if="bankList.length">
                       <li class="title">
                           <span>提现方式</span>
@@ -228,7 +202,6 @@
                       </li>
                   </ul>
                   <router-link v-if="bankList.length==0" to="/PersonalCenter/withdraw" class="band">没有提现账号，去绑定</router-link>
-              </div>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="showinputwithdrawTotal = false">取 消</el-button>
@@ -286,11 +259,7 @@ export default {
           endTime:"",
           changeAll:true,
           is_checkout:null,
-       
-          withdrawApplyTotalType:false,
             showinputwithdrawTotal:false,
-            withdrawApplyTotal:"",
-            withdrawApplyTotalObj:{},
             bankList:[],
             selectedBank:0,
       }
@@ -331,9 +300,29 @@ export default {
                   if(res.data.list){
                     this.tableData=res.data.list.data;
                     this.total=res.data.list.total;
+                  }else{
+                      this.tableData=[];
+                    this.total=0;
                   }
               }
           })
+        
+      },
+      jiezhang(){
+            this.$confirm('确定结账?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(() => {
+               axios.request(sellerCenter.saveSellerCheckApply).then(res=>{
+                        if(res){
+                            this.init();
+                            this.$message.success("结账申请已提交")
+                        }
+                    })
+                }).catch(() => {
+                          
+                });
         
       },
         handleChangeAll(){
@@ -354,13 +343,8 @@ export default {
           this.currentPage=x;
           this.init()
         },
-        despost(index){
+        despost(){
             this.showinputwithdrawTotal=true;
-            this.withdrawApplyTotal=this.tableData[index].realPayTotal;
-            this.withdrawApplyTotalType=this.tableData[index].priceunit;
-            // axios.request({...personCenter.count,params:{withdrawApplyTotal:this.withdrawApplyTotal}}).then(res=>{
-            //             this.withdrawApplyTotalObj=res.data;
-            //         })
         },
          //提现的相关操作
             withDraw(){
@@ -377,7 +361,7 @@ export default {
                         }).then(({ value }) => {
                             //校验密码
                             axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
-                                console.log(res)
+                            
                                 if(res){
                                     this.showinputPassword=false;
                                     this.showinputwithdrawTotal=true;
@@ -385,7 +369,7 @@ export default {
                                             start:0,
                                             length:100,
                                         }}).then(res=>{
-                                        console.log(res)
+                                    
                                         this.bankList=res.data.data;
                                     })
                                 }
@@ -398,7 +382,6 @@ export default {
             },
             checkpassword(){
                 axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
-                    console.log(res)
                     if(res){
                         this.showinputPassword=false;
                         this.showinputwithdrawTotal=true;
@@ -415,16 +398,15 @@ export default {
             },
             saveDraw(){
                 let obj={
-                    withdrawBankId:this.bankList[this.selectedBank].id,
-                    ...this.withdrawApplyTotalObj
+                    account_id:this.bankList[this.selectedBank].id,
                 }
-                axios.request({...personCenter.saveDraw,data:obj}).then(res=>{
-                    if(res){
-                        this.showinputwithdrawTotal=false;
-                        this.init();
-                       // this.all();
-                    }
-                })
+                  axios.request({...sellerCenter.saveSellerCheckApply,params:obj}).then(res=>{
+                        if(res){
+                            this.init();
+                            this.$message.success("结账申请已提交")
+                              this.showinputwithdrawTotal=false;
+                        }
+                    })
             },
     },
     computed:{

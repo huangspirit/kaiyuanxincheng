@@ -106,22 +106,28 @@ export default {
               icon: require("@/assets/image/sidemenuicon/MerchantsConcerned.png")
             },
             {
+              title: "我的询价",
+              index: "2_4",
+              path: "/PersonalCenter/myInquire",
+              icon: require("@/assets/image/sidemenuicon/MerchantsConcerned.png")
+            },
+            {
               title: "账单中心",
               name:'BuyerBillCenter',
-              index: "2_4",
+              index: "2_5",
               path: "/PersonalCenter/BuyerBillCenter",
               icon: require("@/assets/image/sidemenuicon/BuyerBillCenter.png"),
             },
             {
               title: "发票管理",
-              index: "2_5",
+              index: "2_6",
               path: "/PersonalCenter/BuyerInvoiceManagement",
               icon: require("@/assets/image/sidemenuicon/SellerInvoiceManagement.png")
             },
             {
               title: "申请月结",
               name:'UpgradeLevel',
-              index: "2_6",
+              index: "2_7",
               path: "/PersonalCenter/UpgradeLevel",
               icon: require("@/assets/image/sidemenuicon/UpgradeLevel.png")
             }

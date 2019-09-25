@@ -368,7 +368,7 @@ export default {
               this.$router.push('/Login')
               return;
           }
-          console.log(this.MerchantList[k])
+  
           var obj = {
               sellerGoodsId: this.MerchantList[k].id,
               sellerId:this.MerchantList[k].sellerId,

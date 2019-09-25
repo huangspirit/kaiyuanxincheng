@@ -1,7 +1,6 @@
 <template>
 <div>
     <el-menu 
-    
      class="sidemenu" 
      id="sidemenu"
      :collapse="false"
@@ -9,8 +8,8 @@
      text-color="#fff"
      background-color="#3f3f3f"
      :router="true"
-      :default-openeds="defaultOpeneds"
-        :default-active="defaultActive"
+     :default-openeds="defaultOpeneds"
+     :default-active="defaultActive"
      >
      <template v-for="item0 in list" >
           <el-submenu :index="item0.index" :key="item0.index" class="onemenu" >

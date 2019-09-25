@@ -122,6 +122,10 @@ const sellerCenter = {
     queryAccountDetail: {
         url: "/api-order/sellerCenter/queryAccountDetail"
     },
+    //卖家结算账单
+    saveSellerCheckApply:{
+        url:'/api-order/sellerCenter/saveSellerCheckApply'
+    }
 }
 const personCenter = {
     //买家中心汇总页面

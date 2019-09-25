@@ -47,7 +47,7 @@
                               <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
                               <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
                           </p>
-                          <p>售卖额度 = 押金*10 + 基础额度</p>
+                        
                       </div>
                   </li>
                   <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
@@ -59,8 +59,11 @@
                               </p>
                               <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
                               <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
+                               <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
                           </div>
+                            
                       </div>
+                     
 
                   </li>
               </ul>
