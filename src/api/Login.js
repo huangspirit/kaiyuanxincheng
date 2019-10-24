@@ -179,3 +179,10 @@ export const WxBack = ({
     }
   })
 }
+//获取底部导航列表
+export const getFooterNav = (data) => {
+  return axios.request({
+    url: `api-b/webFront/queryWebConfigTitle`,
+    params:data
+  })
+}

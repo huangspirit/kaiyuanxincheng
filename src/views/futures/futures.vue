@@ -1,12 +1,23 @@
 <template>
     <div class="specialPrice">
-        <div class="banner">
+        <!-- <div class="banner">
             <img src="@/assets/image/specialPrice/futures_cover.png" alt="">
-        </div>
+        </div> -->
         <div class="cont allWidth">
             <div class="title">
-                <div class="fr btn" v-if="showGetMore" @click="getMore">
+                <!-- <div class="fr btn" v-if="showGetMore" @click="getMore">
                     <i class="el-icon-refresh"></i>换一批
+                </div> -->
+                <div class="fr ">
+                    <el-input
+                        placeholder="在结果中查询关键词：型号"
+                        v-model="name"
+                        size="mini"
+                        class="inputSearch"
+                           @keyup.enter.native="inputHandler"
+                      >
+                         <el-button slot="append" icon="el-icon-search" @click="inputHandler"></el-button>
+                    </el-input>
                 </div>
                 <ul class="clear">
                     <li @click="getSpecialList(-1)" :class="{'active':selectedK==-1}">全部</li>
@@ -15,7 +26,7 @@
             </div>
             <div class="goodsList" >
                 <ul class="list">
-                    <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  @click="chipSellerGoodsDetal(item)" >
+                    <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"   >
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
@@ -23,7 +34,7 @@
                         <img src="@/assets/image/index/tag1.png" alt="">
                     </span>
                     <!-- <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span> -->
-                    <div class="wrapImg" >
+                    <div class="wrapImg" @click="chipSellerGoodsDetal(item)" >
                         <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
@@ -72,18 +83,30 @@
                                         </p>
                                 </div>
                             </div>
-                            <div  class="brand" @click.stop="chipbrand(k)">
-                                {{item.brandName}}
+                            <div  class="brand" >
+                                <router-link :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.brandId,
+                                        name:item.brandName
+                                    }
+                                }">
+                                    {{item.brandName}}
+                                </router-link>
                             </div>
-                        <div class="count"><span>起订量：&nbsp;{{item.moq}}只</span><span>最小增量：&nbsp;{{item.mpq}}只</span></div>
-                        <div class="place" style="margin-top:3px;">
-                            <span v-if="item.deliverTime">预计于{{item.deliverTime | formatDate}}</span>
-                            <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span>
-                            &nbsp;<span>{{item.diliverPlace}}发货</span>
+                        <div class="count"><span>起订量：&nbsp;{{item.moq}}只</span>
+                        <!-- <span>最小增量：&nbsp;{{item.mpq}}只</span> -->
+                        </div>
+                         <div class="place" style="margin-top:3px;">
+                            <span v-if="item.deliverTime">预计于 {{item.deliverTime | formatDate}}</span>
+                            <span v-if="item.goods_type">现货</span>
+                            <!-- <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span> -->
+                            &nbsp;<span>{{item.diliverPlace}}交货</span>
                         </div>
                         </div>
                         <div class="stockCount">
-                            <span>剩余{{item.goodsStockCount}}只</span>
+                            <span>剩余{{item.goodsStockCount}}</span>
                             <strong class="color fr" v-if="!item.priceType">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
                              <strong class="color fr" v-if="item.priceType">起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
                         </div>
@@ -91,6 +114,13 @@
                     </div>
                     </li>
                 </ul>
+                <Pagination
+                    v-if="total"
+                    :pageSize="pageSize"
+                    :total="total"
+                    :currentPage="currentPage"
+                    @current-change="currentChange"
+                ></Pagination>
             </div>
         </div>
 
@@ -107,7 +137,9 @@
                 pageSize:9,
                 currentPage:1,
                 selectedK:-1,
-                showGetMore:true
+                showGetMore:true,
+                name:'',
+                total:0
             }
         },
         computed:{
@@ -128,6 +160,22 @@
             this.getSpecialList(-1)
         },
         methods:{
+            currentChange(x){
+                this.currentPage=x;
+                let category;
+                if(this.categoryList[this.selectedK]){
+                    category=this.categoryList[this.selectedK].id
+                }
+                this.getSpecialOfferList(category);
+            },
+            inputHandler(){
+                this.currentPage=1;
+                  let category;
+                if(this.categoryList[this.selectedK]){
+                    category=this.categoryList[this.selectedK].id
+                }
+                this.getSpecialOfferList(category)
+            },
             countDownE_cb(){
                  let category;
                 if(this.categoryList[this.selectedK]){
@@ -135,18 +183,7 @@
                 }
                 this.getSpecialOfferList(category)
             },
-            chipBrand(k){
-                let obj=this.specialList[k]
-                //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
-                this.$router.push({
-                    path:"/BrandDetail",
-                    query:{
-                        tag:'brand',
-                        documentid:obj.brandId,
-                        name:obj.brandName
-                    }
-                })
-            },
+          
             chipSellerGoodsDetal(item){
                 //跳转商品详情
                 sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))
@@ -169,6 +206,7 @@
                         length:10
                     }}).then(res=>{
                     this.categoryList=res.data.list;
+                   
                 })
             },
             getSpecialOfferList(categoryId){
@@ -177,7 +215,10 @@
                     length:this.pageSize,
                     goods_type:false,
                     status:1,
-                    catergory_id:categoryId
+                    catergory_id:categoryId,
+                }
+                if(this.name){
+                    obj.name=this.name
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
                     if(res.data.data.length){
@@ -188,10 +229,17 @@
                             }
                             return item;
                         })
+                    }else{
+                        this.specialList=[];
+                        this.$message({
+                            message: "搜索结果为空",
+                            type: 'warning'
+                        });
                     }
-                    if(res.data.data.length<this.pageSize){
-                        this.currentPage=0;
-                    }
+                     this.total=res.data.total;
+                    // if(res.data.data.length<this.pageSize){
+                    //     this.currentPage=0;
+                    // }
                 })
             },
             getMore(){

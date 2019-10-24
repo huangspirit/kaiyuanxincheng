@@ -11,7 +11,7 @@
       <div class="title">最新入驻</div>
       <div class="slideWrap" >
         <ul :class="{anim:animate==true}" class="clear" @mouseenter="handleEnter" @mouseleave="handleLeave">
-            <router-link  v-for="(item,k) in imgList"  :key="item.id" tag="li" :to="{
+            <router-link  v-for="(item) in imgList"  :key="item.id" tag="li" :to="{
             path:'/BrandDetail',
             query:{
             tag:'brand',
@@ -19,13 +19,6 @@
             name:item.brand
             }
             }">
-<!--                <span class="ImgE" >-->
-<!--                    <img-->
-<!--                        :key="item.id"-->
-<!--                        :src="item.imgurl+'?imageView2/2/w/300/h/100'"-->
-<!--                        :onerror="'../../../static/img/error.jpg'" />-->
-<!--                </span>-->
-<!--                v-lazy="item.imgurl?item.imgurl+'?imageView2/2/w/300/h/100':'../../../static/img/error.jpg'"-->
                 <ImgE :src="item.imgurl" :W="300" :H="100" ></ImgE>
             </router-link>
         </ul>
@@ -34,7 +27,7 @@
     <!-- 全部品牌 -->
     <div class="allWidth">
         <div class="all-brands">
-      <p class="tit">全部品牌</p>
+      <!-- <p class="tit">全部品牌</p> -->
       <!-- 品牌列表 -->
       <ul class="list" id="topList">
           <li>中国芯</li>
@@ -48,7 +41,7 @@
       </ul>
       <div class="brand-content">
         <p v-if="!findBrandList">暂无数据</p>
-        <ul v-if="findBrandList" v-for="(item,index) in findBrandListKey" :key="index">
+        <ul v-else v-for="(item,index) in findBrandListKey" :key="index">
           <h3 :id="item">{{item}}</h3>
             <router-link
                 tag="li"
@@ -63,7 +56,7 @@
                 }
                 }"
             >
-                {{subitem.brand}}
+               <img :src="mark" alt="" v-if="subitem.hasFactorySeller" class="mark" title="原厂已入驻" />{{subitem.brand}}
             </router-link>
         </ul>
       </div>
@@ -104,11 +97,13 @@ export default {
       animate: false,
       siderListShow: false,
         screenHeight:1000,
+        mark:require("../../assets/image/icon/zhu1.png")
     };
   },
   computed: {
   },
   mounted() {
+    this.$loading(this.$store.state.loading);
     this.getBrandList();
     window.addEventListener("scroll", this.handleScroll);
     this.screenHeight=window.screen.height-80
@@ -157,6 +152,7 @@ export default {
           params: {}
         })
         .then(res => {
+        this.$loading(this.$store.state.loading).close();
           if (res.resultCode == "200") {
             this.findBrandList = res.data;
             this.findBrandListKey = Object.keys(this.findBrandList);

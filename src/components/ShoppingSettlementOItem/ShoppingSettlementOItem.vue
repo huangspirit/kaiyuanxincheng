@@ -100,16 +100,6 @@ export default {
       filterhours(val){
         return Number(val)*24;
       },
-      // filterTag(val){
-      //     switch(Number(val)){
-      //       case 1:
-      //         return '原厂商户';
-      //       case 2:
-      //         return '代理商';
-      //       case 3:
-      //         return '商家'
-      //     }
-      // }
   },
   mounted() {
     this.item.list.forEach(item => {
@@ -124,6 +114,5 @@ export default {
   }
 };
 </script>
-
 <style>
 </style>

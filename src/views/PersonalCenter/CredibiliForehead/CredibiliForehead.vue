@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
       <el-breadcrumb-item>我的信誉额</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 我的信誉额 -->

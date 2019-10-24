@@ -73,9 +73,9 @@ const actions = {
   }, data) {
     return new Promise((resolve, reject) => {
       CancleOrderSubmit(data).then(res => {
-        if (res.resultCode === '200') {
+       
           resolve(res)
-        }
+       
       })
     })
   },

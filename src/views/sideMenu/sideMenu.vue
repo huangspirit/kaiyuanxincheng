@@ -11,33 +11,40 @@
      :default-openeds="defaultOpeneds"
      :default-active="defaultActive"
      >
-     <template v-for="item0 in list" >
-          <el-submenu :index="item0.index" :key="item0.index" class="onemenu" >
-            <router-link :to="item0.path" slot="title" tag="div" class="onetitle" v-if="item0.isShow">
+     <template  >
+         <div v-for="item0 in list" :key="item0.index">
+             <div  v-if="!item0.isShow" @click="chip" class="undo">
                     <img :src="item0.icon" alt="">
-                {{item0.title}}
-            </router-link>
-            <template slot="title" tag="div" class="onetitle" v-if="!item0.isShow" @click="dialogVisible=true">
-                    <img :src="item0.icon" alt="">
-                {{item0.title}}
-            </template>
-            <template  v-for="item1 in item0.children">
-                <el-submenu :index="item1.index" :key="item1.index" class="twomenu" v-if="item1.show!='hidden' && !item1.isPassWord">
-                    <router-link :to="item1.path" slot="title" tag="div" class="twotitle">
-                        <img :src="item1.icon" alt="">
-                        <span>{{item1.title}}</span>
-                    </router-link>
-                </el-submenu>
-                 <el-submenu :index="item1.index" :key="item1.index" class="twomenu" v-if="item1.show!='hidden' && item1.isPassWord" @click.native="withDraw(item1)">
-                    <template slot="title" class="twotitle">
-                        <div class="twotitle">
-                            <img :src="item1.icon" alt="">
-                            <span slot="title">{{item1.title}}</span>
-                        </div>
-                    </template>
-                </el-submenu>
-            </template>
-        </el-submenu>
+                    {{item0.title}}
+             </div>
+                <el-submenu :index="item0.index"  class="onemenu" v-if="item0.isShow">
+                            <!-- <template slot="title" tag="div" class="onetitle" v-if="!item0.isShow" @click="chip" >
+                                    <img :src="item0.icon" alt="">
+                                    {{item0.title}}
+                                </template> -->
+                            <router-link :to="item0.path" slot="title" tag="div" class="onetitle" >
+                                    <img :src="item0.icon" alt="">
+                                {{item0.title}}
+                            </router-link>
+                            <template  v-for="item1 in item0.children">
+                                <el-submenu :index="item1.index" :key="item1.index" class="twomenu" v-if="item1.show!='hidden' && !item1.isPassWord">
+                                    <router-link :to="item1.path" slot="title" tag="div" class="twotitle">
+                                        <img :src="item1.icon" alt="">
+                                        <span>{{item1.title}}</span>
+                                    </router-link>
+                                </el-submenu>
+                                <el-submenu :index="item1.index" :key="item1.index" class="twomenu" v-if="item1.show!='hidden' && item1.isPassWord" @click.native="withDraw(item1)">
+                                    <template slot="title" class="twotitle">
+                                        <div class="twotitle">
+                                            <img :src="item1.icon" alt="">
+                                            <span slot="title">{{item1.title}}</span>
+                                        </div>
+                                    </template>
+                                </el-submenu>
+                            </template>
+                        </el-submenu>
+         </div>
+         
      </template>
     </el-menu>
     <el-dialog
@@ -57,8 +64,10 @@
         <p></p>
       </div>
       <span slot="footer" class="dialog-footer ruzhu">
-        <span @click="dialogVisible = false" class="close">取消</span>
-        <span @click="ensure" class="ensure">立刻进行商家入驻</span>
+        <!-- <span @click="dialogVisible = false" class="close">取消</span>
+        <span @click="ensure" class="ensure">立刻进行商家入驻</span> -->
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="ensure" type="primary">立即入驻</el-button>
       </span>
     </el-dialog>
      <el-dialog
@@ -78,12 +87,21 @@
 </template>
 <style lang="less">
     .sideMenu{
+        .undo{
+            line-height: 50px;
+            color:#fff;
+            cursor: pointer;
+            &:hover{
+                background:rgb(50,50,50)
+            }
+        }
         .router-link-exact-active{
             color:#fff!important;
         }
         img{
             width:16px;
             margin-right:15px;
+            margin-left:20px;
         }
         .el-menu{
             border:none;
@@ -92,7 +110,7 @@
            >.el-submenu__title{
                padding:0!important;
                .onetitle{
-                    padding-left:20px;
+                   // padding-left:20px;
                }
                      &>.router-link-exact-active{
                         background:#000!important;
@@ -155,8 +173,13 @@ export default {
     },
     created(){
         this.fetchDate();
+        console.log(this.list)
     },
     methods:{
+        chip(){
+            console.log("2343454")
+            this.dialogVisible=true;
+        },
       fetchDate(){
           var name=this.$route.meta.parentname;
           this.list.forEach((item)=>{

@@ -7,8 +7,7 @@
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
         <el-row class="content">
             <el-col class="goodsImg">
-                <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
-                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+                <ImgE :src="listItem.goodsImage" :W="50" :H="50"></ImgE>
             </el-col>
             <el-col class="goodsProdu">
                 <h3>{{listItem.goodsName}}</h3>

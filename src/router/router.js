@@ -6,7 +6,7 @@ export default [
         name: 'index',
         component: Index,
         meta: {
-            title: '首页',
+            title: '',
 
         }
     },
@@ -53,6 +53,25 @@ export default [
         component: () => import('@/views/Brand'),
         meta: {
             title: '原厂直销'
+        }
+    },
+    //底部导航详情
+    {
+        path: '/footerNav',
+        name: 'footerNav',
+        component: () => import('@/views/footerNav'),
+        meta: {
+            title: '导航详情'
+        }
+    },
+    //问题反馈
+    {
+        path: '/feedback',
+        name: 'feedback',
+        component: () => import('@/views/feedback'),
+        meta: {
+            requireAuth: true,
+            title: '问题反馈'
         }
     },
     // 询价篮
@@ -211,7 +230,7 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '平台入驻（基本信息）',
-                    keepAlive: true // 需要被缓存
+                    keepAlive: false // 需要被缓存
                 }
             },
             {
@@ -389,7 +408,7 @@ export default [
         component: () => import('@/views/PersonalCenter'),
         meta: {
             requireAuth: true,
-            title: '个人中心',
+            title: '用户中心',
             parentname:"PersonalCenter"
         },
         children: [
@@ -398,7 +417,7 @@ export default [
                 component: () => import('@/views/PersonalCenter/PersonalSet'),
                 meta: {
                     requireAuth: true,
-                    title: '个人中心',
+                    title: '用户中心',
                     parentname:"PersonalCenter"
                 },
 
@@ -485,7 +504,7 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerCommodityManagement'),
                 meta: {
                     requireAuth: true,
-                    title: '商品管理',
+                    title: '特价管理',
                     parentname:"SellerCenter"
                 }
             },
@@ -497,7 +516,7 @@ export default [
                 component: () => import('@/views/PersonalCenter/SellerIssuesProduct'),
                 meta: {
                     requireAuth: true,
-                    title: '发布商品',
+                    title: '发布特价',
                     parentname:"SellerCenter"
                 }
             },
@@ -508,7 +527,7 @@ export default [
                 component: () => import('@/views/PersonalCenter/SuccessfulCommodityRelease'),
                 meta: {
                     requireAuth: true,
-                    title: '发布商品完成',
+                    title: '发布特价完成',
                     parentname:"SellerCenter"
                 }
             },

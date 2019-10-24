@@ -241,7 +241,6 @@
 <style lang="less" scoped>
 @import "./UpgradeLevel.less";
 </style>
-
 <script>
 // import "@/assets/css/ele-form.less";
 // import "@/assets/css/label-checkbox.less";

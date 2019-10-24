@@ -7,10 +7,7 @@
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
             <el-col class="goodsImg">
-            
-                <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
-                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-            
+             <ImgE :src="listItem.goodsImage" :W="50" :H="50"></ImgE>
             </el-col>
             <el-col class="goodsProdu">
           
@@ -65,13 +62,8 @@
           </el-row>
           <el-row v-if="listItem.replayStates == true" class="applyContent">
             <el-col  class="goodsImg">
-            
-                <img
-                  v-if="listItem.sellerInfoMap.headImgUrl!='-'"
-                  :src="listItem.sellerInfoMap.headImgUrl"
-                  alt
-                />
-                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+             <ImgE :src="listItem.sellerInfoMap.headImgUrl" :W="50" :H="50"></ImgE>
+               
              
             </el-col>
             <el-col  class="goodsProdu">
@@ -79,7 +71,7 @@
                 
                 <div class="merchant">
                   <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span><br>
-                    <span class="bgColor identify">{{listItem.sellerInfoMap.tag | filterTag}}</span>
+                    <span class="bgColor identify">{{listItem.sellerInfoMap.tag | tagFilter}}</span>
                 </div>
                  <p>
                     回复日期：
@@ -193,16 +185,6 @@ export default {
     });
   },
   filters: {
-    filterTag(val){
-          switch (val) {
-              case 1:
-                  return "原厂";
-              case 2:
-                  return "代理商";
-              case 3:
-                  return "普通商家"
-          }
-      },
     insteadFilter(val) {
       console.log(val);
       return val.split("@");

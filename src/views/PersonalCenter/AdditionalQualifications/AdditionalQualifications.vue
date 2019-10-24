@@ -38,14 +38,18 @@
             <div class="brand-authorization">
               <h4 class="h-sp">
                 <span class="red-sp">*</span>
-                品牌授权书
+                资质类型
               </h4>
-              <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
+              <!-- <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
               <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
-              <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
-              <p class="download-template">
+              <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p> -->
+              <p class="small">1.品牌商给贵司的授权代理证书、代理协议均可；</p>
+              <p class="small">2.品牌商官方网站的截图，请务必将地址栏截图进去；</p>
+              <p class="small">3.经营自有品牌请上传国内的商标注册证书；</p>
+              <p class="small">以上两项提供任一文件即可！</p>
+              <!-- <p class="download-template">
                 <a>下载模板</a>
-              </p>
+              </p> -->
             </div>
             <el-form-item label="有效期：" prop="timeStart">
               <el-date-picker
@@ -278,12 +282,12 @@ export default {
     }
   },
   mounted() {
-   
     if (this.applyDetailEdit.id) {
       this.ruleForm.brand = this.applyDetailEdit.brandId;
       this.ruleForm.brandName = this.applyDetailEdit.brandName.split(",");
       this.ruleForm.timeStart = this.applyDetailEdit.startTime;
       this.ruleForm.timeEnd = this.applyDetailEdit.endTime;
+      console.log(this.applyDetailEdit.qualificationImg)
       this.qualificationMapList = [
         {
           url: this.applyDetailEdit.qualificationImg

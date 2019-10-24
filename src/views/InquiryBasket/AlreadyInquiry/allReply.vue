@@ -7,8 +7,7 @@
         <li class="listContent" v-for="(listItem,index) in item.list" :key="index">
           <el-row class="content">
             <el-col class="goodsImg">
-                <img v-if="listItem.goodsImage!='-'" :src="listItem.goodsImage " alt />
-                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+                <ImgE :src="listItem.goodsImage" :W="50" :H="50"></ImgE>
             </el-col>
             <el-col class="goodsProdu">
                 <h3>{{listItem.goodsName}}</h3>
@@ -77,17 +76,13 @@
             class="applyContent"
           >
             <el-col class="goodsImg">
-                <img
-                  v-if="listItem.sellerInfoMap.headImgUrl!='-'"
-                  :src="listItem.sellerInfoMap.headImgUrl"
-                  alt
-                />
-                <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
+                  <ImgE :src="listItem.sellerInfoMap.headImgUrl" :W="50" :H="50"></ImgE>
+  
             </el-col>
             <el-col class="goodsProdu">
                 <div class="merchant">
                   <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span><br>
-                    <span class="bgColor identify">{{listItem.sellerInfoMap.tag | filterTag}}</span>
+                    <span class="bgColor identify">{{listItem.sellerInfoMap.tag | tagFilter}}</span>
                 </div>
                 <p>
                     回复日期：
@@ -204,16 +199,6 @@ export default {
   },
   computed: {},
   filters: {
-      filterTag(val){
-          switch (val) {
-              case 1:
-                  return "原厂";
-              case 2:
-                  return "代理商";
-              case 3:
-                  return "普通商家"
-          }
-      },
     insteadFilter(val) {
       return val.split("@");
     }
@@ -237,7 +222,7 @@ export default {
       });
     },
     againSpecial(val, val1) {
-      console.log(val, val1);
+   
       this.$confirm("是否确认重新申请?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

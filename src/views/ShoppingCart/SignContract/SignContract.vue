@@ -39,7 +39,7 @@
             </el-upload>
           </span>
         </p>
-        <p class="cla-sp">您后续也可以在'个人中心>我的订单>待付款'栏目中上传合同</p>
+        <p class="cla-sp">您后续也可以在'用户中心>我的订单>待付款'栏目中上传合同</p>
         <p class="contract">
           <!-- <label class="label">
             <input type="checkbox" v-model="contractValue" />
@@ -82,7 +82,7 @@
       <div class="contract-body">
         <p>
           系统会在24小时内审核合同，您可在
-          <span>'个人中心>我的订单>待付款'</span> 栏目中查看订单审核状态，系统会以短信、微信小程序、系统通知等方式通知您审核进程
+          <span>'用户中心>我的订单>待付款'</span> 栏目中查看订单审核状态，系统会以短信、微信小程序、系统通知等方式通知您审核进程
         </p>
       </div>
       <span slot="footer" class="contract-footer">
@@ -91,7 +91,6 @@
         <router-link to="/" tag="span">返回首页</router-link>
       </span>
     </el-dialog>
-
     <!-- 预览合同 -->
     <el-dialog
       :visible.sync="dialogContractFlag"

@@ -6,19 +6,19 @@
         <ul class="allWidth">
         <li>
           <img src="@/assets/image/footer/1.png" alt>
-          <p>十万特价大放送</p>
+          <p>100,000+特价大放送</p>
         </li>
         <li>
           <img src="@/assets/image/footer/2.png" alt>
-          <p>3000商家入驻</p>
+          <p>3000+商家入驻</p>
         </li>
         <li>
           <img src="@/assets/image/footer/3.png" alt>
-          <p>5000万产品收录</p>
+          <p>5000+万产品收录</p>
         </li>
         <li>
           <img src="@/assets/image/footer/4.png" alt>
-          <p>100多家原厂销售</p>
+          <p>100+家原厂销售</p>
         </li>
         </ul>
       </div>
@@ -26,35 +26,48 @@
         <div class="item">
           <p>站点导航</p>
           <ul>
-            <li>bom</li>
-            <li>申请特价</li>
-            <li>产品询价</li>
-            <li>厂商入住</li>
-            <li>我要售卖</li>
-            <li>咨询中心</li>
-            <li>产品大全</li>
+            <!-- <li>bom</li> -->
+            <!-- <li>申请特价</li> -->
+            <li @click="inquery">我的询价</li>
+            <li @click="settle" v-if="!isSeller">厂商入驻</li>
+            <li @click="publish">我要售卖</li>
+            <!-- <li >咨询中心</li> -->
+            <li @click="chipAll">产品大全</li>
+            <li @click="chipCenter">用户中心</li>
           </ul>
         </div>
         <div class="item">
           <p>使用帮助</p>
           <ul>
-            <li>下单流程</li>
+            <!-- <li>下单流程</li>
             <li>售后说明</li>
             <li>发票开具规则</li>
             <li>注册方式</li>
             <li>忘记密码怎么办</li>
             <li>如何上传库存</li>
-            <li>怎么更新库存</li>
+            <li>怎么更新库存</li> -->
+            <router-link  v-for="item in navmap[1]" :key="item.id" tag="li" :to="{
+              path:'/footerNav',
+              query:{
+                id:item.id
+              }
+            }">{{item.webName}}</router-link>
           </ul>
         </div>
         <div class="item" style="margin-right:13%;">
           <p>关于我们</p>
           <ul>
-            <li>关于我们</li>
+             <router-link  v-for="item in navmap[2]" :key="item.id" tag="li" :to="{
+              path:'/footerNav',
+              query:{
+                id:item.id
+              }
+            }">{{item.webName}}</router-link>
+            <!-- <li>关于我们</li>
             <li>用户协议</li>
             <li>版权政策</li>
             <li>免责声明</li>
-            <li>权利通知</li>
+            <li>权利通知</li> -->
           </ul>
         </div>
         <div class="item contact">
@@ -115,7 +128,81 @@
 
 <script>
 import './Footer.less'
+import {mapState,mapActions,mapMutations} from 'vuex';
 export default {
-  name: 'Footer'
+  name: 'Footer',
+  data(){
+    return {
+      isSeller:false,
+      UserInforma:{},
+      navmap:{}
+    }
+  },
+  computed:{
+      ...mapState({
+                loginState:state=>state.loginState,
+            })
+  },
+  mounted(){
+    this.getfooterNav({isEnable:1}).then(res=>{
+      this.navmap=res.data;
+    })
+     if (sessionStorage.getItem("access_token")) {
+                this.setloginState(true)
+                this.GetUserInforma({
+                    access_token: sessionStorage.getItem("access_token")
+                }).then(res => {
+                     this.UserInforma = res;
+                     this.isSeller=this.UserInforma.userTagMap.seller;
+
+                });
+            } else {
+                this.setloginState(false)
+            }
+  },
+  methods:{
+    ...mapActions("Login", ["GetUserInforma","getfooterNav"]),
+            ...mapMutations(['setloginState']),
+   
+    chipAll(){
+      this.$router.push("/")
+    },
+    chipCenter(){
+            if(this.loginState){
+                    this.$router.push("/PersonalCenter")
+                }else{
+                    this.$router.push("/Login")
+                }
+    },
+     settle(){
+                //商家入驻
+                if(this.loginState){
+                    this.$router.push("/OriginalFactoryEntry")
+                }else{
+                    this.$router.push("/Login")
+                }
+            },
+      publish(){
+        //发布
+        if(this.loginState){
+            if(this.isSeller){
+                this.$router.push("/PersonalCenter/SellerIssuesProduct")
+            }else{
+                this.$router.push("/OriginalFactoryEntry")
+            }
+
+        }else{
+            this.$router.push("/Login")
+        }
+    },
+    inquery(){
+      //我的询价
+       if(this.loginState){
+                    this.$router.push("/PersonalCenter/myInquire")
+                }else{
+                    this.$router.push("/Login")
+                }
+    }
+  }
 }
 </script>

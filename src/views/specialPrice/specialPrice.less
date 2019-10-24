@@ -2,11 +2,13 @@
   min-height:500px;
   text-align: center;
   color:#333;
-  background:url("../../assets/image/specialPrice/bg.png") 0 0 no-repeat;
+  background:url("../../assets/image/specialPrice/specailPrice1.png") 0 0 no-repeat;
   background-size: 100% auto;
+  padding-top:18vw;
   .banner{
     img{
-      width:100%;
+      // width:100%;
+      height:20vw;
     }
   }
   .cont{
@@ -15,6 +17,11 @@
       padding:15px 25px;
       border-top-left-radius:10px;
       border-top-right-radius:10px;
+      .inputSearch{
+        /deep/.el-input-group__append{
+          padding:0 10px;
+        }
+      }
       .btn{
         cursor: pointer;
         i{
@@ -28,6 +35,7 @@
         float: left;
         margin-right:25px;
         cursor: pointer;
+        line-height: 30px;
         &.active{
           color:#df3f2f;
         }
@@ -56,6 +64,9 @@
           margin-bottom:40px;
           padding-bottom:10px;
           border-radius: 10px;
+          border:1px solid #fff;
+          box-sizing: border-box;
+         
           &:hover{
             box-shadow: 0 0 10px 2px #ddd;
             transform: scale(1.003,1.003,1);
@@ -68,6 +79,8 @@
             position: absolute;
             left:0;
             top:0;
+            overflow: hidden;
+            border-top-left-radius: 10px;
             img{
               width:60px;
             }
@@ -142,7 +155,7 @@
               .wrapInfo{
                 position: absolute;
                 background:#fff;
-                top:80%;
+                top:60%;
                 box-shadow: 0 0 5px 2px #ddd;
                 z-index:100;
                 right:-20px;
@@ -151,7 +164,7 @@
                 display: none;
                 &>div{
                   background:#f5f5f5;
-                  padding:15px;
+                  padding:10px 15px;
                   .wrap{
                     float: left;
                     display: flex;
@@ -179,7 +192,7 @@
                   
                 }
                 &>p{
-                  margin-top:10px;
+                  margin-top:6px;
                   padding:0 15px;
                   white-space: nowrap;
                   text-align: left;

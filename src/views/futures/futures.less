@@ -2,8 +2,9 @@
   min-height:500px;
   text-align: center;
   color:#333;
-  background:  url("../../assets/image/specialPrice/futures.png") 0 0 no-repeat;
+  background:  url("../../assets/image/specialPrice/futures1.png") 0 0 no-repeat;
   background-size: 100% auto;
+  padding-top:18vw;
   .banner{
     height:300px;
     line-height: 300px;
@@ -16,6 +17,11 @@
       padding:15px 25px;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      .inputSearch{
+        /deep/.el-input-group__append{
+          padding:0 10px;
+        }
+      }
       .btn{
         cursor: pointer;
         i{
@@ -29,6 +35,7 @@
         float: left;
         margin-right:25px;
         cursor: pointer;
+        line-height: 30px;
         &.active{
           color:#df3f2f;
         }
@@ -42,7 +49,6 @@
       .list{
         display:flex;
         flex-wrap:wrap;
-       
         .item{
           display: flex;
           flex-direction: column;
@@ -50,7 +56,6 @@
           background:#fff;
           width:32%;
           margin-right:2%;
-        
           position: relative;
           text-align: left;
           color:#656565;
@@ -69,6 +74,8 @@
             position: absolute;
             left:0;
             top:0;
+            border-top-left-radius: 10px;
+            overflow: hidden;
             img{
               width:60px;
             }
@@ -143,7 +150,7 @@
               .wrapInfo{
                 position: absolute;
                 background:#fff;
-                top:80%;
+                top:60%;
                 box-shadow: 0 0 5px 2px #ddd;
                 z-index:100;
                 right:-20px;
@@ -152,7 +159,7 @@
                 display: none;
                 &>div{
                   background:#f5f5f5;
-                  padding:15px;
+                  padding:10px 15px;
                   .wrap{
                     float: left;
                     display: flex;
@@ -180,7 +187,7 @@
                   
                 }
                 &>p{
-                  margin-top:10px;
+                  margin-top:6px;
                   padding:0 15px;
                   white-space: nowrap;
                   text-align: left;

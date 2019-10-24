@@ -11,6 +11,7 @@
         :default-active="defaultActive"
     >
       <template v-for="item in list">
+        
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
         <router-link :to="item.path" v-else-if="!item.children && item.isShow && !item.isPassWord" :key="`list_${item.index}`" tag="div">
           <el-menu-item :index="item.index">
@@ -18,7 +19,7 @@
             <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </router-link>
-        <div v-else-if="!item.isShow" :key="`list_${item.index}`" @click="dialogVisible = true">
+        <div v-if="!item.isShow" :key="`list_${item.index}`" @click="dialogVisible = true">
           <el-menu-item :index="item.index">
            <img :src="item.icon" alt>
             <span slot="title">{{item.title}}</span>

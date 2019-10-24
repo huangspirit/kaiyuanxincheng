@@ -266,9 +266,9 @@ export default {
       });
     },
     replyRequest(val) {
-      console.log(val);
+     
       this.replyDialogVisible = true;
-      this.allListData = val.row;
+      this.allListData = val;
     },
     replyVisibleClose(val) {
       console.log(val, "5555555");

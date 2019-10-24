@@ -33,12 +33,7 @@
             <router-link to="/" tag="a">首页</router-link>添加商品
           </p>
           <template v-for="(item,k) in goodsList">
-            <!--            <shoppingCarProductItem-->
-            <!--              :key="`item.allcheckbox_${k}`"-->
-            <!--              :ShoppingCartObject.sync="item"-->
-            <!--              :ShoppingCartList.sync="ShoppingCartList"-->
-            <!--              :ShoppingCartAllCheckbox.sync="ShoppingCartAllCheckbox"-->
-            <!--            ></shoppingCarProductItem>-->
+         
             <div class="item" :key="k">
               <div class="title">
                 <label class="checkBox">
@@ -84,7 +79,15 @@
                     </div>
                   </li>
                   <li style="width:20%;" class="info">
-                    <p class="name">{{item1.goods_name}}</p>
+                    <p class="name">
+                      <router-link :to="{
+                        path:'/BrandDetail/GoodsDetails',
+                        query:{
+                          tag:'goodsinfo',
+                          documentid:item1.goods_id,
+                          name:item1.goods_name
+                        }
+                      }"><strong>{{item1.goods_name}}</strong></router-link></p>
                     <template>
                       <p v-if="item1.focus" class="guanzhu unguanzhu">
                         <span>已关注</span>
@@ -93,7 +96,18 @@
                         <span>关注</span>
                       </p>
                     </template>
-                    <p class="desc">品牌：{{item1.brand}}</p>
+                    <p class="desc">品牌：
+                      <router-link :to="{
+                        path:'/BrandDetail',
+                        query:{
+                          tag:'brand',
+                          documentid:item1.brandId,
+                          name:item1.brandName
+                        }
+                      }">
+                      {{item1.brandName}}</router-link>
+                      
+                      </p>
                   </li>
                   <li style="width:17%" class="place">
                     <p>{{item1.diliverPlace}}</p>
@@ -265,7 +279,7 @@
 </style>
 <script>
 import { mapMutations } from "vuex";
-import shoppingCarProductItem from "_c/shoppingCarProductItem";
+
 import { axios, shoppingCar } from "../../../api/apiObj";
 import { TimeForma2, ladderPrice,TimeForma} from "@/lib/utils";
 
@@ -572,19 +586,6 @@ export default {
       }
       
     },
-    // toFixed(val, length) {
-    //   return val.toFixed(length);
-    // },
-    // tagFilter(val) {
-    //   switch (Number(val)) {
-    //     case 1:
-    //       return "原厂";
-    //     case 2:
-    //       return "代理商";
-    //     case 3:
-    //       return "普通商户";
-    //   }
-    // },
     formatDate(val) {
       return TimeForma(val);
     }
@@ -595,9 +596,7 @@ export default {
       deep: true
     }
   },
-  components: {
-    shoppingCarProductItem
-  },
+ 
   computed: {
     start() {
       return this.pageSize * (this.currentPage - 1);

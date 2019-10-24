@@ -53,7 +53,7 @@
                                  <p v-if="item.orderVo.userCheckDay">月结白条周期：{{item.orderVo.userCheckDay}}天</p>
                                  <p>订单状态：{{item.orderVo.orderStatesDesc}}</p>
                              </div>
-                             <div v-if="item.orderVo.download" style="display:flex;">
+                             <div  style="display:flex;">
                                  <div style="margin-right:10px;">
                                     <el-button  @click="downLoadOrderContract(item.orderVo.contractUrl)" size="mini">
                                         下载合同
@@ -68,6 +68,7 @@
                                     :on-success="uploadSuccess"
                                     :before-upload="beforeAvatarUpload"
                                     v-if="item.orderVo.order_status !== 11 && item.orderVo.download"
+                                    
                                 >
                                     <el-button size="mini">
                                         上传合同
@@ -89,8 +90,6 @@
                                             />
                                      </p>
                                  </div>
-                                 <!-- <p class="">2019-12-10 10:10:10 对公转账 ￥20000</p>
-                                 <p class="">2019-12-10 10:10:10 对公转账 ￥20000</p> -->
                              </div>
                         </li>
                         <li>

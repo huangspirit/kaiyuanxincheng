@@ -1,7 +1,7 @@
 
 .Login {
     width: 100%;
-    z-index: 99999;
+    // z-index: 99999;
     position: relative;
     .carousel{
         height:100%;
@@ -26,11 +26,28 @@
                 left:50%;
                 transform: translate(-50%,-50%);
             .desc{
-                font-size:56px;
+                font-size:46px;
                 color:#fff;
                 font-weight: bold;
-                font-style: oblique;
+                text-align: center;
                 margin-top:12%;
+                line-height:1.7;
+                .line{
+                    font-size:18px;
+                    margin-left:30px;
+                    height: 100%;
+                    margin-right: 10px;
+                    font-family: 仿宋,仿宋_GB2312;
+                }
+                .little{
+                    font-size:20px;
+                    height: 100%;
+                    font-family: 仿宋,仿宋_GB2312;
+                }
+                .de{
+                    font-size:30px;
+                    margin-top:20px;
+                }
             }
             .form {
                 width:35vw;
@@ -140,6 +157,7 @@
                 img{
                     margin-right:15px;
                     cursor: pointer;
+                    width:25px;
                     &:hover{
                         transform: scale(1.1);
                     }

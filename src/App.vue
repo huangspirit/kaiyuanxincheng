@@ -7,17 +7,15 @@
               <router-view v-if="$route.meta.keepAlive"></router-view>
           </keep-alive>
           <router-view v-if="!$route.meta.keepAlive"></router-view>
-<!--            <router-view v-if="isRouterAlive"/>-->
       </div>
       <Footer></Footer>
-<!--      <Sidebar></Sidebar>-->
+      <side></side>
     </div>
   </div>
 </template>
 <script>
+import side from "_c/side";
 import Footer from "_c/Footer";
-// import Sidebar from "_c/Sidebar";
-//import headTop from "_c/headTop";
 import headTop from "@/views/header"
 import { mapActions,mapState,mapMutations} from "vuex";
 export default {
@@ -25,7 +23,7 @@ export default {
   data() {
     return {
       // UserInforma: ""
-       isRouterAlive: true
+       isRouterAlive: true,
     };
   },
   provide () {
@@ -37,6 +35,7 @@ export default {
     Footer,
     // Sidebar,
     headTop,
+    side
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
@@ -104,6 +103,7 @@ export default {
         vertical-align: middle;
     }
 #app {
+   
     .color{
         color:#df3f2f;
     }

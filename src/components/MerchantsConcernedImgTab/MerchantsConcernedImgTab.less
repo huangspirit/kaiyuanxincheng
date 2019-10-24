@@ -58,27 +58,47 @@
         .product-list-con {
             flex:1;
             display:flex;
-            &>li {
-                padding: 10px 20px;
-                display: flex;
-                flex-flow: column;
-                justify-content: space-around;
-                max-width:300px;
-                flex:1;
+            align-items: center;
+            .item{
+                padding: 10px;
+                flex: 1;
+                max-width: 400px;
                 .wrap{
-                    max-width:300px;
                     width:100%;
                     margin:0 auto;
                     text-align: left;
+                    font-size:14px;
+                    display: flex;
+                    flex-flow: column;
+                    justify-content: space-between;
                 }
-                    .price {
-                        text-align: left;
-    
-                        font-weight: bolder;
-                        margin-bottom:10px;
-
-                        box-sizing:border-box;
+                .price {
+                    text-align: left;
+                    margin-bottom:10px;
+                    box-sizing:border-box;
+                    font-size:12px;
+                    strong{
+                        font-size:14px;
                     }
+                }
+                .stepPrice{
+                    position: relative;
+                    cursor: pointer;
+                    &:hover{
+                        ul{
+                            display: block;
+                        }
+                    }
+                    ul{
+                        display: none;
+                        position: absolute;
+                        background:#fff;
+                        box-shadow: 0 0 2px 2px #ddd;
+                        li{
+                            padding: 10px 20px;
+                        }
+                    }
+                }
                     .prod-img {
                         text-align: center;
                         position: relative;
@@ -112,8 +132,7 @@
                     overflow: hidden;
                 }
                 .btn{
-
-                    margin:10px auto;
+                    margin-top:10px;
                     padding:3px 14px;
                     cursor: pointer;
                     &:hover{
@@ -122,27 +141,46 @@
                     }
                 }
             }
-        }
-        .Pagination{
-            /deep/.el-pagination{
-                .el-pager{
-                    li{
-                        margin: 0 5px;
-                        min-width: 30px;
-                        border-radius: 2px;
-                        &.active{
-                            background: #4a5a6a;
-                            color:#fff;
-                        }
-                    }
+            .Pagination{
+                text-align: right;
+                padding-right:30px;
+                flex:1;
+                /deep/button{
+                    margin-bottom:10px;
+                    width:120px;
+                    text-align: center;
                 }
-                .btn-prev,.btn-next{
-                    margin: 0 5px;
-                    min-width: 30px;
-                    border-radius: 2px;
+                span{
+                    background:#909399;
+                    width:120px;
+                    color:#fff;
+                    font-size:12px;
+                    line-height:30px;
+                    border-radius: 3px;
+                    text-align: center;
                 }
-
             }
         }
+        // .Pagination{
+        //     /deep/.el-pagination{
+        //         .el-pager{
+        //             li{
+        //                 margin: 0 5px;
+        //                 min-width: 30px;
+        //                 border-radius: 2px;
+        //                 &.active{
+        //                     background: #4a5a6a;
+        //                     color:#fff;
+        //                 }
+        //             }
+        //         }
+        //         .btn-prev,.btn-next{
+        //             margin: 0 5px;
+        //             min-width: 30px;
+        //             border-radius: 2px;
+        //         }
+
+        //     }
+        // }
     }
 }

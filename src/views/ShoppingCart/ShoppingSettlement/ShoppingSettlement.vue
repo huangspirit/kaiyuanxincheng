@@ -27,14 +27,14 @@
               <p style="margin-bottom:20px;">
                 发票公司：{{DefaultInvoiceObject.id?DefaultInvoiceObject.corporatename:'暂无发票信息'}}
                  <span class="btn blue"  @click="showAllInvoice=true">修改</span>
-                <span class="btn blue"  @click="addInvoiceInforma">添加发票信息</span>
+                <span class="btn blue"  @click="addInvoiceInforma">使用新的开票信息</span>
               </p>
                 <p>
                     <el-radio-group v-model="selectedGoodsBillSetOff" @change="handleChangeGoodsBillSetOff">
                         <el-radio v-for="item in GoodsBillSetOffList" :value="item.id" :label="item.id" :key="item.id">{{item.name}}</el-radio>
                     </el-radio-group>
                    </p>
-                <p class="color">
+                <p class="color" v-show="showAllInvoice">
                     提醒：订单提交后不可更改！如有疑问或其他需求请先联系客服人员，否则相关损失由客户自行承担。
                 </p>
                 <ul class="showallInvoice" v-show="showAllInvoice">
@@ -51,7 +51,7 @@
                          
                   </li>
                 </ul>
-                <div @click="showAllInvoice=false" v-if="showAllInvoice" style="text-align:center;border:1px solid #ddd;margin-top:10px;" title="收起" class='btn'><i class="el-icon-arrow-up  blue"  style="font-size:20px;"></i><i class="" style="font-size:14px;font-style:normal;">收起</i></div>
+                <div @click="showAllInvoice=false" v-if="showAllInvoice" style="text-align:center;border:1px solid #ddd;margin-top:10px;" title="确认" class='btn'><i class="el-icon-arrow-up  blue"  style="font-size:20px;"></i><i class="" style="font-size:14px;font-style:normal;">确认</i></div>
             </div>
         </div>
         <div class="payType">
@@ -65,15 +65,15 @@
                 <span><img src="../../../assets/image/icon/zhifubao.png" alt="">支付宝</span>
             </li>
             <li class="typetwo clear">
-              <el-radio v-model="paytype" label="1"> 电汇，公对公转账</el-radio><br>
+              <el-radio v-model="paytype" label="1">公对公转账</el-radio><br>
               <div v-if='paytype==1' class="desc clear">
-                  <p><strong>*请务必用对应收票公司汇款至：</strong>
+                  <p><strong>*收款账户信息如下：</strong>
                   <!-- <a href="" class="blue fr downbtn" >下载汇款信息</a> -->
                   </p>
-                  <p><span>公&nbsp;司&nbsp;名&nbsp;称&nbsp;：</span><span>北京易智造科技有限公司</span></p>
-                  <p><span>开&nbsp;户&nbsp;银&nbsp;行&nbsp;：</span><span>9111014781708107A</span></p>
-                  <p><span>银&nbsp;行&nbsp;账&nbsp;号&nbsp;：</span><span>01100141700221177</span></p>
-                  <p>请您按以上汇款信息汇款，汇款完成后上传汇款底单或转账凭证</p>
+                  <p><span>公&nbsp;司&nbsp;名&nbsp;称&nbsp;：</span><span>北京晶圆电子有限公司</span></p>
+                  <p><span>开&nbsp;户&nbsp;银&nbsp;行&nbsp;：</span><span>招商银行北京上地支行</span></p>
+                  <p><span>银&nbsp;行&nbsp;账&nbsp;号&nbsp;：</span><span>110 906 335 410 201</span></p>
+                  <p>请务必用对应的开票公司汇款，汇款完成后请上传汇款底单挥着转账凭证;</p>
               </div>
             </li>
             <li class="typethree" >
@@ -81,7 +81,7 @@
                 <el-radio v-model="paytype" label="2" v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough">月结白条</el-radio>
                  <el-radio v-model="paytype" label="2" v-if="(!this.priceTotalDetail.isVIP) || !this.priceTotalDetail.isEnough" disabled="">月结白条</el-radio>
              <span v-if="this.priceTotalDetail.isVIP">
-               目前剩余月结白条额度￥{{priceTotalDetail.restLine}}元;
+               目前剩余月结白条额度￥{{priceTotalDetail.restLine | toFixed(2)}}元;
                <a class="blue" href="javascript:;" @click="showUplevel=true">提升额度</a>
                </span> 
                <span v-if="!this.priceTotalDetail.isVIP">
@@ -115,7 +115,7 @@
               <p><span class="fr">￥{{priceTotalDetail.rmbtotalPrice | toFixed(2)}}</span><strong>人民币</strong>共{{unuscount}}种器件，金额小计： </p>
                <p><strong>美元</strong>共{{UScount}}种器件，金额小计：<span class="fr">US${{priceTotalDetail.usdTotalPrice | toFixed(3)}}</span></p>
                <p>今日美元汇率牌价：<span class="fr">{{priceTotalDetail.exchange}}</span></p>
-               <!-- <p>13%增值税：<span class="fr">{{}}</span></p> -->
+               <p>海关增值税13%：<span class="fr">￥{{priceTotalDetail.usdTotalPrice*priceTotalDetail.exchange*0.13 | toFixed(2)}}</span></p>
                <p>关税：<span class="fr">￥{{priceTotalDetail.Guanshui}}</span></p>
                <p>清关服务费：<span class="fr">￥{{priceTotalDetail.GuanshuiService}}</span></p>
           </div>
@@ -124,59 +124,10 @@
           <p class="fl">*运费说明，单一供应商购买金额500元以上为包国内邮费，500元以下为顺丰到付</p>
             <p class="fr">应付人民币总额：￥{{priceTotalDetail.totalPrice | toFixed(2)}}</p>
         </div>
-        <!-- <div class="place-order">
-          <div class="detail">
-            <p v-if="priceTotalDetail.Postage">
-              <label for="">运费合计：</label>
-              <span class="num">￥{{priceTotalDetail.Postage}}</span>
-            </p>
-            <p v-if="priceTotalDetail.exchange">
-              <label for="">美元汇率：</label>
-              <span class="num">1：{{priceTotalDetail.exchange}}</span>
-            </p>
-
-            <p v-if="priceTotalDetail.needPayBillTotal">
-             <label for="">发票服务费：</label>
-              <span class="num">￥{{priceTotalDetail.needPayBillTotal | ToFixed}}</span>
-            </p>
-            <p>
-              <label for="">报关服务费：</label>
-              <span class="num">￥{{priceTotalDetail.GuanshuiService}}</span>
-            </p>
-            <p>
-              <label for="">关税：</label>
-              <span class="num">￥{{priceTotalDetail.Guanshui}}</span>
-            </p>
-            <p >
-              <label for="">商品总额：</label>
-              <span class="num" v-if="priceTotalDetail.rmbtotalPrice">￥{{priceTotalDetail.rmbtotalPrice}}</span>
-                <span v-if="priceTotalDetail.rmbtotalPrice && priceTotalDetail.usdTotalPrice">&nbsp;+&nbsp;</span>
-                <span class="num" v-if="priceTotalDetail.usdTotalPrice">$&nbsp;{{priceTotalDetail.usdTotalPrice}}</span>
-            </p>
-            <p>
-
-              <label for="">订单总额：</label>
-              <span class="num">￥{{priceTotalDetail.totalPrice | ToFixed}}</span>
-            </p>
-            <p v-if="priceTotalDetail.isVIP">
-               <label for="">剩余额度：</label>
-              <span class="num">￥{{priceTotalDetail.restLine}}</span>
-            </p> -->
-            <!-- <div class="payWayList">
-              <label for="">邮费方式：</label>
-              <el-radio v-model="dilivertype" label="0" border>到付</el-radio>
-              <el-radio v-model="dilivertype" label="1" border>垫付</el-radio>
-            </div> -->
-          <!-- <div class="payWayList" v-if="!(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough)">
-              <label for="">支付方式：</label>
-              <el-radio v-model="paytype" label="0" border>在线支付</el-radio>
-              <el-radio v-model="paytype" label="1" border>转账支付</el-radio>
-          </div>
-          <strong>提示：单个店铺货物总额超过￥500包邮，￥500以下到付</strong>
-        </div> -->
+    
         <p class="clear">
           <span class="fl" style="margin-top:20px;">
-             <input type="checkbox" checked>  同意接受《<span class="blue" @click="showxieyi=true">开元芯城用户协议</span>》和《<span class="blue" @click='showhetong=true'>开元芯城销售合同</span>》
+             <input type="checkbox" checked>  同意接受《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和《<span class="blue" @click='showhetong=true'>{{title}}销售合同</span>》
           </span>
           <span class="submit bgColor fr" @click="submit">提交订单</span> 
         </p>
@@ -321,11 +272,33 @@
         <p @click="dialogInvoice = false" class="cancle">取消</p>
       </div>
     </el-dialog>
-    <SetTankuang v-if="showGoIndex" :title="'温馨提示'">
-      <div class="dialog-body" slot="dialog-body">
-          <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">个人中心>>>我的订单</a>下载上传合同 </p>
+     <el-dialog
+          title="温馨提示"
+          :visible.sync="showGoIndex"
+          width="60%"
+          >
+          <div class="dialog-body" >
+          <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 </p>
       </div>
-    </SetTankuang>
+      <span slot="footer" class="dialog-footer">
+        <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
+      </span>
+      </el-dialog>
+       <el-dialog
+          title="温馨提示"
+          :visible.sync="showGoIndex1"
+          width="60%"
+          >
+          <div class="dialog-body" >
+          <p>尊敬的用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 ,
+          或<a @click="payMount">立即支付</a></p>
+      </div>
+       <span slot="footer" class="dialog-footer">
+        <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
+        <el-button type="primary"  @click="payMount">立即支付</el-button>
+      </span>
+      </el-dialog>
+    
     <el-dialog
           title="银行汇款"
           :visible.sync="showDialog"
@@ -390,7 +363,8 @@
               </ul>
           </div>
           <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="showResetAddress = false">关闭</el-button>
+             <el-button type="primary" @click="addNewAdrress">添加新地址</el-button>
+    <el-button type="primary" @click="showResetAddress = false">确认</el-button>
   </span>
       </el-dialog>
 
@@ -421,12 +395,12 @@
             <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
           </span>
       </el-dialog>
-      <el-dialog  title="开元芯城用户协议"
+      <el-dialog  :title="`${title}用户协议`"
           :visible.sync="showxieyi"
           width="70%">
         <div>暂无内容</div>
       </el-dialog>
-      <el-dialog  title="开元芯城销售合同"
+      <el-dialog  :title="`${title}销售合同`"
           :visible.sync="showhetong"
           width="70%">
         <div>暂无内容</div>
@@ -510,7 +484,10 @@ export default {
         goodsCount:0,
       //月结用户提交订单成功后需要跳转
       count:60,
+      //月结订单跳转
       showGoIndex:false,
+      //普通订单跳转
+      showGoIndex1:false,
       //自定跳转计时器
       chipCenterOrderCount:null,
       //判断是否有订单信息
@@ -639,12 +616,26 @@ export default {
       UScount:0
     };
   },
-
+  destroyed(){
+    clearInterval(this.chipCenterOrderCount)
+   this.chipCenterOrderCount=null;
+  },
   components: {
     VDistpicker,
     ShoppingSettlementOItem
   },
   watch: {
+    showGoIndex1(newval,oldval){
+
+      if(newval==false && oldval==true){
+        this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+      }
+    },
+    showGoIndex(newval,oldval){
+      if(newval==false && oldval==true){
+        this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+      }
+    },
     addressList(){
       let count=0;
       this.addressList.forEach(item => {
@@ -722,7 +713,7 @@ export default {
     },
     resetInvoce(item){
        this.DefaultInvoice=item.id;
-        this.DefaultInvoiceObject=item;
+       this.DefaultInvoiceObject=item;
     },
       //修改发票类型
       handleChangeGoodsBillSetOff(e){
@@ -786,6 +777,29 @@ export default {
     addNewAdrress() {
       this.dialogAddress = true;
       this.addressText = true;
+      this.showResetAddress=false;
+    },
+    //提交订单后需要选择是否立即支付
+    payMount(){
+      if(this.paytype==0){
+        //在线支付
+        
+        this.GetOrderCreater(this.OrderInformation).then(res=>{
+            this.orderNumber=res.data;
+              this.$router.push({
+                  path: "/ShoppingCart/PaymentOrders",
+                  query: {
+                      orderNumber:res.data,
+                  }
+              });
+        })
+      }else if(this.paytype==1){
+          //对公转账
+          this.GetOrderCreater(this.OrderInformation).then(res=>{
+             this.orderNumber=res.data;
+              this.getOrderType()
+        })
+      }
     },
     // 提交订单
     submit() {
@@ -807,23 +821,62 @@ export default {
       // 进行下单,三种情况
       if(this.paytype==0){
         //在线支付
-         this.OrderInformation.payWay=false
+         this.OrderInformation.payWay=false;
+         this.showGoIndex1=true;
+         var _this=this;
+         this.chipCenterOrderCount=setInterval(function(){
+            if(_this.count==0){
+                _this.chipCenterOrder()
+            }else{
+              _this.count--;
+
+            }
+          },1000)
+        
         this.GetOrderCreater(this.OrderInformation).then(res=>{
-              this.orderNumber=res.data;
+          return;
+       this.$confirm('立即支付订单吗?', '提示', {
+              confirmButtonText: '立即支付',
+              cancelButtonText: '进入订单中心',
+              type: 'warning'
+            }).then(() => {
+             this.orderNumber=res.data;
               this.$router.push({
                   path: "/ShoppingCart/PaymentOrders",
                   query: {
                       orderNumber:res.data,
                   }
               });
-            })
+            }).catch(() => {
+              this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+            });
+        })
       }else if(this.paytype==1){
           //对公转账
-           this.OrderInformation.payWay=false
+           this.OrderInformation.payWay=false;
+           var _this=this;
+           this.chipCenterOrderCount=setInterval(function(){
+            if(_this.count==0){
+                _this.chipCenterOrder()
+            }else{
+              _this.count--;
+            }
+          },1000)
+           this.showGoIndex1=true;
+          
           this.GetOrderCreater(this.OrderInformation).then(res=>{
+            return;
+             this.$confirm('立即支付订单吗?', '提示', {
+              confirmButtonText: '立即支付',
+              cancelButtonText: '进入订单中心',
+              type: 'warning'
+            }).then(() => {
               this.orderNumber=res.data;
               this.getOrderType()
-            })
+            }).catch(() => {
+              this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+            });
+        })
       }else if(this.paytype==2){
         //白条支付
          this.OrderInformation.payWay=true;
@@ -843,7 +896,7 @@ export default {
       if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
         //月结用户直接生成订单，去往个人中心
         this.GetOrderCreater(this.OrderInformation).then(res=>{
-          console.log("月结用户直接生成订单，去往个人中心")
+          console.log("月结用户直接生成订单，去往用户中心")
           this.showGoIndex=true;
           var _this=this;
           this.chipCenterOrderCount=setInterval(function(){
@@ -1035,17 +1088,18 @@ export default {
         if (valid) {
           this.ruleForm.address = `${this.province}/${this.city}/${this.area}`;
           // this.ruleForm.access_token = this.access_token;
-            return;
+
           if (this.addressText) {
               axios.request({...presonalAdress.AddAddress,method:"post",data:this.ruleForm}).then(res=>{
             // this.GetAddAddress(this.ruleForm)
             //   .then(res => {
+            
                 this.$message({
-                  type: "success",
-                  message: res.message
-                });
+                    message: res.message,
+                    type: 'success'
+                  });     
                 this.dialogAddress = false;
-                this.allAddress();
+                this.getAllAddress();
               })
               .catch(err => {
                 this.$message.error(err);
@@ -1053,12 +1107,13 @@ export default {
           } else {
             this.GetUpdateAddress(this.ruleForm)
               .then(res => {
+                console.log("gengxin")
                 this.$message({
                   type: "success",
-                  message: res
+                  message: res.message
                 });
                 this.dialogAddress = false;
-                this.allAddress();
+                this.getAllAddress();
               })
               .catch(err => {
                 this.$message.error(err);
@@ -1169,7 +1224,7 @@ export default {
             if(res){
                     this.GoodsBillSetOffList=res.data.data;
                     res.data.data.forEach((item,index)=>{
-                        if(index==res.data.data.length-1){
+                        if(index==0){
                             this.selectedGoodsBillSetOff=item.id;
                             this.selectedGoodsBillSetOffObj=item
                             return;
@@ -1190,6 +1245,7 @@ export default {
   },
   computed: {
     ...mapState({
+      title:state => state.title,
       buyOneGoodsDetail:state =>JSON.parse(state.MerchantList.buyOneGoodsDetail),
       addressList: state => state.ShoppingSettlement.addressList,
       InvoiceList: state => state.ShoppingSettlement.InvoiceList
@@ -1222,10 +1278,6 @@ export default {
       // 获取全部的发票
       // 将运费方式改为到付
       this.dilivertype = "0";
-      // let DetailData = JSON.parse(this.$route.query.data).deatil;
-      // console.log(DetailData);
-      // this.OrderInformation = JSON.parse(this.$route.query.obj2);
-      // this.priceTotalDetail = JSON.parse(this.$route.query.data);
       let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
       this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
       this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);

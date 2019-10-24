@@ -111,10 +111,12 @@ export default {
           return "已取消";
         case 4:
             return "已收货";
+        case 5:
+            return "已付预付款";
         case 6:
-              return "等待仓库核验";
+            return "等待仓库核验";
         case 7:
-          return "仓库已确认";
+            return "仓库已确认";
       }
     }
   },

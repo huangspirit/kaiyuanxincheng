@@ -1,21 +1,21 @@
 <template>
   <div class="WaitInquiry allWidth">
     <div class="tit">
-      <span>询价篮</span>
+      <span class="total">询价篮</span>
 <!--      <span class="more">更多申请特价技巧</span>-->
     </div>
     <!-- 搜索内容部分 -->
     <div class="waitContent">
-      <ul class="inquiryTab">
+      <!-- <ul class="inquiryTab">
         <li>
           <span @click="waitInquiry" :class="tabShow? 'bgColor':'' ">待询价</span>
           <span @click="alreadyInquiry" :class="!tabShow? 'bgColor':''">已询价</span>
         </li>
-<!--        <li class="search">-->
-<!--          <img src="@/assets/image/inquirybasket/u26.png" alt />-->
-<!--          <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>-->
-<!--        </li>-->
-      </ul>
+       <li class="search">
+         <img src="@/assets/image/inquirybasket/u26.png" alt />
+         <el-input @keyup.enter.native="searchSheetList" placeholder="搜索询价蓝" v-model="seachText"></el-input>
+        </li>
+      </ul> -->
       <router-view></router-view>
     </div>
   </div>
@@ -25,7 +25,7 @@
 import WaitInquiry from "../WaitInquiry";
 import AleadyInquiry from "../ApplySpecialPrice";
 import { axios, shoppingCar } from "@/api/apiObj";
-//import "./Inquiry.less";
+
 export default {
   name: "Inquiry",
   data() {
@@ -69,7 +69,7 @@ export default {
       this.$router.push("/InquiryBasket/Inquiry/AlreadyInquiry");
     },
     searchSheetList() {
-      console.log("111");
+   
       var obj = {
         start: 0,
         length: 1,
@@ -93,6 +93,13 @@ export default {
       color:#333;
       font-weight: bold;
       padding:25px 0;
+      .total{
+            font-size: 28px;
+            color: #4D9AF3;
+            font-weight: bolder;
+            border-left: 4px solid #4D9AF3;
+            padding-left: 20px;
+      }
   }
   .waitContent {
     .inquiryTab {

@@ -2,13 +2,14 @@
 #brand {
   color:#333;
   background: url("../../assets/image/brand/bg.jpg") 0 0 no-repeat;
-  background-size: 100% auto;
+  background-size: 100% 18vw;
   .leftSlide{
     position: fixed;
     top:80px;
-    width:70px;
     transition:all 1s;
     transform: translateX(-100px);
+    z-index:100;
+    
     .siderList {
       position: absolute;
       top:7.5%;
@@ -16,8 +17,14 @@
       z-index: 1;
       padding-top:10px;
       box-sizing:border-box;
+      width:30px;
+      transition: all 0.3s;
+      &:hover{
+        width:70px;
+        transition: all 0.3s;
+      }
       .toTop{
-        width: 70px;
+        width: 100%;
         text-align: center;
         color: #fff;
         cursor: pointer;
@@ -42,7 +49,7 @@
         box-sizing: border-box;
         li {
           flex:1;
-          width: 70px;
+          width: 100%;
           text-align: center;
           color: #fff;
           cursor: pointer;
@@ -79,7 +86,7 @@
 }
 .brand {
   .banner {
-     padding-top:31.25%;
+     padding-top:18vw;
       position: relative;
     .wrap{
       position: absolute;
@@ -87,30 +94,30 @@
       left:50%;
       transform:translate(-50%,-50%);
       img{
-        width:30%;
+        height:8vw;
       }
     }
   }
   // 最新入驻
   .prodclass-r {
     position: relative;
-    margin-top:-60px;
+    margin-top:-40px;
     overflow: hidden;
     .title{
-      line-height: 60px;
+      line-height: 40px;
       background: #4f4f4f;
       color:#fff;
-      padding: 0 30px;
+      padding: 0 15px;
     }
     .slideWrap {
       background: #fff;
       overflow: hidden;
-      padding:30px;
+      padding:10px 15px;
       box-sizing: border-box;
-      height:190px;
+      height:100px;
       position: relative;
       ul {
-        height:140px;
+        height:80px;
         overflow: hidden;
         position: absolute;
         width:200%;
@@ -128,7 +135,7 @@
           width: 9%;
           float: left;
           margin-right: 1%;
-          height: 130px;
+          height: 80px;
           border:1px solid #f5f5f5;
           box-sizing: border-box;
           margin-bottom:10px;
@@ -156,12 +163,12 @@
 
   // 全部品牌
   .all-brands {
-    padding: 20px 30px;
-    margin: 20px auto 20px;
+    padding: 10px 15px;
+    margin: 10px auto 20px;
     background: #fff;
     box-sizing: border-box;
     .tit {
-      font-size: 24px;
+      font-size: 16px;
     }
     // 品牌列表
     .list {
@@ -179,6 +186,7 @@
         flex:1;
         white-space: nowrap;
         text-align: center;
+        
         &.item{
           &:hover {
             background:#df3f2f;
@@ -205,23 +213,29 @@
 
         >h3 {
           width: 100%;
-          height: 55px;
-          line-height: 55px;
-          padding: 0 30px;
+          height: 35px;
+          line-height: 35px;
+          padding: 0 15px;
           background-color: rgba(210, 217, 223, 1);
+          font-size:14px;
         }
 
         li {
           width: 25%;
-          font-size: 18px;
+          font-size: 14px;
           color: #6b6b6b;
           float: left;
-          line-height: 44px;
+          line-height: 30px;
           cursor: pointer;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-
+          .mark{
+            height:14px;
+            margin-right:5px;
+            vertical-align: middle;
+            margin-top:-2px;
+          }
           &:hover {
             color: #3da8f5;
           }

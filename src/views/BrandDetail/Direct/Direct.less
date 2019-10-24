@@ -11,9 +11,15 @@
     }
   }
   .tit{
-    line-height:60px;
+    line-height:55px;
     color:#fff;
-    padding-left:20px;
+    padding:0 20px;
+    .inputSearch{
+      margin-top:13px;
+      /deep/.el-input-group__append{
+        padding:0 10px;
+      }
+    }
     // border-top-left-radius: 10px;
     // border-top-right-radius: 10px;
   }
@@ -86,7 +92,7 @@
       overflow-x: scroll;
       white-space: nowrap;
       color:#333;
-      margin-bottom:80px;
+      margin-bottom:40px;
      
       .item{
         float:left;

@@ -6,11 +6,7 @@ export const SearchData = (data) => {
     url: `api-g/gods-anon/searchIndex`,
     method: 'get',
     data: {},
-    params: {
-      name: data,
-      start: 0,
-      length: 10
-    }
+    params:data
   })
 }
 // 热搜

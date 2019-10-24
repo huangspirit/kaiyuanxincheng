@@ -34,7 +34,7 @@
               >{{item.productno}}</router-link>
               
                 <p>
-                    <span>品牌：</span>
+                    <!-- <span>品牌：</span> -->
                     <router-link
                       :to="{
                       path:'/BrandDetail',
@@ -47,12 +47,12 @@
                     > {{item.brand}}</router-link>
                 </p>
               <p>
-                <span>型号描述：</span>
+                <!-- <span>描述：</span> -->
                 {{item.productdesc}}
               </p>
               <p v-if="item.map">
                 <span v-if="!item.map.totalSeller">
-                  <span class="nolist">暂无供应商报价</span>
+                  <span class="nolist">该器件暂无特价，赶紧抢先发布吧</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
@@ -64,10 +64,11 @@
                 </span>
               </p>
                 <p class="btnWrap">
-                    <span class="bgColor btn" @click="addInquiry(k)">询价篮</span>
-                    <span class="orange btn "  @click="specialPrice(k)">申请特价</span>
-                    <span v-if="!item.focus" class="gray btn" @click="focus(k)">收藏商品</span>
-                    <span v-if="item.focus" class="gray">已收藏</span>
+                    <span class="bgColor btn" @click="pushlishspecialPrice(k)" v-if="!item.hasSeller">我有特价</span>
+                    <span class="orange btn "  @click="specialPrice(k)" v-if="item.hasSeller">申请特价</span>
+                      <span class="bgColor btn" @click="addInquiry(k)" v-if="item.hasSeller">询价篮</span>
+                    <span v-if="!item.focus" class="gray btn" @click="focus(k)">关注此器件</span>
+                    <span v-if="item.focus" class="gray">已关注</span>
                 </p>
             </div>
           </div>
@@ -94,7 +95,9 @@ export default {
       dialogTableVisible: false,
       dialogTableVisible2: false,
       loading: true,
-      modelList:[]
+      modelList:[],
+      UserInforma:sessionStorage.getItem('UserInforma')
+
     };
   },
   props: {
@@ -115,6 +118,27 @@ export default {
       this.modelList=this.list
     },
   methods: {
+    pushlishspecialPrice(k){
+            //发布特价
+                if(!this.loginState){
+                        this.$router.push('/Login')
+                        return;
+                    } 
+                if(this.UserInforma){
+                    this.UserInforma=JSON.parse(this.UserInforma)
+                    if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
+                      let val=this.modelList[k]
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct?name="+val.productno);
+                    }else{
+                        this.$router.push("/OriginalFactoryEntry");
+                    }
+                }else{
+                    this.UserInforma={
+                        userTagMap:{}
+                    }
+                }
+                
+            },
     viewDocument() {
       this.loading = true;
       this.dialogTableVisible2 = true;

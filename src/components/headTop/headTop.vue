@@ -2,8 +2,8 @@
   <div :class="{header:true,headerFxed:headerFxed}" @click="noSearch()">
     <div class="header-c">
       <router-link to="/" tag="div" class="logo">
-       <h1 class="logoText">芯手网</h1>
-        <img src="@/assets/logo.png" alt>
+       <h1 class="logoText">{{title}}</h1>
+        <img src="@/assets/logo1.png" alt>
       </router-link>
       <div class="searchInputWrap">
           <HeaderSearch v-if="headerFxed" ref="HeaderSearch" :mini="true"></HeaderSearch>
@@ -23,11 +23,11 @@
         <img src="@/assets/image/home/u1874.png" alt>
       </router-link>
       <div class="person-center" @click="PersonalCenter" v-else>
-        个人中心
+        用户中心
         <img :src="UserInforma.headImgUrl" alt>
           <div class="PersonalCenter-con" v-if="UserInforma.userTagMap">
               <p class="personInfo">
-                  <span class="tel fr">{{UserInforma.phone}}</span>
+                  <!-- <span class="tel fr">{{UserInforma.phone}}</span> -->
                   <span class="name">{{UserInforma.nickname}}</span>
               </p>
               <div v-if="UserInforma.userTagMap.tag" class="clear identity">
@@ -66,6 +66,7 @@ export default {
   },
   computed: {
     ...mapState({
+      title:state => state.title,
       loginState: state => state.loginState,
       headerFxed: state => state.headerFxed,
       UserInforma:state => state.Login.UserInforma

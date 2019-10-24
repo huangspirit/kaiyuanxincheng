@@ -1,7 +1,7 @@
 <template>
   <div class="table">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-<!--          <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">个人中心</el-breadcrumb-item>-->
+<!--          <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">用户中心</el-breadcrumb-item>-->
           <el-breadcrumb-item>申请记录查询</el-breadcrumb-item>
       </el-breadcrumb>
     <el-table :data="list" border style="width: 100%">
@@ -58,10 +58,7 @@
             <span>法定代表人：</span>
             <span>{{detailList.legalagent}}</span>
           </li>
-          <li>
-            <span>职位：</span>
-            <span>{{detailList.position}}</span>
-          </li>
+       
           <li>
             <span>公司成立日期：</span>
             <span>{{detailList.establishmenttime}}</span>
@@ -69,6 +66,10 @@
           <li>
             <span>企业负责人：</span>
             <span>{{detailList.contactname}}</span>
+          </li>
+          <li>
+            <span>企业负责人职位：</span>
+            <span>{{detailList.position}}</span>
           </li>
           <li>
             <span>企业负责人手机：</span>
@@ -114,29 +115,39 @@
             </span>
           </li>
           <li>
-            <span>纳税人资格证：</span>
+            <span>手持身份证正面面：</span>
             <span>
               <img
                 style="margin: 10px 0;"
-                :src="'http://auth.113ic.com/'+ detailList.taxpayerimg+'?imageView2/2/w/180/h/100'"
+                :src="'http://auth.113ic.com/'+ detailList.handimage+'?imageView2/2/w/180/h/100'"
               />
             </span>
           </li>
-          <li v-for="(item,index) in brandList" :key="index">
+          <li>
+            <span>纳税人资格证：</span>
+            <span v-if="detailList.taxpayerimg">
+            
+              <img
+                v-for="item in detailList.taxpayerimg.split('@')"
+                :key="item"
+                style="margin: 10px 0;"
+                :src="'http://auth.113ic.com/'+ item+'?imageView2/2/w/180/h/100'"
+              />
+            </span>
+          </li>
+          <template  v-if="detailList.brand">
+          <li :key="index"  v-for="(item,index) in detailList.brand.split('@')">
             <span>品牌：</span>
-            <span>{{brand[index]}}</span>
+            <span>{{item}}&nbsp; <strong>({{detailList.qualificationtime.split('@')[index]}})</strong></span>
             <span>品牌LOGO：</span>
             <span>
               <img
                 style="margin: 10px 0;"
-                :src="'http://auth.113ic.com/'+ brandList[index]+'?imageView2/2/w/180/h/100'"
+                :src="'http://auth.113ic.com/'+ detailList.qualification.split('@')[index]+'?imageView2/2/w/180/h/100'"
               />
             </span>
-            <span>品牌有效期：</span>
-            <span>
-              <span>{{brandTime[index].split('-')[0]}} - {{brandTime[index].split('-')[1]}}</span>
-            </span>
           </li>
+             </template>
         </ul>
 
         <ul v-if="detailList.applyType=='4'" class="applyDetail">
@@ -223,6 +234,7 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions, mapMutations } from "vuex";
 import { axios, FactoryEntry } from "@/api/apiObj";
 export default {
   name: "",
@@ -239,6 +251,7 @@ export default {
     };
   },
   methods: {
+     ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     init() {
       axios.request(FactoryEntry.getApplyList).then(res => {
         this.list = res.data;
@@ -261,9 +274,13 @@ export default {
           if (obj.applyType != "4") {
             this.detailList["applyType"] = obj.applyType;
             this.detailList = res.data.baseInfo;
-            this.brandList = this.detailList.qualification.split("@");
-            this.brand = this.detailList.brand.split("@");
-            this.brandTime = this.detailList.qualificationtime.split("@");
+            // if(this.detailList.qualification){
+            //   this.brandList = this.detailList.qualification.split("@");
+            // }
+            // if(this.detailList.qualificationtime){
+            //   this.brandTime = this.detailList.qualificationtime.split("@");
+            // }
+          //  this.brand = this.detailList.brand.split("@");
           } else if (obj.applyType == "4") {
             this.detailList = res.data;
             this.detailList["applyType"] = obj.applyType;
@@ -286,9 +303,10 @@ export default {
             if (res.data) {
               if (obj.applyType != "4") {
                 this.editApply = res.data.baseInfo;
-                this.$store.state.OriginalFactoryEntry.applyDetailEdit = this.editApply;
+                  this.setJoinForm(this.editApply);
+               // this.$store.state.OriginalFactoryEntry.joinForm = this.editApply;
                 this.$router.push({
-                  path: "/OriginalFactoryEntry"
+                  path: "/OriginalFactoryEntry/BasicInforma"
                 });
               } else if (obj.applyType == "4") {
                 this.editApply = res.data;

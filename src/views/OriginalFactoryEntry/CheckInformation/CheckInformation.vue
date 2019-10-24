@@ -24,15 +24,16 @@
             label-width="270px"
             class="demo-ruleForm"
           >
-            <h3 class="tit-h3">企业基本信息</h3>
+            <h3 class="tit-h3">企业基本信息  <strong style="font-size:12px;">(国内原厂或国外原厂指定国内运营代理商填写)</strong></h3>
             <el-form-item label="统一社会信用代码：">
               <div class="recode">
                 <el-input
-                  v-model="ruleForm.creditCode"
+                  v-model="ruleForm.creditcode"
                   type="text"
                   @input="handleInput"
                   maxlength="18"
                   show-word-limit
+                  placeholder="请输入18位统一社会信用代码，点击查询可获取企业相关信息"
                 ></el-input>
                 <el-button v-if="showRequireBtn" @click="getCompanyInfo" type="primary">获取企业信息</el-button>
               </div>
@@ -43,9 +44,9 @@
               <el-input v-model="ruleForm.companyname"></el-input>
               <p class="small">请按照营业执照上登记的完整名称填写</p>
             </el-form-item>
-            <el-form-item label="工商营业执照注册号：" prop="businesslicensenum">
+            <!-- <el-form-item label="工商营业执照注册号：" prop="businesslicensenum">
               <el-input v-model="ruleForm.businesslicensenum"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="法定代表人：" prop="legalagent">
               <el-input v-model="ruleForm.legalagent"></el-input>
               <p class="small">确保与营业执照一致</p>
@@ -63,9 +64,16 @@
               <el-input v-model="ruleForm.registeredcapital"></el-input>
               <p class="small">若注册资本非人民币，请按照当前汇率换算人民币填写</p>
             </el-form-item>
-            <el-form-item label="公司详细地址：" prop="companydetailaddress">
+            <el-form-item label="公司注册地址：" prop="companydetailaddress">
               <el-input v-model="ruleForm.companydetailaddress"></el-input>
               <p class="small">填写与营业执照一致的地址</p>
+            </el-form-item>
+             <el-form-item label="企业网站：" prop="website">
+              <el-input v-model="ruleForm.website"></el-input>
+          
+            </el-form-item>
+             <el-form-item label="经营产品：" prop="product">
+              <el-input v-model="ruleForm.product" type="textarea"></el-input>
             </el-form-item>
             <h3 class="tit-h3">企业资质上传</h3>
             <div class="form2-item">
@@ -74,7 +82,7 @@
                   <span>*</span>
                   企业营业执照
                 </h3>
-                <p class="small">最新版营业执照</p>
+                <p class="small">最新版营业执照,需加盖公司红章</p>
               </div>
               <div class="form-item-con">
                 <el-form-item label="有效期：" prop="businesslicensestarttime">
@@ -83,8 +91,8 @@
                     type="date"
                     placeholder="开始日期"
                     style="margin-right:10px"
-                    value-format="yyyy/MM/dd"
-                    format="yyyy/MM/dd"
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
                   ></el-date-picker>
                   <span>至</span>
                   <el-date-picker
@@ -92,11 +100,11 @@
                     type="date"
                     style="margin-left:10px"
                     placeholder="结束日期"
-                    value-format="yyyy/MM/dd"
-                    format="yyyy/MM/dd"
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
                   ></el-date-picker>
                 </el-form-item>
-                <el-form-item label="资质图上传：" prop="qualificationmapimg" class="qualificationmapimg">
+                <el-form-item label="营业执照图上传：" prop="qualificationmapimg" class="qualificationmapimg qualificationmapimgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -107,12 +115,13 @@
                     :on-success="successUpload1"
                     :on-preview="handlePictureCardPreview"
                     :file-list="qualificationmapList"
+                    :limit="1"
                   >
                     <i class="el-icon-plus"></i>
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                     <img :src="exampleDiagram" alt />
@@ -125,14 +134,15 @@
               <div class="title-up">
                 <h3>
                   <span>*</span>
-                  企平台负责人身份证正反面
+                 请上传平台运营者身份证信息！
                 </h3>
               </div>
               <div class="form-item-con">
-                <el-form-item label="身份证：" prop="enterpriseplatformidentity">
-                  <el-input v-model="ruleForm.enterpriseplatformidentity"></el-input>
+                <el-form-item label="身份证号：" prop="enterpriseplatformidentity">
+                  <el-input v-model="ruleForm.enterpriseplatformidentity" maxlength="18"
+                  show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="上传正面照片：" prop="identityposimg">
+                <el-form-item label="上传身份证正面照片：" prop="identityposimg" class="qualificationmapimgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -149,14 +159,14 @@
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(zheng)">
+                    <img :src="zheng" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
-                <el-form-item label="上传反面照片：" prop="identitynegimg">
+                <el-form-item label="上传身份证反面照片：" prop="identitynegimg" class="qualificationmapimgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -173,11 +183,35 @@
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
 
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(fan)">
+                    <img :src="fan" alt />
+                    <span>示例图</span>
+                  </span>
+                </el-form-item>
+                 <el-form-item label="上传手持身份证正面照片：" prop="handimage" class="qualificationmapimgwrap">
+                  <el-upload
+                    class="upload-demo"
+                    ref="upload"
+                    :action="url"
+                    :auto-upload="true"
+                    list-type="picture-card"
+                    :before-upload="beforeAvatarUpload"
+                    :on-success="successUpload5"
+                    :on-preview="handlePictureCardPreview"
+                    :file-list="handimageList"
+                    :limit="1"
+                  >
+                    <i class="el-icon-plus"></i>
+                    <div
+                      slot="tip"
+                      class="el-upload__tip"
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
+                  </el-upload>
+                  <span class="example-diagram" @click="PrvExampleDiagram(identityExam)">
+                    <img :src="identityExam" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -194,7 +228,7 @@
                 <p class="small">3.上述条件至少上传一项</p>
               </div>
               <div class="form-item-con">
-                <el-form-item label="资质图上传：" prop="taxpayerimg">
+                <el-form-item label="资质图上传：" prop="taxpayerimg" class="qualificationmapimgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -204,14 +238,13 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload4"
                     :on-preview="handlePictureCardPreview"
-                    :file-list="taxpayerList"
                     :limit="limitNum"
                   >
                     <i class="el-icon-plus"></i>
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                     <img :src="exampleDiagram" alt />
@@ -222,16 +255,16 @@
             </div>
 
             <div class="form2-item" v-if="AgentListFlag">
-              <h3 class="tit-h3">代理商资质上传</h3>
+              <h3 class="tit-h3">商标证书或授权资质上传</h3>
               <div class="title-up">
                 <h3>
                   <span>*</span>
-                  品牌授权书
+                  资质类型
                 </h3>
-                <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
-                <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
-                <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p>
-                <p class="download">下载模板</p>
+                <p class="small">1.品牌商给贵司的授权代理证书、代理协议均可；</p>
+                <p class="small">2.品牌商官方网站的截图，请务必将地址栏截图进去；</p>
+                <p class="small">3.经营自有品牌请上传国内的商标注册证书；</p>
+                <p class="small">以上两项提供任一文件即可！</p>
               </div>
               <div class="form-item-con Agent-con">
                 <ul>
@@ -257,7 +290,8 @@
                         format="yyyy/MM/dd"
                       ></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="资质图上传：" prop="qualificationmapimg">
+                    <el-form-item label="资质图上传：" prop="qualification" class="qualificationmapimgwrap" v-if="AgentList.length">
+                    
                       <el-upload
                         class="upload-demo"
                         ref="upload"
@@ -265,13 +299,13 @@
                         :auto-upload="true"
                         list-type="picture-card"
                         :before-upload="beforeAvatarUpload"
-                        :on-success="successUploadAgency"
+                        :on-success="(res,file,fileList)=>{return successUploadAgency(res,file,fileList,index)}"
                         :on-preview="handlePictureCardPreview"
-                        :file-list="item.brandmapList"
                         :limit="1"
                       >
                         <i class="el-icon-plus"></i>
                       </el-upload>
+                   
                     </el-form-item>
                   </li>
                 </ul>
@@ -288,10 +322,11 @@
             class="demo-ruleForm"
           >
             <div class="form-item-con">
-              <el-form-item label="身份证：" prop="enterpriseplatformidentity">
-                <el-input v-model="ruleForm.enterpriseplatformidentity"></el-input>
+              <el-form-item label="身份证号：" prop="enterpriseplatformidentity">
+                <el-input v-model="ruleForm.enterpriseplatformidentity"  maxlength="18"
+                  show-word-limit></el-input>
               </el-form-item>
-              <el-form-item label="上传正面照片：" prop="identityposimg">
+              <el-form-item label="上传身份证正面照片：" prop="identityposimg" class="qualificationmapimgwrap">
                 <el-upload
                   class="upload-demo"
                   ref="upload"
@@ -301,20 +336,21 @@
                   :before-upload="beforeAvatarUpload"
                   :on-success="successUpload2"
                   :on-preview="handlePictureCardPreview"
+                  :file-list="identityposList"
                   :limit="1"
                 >
                   <i class="el-icon-plus"></i>
                   <div
                     slot="tip"
                     class="el-upload__tip"
-                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                  >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                 </el-upload>
-                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                  <img :src="exampleDiagram" alt />
+                <span class="example-diagram" @click="PrvExampleDiagram(zheng)">
+                  <img :src="zheng" alt />
                   <span>示例图</span>
                 </span>
               </el-form-item>
-              <el-form-item label="上传反面照片：" prop="identitynegimg">
+              <el-form-item label="上传身份证反面照片：" prop="identitynegimg" class="qualificationmapimgwrap">
                 <el-upload
                   class="upload-demo"
                   ref="upload"
@@ -324,17 +360,45 @@
                   :before-upload="beforeAvatarUpload"
                   :on-success="successUpload3"
                   :on-preview="handlePictureCardPreview"
+                  :file-list="identitynegList"
                   :limit="1"
+
                 >
                   <i class="el-icon-plus"></i>
                   <div
                     slot="tip"
                     class="el-upload__tip"
-                  >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                  >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                 </el-upload>
 
-                <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                  <img :src="exampleDiagram" alt />
+                <span class="example-diagram" @click="PrvExampleDiagram(fan)">
+                  <img :src="fan" alt />
+                  <span>示例图</span>
+                </span>
+              </el-form-item>
+                  <el-form-item label="上传手持身份证正面照片：" prop="handimage" class="qualificationmapimgwrap">
+                <el-upload
+                  class="upload-demo"
+                  ref="upload"
+                  :action="url"
+                  :auto-upload="true"
+                  list-type="picture-card"
+                  :before-upload="beforeAvatarUpload"
+                  :on-success="successUpload5"
+                  :on-preview="handlePictureCardPreview"
+                  :file-list="handimageList"
+                  :limit="1"
+
+                >
+                  <i class="el-icon-plus"></i>
+                  <div
+                    slot="tip"
+                    class="el-upload__tip"
+                  >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
+                </el-upload>
+
+                <span class="example-diagram" @click="PrvExampleDiagram(identityExam)">
+                  <img :src="identityExam" alt />
                   <span>示例图</span>
                 </span>
               </el-form-item>
@@ -393,6 +457,9 @@ export default {
       dialogImageUrl: "",
       // 示例图
       exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
+      identityExam: require("@/assets/image/OriginalFactoryEntry/timg.jpg"),
+      zheng: require("@/assets/image/OriginalFactoryEntry/zheng.jpg"),
+      fan: require("@/assets/image/OriginalFactoryEntry/fan.jpg"),
       // 预览图片
       dialogVisible: false,
       // 代理商的上传图片
@@ -402,14 +469,15 @@ export default {
       identityposList: [],
       identitynegList: [],
       taxpayerList: [],
+      handimageList:[],
       // 基本信息
       ruleForm: {
         // 信用代码
-        creditCode: "",
+        creditcode: "",
         // 公司注册名称
         companyname: "",
         // 工商营业执照注册号
-        businesslicensenum: "",
+       // businesslicensenum: "",
         // 法定代表人
         legalagent: "",
         // 公司成立时间
@@ -426,8 +494,8 @@ export default {
         businesslicenseendtime: "",
         // 营业执照是否长期
         businesshours: "",
-        // 资质图上传
-        qualificationmapimg: [],
+        // 营业执照上传
+        qualificationmapimg:"",
         // 身份证
         enterpriseplatformidentity: "",
         // 身份证正面
@@ -435,7 +503,7 @@ export default {
         // 身份证反面
         identitynegimg: "",
         // 一般纳税人资格上传
-        taxpayerimg: [],
+        taxpayerimg: "",
         // 代理资质图的数组
         qualification: [],
         // 代理资质时间
@@ -507,7 +575,7 @@ export default {
         qualificationmapimg: [
           {
             required: true,
-            message: "请上传资质图",
+            message: "请上传营业执照",
             trigger: "blur"
           }
         ],
@@ -521,14 +589,14 @@ export default {
         identityposimg: [
           {
             required: true,
-            message: "请上传身份证正面",
+            message: "请上传手持身份证正面",
             trigger: "blur"
           }
         ],
         identitynegimg: [
           {
             required: true,
-            message: "请上传身份证反面",
+            message: "请上传手持身份证反面",
             trigger: "blur"
           }
         ],
@@ -570,13 +638,13 @@ export default {
     ...mapActions("OriginalFactoryEntry", ["GetInsertBrandReview"]),
     ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     handleInput() {
-      let obj = this.ruleForm.creditCode;
+      let obj = this.ruleForm.creditcode;
       obj = obj.replace(/[\W]/g, "").toUpperCase();
-      this.$set(this.ruleForm, "creditCode", obj);
-      console.log(obj.length);
+      this.$set(this.ruleForm, "creditcode", obj);
+     
       if (obj.length >= 18) {
         if (this.count < 1) {
-          console.log("shixian");
+        
           this.showRequireBtn = true;
         } else {
           this.showSetForm = true;
@@ -584,18 +652,17 @@ export default {
       }
     },
     getCompanyInfo() {
-      let creditCode = this.ruleForm.creditCode;
+      let creditcode = this.ruleForm.creditcode;
       axios
         .request({
           ...FactoryEntry.queryCompnayInfo,
           params: {
-            creditNo: this.ruleForm.creditCode
+            creditNo: this.ruleForm.creditcode
           }
         })
         .then(res => {
-          console.log(res);
           if (res.data) {
-            this.ruleForm.creditCode = creditCode;
+            this.ruleForm.creditcode = creditcode;
             this.ruleForm.companyname = res.data.companyName;
             this.ruleForm.businesslicensenum = res.data.no;
             this.ruleForm.legalagent = res.data.operName;
@@ -620,27 +687,30 @@ export default {
           // 转换日期格式
           this.ruleForm.qualificationtime = [];
           this.AgentList.forEach((item, index) => {
-            console.log(item);
-            this.ruleForm.qualificationtime[index] =
+          this.ruleForm.qualificationtime[index] =
               item.qualificationstarttime + "-" + item.qualificationendtime;
           });
-          console.log(this.ruleForm);
-
           // 对上传多张图片的处理
-          let ret = this.ruleForm.qualificationmapimg instanceof Array;
-          if (ret) {
-            this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.join(
-              "@"
-            );
-          }
-          let ret2 = this.ruleForm.taxpayerimg instanceof Array;
-          if (ret2) {
-            this.ruleForm.taxpayerimg = this.ruleForm.taxpayerimg.join("@");
-          }
-
-          let ret3 = this.ruleForm.qualification instanceof Array;
-          if (ret3) {
-            this.ruleForm.qualification = this.ruleForm.qualification.join("@");
+          // let ret = this.ruleForm.qualificationmapimg instanceof Array;
+          // if (ret) {
+          //   this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.join(
+          //     "@"
+          //   );
+          // }
+          // let ret2 = this.ruleForm.taxpayerimg instanceof Array;
+          // if (ret2) {
+          //   this.ruleForm.taxpayerimg = this.ruleForm.taxpayerimg.join("@");
+          // }
+          
+          // let ret3 = this.ruleForm.qualification instanceof Array;
+          // if (ret3) {
+          //   this.ruleForm.qualification = this.ruleForm.qualification.join("@");
+          // }
+          let brandImageUrlList=this.AgentList.map(item=>{
+            return item.imageUrl
+          })
+          if(brandImageUrlList.length>0){
+            this.ruleForm.qualification = brandImageUrlList.join("@");
           }
           let ret4 = this.ruleForm.qualificationtime instanceof Array;
           if (ret4) {
@@ -650,6 +720,11 @@ export default {
           }
           if (this.applyDetailEdit.id) {
             this.ruleForm["id"] = this.applyDetailEdit.id;
+          }
+        
+          if(!this.AgentListFlag){
+            delete this.ruleForm.qualificationtime;
+            delete this.ruleForm.qualification;
           }
           this.GetInsertBrandReview(this.ruleForm)
             .then(res => {
@@ -671,38 +746,46 @@ export default {
 
     // 上传之前图片的大小
     beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 1;
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 1MB!");
-      }
-      return isLt2M;
+      // const isLt2M = file.size / 1024 / 1024 < 1;
+      // if (!isLt2M) {
+      //   this.$message.error("上传头像图片大小不能超过 1MB!");
+      // }
+      // return isLt2M;
     },
     // 资质上传图
     successUpload1(response, file, fileList) {
-      let ret = this.ruleForm.qualificationmapimg instanceof Array;
-      if (ret) {
-        this.ruleForm.qualificationmapimg.push(response.data);
-      } else {
-        this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.split(
-          "@"
-        );
-        this.ruleForm.qualificationmapimg.push(response.data);
-      }
-
+      // let ret = this.ruleForm.qualificationmapimg instanceof Array;
+      // if (ret) {
+      //   this.ruleForm.qualificationmapimg.push(response.data);
+      // } else {
+      //   this.ruleForm.qualificationmapimg = this.ruleForm.qualificationmapimg.split(
+      //     "@"
+      //   );
+      //   this.ruleForm.qualificationmapimg.push(response.data);
+      // }
+      this.ruleForm.qualificationmapimg=response.data
       this.$message({
         message: "上传成功!",
         type: "success"
       });
     },
+    onChangeAgency(res,){
+     console.log(res)
+    },
+    changeFile(r,e,s){
+      console.log(r,e,s)
+    },
     // 代理商资质图上传成功
-    successUploadAgency(response, file, fileList) {
-      let ret = this.ruleForm.qualification instanceof Array;
-      if (ret) {
-        this.ruleForm.qualification.push(response.data);
-      } else {
-        this.ruleForm.qualification = this.ruleForm.qualification.split("@");
-        this.ruleForm.qualification.push(response.data);
-      }
+    successUploadAgency(response, file, fileList,index) {
+      console.log(this.AgentList)
+      this.AgentList[index].imageUrl=response.data;
+      // let ret = this.ruleForm.qualification instanceof Array;
+      // if (ret) {
+      //   this.ruleForm.qualification.push(response.data);
+      // } else {
+      //   this.ruleForm.qualification = this.ruleForm.qualification.split("@");
+      //   this.ruleForm.qualification.push(response.data);
+      // }
       this.$message({
         message: "上传成功!",
         type: "success"
@@ -724,15 +807,27 @@ export default {
         type: "success"
       });
     },
+    successUpload5(response) {
+      this.ruleForm.handimage = response.data;
+      this.$message({
+        message: "上传成功!",
+        type: "success"
+      });
+    },
     // 纳税资格人上传
-    successUpload4(response) {
-      let ret = this.ruleForm.taxpayerimg instanceof Array;
-      if (ret) {
-        this.ruleForm.taxpayerimg.push(response.data);
-      } else {
-        this.ruleForm.taxpayerimg = this.ruleForm.taxpayerimg.split("@");
-        this.ruleForm.taxpayerimg.push(response.data);
+    successUpload4(response,file, fileList) {
+      if(this.ruleForm.taxpayerimg){
+        this.ruleForm.taxpayerimg=this.ruleForm.taxpayerimg+"@"+response.data
+      }else{
+        this.ruleForm.taxpayerimg=response.data
       }
+      // let ret = this.ruleForm.taxpayerimg instanceof Array;
+      // if (ret) {
+      //   this.ruleForm.taxpayerimg.push(response.data);
+      // } else {
+      //   this.ruleForm.taxpayerimg = this.ruleForm.taxpayerimg.split("@");
+      //   this.ruleForm.taxpayerimg.push(response.data);
+      // }
       this.$message({
         message: "上传成功!",
         type: "success"
@@ -763,15 +858,22 @@ export default {
     }
   },
   mounted() {
-    if (this.joinForm.residencetype == 3) {
+    if (this.joinForm.residencetype == 3 || this.joinForm.residencetype == 18) {
       this.AgentListFlag = false;
     } else {
       this.AgentListFlag = true;
     }
-    // this.ruleForm = Object.assign(this.joinForm,this.ruleForm);
+    if(this.joinForm.id){
+        this.qualificationmapList.push({url:'http://auth.113ic.com/'+this.joinForm.qualificationmapimg})
+        this.identityposList.push({url:'http://auth.113ic.com/'+this.joinForm.identityposimg})
+        this.identitynegList.push({url:'http://auth.113ic.com/'+this.joinForm.identitynegimg})
+        this.handimageList.push({url:'http://auth.113ic.com/'+this.joinForm.handimage})
+        this.joinForm.taxpayerimg="";
+        this.joinForm.qualification="";
+        this.joinForm.qualificationtime=""
+    }
     this.ruleForm = { ...this.ruleForm, ...this.joinForm };
     this.limitNum = this.ruleForm.brandName.length;
-
     this.ruleForm.brandName.forEach((item, index) => {
       let obj = {
         brand: item,
@@ -780,7 +882,6 @@ export default {
       };
       this.AgentList.push(obj);
     });
-    console.log(this.AgentList);
     //过滤掉新增的品牌
     var index = this.AgentList.findIndex(
       item => item.brand === this.$route.query.newBrand

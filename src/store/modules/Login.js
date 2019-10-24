@@ -10,7 +10,8 @@ import {
   UserInforma,
   WxLogin,
   WxSuccess,
-  WxBack
+  WxBack,
+  getFooterNav
 } from '@/api/Login'
 
 const state = {
@@ -181,6 +182,23 @@ const actions = {
       WxBack(data).then(res => {
         if (res.resultCode === '200') {
           resolve()
+        } else {
+          reject(res.message)
+        }
+      }).then(err => {
+        reject(err)
+      })
+    })
+  },
+  // 获取底部导航
+
+  getfooterNav ({
+    commit
+  }, data) {
+    return new Promise((resolve, reject) => {
+      getFooterNav(data).then(res => {
+        if (res.resultCode === '200') {
+          resolve(res)
         } else {
           reject(res.message)
         }

@@ -2,7 +2,7 @@
   <div class="SellerCommodityManagement">
     <el-breadcrumb separator-class="el-icon-arrow-right">
 <!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
-      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      <el-breadcrumb-item>特价管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="OrderManagement">
       <!-- 订单列表 -->
@@ -42,45 +42,88 @@
         </div>
         <!-- 列表的内容 -->
         <div class="tab-list-con">
-          <p class="tab-list-con-tit">
+          <!-- <p class="tab-list-con-tit">
             <span style="width:20%">商品信息</span>
             <span style="width:10%">售价</span>
             <span style="width:6%">起订量</span>
             <span style="width:6%">最小增量</span>
-            <span style="width:6%">交货地</span>
-             <span style="width:10%">货源</span>
-            <span style="width:8%">总库存</span>
-            <span style="width:8%">剩余</span>
-            <span style="width:15%">类型详情</span>
+            <span style="width:16%">交货条件</span>
+            <span style="width:16%">数量</span>
+         
+            <span style="width:15%">售卖时限</span>
             <span style="width:10%">操作</span>
-          </p>
-          <div class="list-item" v-for="item in PublishGoodsList" :key="item.id">
-            <div class="list-item-tit">
+          </p> -->
+          <div class="list-item">
+            <!-- <div class="list-item-tit">
               <span>批次号：</span>
               <span class="phon">{{item.product_no}}</span>
-            </div>
+            </div> -->
             <table
               width="100%"
               border="1"
               cellpadding="0"
               cellspacing="0"
-              style="table-layout:fixed"
+            
             >
+              <!-- style="table-layout:fixed" -->
+            <thead>
               <tr>
-                <td style="width:20%;" class="goodsInfo">
+                <th> <label>
+                            <input type="checkbox" @change="allCheck" ref="allcheckmark">
+                            全选
+                        </label>
+                        </th>
+                <th>商品信息</th>
+                <th>售价</th>
+                <th>起订量</th>
+                <th>最小增量</th>
+                <th>交货条件</th>
+                <th>数量</th>
+                <th>售卖时限</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+              <tr  v-for="item in PublishGoodsList" :key="item.id">
+                <td>
+                   <label  v-if="item.downButton || item.upButton">
+                                        <input type="checkbox" name="checking" :value="item.id" v-model="checklist" ref="input">
+                                    </label>
+                </td>
+                <td  class="goodsInfo">
                   <div class="wrap">
                     <img :src="item.goodsImageUrl" alt />
                     <div>
-                      <p style="word-break:break-all;margin-bottom:5px;">
-                        {{item.goods_name}}</p>
+                      <p>
+                        <router-link class="color" :to="{
+                          path:'/BrandDetail/GoodsDetails',
+                          query:{
+                            tag:'goodsinfo',
+                            documentid:item.goods_id,
+                            name:item.goods_name
+                          }
+                        }">
+                           {{item.goods_name}}
+                        </router-link>
+                       </p>
                       <p >
-                        {{item.brandName}}</p>
+                        <router-link :to="{
+                          path:'/BrandDetail',
+                          query:{
+                            tag:'brand',
+                            documentid:item.brandId,
+                            name:item.brandName
+                          }
+                        }">
+                            {{item.brandName}}
+                        </router-link>
+                        </p>
                     </div>
                   </div>
 
                 </td>
-                <td style="width:10%;" class="price">
-                  
+                <td  class="price">
                   <p
                     v-if="!item.priceType"
                     class="color"
@@ -95,33 +138,31 @@
                       <span>({{item.includBill? '含13%增值税' : '不含税' }})</span>
                   </div>
                 </td>
-                <td style="width:6%;">
-                  <p>{{item.moq}}只</p>
+                <td>
+                  <p>{{item.moq}}</p>
                 </td>
-                <td style="width:6%;">
-                  <p>{{item.mpq}}只</p>
+                <td >
+                  <p>{{item.mpq}}</p>
                 </td>
-                <td style="width:6%;">
-                  <p>{{item.diliverPlace}}</p>
-                </td>
-                   <td style="width:10%;">
+                   <td >
                     <span>{{item.goods_type ? '现货' : '期货'}}</span>
-                    <p v-if="!item.goods_type">预计交期{{item.deliverTime | deliverTime}}</p>
+                    <p v-if="!item.goods_type">预计交期{{item.deliverTime | formatDate}}</p>
                     <p v-if="item.goods_type">下单后{{item.day_interval | filterHours}}小时内发货</p>
+                     <p>{{item.diliverPlace}}交货</p>
                   </td>
-                <td style="width:8%;">
-                  <span>{{item.goodsCount}}只</span>
+                <td >
+                  <span>数量：{{item.goodsCount}}</span><br>
+                   <span>剩余：{{item.goodsStockCount}}</span>
                 </td>
-                <td style="width:8%;">
-                  <span>{{item.goodsStockCount}}只</span>
-                </td>
-                <td style="width:15%;">
+                <td >
                   <div v-if="item.seller_always">
                     <p>长期卖</p>
                   </div>
-                  <div v-else>
-                    <p>限时卖</p>
-                      <CountTime
+                  <div v-if="!item.seller_always" style="white-space:nowrap">
+                    <p>限时跟单</p>
+                    <p>起:{{item.beginTime | formatDate2}}</p>
+                    <p>止:{{item.expireTime | formatDate2}}</p>
+                      <!-- <CountTime
                         class="countTime"
                         v-on:end_callback="countDownE_cb(item)"
                         :currentTime="item.currentTime"
@@ -134,21 +175,29 @@
                         :hourTxt="'小时'"
                         :minutesTxt="'分钟'"
                         :secondsTxt="'秒'"
-                      ></CountTime>
+                      ></CountTime> -->
                       <!-- <el-button slot="reference">剩余售卖时间</el-button> -->
                   </div>
                 </td>
-             
-                <td style="width:10%;">
+            
+                <td>
                   <div class="wrapbtn">
-                      <span v-if="item.downButton" @click="OffShelfMerchandise(item)" class="btn undone">下架该商品</span>
-                      <span v-if="item.upButton" class="btn bgColor" @click="ReLaunchingCommodities(item)" >重新上架</span>
+                    <a href="javascript:;" v-if="item.downButton" @click="OffShelfMerchandise(item)">下架</a>
+                     <a href="javascript:;" v-if="item.upButton"  @click="ReLaunchingCommodities(item)" >上架</a>
+                      <!-- <span v-if="item.downButton" @click="OffShelfMerchandise(item)" class="btn undone">下架</span> -->
+                      <!-- <span v-if="item.upButton" class="btn bgColor" @click="ReLaunchingCommodities(item)" >重新上架</span> -->
                   </div>
                 </td>
               </tr>
+            </tbody>
             </table>
           </div>
+           <el-button v-if="checklist.length && currentModlue.isenable" size="mini" class="" @click="batchDown">全选下架</el-button>
+           <el-button v-if="checklist.length && !currentModlue.isenable" size="mini" class="" @click="batchUp">全选上架</el-button>
         </div>
+      </div>
+      <div>
+          <div  v-if="PublishGoodsList.length==0" class="nocont">暂无数据</div>
       </div>
       <!-- 分页 -->
       <Pagination v-if="total" :currentPage.sync="currentPage" :total="total" :page-size="pageSize" @current-change="handleChangePage"></Pagination>
@@ -162,7 +211,9 @@
 // import "@/assets/css/ele-form.less";
 import Countdown from "_c/Countdown";
 import { mapState, mapActions, mapMutations } from "vuex";
-import { TimeForma } from "@/lib/utils";
+import { TimeForma,TimeForma2 } from "@/lib/utils";
+import {axois,sellerCenter} from "@/api/apiObj";
+import { axios } from '../../../api/apiObj';
 export default {
   name: "SellerCommodityManagement",
   data() {
@@ -190,13 +241,101 @@ export default {
       PublishGoodsList: [],
       total: 0,
       pageSize:10,
+      checklist:[],
+      is_checkout:false,
+      changeAll:false
     };
+  },
+  watch:{
+     checklist(val){
+                if(!this.$refs.input || this.checklist.length<this.$refs.input.length || this.$refs.input.length==0){
+                 this.$refs.allcheckmark.checked=false
+                }else{
+                  this.$refs.allcheckmark.checked=true;
+                }
+        }
   },
   methods: {
     ...mapActions("SellerCommodityManagement", [
       "GetPublishGoodsListByUser",
       "GetUpdatePublishGoodsSatus"
     ]),
+    batchDown(){
+      let sendData={
+        flag:false
+      }
+      let uidArr=[]
+      this.checklist.forEach(item=>{
+        let obj=this.PublishGoodsList.find(item0=>{
+          return item0.id==item
+        })
+        uidArr.push(obj.uid)
+      })
+      if(this.checklist.length>1){
+        sendData.ids=this.checklist.join("@");
+        sendData.uids=uidArr.join("@")
+      }else if(this.checklist.length==1){
+        sendData.ids=this.checklist[0];
+        sendData.uids=uidArr[0]
+      }
+      axios.request({...sellerCenter.updateBatchPublishGoodsSatus,params:sendData}).then(res=>{
+      
+        this.all()
+      })
+    },
+    batchUp(){
+      let sendData={
+        flag:true
+      }
+      let uidArr=[]
+      this.checklist.forEach(item=>{
+        let obj=this.PublishGoodsList.find(item0=>{
+          return item0.id==item
+        })
+        uidArr.push(obj.uid)
+      })
+      if(this.checklist.length>1){
+        sendData.ids=this.checklist.join("@");
+        sendData.uids=uidArr.join("@")
+      }else if(this.checklist.length==1){
+        sendData.ids=this.checklist[0];
+        sendData.uids=uidArr[0]
+      }
+      axios.request({...sellerCenter.updateBatchPublishGoodsSatus,params:sendData}).then(res=>{
+      
+        this.all()
+      })
+    },
+     allCheck(val){
+            this.checklist=[];
+            Array.from(this.$refs.input).forEach(el => {
+                if(val.target.checked){
+                    this.checklist.push(el.value)
+                }
+                    el.checked=val.target.checked
+            });
+        },
+        AllcheckSubmit(flag){
+                if(flag){
+                    this.sendData={
+                        payRealTotal:this.obj.currentPay,
+                        flag:flag
+                    }
+                }else{
+                    this.sendData={
+                        payRealTotal:this.obj.unCurrentPay,
+                        flag:flag
+                    }
+                }
+               this.showDialog=true;
+            // alert("待开发")
+
+        },
+        handleChangeAll(){
+            this.is_checkout=null;
+             this.isOpenBill=null;
+             this.changeAll=true;
+        },
     //搜索商品
     SearchSubmit(){
       console.log(this.SearchInputValue)
@@ -261,7 +400,7 @@ this.GetUpdatePublishGoodsSatus({
       this.all();
     },
     handleChangePage(x){
-        console.log("pageIndex:",x)
+      
         this.currentPage=x;
         this.all()
     },
@@ -288,6 +427,8 @@ this.GetUpdatePublishGoodsSatus({
           });
           this.PublishGoodsList = arr;
           this.total = res.total;
+          this.checklist=[];
+    
         })
         .catch(err => {
           this.$message.error(err);
@@ -299,8 +440,11 @@ this.GetUpdatePublishGoodsSatus({
   },
  
   filters: {
-    deliverTime(x) {
+    formatDate(x) {
       return TimeForma(x);
+    },
+     formatDate2(x) {
+      return TimeForma2(x);
     },
     filterHours(val){
       return Number(val)*24

@@ -1,29 +1,21 @@
 .CommoditiesInterest {
     margin-top:20px;
-    background: #fff;
+   
     padding: 20px;
     // 切换
     .tab-list {
-        height: 36px;
-        margin-bottom: 30px;
-        .active {
-            border-color:#df3f2f;
-            color:#df3f2f;
-            .select {
-               opacity: 1;
-            }
-        }
+        margin-bottom: 10px;
+        background: #fff;
+        padding:15px 10px;
         &>li {
             min-width: 100px;
-            height: 30px;
             line-height: 30px;
             font-size: 18px;
-            color: #4A5A6A;
             margin-right:5px;
             float: left;
             cursor: pointer;
-            border:2px solid #ddd;
             border-radius: 3px;
+            background:#f7f7f7;
             &:hover {
                 color: #df3f2f
             }
@@ -41,23 +33,6 @@
                 line-height: 28px;
                 margin-right:15px;
                 margin-left:15px;
-                .num{
-                    margin-right:10px;
-                }
-            }
-
-            .select {
-               opacity: 0;
-                height: 30px;
-                width: 30px;
-                background: #df3f2f;
-                float: right;
-                position: relative;
-                img {
-                    width:30px;
-                    height: 30px;
-                    vertical-align: top;
-                }
             }
         }
     }
@@ -75,6 +50,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: #fff;
             &:hover{
                 box-shadow: 0 0 5px 2px #ddd;
             }

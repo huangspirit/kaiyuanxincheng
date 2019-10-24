@@ -57,11 +57,34 @@
           </div>
           <div class="goodsDetail">
             <div class="googsDesc">
-              <h3 class="color">{{listItem.productno}}</h3>
-              <h4>品牌：{{listItem.brand}}</h4>
+              <h3 class="color">
+                <router-link :to="{
+                  path:'/BrandDetail/GoodsDetails',
+                  query:{
+                    tag:'goodsinfo',
+                    documentid:listItem.id,
+                    name:listItem.productno
+                  }
+                }">
+                  <strong>{{listItem.productno}}</strong>
+                  </router-link>
+              </h3>
+              <h4>品牌：
+                <router-link
+                :to="{
+                  path:'/BrandDetail',
+                  query:{
+                    tag:'brand',
+                    documentid:listItem.brandId,
+                    name:listItem.brand
+                  }
+                }"
+                >{{listItem.brand}}</router-link>
+                
+                </h4>
              
               <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
-              <p>型号描述：{{listItem.productdesc}}</p>
+              <p>描述：{{listItem.productdesc}}</p>
               <p>
                 <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                 <span
@@ -116,6 +139,7 @@
         layout="prev, pager, next, jumper"
         :page-size="1"
         :total="total"
+        v-if="total"
         background
         @current-page="currentPage"
         @current-change="change"
@@ -252,7 +276,6 @@ export default {
           }
         }
       }
-      console.log(this.baseListData);
       this.waitInquiryList.allCheck = !this.waitInquiryList.allCheck;
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
     },

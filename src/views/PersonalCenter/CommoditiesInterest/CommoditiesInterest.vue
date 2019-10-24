@@ -6,18 +6,14 @@
       <el-breadcrumb-item>关注的商品</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="CommoditiesInterest">
-      <ul class="tab-list" v-if="total">
+      <ul class="tab-list clear" v-if="total">
         <li
           v-for="(item,k) in tabList"
-          :class="{active:catergoryId === item.catergoryId}"
+          :class="{bgColor:catergoryId === item.catergoryId}"
           :key="k"
           @click="tabChange(k)"
         >
-<!--          <img :src="item.catergoryUrl" alt class="img-1">-->
-          <span class="text">{{item.catergoryName}} <span class="num">（{{item.summaryTotal}}）</span>     </span>
-          <div class="select">
-            <img src="@/assets/image/index/u1076.png" alt>
-          </div>
+          <span class="text">{{item.catergoryName}}（{{item.summaryTotal}}）</span>      
         </li>
       </ul>
         <p v-if="goodsList.length==0" class="nocontent">您还没有关注的商品</p>
@@ -39,6 +35,7 @@
 
                 </div>
                 <div class="text fl">
+                  
                     <router-link
                         :to="{
                             path:'/BrandDetail/GoodsDetails',
@@ -51,6 +48,8 @@
                         tag="p"
                         class="name"
                     > {{item.goodsBase.productno}}</router-link>
+                    <p>
+                     <span>品牌：</span>
                     <router-link
                         :to="{
                 path:'/BrandDetail',
@@ -59,12 +58,13 @@
                         documentid:item.goodsBase.brandId,
                         name:item.goodsBase.brand
                     }
-                }" class="brand" tag="p">
-                        <span>品牌：</span>
+                }" class="brand">
+                       
                         {{item.goodsBase.brand}}
                     </router-link>
+                    </p>
                     <P class="xh">
-                        <span>型号描述：</span>
+                        <span>描述：</span>
                         {{item.goodsBase.productdesc}}
                     </P>
                     <p  v-if="item.goodsBase.map && item.goodsBase.map.totalSeller">
@@ -102,7 +102,7 @@
                     v-if="item.goodsBase.map && item.goodsBase.map.totalSeller"
                 >
                     <i class="el-icon-s-promotion"></i>
-                    去采购
+                    立即采购
                 </router-link>
             </div>
         </li>
@@ -126,7 +126,7 @@ export default {
   name: "CommoditiesInterest",
   data() {
     return {
-        pageSize:2,
+        pageSize:5,
         currentPage:1,
         total:0,
         catergoryId:-1,

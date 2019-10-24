@@ -99,11 +99,11 @@
             </el-input>
             <span class="markdesc">客户只能购买这个数量的整数倍+最小订购量</span>
         </el-form-item>
-        <el-form-item label="可卖数量：" prop="stock_count">
+        <el-form-item label="售卖数量：" prop="stock_count">
             <el-input v-model="ruleForm.stock_count" @input="changeStockCount" placeholder="" style="width:45%">
                 <template slot="append">只</template>
             </el-input>
-            <span class="markdesc">请发布真实可卖数量</span>
+            <span class="markdesc">请发布真实售卖数量</span>
             <p class="small color"  v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
         </el-form-item>
         <el-form-item label="价格有效期至：" prop="stock_count">
@@ -136,9 +136,10 @@
           </el-select>
         </el-form-item>
       </el-form>
+      
     </div>
 
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="" style="text-align:center;width:100%">
       <el-button size="small" @click="cancel">取 消</el-button>
       <el-button size="small" type="primary" @click="applyOk('ruleForm')">确 定</el-button>
     </span>
@@ -351,9 +352,7 @@ export default {
     };
   },
   filters: {
-    // toFixed(val, length) {
-    //   return Number(val).toFixed(length);
-    // }, 
+ 
     addPriceFilter(val){
       
         return (Number(val)*1.13).toFixed(3)
@@ -375,7 +374,6 @@ export default {
     }
   },
   watch: {
-    // 发货地发生变化
     // 发货地发生变化
             "diliver_place_flag": {
                 handler() {
@@ -436,6 +434,7 @@ export default {
     },
   },
   mounted() {
+    console.log("brandId:",this.allListData)
     this.querySellerCredit().then(res=>{
                 this.SellerCredit=res
             });
@@ -499,7 +498,7 @@ export default {
         obj = parseFloat(obj);
       }
       this.SteppedPriceListobj["price" + k] = obj;
-      console.log(this.SteppedPriceListobj);
+   
       if (k == 0) {
         this.selectedPrice = Number(this.SteppedPriceListobj.price0);
       }
@@ -547,7 +546,7 @@ export default {
       } else {
         event.target.value = "";
       }
-      console.log(this.SteppedPriceListobj);
+  
     },
     numblur() {
       let order = Number(event.target.name);
@@ -640,8 +639,6 @@ export default {
           if(this.ruleForm.base_no){
             obj.base_no=this.ruleForm.base_no
           }
-          console.log(obj)
-  
           axios
             .request({
               ...siderInquiryList.replyRequest,

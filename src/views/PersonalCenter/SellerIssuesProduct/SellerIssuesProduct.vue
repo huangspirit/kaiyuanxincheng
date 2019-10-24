@@ -1,12 +1,12 @@
 <template>
     <!--发布商品  -->
     <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-<!--            <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
-            <el-breadcrumb-item>发布产品</el-breadcrumb-item>
-        </el-breadcrumb>
+        <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
+   <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+            <el-breadcrumb-item>发布特价</el-breadcrumb-item>
+        </el-breadcrumb> -->
         <div class="SellerIssuesProduct" @click="noSelect">
-            <!-- <p class="title">填写发布器件信息</p> -->
+           
             <el-form
                 :model="ruleForm"
                 :rules="rules"
@@ -14,8 +14,10 @@
                 label-width="180px"
                 class="form-list"
             >
+             <p class="title">温馨提示：以下填写的信息将会直接展示给买家，发布成功后将不能修改，请仔细填写！</p>
                 <el-form-item label="器件型号：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
+                    <p class="desc" style="padding-top:5px;">若您输入的型号晶城没有收录，请及时反馈给我们；&nbsp;<a href="/feedback">&nbsp;反馈&nbsp;>></a></p>
                     <ul class="selectProductList" v-if="selectProductList.length">
                         <li
                             v-for="item in selectProductList"
@@ -56,7 +58,7 @@
                         <el-radio :label="true" :value="true">现货</el-radio>
                         <el-radio :label="false" :value="false">订货</el-radio>
                     </el-radio-group>
-                    <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单24小时内发货</p>
+                    <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单24小时内发货，若发货时间超过24小时需要选择订货哦</p>
                     <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
                 </el-form-item>
                  <el-form-item label="批号：" prop="base_no" v-if="ruleForm.goods_type">
@@ -82,7 +84,7 @@
                         <el-radio :label="false" :value="false">否</el-radio>
                     </el-radio-group>
                     <!-- <p class="desc"  v-if="!ruleForm.clude_bill && !ruleForm.support_bill">是否系统提供发票,不提供发票增加2%手续费</p> -->
-                        <p class="desc" v-if="ruleForm.is_old_product">器件发布后将会放到呆料区，有利于用户快速找到购买</p>
+                        <p class="desc" v-if="ruleForm.is_old_product">器件发布后将会放到呆料区，有利于用户快速找到购买，批号大于2年的可认为是呆料</p>
                     <!-- <span class="small-sp"  v-if="!ruleForm.clude_bill">是否系统提供发票,不提供发票增加2%手续费</span> -->
                 </el-form-item>
                 <el-form-item label="是否含税价：" v-if="priceunitMark!='$'">
@@ -112,7 +114,7 @@
                                 <el-input @input="changePrice(k)" :placeholder="SteppedPriceListobj['placeholderprice'+k]" :name="k" v-model="SteppedPriceListobj['price'+k]"  :max="SteppedPriceListobj['maxprice'+k]" :min="0"  @blur="priceblur($event)">
                                     <template slot="prepend">{{priceunitMark}}</template>
                                 </el-input>
-                                <strong v-if="SteppedPriceListobj['price'+k] && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{SteppedPriceListobj['price'+k] | addPriceFilter}}</strong>
+                                <strong v-if="SteppedPriceListobj['price'+k] && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{SteppedPriceListobj['price'+k] | addPriceFilter(ruleForm.priceunit?3:2)}}</strong>
                             </div>
                            
                         </div>
@@ -120,7 +122,6 @@
                             <p v-if="SteppedPriceListlength === 3" style="color:#ff6600" >最多添加三个阶梯价格</p>
                             <!-- <span @click="addSteppedPrice" class="add">+添加阶梯价格</span> -->
                             <span @click="resetSteppedPrice" class="reset">重置阶梯价格</span>
-
                         </div>
                     </div>
                 </el-form-item>
@@ -128,11 +129,11 @@
                     <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" min="0" style="width:35%">
                         <template slot="prepend">{{priceunitMark}}</template>
                     </el-input>
-                    <strong v-if="ruleForm.seckil_price && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{ruleForm.seckil_price | addPriceFilter}}</strong>
+                    <strong v-if="ruleForm.seckil_price && !ruleForm.clude_bill && priceunitMark!='$'">含税价为{{ruleForm.seckil_price | addPriceFilter(ruleForm.priceunit?3:2)}}</strong>
                 </el-form-item>
                  
-               <el-form-item label="最小订购量MOQ：" prop="moq">
-                   <el-input v-model="ruleForm.moq" style="width:35%">
+               <el-form-item label="最小订购量MOQ：" prop="moq" >
+                   <el-input v-model="ruleForm.moq" style="width:35%" @input="inputmoq" :min="minmoq" :disabled="ruleForm.price_type">
                        <template slot="append">只</template>
                    </el-input>
                    <span class="descRight">此数量为用户可买的最小数量</span>
@@ -144,11 +145,11 @@
                      <span class="descRight">客户只能购买这个数量的整数倍+最小订购量</span>
 
                 </el-form-item>
-                <el-form-item label="可卖数量：" prop="stock_count">
-                    <el-input v-model="ruleForm.stock_count" @input="changeStockCount"  style="width:35%">
+                <el-form-item label="售卖数量：" prop="stock_count">
+                    <el-input v-model="ruleForm.stock_count" @input="changeStockCount"  style="width:35%" placeholder="大于最小订购量" @blur="blurStockCount">
                        <template slot="append">只</template>
                     </el-input>
-                     <span class="descRight">请发布真实可卖数量</span>
+                     <span class="descRight">请发布真实售卖数量</span>
                     <p class="small" style="color:#ff6600" v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
                 </el-form-item>
                 <el-form-item label="售卖期限：">
@@ -167,7 +168,6 @@
                         v-model="ruleForm.start_date"
                         type="datetime"
                         placeholder="开始时间"
-                
                         value-format="yyyy/MM/dd HH:mm:ss"
                         format="yyyy/MM/dd HH:mm:ss"
                         :picker-options="pickerOptions"
@@ -299,6 +299,8 @@
                     placeholderprice0:"大于0",
                     placeholdernum0:"大于0"
                 },
+                //阶梯价时最小的moq
+                    minmoq:0,
                 // 含不含税
                // clude_billFlag: true,
                 // 是不是自己开发票
@@ -346,13 +348,14 @@
                     // 阶梯价
                     price_level: "",
                     // 多长时间后交货
-                    day_interval: ""
+                    day_interval: "",
                     // // 源头公司名称
                     // SourceCompany: "",
                     // // 上次购买时间
                     // LastPurchaseTime: "",
                     // // 商品源头证明
                     // SourceImg: ""
+                    
                 },
                 rules: {
                     goods_name: [
@@ -433,8 +436,8 @@
             };
         },
         filters:{
-            addPriceFilter(val){
-                return (Number(val)*1.13).toFixed(3)
+            addPriceFilter(val,length){
+                return (Number(val)*1.13).toFixed(length)
             },
         },
         computed: {
@@ -500,6 +503,7 @@
             // 价格类型，是不是一口价
             "ruleForm.price_type": {
                 handler() {
+                    this.$set(this.ruleForm,'stock_count','')
                     if (this.ruleForm.price_type) {
                         this.$set(this.ruleForm,'moq',this.SteppedPriceListobj.num0)
                     } else {
@@ -718,7 +722,8 @@
                 }
                 let obj =this.SteppedPriceListobj['num'+k]+"";
                 obj = obj.replace(/\D/g,'');
-                this.SteppedPriceListobj['num'+k]=obj
+                this.SteppedPriceListobj['num'+k]=obj;
+                this.minmoq=this.SteppedPriceListobj.num0;
                 this.$set(this.ruleForm,"moq",this.SteppedPriceListobj.num0)
             },
             //输入库存
@@ -726,6 +731,14 @@
                 let obj =this.ruleForm.stock_count+"";
                 obj = obj.replace(/\D/g,'');
                 this.ruleForm.stock_count=obj;
+            },
+            //输入售卖结束
+              blurStockCount(){
+                let obj =this.ruleForm.stock_count+"";
+                obj = obj.replace(/\D/g,'');
+                if(Number(obj)<this.ruleForm.moq){
+                    this.$set(this.ruleForm,"stock_count",this.ruleForm.moq)
+                }
             },
             //监控阶梯价的变化
             priceblur(event){
@@ -760,6 +773,17 @@
                 }else{
                     event.target.value=""
                 }
+            },
+            //限制最小订购量的填写
+            inputmoq(){
+                if(this.ruleForm.price_type){
+                        let value=Number(event.target.value)
+                        let min=Number(event.target.min)
+                    if(value<min){
+                          this.$set(this.ruleForm,"moq",min)
+                    }
+                }
+                
             },
             // 发布商品
             submitForm(formName) {
@@ -953,6 +977,28 @@
                 .catch(err => {
                     this.$message.error("数据请求错误！");
                 });
+                //
+                if(this.$route.query.name){
+                    //商品名称
+                     let obj={
+                            start: 0,
+                            length: 10,
+                            name: this.$route.query.name,
+                        }
+                    if(this.UserInforma.userTagMap.tag==1){
+                        obj={...obj,brand:this.UserInforma.userTagMap.brand}
+                    }
+                    this.GetSerarchGoods(obj).then(res => {
+                       // this.selectProductList = res.data;
+                       if(res.data.length){
+                           this.ruleForm.goods_name = res.data[0].productno;
+                            this.ruleForm.goods_id = res.data[0].id;
+                            this.selectProductObj = res.data[0];
+                            this.ruleForm.catergory_id = res.data[0].parent_id;
+                       }
+                        
+                    });
+                    }
         }
     };
 </script>

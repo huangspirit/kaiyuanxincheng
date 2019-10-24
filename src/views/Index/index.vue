@@ -19,11 +19,12 @@
         </div>
         <div class="banner">
             <!-- <p class="tit">用芯链接世界</p> -->
-            <el-carousel>
+            <img :src="bannerList[2]['url']" alt="" style="height:100%;width:100%;">
+            <!-- <el-carousel>
                 <el-carousel-item v-for="(item,k) in bannerList" :key="k" >
                     <img :src="item.url" alt="" >
                 </el-carousel-item>
-            </el-carousel>
+            </el-carousel> -->
             <div class="wrapSearch allWidth">
                 <p class="tit">
                     找低价   买特价   开源节流
@@ -31,7 +32,7 @@
                     <countTo :endVal="catergoryTotal" :duration="4"></countTo>种产品
                     <countTo :endVal="productTotal" :duration="4"></countTo>个产品 -->
                 </p>
-                <p class="desc">数百家厂商的选择，芯手网值得您信赖</p>
+                <p class="desc"><span>用芯链接世界</span><span style="margin-left:30px;">低价才是王道</span></p>
                  <HeaderSearch ref="HeaderSearch" class="headerSeach"></HeaderSearch>
                 <ul class="hot-search">
                     <li
@@ -46,7 +47,7 @@
             <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
             <div class="desc color">跟着特价买，越来越便宜</div>
             <ul class="list">
-                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" @click="chipSellerGoodsDetal(item)">
+                <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" >
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
@@ -54,7 +55,7 @@
                         <img src="@/assets/image/index/tag1.png" alt="">
                     </span>
                     <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
-                    <div class="wrapImg" >
+                    <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
                         <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
@@ -103,8 +104,17 @@
                                         </p>
                                 </div>
                             </div>
-                            <div  class="brand" @click.stop="chipbrand(k)">
-                                {{item.brandName}}
+                            <div  class="brand" >
+                                <router-link :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.brandId,
+                                        name:item.brandName
+                                    }
+                                }">
+                                    {{item.brandName}}
+                                </router-link>
                             </div>
                         <div class="count" style="white-space:nowrap;">
                             <span>起订量：&nbsp;{{item.moq}}只</span>
@@ -132,18 +142,6 @@
             <router-link tag="div" class="title" to="/brand">原厂直营店</router-link>
             <div class="desc color">原厂直购、正品保障</div>
             <div class="cont clear allWidth">
-                    <!-- <div class="fl left">
-                        <div class="prodclass-r bgColor">
-                            <p><i class="el-icon-s-operation"></i>热门厂商</p>
-                            <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
-                                <ul :class="{anim:animate==true}">
-                                    <li v-for="(item,k) in catergoryBrandList" :key="item.id" @click="chipBrand(k)">
-                                        <ImgE :src="item.imgurl" :W="190" :H="80"></ImgE>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> -->
                 <div class="fl left">
                     <img src="@/assets/image/banner/4.jpg" alt="">
                 </div>
@@ -153,10 +151,23 @@
                         </ImgE>
                         <div class="goodsInfo">
                             <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
+                            <div>
+                                <router-link :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.brandId,
+                                        name:item.brandName
+                                    }
+                                }">
+                                    {{item.brandName}}
+                                </router-link>
+                            </div>
+                            
                             <div class="desc">{{item.goodsDesc}}</div>
                             <div class="count"><span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;<span>最小增量:&nbsp;{{item.mpq}}只</span></div>
                             <div class="marking">
-                                <span>原厂</span>
+                                <span>{{item.tag | tagFilter}}</span>
                                 <span>{{item.diliverPlace}}</span>
                                 <span>{{item.goods_type?'现货':'订货'}}</span>
                             </div>
@@ -205,7 +216,7 @@
                         <li class="item">购买</li>
                     </ul>
                     <ol>
-                        <li v-for="(item,k) in oldProductList"  @click="chipSellerGoodsDetal(item)"  :key="k" >
+                        <li v-for="(item,k) in oldProductList"    :key="k" >
                             <div class="goodsName taginfo">
                                 <img :src="item.userImgeUrl" alt="">
                                 <div>
@@ -217,8 +228,19 @@
                                     </p>
                                 </div>
                             </div>
-                            <p  :title="item.goods_name" class="goodsName">{{item.goods_name}}</p>
-                            <div class="oneitem brand" @click.stop="chipbrand1(k)">{{item.brandName}}</div>
+                            <p  :title="item.goods_name" class="goodsName" @click="chipSellerGoodsDetal(item)">{{item.goods_name}}</p>
+                            <div class="oneitem brand" >
+                               <router-link :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.brandId,
+                                        name:item.brandName
+                                    }
+                                }">
+                                    {{item.brandName}}
+                                </router-link>
+                                </div>
                             <div class="oneitem">{{item.goodsStockCount}}</div>
                             <div class="oneitem">{{item.diliverPlace}}</div>
                             <div class="color stepPriceWrap oneitem">
@@ -251,7 +273,7 @@
                     <div class="count color fl"><countTo :endVal="100"  :duration="4"></countTo><span class="jia">+</span></div>
                     <div class="fl right">
                         <p class="tit">已入驻原厂</p>
-                        <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
+                        <p class="small">数百家厂商的选择,{{title}}值得您信赖</p>
                     </div>
                 </div>
             </div>
@@ -314,8 +336,18 @@
                     <p>热门厂商</p>
                     <div class="slideWrap" @mouseenter="handleEnter" @mouseleave="handleLeave">
                         <ul :class="{anim:animate==true}">
-                            <li v-for="(item,k) in catergoryBrandList" :key="item.id" @click="chipBrand(k)">
-                                <ImgE :src="item.imgurl" :W="190" :H="80"></ImgE>
+                            <li v-for="(item) in catergoryBrandList" :key="item.id" >
+                                <router-link :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.id,
+                                        name:item.brand
+                                    }
+                                }">
+                                   <ImgE :src="item.imgurl" :W="190" :H="80"></ImgE>
+                                </router-link>
+                                
                             </li>
                         </ul>
                     </div>
@@ -374,6 +406,7 @@
         },
         computed:{
             ...mapState({
+                title:state => state.title,
                 headerFxed: state => state.headerFxed,
                 loginState:state=>state.loginState,
             })
@@ -385,25 +418,12 @@
             }
         },
         filters:{
-            // toFixed(val,length){
-            //     return Number(val).toFixed(length)
-            // },
             formatDate(val){
                 return TimeForma(val)
             },
             filterHours(val){
                 return Number(val)*24
             },
-            // filterTag(val){
-            //     switch(val){
-            //         case 1:
-            //             return '原厂';
-            //         case 2:
-            //             return '代理商';
-            //         case 3:
-            //             return '商家';
-            //     }
-            // }
         },
         methods:{
             ...mapActions("Login", ["GetUserInforma"]),
@@ -560,43 +580,6 @@
                         tag:'direct',
                         documentid: obj.id,
                         name:obj.name
-                    }
-                })
-            },
-            chipbrand(k){
-                let obj=this.specialList[k]
-                //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
-                this.$router.push({
-                    path:"/BrandDetail",
-                    query:{
-                        tag:'brand',
-                        documentid:obj.brandId,
-                        name:obj.brandName
-                    }
-                })
-            },
-            chipbrand1(k){
-                let obj=this.oldProductList[k]
-                //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
-                this.$router.push({
-                    path:"/BrandDetail",
-                    query:{
-                        tag:'brand',
-                        documentid:obj.brandId,
-                        name:obj.brandName
-                    }
-                })
-            },
-            //厂商跳转
-            chipBrand(k){
-                let obj=this.catergoryBrandList[k]
-                //BrandDetail?tag=brand&documentid=70&name=Xilinx%20Inc.
-                this.$router.push({
-                    path:"/BrandDetail",
-                    query:{
-                        tag:'brand',
-                        documentid:obj.id,
-                        name:obj.brand
                     }
                 })
             },

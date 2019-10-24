@@ -47,7 +47,7 @@
     <!-- 已入驻原厂 -->
     <div class="settledIn">
       <p class="tit">已入驻原厂</p>
-      <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
+      <p class="small">数百家厂商的选择，{{title}}值得您信赖</p>
       <ul class="clear">
         <template v-for="(item,index) in BrandList">
           <li
@@ -79,10 +79,10 @@
     <!-- 企业 -->
     <div class="enterprise">
       <p class="tit">
-        <span>{{brandTotal}}</span> 个企业正在用芯手网搜特价
+        <span>{{brandTotal}}</span> 个企业正在用{{title}}搜特价
         <span></span>
       </p>
-      <p class="small">数百家厂商的选择，芯手网值得您信赖</p>
+      <p class="small">数百家厂商的选择，{{title}}值得您信赖</p>
       <ul>
         <li></li>
       </ul>
@@ -98,6 +98,7 @@
               v-for="(item,k) in CatergoryList"
               :class="selected==k?'active':''"
               @click="selected=k"
+              :key="k"
             >
               <span class="fr el-icon-arrow-right"></span>
               <ImgE :src="item.imgUrl" :W="30" :H="30" class="fl"></ImgE>
@@ -107,7 +108,7 @@
         </div>
         <div class="prodclass-m">
           <div class="fl wrap">
-            <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)">{{item.name}}</a>
+            <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)" :key="k">{{item.name}}</a>
           </div>
         </div>
         <div class="prodclass-r">
@@ -173,6 +174,7 @@ export default {
     ]),
 
     ...mapState({
+      title:state => state.title
       // findBrandList: state => state.home.findBrandList,
       // BrandListTotal: state => state.home.BrandListTotal
     })

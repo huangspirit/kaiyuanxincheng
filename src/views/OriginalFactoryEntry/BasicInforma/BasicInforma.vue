@@ -204,6 +204,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //将数据保存到store
+          console.log(this.ruleForm)
           this.setJoinForm(this.ruleForm);
           this.$store.state.OriginalFactoryEntry.active = 1;
           this.$router.push({
@@ -269,6 +270,7 @@ export default {
     }
   },
   mounted() {
+    console.log("mounted")
     this.GetQueryDictionarieList({
       access_token: this.access_token,
       distinguish: "5",
@@ -281,7 +283,8 @@ export default {
       });
     });
     this.$store.state.OriginalFactoryEntry.active = 0;
-    this.ruleForm = { ...this.joinForm, ...this.ruleForm };
+    console.log(this.joinForm)
+    this.ruleForm = {...this.joinForm};
     this.residencetype = this.ruleForm.residencetype;
     let addBrandName = this.$route.query;
     if (addBrandName.brand) {

@@ -10,11 +10,14 @@
                 </div> -->
                 <div class="fr ">
                     <el-input
-                        placeholder="在呆料池中搜索"
-                        suffix-icon="el-icon-search"
+                        placeholder="在结果中查询关键词：型号"
                         v-model="name"
                         size="mini"
-                        @input="inputHandler">
+                      @keyup.enter.native="inputHandler"
+                         class="inputSearch"
+                      >
+                         <el-button slot="append" icon="el-icon-search" @click="inputHandler"></el-button>
+
                     </el-input>
                 </div>
                 <ul class="clear">
@@ -43,7 +46,7 @@
                                     <div class="fl">
                                         <p>{{item.sellerName}}</p>
                                         <p>
-                                            <span class="tag" :class="{'bgColor':item.tag==1}">{{item.tag | filterTag}}</span>
+                                            <span class="tag" :class="{'bgColor':item.tag==1}">{{item.tag | tagFilter}}</span>
                                             <span class="tag bgLightGray"  v-if="!item.focus" @click.stop="addFocus(k)" style="cursor:pointer;">关注</span>
                                             <span class="orange tag" v-if="item.focus">已关注</span>
                                         </p>
@@ -98,7 +101,7 @@
                     </tr>
                 </tbody>
             </table>
-<Pagination
+        <Pagination
             v-if="total"
             @current-change="handleCurrentChange"
             :pageIndex.sync="currentPage"
@@ -126,18 +129,7 @@
                 categoryId:''
             }
         },
-        filters:{
-            filterTag(val){
-                switch(val){
-                    case 1:
-                        return '原厂商户';
-                    case 2:
-                        return '代理商';
-                    case 3:
-                        return '普通商户';
-                }
-            }
-        },
+       
         computed:{
              ...mapState({
                 headerFxed: state => state.headerFxed,
@@ -213,7 +205,9 @@
                     is_old_product:true,
                     status:1,
                     catergory_id:this.categoryId,
-                      name:this.name
+                }
+                if(this.name){
+                    obj.name=this.name
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
                     if(res.data.data.length){
@@ -224,6 +218,12 @@
                             }
                             return item;
                         })
+                    }else{
+                        this.specialList=[];
+                        this.$message({
+                            message: '搜索结果为空',
+                            type: 'warning'
+                        });
                     }
                     this.total=res.data.total;
                     // if(res.data.data.length<this.pageSize){

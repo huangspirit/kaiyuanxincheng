@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
       <el-breadcrumb-item>更改密码</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="ChangePassword">

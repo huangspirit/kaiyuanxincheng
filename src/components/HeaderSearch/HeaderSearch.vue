@@ -1,9 +1,9 @@
 <template>
   <div class="HeaderSearch" @click="noSearch()" :class="mini?'mini':''">
     <div class="search">
-      <div class="ipt" @click.stop>
-        <input type="text" placeholder="请输入你要搜索的商品" @focus.stop="focus" v-model="searchValue">
-        <div class="btn">
+      <div class="ipt" >
+        <input type="text" placeholder="请输入你要查找的器件型号/类别/品牌关键字" @focus.stop="focus" v-model="searchValue">
+        <div class="btn" @click="search" style="cursor:pointer;">
           <i class="el-icon-search"></i>
         </div>
       </div>
@@ -57,8 +57,13 @@ export default {
     // 大搜索
     search() {
       this.flag = true;
+      let obj={
+        name:this.searchValue,
+        start:0,
+        length:20
+      }
       if (this.searchValue) {
-        SearchData(this.searchValue)
+        SearchData(obj)
           .then(res => {
             this.SearchData = res.data.data;
             this.SearchDataList = res.data.data;
@@ -74,6 +79,7 @@ export default {
     },
     // 大搜索跳转
     searchLink(item) {
+      delete item.nick_name;
       this.searchValue = item.name;
       this.SearchData = [];
       this.SearchDataList = [];

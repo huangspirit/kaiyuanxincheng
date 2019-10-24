@@ -15,7 +15,7 @@
                     </div>
                     <div>单价: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.price | toFixed(currentItem.priceUnit?3:2)}}</strong></div>
                     <div>总计: <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.money | toFixed(currentItem.priceUnit?3:2)}}</strong></div>
-                    <div class="btnWrap"><span class="btn" @click="submitPurchase">提交结算</span></div>
+                    <div class="btnWrap"><span class="btn bgColor" @click.stop="submitPurchase">提交结算</span></div>
                 </div>
             </div>
         </transition>
@@ -24,23 +24,41 @@
         <li
           v-for='(item, k) in goodsList'
           :key='k'
+          class="item"
         >
             <div class="wrap" @click="open(item)">
-                <p class="price">
-                    <strong v-if="item.priceType">{{item.priceUnit?'$':'￥'}}{{item.priceList[0].price | toFixed(item.priceUnit?3:2)}}&nbsp;~&nbsp;{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
-                    <strong v-if="!item.priceType">{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
-                </p>
                 <ImgE :src="item.goodsImageUrl" class="prod-img" :W="100" :H="100"></ImgE>
+                 <p class="price" v-if="!item.priceType">
+                    <strong> 一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}} </strong>
+                </p>
+                 <div class="price stepPrice" v-if="item.priceType">
+                    <strong>起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[0].price | toFixed(item.priceUnit?3:2)}} <i class="el-icon-circle-plus-outline"></i> </strong>
+                    <ul>
+                        <li v-for="item_0 in item.priceList" :key="item_0.price">
+                            <p><strong>{{item_0.num}}---{{item.priceUnit?'$':'￥'}}{{item_0.price | toFixed(item.priceUnit?3:2)}}</strong></p>
+                        </li>
+                    </ul>
+                </div>
                 <p class="goodsName color">{{item.goods_name}}</p>
                 <p class="goodsDesc">{{item.goodsDesc}}</p>
+                <p>
                 <span class="btn bgColor" @click.stop="purchase(k)">
-<!--                    <img src="@/assets/image/PersonalCenter/u6221.png" alt>-->
                     立即采购
                 </span>
+                </p>
+
             </div>
         </li>
+        <li class="Pagination" v-if="goodsList.length">
+             <el-button type="info" size="mini" disabled v-if="currentPage==1">上一页</el-button>
+            <el-button type="info" size="mini" v-if="currentPage!=1"  @click="CurrentChange(currentPage-1)">上一页</el-button><br>
+             <el-button type="info" size="mini" v-if="currentPage==pageCount" disabled >下一页</el-button>
+            <el-button type="info" size="mini" v-if="currentPage!=pageCount" @click="CurrentChange(currentPage+1)">下一页</el-button><br>
+            <span>第 {{currentPage}} 页 共（{{pageCount}}）页</span>
+        </li>
       </ul>
-        <div class="Pagination">
+        <!-- <div class="Pagination">
+            
             <el-pagination
                 v-if="total"
                 layout="prev, pager, next"
@@ -50,7 +68,7 @@
                 @current-change="currentChange"
                 >
             </el-pagination>
-        </div>
+        </div> -->
     </div>
   </div>
 </template>
@@ -92,9 +110,15 @@ export default {
             return item;
         })
     },
+    updated(){
+        console.log(this.list)
+    },
     computed:{
       start(){
           return this.pageSize*(this.currentPage-1)
+      },
+      pageCount(){
+          return Math.ceil(this.total/this.pageSize)
       }
     },
   methods: {
@@ -108,6 +132,10 @@ export default {
           this.currentPage=x;
           this.getGoodsList();
       },
+      CurrentChange(x){
+        this.currentPage=x;
+        this.getGoodsList();
+      },
       getGoodsList(){
           let obj={
               start:this.start,
@@ -117,17 +145,15 @@ export default {
               seller_id:this.item0.seller_id
           };
           axios.request({...buyerOrderCenter.queryPublishGoodsListByUser,params:obj}).then(res=>{
-              console.log(res)
-              this.goodsList=res.data.data.map(item=>{
-                  let moneyType=item.priceUnit?"$":"¥"
-                  if(item.priceType){
-                      let arr=ladderPrice(item.priceLevel)
-                      item.currentPrice=`${moneyType}${arr[arr.length-1].price}-${moneyType}${arr[0].price}`
-                  }else{
-                      item.currentPrice=`${moneyType}${item.goodsPrice}`
-                  }
-                  return item;
-              })
+              if(res.data.data){
+                this.goodsList=res.data.data.map(item=>{
+                    if(item.priceType){
+                        item.priceList=ladderPrice(item.priceLevel)
+                    }
+                    return item;
+                })
+              }
+              
           })
       },
       purchase(k){

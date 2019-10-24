@@ -4,10 +4,12 @@
     <div class="WaitingAudit-con">
         <img src="@/assets/image/icon/bgSuccess.png" alt="">
         <p class="color title">入驻申请已提交！</p>
-        <p class="desc">入驻信息正在审核中，预计72小时内审核结束，系统将会以发送短信和系统信息的方式通知您审核的结果</p>
+
+        <p class="">您的入驻已进入审批流程，审核将于72小时内完成，审核结果系统将会以短信和系统内信息的方式通知您！</p>
+        <p class="desc">若您希望通过微信接收审核结果，请前往用户中心绑定微信号；若已经绑定，请耐心等待！</p>
         <p>
-            <el-button class="bgColor"> <router-link to="/Brand" tag="p" class="link">前往品牌中心</router-link></el-button>
-            <el-button class="bgColor"><router-link to="/" tag="p" class="link">前往 首页</router-link></el-button>
+            <el-button class="bgColor"> <router-link to="/PersonalCenter" tag="p" class="link">前往用户中心</router-link></el-button>
+            <el-button class="bgColor"><router-link to="/" tag="p" class="link">返回 首页</router-link></el-button>
         </p>
 <!--      <p class="sp_1">-->
 <!--        <span class="img_">-->
@@ -58,6 +60,7 @@ export default {
             }
             .desc{
                 margin-bottom:100px;
+                margin-top:10px;
             }
         }
     }

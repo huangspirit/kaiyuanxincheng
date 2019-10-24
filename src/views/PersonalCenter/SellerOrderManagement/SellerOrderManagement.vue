@@ -50,6 +50,7 @@
 
             <span style="width:10%">操作</span>
           </p>
+          <div v-if="SellerOrderManagementList.length==0" class="nocont">暂无数据</div>
           <SellerOrderItem
             v-for="item in SellerOrderManagementList"
             :key="item.id"

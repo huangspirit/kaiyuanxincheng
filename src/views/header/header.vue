@@ -2,25 +2,32 @@
     <div class="header" :class="headerFxed?'headerFxed':''">
         <div class="header-c clear">
             <router-link to="/" tag="div" class="logo">
-                <h1 class="logoText">芯手网</h1>
-                <img src="@/assets/logo.png" alt>
-            </router-link>
-            <div class="searchInputWrap">
-                <HeaderSearch v-if="headerFxed" ref="HeaderSearch" :mini="true"></HeaderSearch>
-            </div>
-            <div class="rightwrap clear">
-                <div class="nav ">
-                     <router-link to="/brand">原厂直营店</router-link>
-                    <router-link to="/specialPrice">现货直通车</router-link>
-                    <router-link to="/order">订货跟单区</router-link>
-                    <router-link to="/oldGoods">呆料掘金池</router-link>
-                    <router-link to="/OriginalFactoryEntry"
-                                 v-if="!(UserInforma && UserInforma.userTagMap && UserInforma.userTagMap.seller)">
-                        商家入驻</router-link>
-
-                    <!--                <router-link to="/Brand" v-if="loginState">品牌</router-link>-->
+                <h1 class="logoText">{{title}}</h1>
+                <div class="logowrap">
+                    <img src="@/assets/logo1.png" alt>
+                    <div>
+                        <p class="text">{{title}}</p>
+                        <p class="route">icmap.cn</p>
+                    </div>
                 </div>
-                <div class="wrap ">
+               
+            </router-link>
+            <div class="searchInputWrap"  >
+                <div v-if="headerFxed" class="inputwrap">
+                    <HeaderSearch ref="HeaderSearch" :mini="true" ></HeaderSearch>
+                </div>
+                 
+            </div>
+            <div class="nav ">
+                     <router-link to="/brand">原厂直营店</router-link>
+                    <router-link to="/specialPrice">特价直通车</router-link>
+                    <!-- <router-link to="/order">订货跟单区</router-link> -->
+                    <router-link to="/oldGoods">呆料掘金池</router-link>
+                    <router-link to="/OriginalFactoryEntry" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">商家入驻</router-link>
+                </div>
+            <div class="rightwrap clear">
+               
+                <!-- <div class="wrap ">
                     <router-link to="/InquiryBasket" class="busket"><i style="display:inline-block;height:15px; vertical-align: middle;"></i>询价篮</router-link>&nbsp;|&nbsp;
                     <router-link to="/ShoppingCart" class="shoppingCar"><i></i>购物车</router-link>&nbsp;|&nbsp;
                     <router-link to="/News"  class="messageCountWrap">
@@ -28,7 +35,7 @@
                         消息
                         <span v-if="UserInforma.messageCount" class="mess">{{UserInforma.messageCount}}</span>
                     </router-link>
-                </div>
+                </div> -->
                 <router-link class="login" tag="div" to="/Login" v-if="!loginState">
                     快速登录
                     <!--                <img src="@/assets/image/home/u1874.png" alt>-->
@@ -37,14 +44,12 @@
                     <img :src="UserInforma.headImgUrl" alt class="userImg">
                     <div class="PersonalCenter-con bgGray" v-if="UserInforma.userTagMap">
                         <p class="personInfo">
-                            <span class="tel fr color">{{UserInforma.phone}}</span>
+                            <!-- <span class="tel fr color">{{UserInforma.phone}}</span> -->
                             <span class="name">{{UserInforma.nickname}}</span>
                         </p>
                         <div v-if="UserInforma.userTagMap.tag" class="clear identity">
                             <div>
-                                <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 1">原厂</span>
-                                <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 2">代理商</span>
-                                <span class="type bgColor" v-if="UserInforma.userTagMap.tag === 3">普通商户</span>
+                                <span  class="type bgColor">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                                 <span class="type bgColor"  v-if="UserInforma.userTagMap.vip">月结用户</span>
                             </div>
                         </div>
@@ -78,6 +83,7 @@
         mounted(){},
         computed: {
             ...mapState({
+                title: state => state.title,
                 loginState: state => state.loginState,
                 headerFxed: state => state.headerFxed,
                 UserInforma:state => state.Login.UserInforma

@@ -231,19 +231,18 @@ export default {
       });
     },
     replyRequest(val) {
-      console.log(val);
       this.replyDialogVisible = true;
-      this.allListData = val.row;
+      this.allListData = val;
     },
     replyVisibleClose(val) {
-      console.log(val, "5555555");
+      
       this.replyDialogVisible = val;
     },
     currentPage(val) {
-      console.log("11", val);
+
     },
     change(val) {
-      console.log(val);
+  
       this.start = val;
       this.getAllReplyList();
     }

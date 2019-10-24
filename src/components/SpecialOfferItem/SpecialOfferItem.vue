@@ -36,7 +36,7 @@
             <ImgE :src="item.brandImageUrl" :W="200" :H="40"></ImgE>
           </router-link>-->
           <p>
-            <span>型号描述：</span>
+            <span>描述：</span>
             {{item.goodsDesc}}
           </p>
           <!-- <p>

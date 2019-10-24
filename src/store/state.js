@@ -11,6 +11,7 @@ const state = {
   // 滚动
   headerFxed: true,
   proInformation:{},
-  applyDetailEdit:{}
+  applyDetailEdit:{},
+  title:'水木晶城'
 }
 export default state

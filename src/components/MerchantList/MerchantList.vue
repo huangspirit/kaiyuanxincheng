@@ -198,10 +198,7 @@
           </template>
       </div>
     <div class="arrow-bar">
-<!--        <p v-if="!closeTable">共有{{total}}个供应商发布特价产品，点击查看</p>-->
-<!--        <img src="@/assets/image/brandDetail/u4650.png" alt="" class="closeTable" v-show="closeTable" title="关闭" @click="closeEvent">-->
         <span class="bgColor" v-show="getMore"  @click="getMoreList">展开更多供应商 <img src="@/assets/image/icon/down.png" alt=""></span>
-<!--        <img src="@/assets/image/brandDetail/u4530.png" alt="" class="getMore" v-show="getMore" title="获取更多供应商特价" @click="getMoreList">-->
     </div>
   </div>
 </template>
@@ -211,8 +208,6 @@
 <script>
 import {TimeForma2,ladderPrice,TimeForma} from "../../lib/utils";
 import {axios,home,shoppingCar} from "../../api/apiObj";
-//import { mapState} from "vuex";
-// import { constants } from "crypto";
 export default {
   name: "MerchantList",
   props: {
@@ -387,16 +382,7 @@ export default {
     this.GetMerchantList()
   },
     filters:{
-        // tagFilter(val){
-        //     switch (val) {
-        //         case 1:
-        //             return "原厂";
-        //         case 2:
-        //             return "代理商";
-        //         case 3:
-        //             return "普通商户";
-        //     }
-        // },
+        
         formatDate(val){
             return TimeForma(val)
         },

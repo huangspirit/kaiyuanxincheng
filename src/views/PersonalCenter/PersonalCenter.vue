@@ -14,7 +14,7 @@
 @import "./PersonalCenter.less";
 </style>
 <script>
-import SideMenu from "_c/SideMenu";
+// import SideMenu from "_c/SideMenu";
 import sideMenu from "../sideMenu"
 import { mapState } from "vuex";
 import { stat } from "fs";
@@ -40,13 +40,13 @@ export default {
               icon: require("@/assets/image/sidemenuicon/sellerorder.png")
             },
             {
-              title: "商品管理",
+              title: "特价管理",
               index: "1_2",
               path: "/PersonalCenter/SellerCommodityManagement",
               icon: require("@/assets/image/sidemenuicon/SellerCommodityManagement.png")
             },
             {
-              title: "发布商品",
+              title: "发布特价",
               index: "1_3",
               path: "/PersonalCenter/SellerIssuesProduct",
               icon: require("@/assets/image/sidemenuicon/SellerIssuesProduct.png")
@@ -109,7 +109,7 @@ export default {
               title: "我的询价",
               index: "2_4",
               path: "/PersonalCenter/myInquire",
-              icon: require("@/assets/image/sidemenuicon/MerchantsConcerned.png")
+              icon: require("@/assets/image/sidemenuicon/myInquire.png")
             },
             {
               title: "账单中心",
@@ -135,7 +135,7 @@ export default {
         },
         {
           isShow: true,
-          title: "个人中心",
+          title: "用户中心",
           index: "3",
           path: "/PersonalCenter",
           name:"PersonalCenter",
@@ -193,6 +193,7 @@ export default {
     this.list = this.list.map(item => {
       if (item.index == 1) {
         if (UserInforma.userTagMap) {
+          console.log(UserInforma)
           item.isShow = UserInforma.userTagMap.seller;
           item.diabled = !UserInforma.userTagMap.seller;
           if(UserInforma.userTagMap.seller == true) {

@@ -20,7 +20,7 @@
                   </p>
             <p>
                 <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
-                <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | typeFilter}}</span>
+                <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                 <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
             </p>
 <!--            <div>信用等级：{{UserInforma.userTagMap.userLevel}}</div>-->
@@ -30,7 +30,7 @@
             <ul class="clear">
                 <li>
                     <div class="cont">
-                        <p class="money">{{UserInforma.userTagMap.wallet}}</p>
+                        <p class="money">{{UserInforma.userTagMap.wallet | toFixed(2) }}</p>
                         <p class="desc">钱包余额（元）</p>
                         <p class="router">
                             <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
@@ -44,17 +44,24 @@
                 </li>
                 <li  v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
                     <div class="cont yajin">
-                        <p class="money">{{UserInforma.userTagMap.deposit}}</p>
+                        <p class="money">{{UserInforma.userTagMap.deposit | toFixed(2)}}</p>
                         <p class="desc">押金（元）</p>
                         <p class="router">
                             <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
                             <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
                         </p>
-                        
                     </div>
                 </li>
                 <li v-if="UserInforma.userTagMap.vip">
-                    <div class="cont circle clear">
+                  <div class="cont yajin">
+                        <p class="money">{{UserInforma.userTagMap['restcredit-vip'] | toFixed(2)}}</p>
+                        <p class="desc">剩余月结额度（元）</p>
+                        <p class="router">
+                            <span>月结额度：{{UserInforma.userTagMap['credit-vip'] | toFixed(0)}}</span>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
+                           <router-link to="/PersonalCenter/vipDetailList" class="route">明细</router-link>
+                        </p>
+                    </div>
+                    <!-- <div class="cont circle clear">
                         <el-progress type="circle" :width="70" :percentage="creditvipPercente"  class="fl"></el-progress>
                         <div class="text fl">
                             <p class="desc">
@@ -63,10 +70,19 @@
                             <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-vip']}}</p>
                             <router-link to="/PersonalCenter/vipDetailList" class="route">额度明细</router-link>
                         </div>
-                    </div>
+                    </div> -->
                 </li>
                 <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1">
-                    <div class="cont circle clear">
+                   <div class="cont yajin">
+                        <p class="money">{{UserInforma.userTagMap['restcredit-seller'] | toFixed(2)}}</p>
+                        <p class="desc">剩余售卖额度（元）</p>
+                        <p class="router">
+                          <span>售卖额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
+                          <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
+                        </p>
+                          <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+                    </div>
+                    <!-- <div class="cont circle clear">
                         <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
                         <div class="text fl">
                             <p class="desc">
@@ -74,9 +90,9 @@
                             </p>
                             <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
                             <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
-                            <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+                          
                         </div>
-                    </div>
+                    </div> -->
 
                 </li>
             </ul>
@@ -136,7 +152,7 @@
               <div class="desc">
                   基础额度
               </div>
-              <div class="val">{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0}}</div>
+              <div class="val">￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0 | toFixed(0)}}</div>
 <!--              <router-link-->
 <!--                  to="/PersonalCenter/UpgradeLevel"-->
 <!--                  tag="span"-->
@@ -259,8 +275,8 @@
                           </div>
                       </div>
                   </div>
-                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
-                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal | toFixed(2)}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal | toFixed(2)}}</span></p>
                   <ul v-if="bankList.length">
                       <li class="title">
                           <span>提现方式</span>
@@ -420,16 +436,6 @@ export default {
     }
   },
   filters: {
-    typeFilter(val) {
-      switch (val) {
-        case 1:
-          return "原厂";
-        case 2:
-          return "代理商";
-        case 3:
-          return "认证商家";
-      }
-    },
       filterBankCode(val){
           switch (val) {
               case "ICBC":

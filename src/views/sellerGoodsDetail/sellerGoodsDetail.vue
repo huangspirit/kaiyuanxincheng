@@ -40,7 +40,7 @@
                         <span v-if="sellerGoodsInfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
                         <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn"><i class="el-icon-star-off" ></i>&nbsp;关注</span>
 <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
-                        <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span>
+                        <!-- <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span> -->
                         <span class="btn" @click="pushlishspecialPrice"><i class="el-icon-plus "></i>&nbsp;我有特价</span>
                     </div>
                 </div>
@@ -57,18 +57,19 @@
                     {{sellerGoodsInfo.goods_name}}</router-link>
                     <p class="brandDesc" style="word-break:break-all;">{{sellerGoodsInfo.goodsDesc}}</p>
                     <p  class="brandDesc">
-                        <router-link tag="span" class="brand" :to="{
+                        制造商：
+                        <router-link  class="brand" :to="{
                             path:'BrandDetail',
                             query:{
                                 tag:'brand',
                                 documentid:sellerGoodsInfo.brandId,
                                 name:sellerGoodsInfo.brandName
                             }
-                        }">制造商：{{sellerGoodsInfo.brandName}}</router-link>
+                        }">{{sellerGoodsInfo.brandName}}</router-link>
 <!--                        <span>官方参考价：暂无</span>-->
-                        <span  @click="openBig">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span>
+                        <span  @click="openBig">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt="" style="cursor:pointer;"></span>
                     </p>
-                    <div class="time clear bgColor" v-if="!sellerGoodsInfo.seller_always">
+                    <div class="time clear bgColor" v-if="!sellerGoodsInfo.seller_always && sellerGoodsInfo.currentTime">
                         <img src="@/assets/image/index/timer.png" alt="" class="">
                         <CountTime
                             v-on:end_callback="countDownE_cb()"
@@ -83,8 +84,6 @@
                             :minutesTxt="'分'"
                             :secondsTxt="'秒'"></CountTime>
                     </div>
-<!--                    <span class="tag color">{{sellerGoodsInfo.tag | tagFilter}}</span>-->
-
                     <div class="cont1 clear">
                         <div class="price color jieti clear" v-if="sellerGoodsInfo.priceType">
                             <div class="priceList">
@@ -119,25 +118,8 @@
                         此器件以下供应商提供：
                         <img :src="sellerGoodsInfo.userImgeUrl" alt="">
                         <span>{{sellerGoodsInfo.sellerName}}</span>
-                         <!-- <div class="wrapInfo clear">
-                                    <div class="clear">
-                                        <div class="wrap">
-                                            <img :src="sellerGoodsInfo.userImgeUrl" alt="" >
-                                            <p>
-                                                {{sellerGoodsInfo.sellerName}}<br>
-                                               <span class="tag bgColor">{{sellerGoodsInfo.tag | filterTag}}</span> 
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p>发布商品量：{{sellerGoodsInfo.publisCount}}</p>
-                                    <p>历史成交量：{{sellerGoodsInfo.historyCount}} </p>
-                                    <p>
-                                        <el-button class="btn0" size="mini" v-if="!sellerGoodsInfo.focus" @click.stop="addFocus(k)">关注</el-button>
-                                        <el-button class="bglight" size="mini" v-if="sellerGoodsInfo.focus">已关注</el-button>
-                                        </p>
-                                </div> -->
                     </div>
-                    <div class="count fl" style="width:100%;">
+                    <div class="count fl" style="width:100%;" v-if="sellerGoodsInfo.moq">
                         数量：
                         <el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="sellerGoodsInfo.moq"  :max="sellerGoodsInfo.goodsStockCount"  :step="sellerGoodsInfo.mpq"  step-strictly></el-input-number>
                         <span>可买数量：{{sellerGoodsInfo.goodsStockCount}}只</span>
@@ -160,8 +142,7 @@
                 <div class="detail-informan-con">
                     <p class="tit">
                         <span>技术参数</span>
-                        <span>数据手册
-                           <a class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></a>
+                        <span>数据手册 | <a class="color"  @click="openBig" >放大查看</a>
                         </span>
                     </p>
                     <ul class="parameter clear">
@@ -217,7 +198,7 @@
 <script>
     import {mapMutations} from 'vuex';
     import { baseURL, baseURL2 ,baseURL3} from "@/config";
-    import { axios, shoppingCar,BrandDetail } from "@/api/apiObj";
+    import { axios, shoppingCar,BrandDetail,home } from "@/api/apiObj";
     import {TimeForma2,TimeForma} from "../../lib/utils";
     export default {
         data(){
@@ -249,12 +230,18 @@
             }
         },
         created(){
-           let obj=sessionStorage.getItem('sellerGoodsDetail');
-            if(obj){
+          
+        },
+        mounted(){
+             let obj=sessionStorage.getItem('sellerGoodsDetail');
+             if(this.$route.query.seller_goods_id){
+                this.getSellerGoodsId(this.$route.query.seller_goods_id)
+            }
+            else if(obj){
+                console.log(obj)
                 this.sellerGoodsInfo=JSON.parse(obj)
                 if(this.sellerGoodsInfo.sellerGoodsImageUrl){
                     let arr=this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
-                    console.log("arr",arr)
                     this.sellerGoodsImageUrlList=arr.map(item=>{
                         return baseURL3+"/"+item
                     })
@@ -282,15 +269,19 @@
                     seller_id: this.sellerGoodsInfo.sellerId,
                     tag:this.sellerGoodsInfo.tag,
                 }
+                this.init()
             }
-
-        },
-        mounted(){
-            this.getDetail()
-            this.searchDatasheet(this.sellerGoodsInfo.goods_id)
+            
         },
         methods:{
             ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+            getsellerGoodsDetail(){
+
+            },
+            init(){
+                this.getDetail()
+                this.searchDatasheet(this.sellerGoodsInfo.goods_id)
+            },
             next(){
                 if(this.sellerGoodsImageUrlList.length>3){
                     this.sellerGoodsImageUrlList.push(this.sellerGoodsImageUrlList[0])
@@ -306,7 +297,7 @@
             handleEnter(k){
                 console.log(k)
                 this.selectedstr=k;
-               this.bigImgstr=k;
+                this.bigImgstr=k;
             },
             handleBlur(event){
                 let e=event.target.value
@@ -339,7 +330,7 @@
                 }
                 this.price=currentPrice;
                 this.count=e;
-                this.money=e*currentPrice
+                this.money=e*currentPrice;
             },
             submitPurchase(){
                 let item=this.purchaseObj
@@ -401,7 +392,54 @@
                     _this.loading=false
                 },3000)
             },
+            getSellerGoodsId(seller_goods_id){
+               let obj={
+                    length:5,
+                    seller_goods_id:seller_goods_id,
+                    start:0,
+                }
+                axios.request({...home.SpecialOfferList,params:obj}).then(result=>{
+                    console.log(result)
+                     this.sellerGoodsInfo=result.data.data[0]
+                if(this.sellerGoodsInfo.sellerGoodsImageUrl){
+                    let arr=this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
+                    this.sellerGoodsImageUrlList=arr.map(item=>{
+                        return baseURL3+"/"+item
+                    })
+                    this.sellerGoodsImageUrlList.unshift(this.sellerGoodsInfo.goodsImageUrl)
+                }
+                this.bigImgstr=this.sellerGoodsInfo.goodsImageUrl;
+                this.purchaseObj={
+                    goods_id: this.sellerGoodsInfo.goods_id,
+                    goods_name: this.sellerGoodsInfo.goods_name,
+                    goodsDesc: this.sellerGoodsInfo.goodsDesc,
+                    goodsImage: this.sellerGoodsInfo.goodsImageUrl,
+                    clude_bill: this.sellerGoodsInfo.includBill,
+                    price_unit: this.sellerGoodsInfo.priceUnit,
+                    seckill_goods_id:this.sellerGoodsInfo.id,
+                    goods_type:this.sellerGoodsInfo.goods_type,
+                    diliver_place: this.sellerGoodsInfo.diliverPlace,
+                    moq:Number(this.sellerGoodsInfo.moq),
+                    mpq:Number(this.sellerGoodsInfo.mpq),
+                    stockcount:this.sellerGoodsInfo.goodsStockCount,
+                    price_type:this.sellerGoodsInfo.priceType,
+                    priceList:this.sellerGoodsInfo.priceList,
+                    seckil_price:this.sellerGoodsInfo.goodsPrice,
+                    sellerName: this.sellerGoodsInfo.sellerName,
+                    sellerHeader:this.sellerGoodsInfo.userImgeUrl,
+                    seller_id: this.sellerGoodsInfo.sellerId,
+                    tag:this.sellerGoodsInfo.tag,
+                }
+                this.init()
+                })
+            },
             getDetail(){
+                const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+                });
                 let obj={
                     id:this.sellerGoodsInfo.goods_id,
                     tag:'goodsinfo',
@@ -411,6 +449,7 @@
                     this.parameterList=result.data.goodsinfo.list;
                     this.goodsinfo=result.data.goodsinfo;
                     this.sellerGoodsInfo.focus=result.data.goodsinfo.focus;
+                    loading.close();
                 })
             },
             addInquiry() {
@@ -496,7 +535,7 @@
                 if(this.UserInforma){
                     this.UserInforma=JSON.parse(this.UserInforma)
                     if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
-                        this.$router.push("/PersonalCenter/SellerIssuesProduct");
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct?name="+this.sellerGoodsInfo.goods_name);
                     }else{
                         this.$router.push("/OriginalFactoryEntry");
                     }
@@ -528,29 +567,9 @@
             filterHours(val){
                 return Number(val)*24
             },
-            filterTag(val){
-                switch(val){
-                    case 1:
-                        return '原厂';
-                    case 2:
-                        return '代理商';
-                    case 3:
-                        return '普通商户';
-                }
-            },
             formatDate(val){
                 return TimeForma(val)
             },
-            tagFilter(val){
-                switch (val) {
-                    case 1:
-                        return "原厂直供";
-                    case 2:
-                        return "代理销售";
-                    case 3:
-                        return "商家售卖"
-                }
-            }
         }
     }
 </script>

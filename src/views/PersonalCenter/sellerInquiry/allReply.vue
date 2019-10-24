@@ -68,7 +68,7 @@
                       </div>
                   </div>
                   </td>
-                  <td>
+                  <td >
                       <span v-if="item0.insteadNo && item0.insteadNo!='@'">{{item0.insteadNo.split('@')}}</span>
                   </td>
                   <td>
@@ -91,7 +91,7 @@
                           <span>批复价格：</span>
                           <span v-if="item0.priceType == true" v-html="filterprice(item0.priceLevel ,item0.priceUnit)">
                             </span>
-                              <span v-else>{{item0.priceUnit?'$':'￥'}}{{item0.seckilPrice}}</span>
+                              <span v-else>{{item0.priceUnit?'$':'￥'}}{{item0.seckilPrice | toFixed(item0.priceUnit?3:2)}}</span>
                         </p>
                          
                         <p>
@@ -208,10 +208,10 @@ export default {
   methods: {
     filterprice(val,priceUnit){ 
       let mark=priceUnit?'$':'￥'
-      let pricelist=ladderPrice(val)
+      let pricelist=ladderPrice(val,priceUnit)
       let str = "";
       pricelist.forEach(el=> {
-        str+=el.num+'---'+mark+el.price+'<br>'
+        str+=el.num+'---<strong>'+mark+el.price+'</strong><br>'
       });
       return str;
     },
@@ -233,9 +233,9 @@ export default {
       });
     },
     replyRequest(val) {
-     
       this.replyDialogVisible = true;
       this.allListData = val;
+      console.log("val:",val)
     },
     replyVisibleClose(val) {
   
@@ -310,6 +310,9 @@ export default {
             line-height:35px;
             color:#333;
             font-weight: normal;
+            font-size:14px;
+            white-space: nowrap;
+            padding:0 5px;
           }
           td{
             border-right:1px solid #ddd;
@@ -326,6 +329,9 @@ export default {
       text-align: left;
       width:80%;
       margin:0 auto;
+      .ImgE{
+        margin-right: 10px;
+      }
     }
      .status {
             position: relative;
@@ -334,7 +340,7 @@ export default {
            &>div{
              text-align: left;
              float: left;
-            margin-left:15%;
+            
            }
                 >p {
                     position: absolute;
@@ -348,6 +354,7 @@ export default {
                     text-align: center;
                     line-height: 60px;
                     font-size:12px;
+                    white-space: nowrap;
                 }
 
                 .failure {

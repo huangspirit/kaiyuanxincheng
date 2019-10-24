@@ -3,7 +3,7 @@
   <!-- 个人资料 -->
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item>用户中心</el-breadcrumb-item>
 <!--      <el-breadcrumb-item>个人资料</el-breadcrumb-item>-->
     </el-breadcrumb>
     <div class="PersonalData">
@@ -30,7 +30,7 @@
           <li>
             <span>基础额度：</span>
             <span class="num">￥{{UserInforma.userTagMap.totalcredit}}</span>
-            <span class="typr-s" >{{UserInforma.userTagMap.tag | typeFilter}}</span>
+            <span class="typr-s" >{{UserInforma.userTagMap.tag | tagFilter}}</span>
             <span class="operation btn">原厂入驻</span>
           </li>
           <li>
@@ -248,18 +248,6 @@ export default {
       },
       timer: null
     };
-  },
-  filters:{
-    typeFilter(val){
-      switch (val){
-        case 1:
-          return "原厂";
-        case 2:
-          return "代理商";
-        case 3:
-          return "普通买家"
-      }
-    }
   },
   computed: {
     ...mapState({

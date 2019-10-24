@@ -16,7 +16,7 @@
                   DIP 盒子
                 </p>
                 <P>
-                  <span>型号描述：</span>
+                  <span>描述：</span>
                   {{item.productdesc}}
                 </P>
               </div>

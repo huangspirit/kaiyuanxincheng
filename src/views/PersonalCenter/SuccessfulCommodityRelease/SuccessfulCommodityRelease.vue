@@ -3,18 +3,19 @@
     <div class="WaitingAudit">
         <div class="WaitingAudit-con">
             <img src="@/assets/image/icon/bgSuccess.png" alt="">
-            <p class="color title">发布成功！</p>
+            <p class="color title">特价发布成功！</p>
             <div class="desc">
-                <span>该商品已成功发布，敬请期待用户采购！</span><br>
-                <span>您可在订单管理中查看销售情况，如有新进展，系统将会以短信和系统消息通知您</span>
+                <span>该器件的特价已发布成功，敬请关注订单变化情况！</span><br>
+                <span>您可在“订单管理”和“特价管理”中查看销售情况，如有新进展，系统也将会以短信、微信或以系统消息的形式通知您！</span>
 
             </div>
-            <p class="color">
+            <!-- <p class="color">
                 <router-link to="/PersonalCenter/SellerIssuesProduct" class="color">继续发布 >></router-link>
-            </p>
+            </p> -->
             <p class="btnwrap">
-                <el-button class="bgColor"> <router-link to="/PersonalCenter/SellerOrderManagement" tag="p" class="link">前往订单管理</router-link></el-button>
-                <el-button class="bgColor"><router-link to="/PersonalCenter/SellerCommodityManagement" tag="p" class="link">前往商品管理</router-link></el-button>
+                  <el-button class="bgColor"> <router-link to="/PersonalCenter/SellerIssuesProduct" tag="p" class="link">继续发布</router-link></el-button>
+                <el-button class="bgColor"> <router-link to="/PersonalCenter/SellerOrderManagement" tag="p" class="link">订单管理</router-link></el-button>
+                <el-button class="bgColor"><router-link to="/PersonalCenter/SellerCommodityManagement" tag="p" class="link">特价管理</router-link></el-button>
             </p>
         </div>
     </div>

@@ -50,8 +50,22 @@ const home = {
     }
 
 }
+const footer={
+    queryWebConfigTitle:{
+        url:"api-b/webFront/queryWebConfigTitle"
+    },
+    queryConfigDetail:{
+        url:"api-b/web/queryConfigDetail"
+    }
+};
 const buyerOrderCenter = {
-    //提升额度
+    //支付宝支付取消订单时的报关税
+    payGuanshui:{url:"api-order/alipay/payGuanshui"}, 
+    //微信支付取消订单时的报关税
+    getWechatPayBaoguan:{url:"api-order/wechat/getWechatPayBaoguan"},
+    //对公转账支付取消订单时的报关税
+    uploadBankTransferNo:{url:"api-order/customerCenter/uploadBankTransferNo"},
+       //提升额度
     increaseCredit:{
         url:'api-b/vipApply/increaseCredit',
         method:'post'
@@ -59,6 +73,10 @@ const buyerOrderCenter = {
     //获取买家订单
     queryOrderPersonal:{
         url:"api-order/customerCenter/queryOrderPersonal"
+    },
+    //获取买家订单详情
+    queryOrderDeatil:{
+        url:"api-order/customerCenter/queryOrderDeatil"
     },
     //确认更改交期
     confirmChangeDiliverTime: {
@@ -118,6 +136,10 @@ const sellerOrderCenter = {
     },
 }
 const sellerCenter = {
+    //商品上下架管理
+    updateBatchPublishGoodsSatus:{
+        url:"api-g/goods-b/updateBatchPublishGoodsSatus"
+    },
     //卖家账单中心查询
     queryAccountDetail: {
         url: "/api-order/sellerCenter/queryAccountDetail"
@@ -222,6 +244,7 @@ const shoppingCar = {
     searchSheetList: {
         url: "api-g/ic/queryInquirySheetList"
     },
+    
 }
 const siderInquiryList = {
     // 全部 批复
@@ -234,6 +257,10 @@ const siderInquiryList = {
     },
     replyAgain: {
         url: "/api-g/ic/reApplyInquirySheet"
+    },
+    //询价复议
+    reApplyInquirySheetPrice:{
+        url:"api-g/ic/reApplyInquirySheetPrice"
     }
 
 }
@@ -343,6 +370,7 @@ export {
     axios,
     common,
     home,
+    footer,
     buyerOrderCenter,
     sellerCenter,
     sellerOrderCenter,

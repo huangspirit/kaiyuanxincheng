@@ -26,6 +26,8 @@ Vue.filter('applyStatus', value => {
         return '商城卖家'
     } else if (value == '4') {
         return '月结'
+    }else if (value == '18') {
+        return '企业分销商'
     }
 })
 Vue.filter('effective', (val, value1) => {
@@ -42,6 +44,7 @@ Vue.filter('effective', (val, value1) => {
 
 })
 Vue.filter('toFixed', (s,n) => {
+            s=s?s:0;
         var regex = /(\d)(?=(\d\d\d)+(?!\d))/g;
         n = n >= 0 && n <= 20 ? n : 2;
         s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
@@ -52,7 +55,8 @@ Vue.filter('toFixed', (s,n) => {
             t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
         }
         return t.split("").reverse().join("") + r;
-      //  return Number(value).toFixed(length);
+  
+      //  return Number(s).toFixed(n)
 })
 Vue.filter('tagFilter', (value) => {
     switch (Number(value)) {
@@ -61,7 +65,9 @@ Vue.filter('tagFilter', (value) => {
         case 2:
           return "代理商";
         case 3:
-          return "商家";
+          return "商城卖家";
+        case 18:
+          return "企业分销商";
       }
 })
 // 毫秒转化正常日期格式
@@ -98,9 +104,6 @@ function formatDateTime(date) {
     var year = date.getFullYear()
     var month = date.getMonth() + 1
     var day = date.getDate()
-    // var hour = date.getHours()
-    // var minute = date.getMinutes()
-    // var second = date.getSeconds()
     return year + '-' + formatTen(month) + '-' + formatTen(day)
 }
 

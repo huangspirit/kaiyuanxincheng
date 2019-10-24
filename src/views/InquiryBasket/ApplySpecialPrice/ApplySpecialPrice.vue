@@ -35,7 +35,7 @@
               }"> {{oneData.brand}}</router-link>
             </P>
             <p>
-              <label>型号描述：</label>
+              <label>描述：</label>
               {{oneData.productdesc}}
             </p>
 
@@ -86,6 +86,7 @@
       <!-- 申请信息 -->
       <div class="apply-inform">
         <p class="tit">填写特价申请信息</p>
+        <div class="color" style="margin-bottom:20px;text-align:center;font-size:13px;">此项目信息将会直接发接到原厂相关负责人，为了您能顺利的获得心仪的价格，请认真填写</div>
         <el-form :model="formAlign" :rules="rules" ref="formAlign" label-width="110px">
           <el-form-item label="公司名称" prop="companyName">
             <el-input v-model="formAlign.companyName"></el-input>
@@ -97,7 +98,16 @@
             <el-input v-model="formAlign.projectName"></el-input>
           </el-form-item>
           <el-form-item label="产品阶段" prop="projectProcess">
-            <el-input v-model="formAlign.projectProcess"></el-input>
+           
+             <el-select
+                v-model="formAlign.projectProcess"
+            
+                placeholder="请选择"
+                size="mini"
+              >
+                <el-option :label="item" :value="item" v-for="item in projectProcess" :key="item">{{item}}</el-option>
+              </el-select>
+            <!-- <el-input v-model="formAlign.projectProcess"></el-input> -->
           </el-form-item>
           <el-form-item label="预计量产时间" prop="projectBeginTime">
             <div class="product-time">
@@ -105,17 +115,17 @@
             </div>
           </el-form-item>
           <el-form-item v-if="topShow" class="acceptPrice" label="接受价格" prop="acceptPrice">
-            <el-input placeholder="请输入价格" v-model="formAlign.acceptPrice" class="input-with-select">
-              <span slot="prepend" v-if="formAlign.priceType=='false'">￥</span>
-              <span slot="prepend" v-else>$</span>
+            <el-input placeholder="请输入价格" v-model="formAlign.acceptPrice" class="input-with-select" size="mini">
+              <span slot="prepend" v-if="formAlign.priceType">$</span>
+              <span slot="prepend" v-else>￥</span>
               <el-select
                 v-model="formAlign.priceType"
                 slot="append"
                 placeholder="请选择"
                 @change="selectChange"
               >
-                <el-option :label="'人民币'" value="false"></el-option>
-                <el-option :label="'美元'" value="true"></el-option>
+                <el-option :label="'人民币'" :value="false"></el-option>
+                <el-option :label="'美元'" :value="true"></el-option>
               </el-select>
             </el-input>
           </el-form-item>
@@ -147,12 +157,12 @@
             <el-input v-model="formAlign.contactName" placeholder="姓名"></el-input>
             <span slot="append">K</span>
           </el-form-item>
-          <el-form-item label="职位" class="contact" prop="position">
-            <el-input v-model="formAlign.position" placeholder="职位"></el-input>
+           <el-form-item label="手机号" class="contact" prop="telphone">
+            <el-input v-model="formAlign.telphone" placeholder="请输入手机号"  type="text" maxlength="11" show-word-limit></el-input>
             <span slot="append">K</span>
           </el-form-item>
-          <el-form-item label="电话" class="contact" prop="telphone">
-            <el-input v-model="formAlign.telphone" placeholder="请输入手机号" type="number"></el-input>
+          <el-form-item label="职位" class="contact" prop="position">
+            <el-input v-model="formAlign.position" placeholder="职位"></el-input>
             <span slot="append">K</span>
           </el-form-item>
           <el-form-item label="备注说明" class="contact" prop="remark">
@@ -184,7 +194,7 @@
                       品牌：{{listItem.brand}}
                   </router-link>
                   <!-- <p>基本参数：DIP 盒子 1/8W 100-15</p> -->
-                  <p>型号描述：{{listItem.productdesc}}</p>
+                  <p>描述：{{listItem.productdesc}}</p>
                   <p>
                     <span>共有<strong>{{listItem.map.totalSeller}}</strong>个供应商报价</span>
                     <span
@@ -322,14 +332,16 @@ export default {
         contactName: "",
         telphone: "",
         acceptPrice: "",
-        priceType: "false",
+        priceType: false,
         remark: "",
         projectBeginTime: "",
         projectEau: "",
         position: "",
         insteadNo: "",
-        insteadData: []
+        insteadData: [],
+      
       },
+        projectProcess:['投入期','成长期','成熟期','衰退期'],
       rules: {
         companyName: [
           { required: true, message: "公司名称不能为空", trigger: "blur" }
@@ -348,7 +360,7 @@ export default {
           { required: true, message: "手机号不能为空", trigger: "blur" },
           {
             pattern: /^1[3456789]\d{9}$/,
-            message: "格式不正确",
+            message: "手机号码格式不正确",
             trigger: "blur"
           }
         ],
@@ -386,7 +398,6 @@ export default {
     },
   mounted() {
       this.proInformation=JSON.parse(localStorage.getItem("proInformation"))
-      console.log(this.proInformation)
       if(!this.proInformation){
           return;
       }
@@ -407,7 +418,15 @@ export default {
      
         this.formAlign = {...this.formAlign,...this.proInformation};
         if(this.proInformation.insteadNo){
-            this.formAlign.insteadData = this.proInformation.insteadNo.split("@");
+          let arr= this.proInformation.insteadNo.split("@");
+            arr.forEach((item,index)=>{
+                if(index==(arr.length-1)){
+                  this.$set(this.formAlign,'insteadNo',item)
+               
+                }else{
+                  this.formAlign.insteadData.push(item)
+                }
+            })
         }else{
             this.formAlign.insteadData = [];
         }
@@ -566,7 +585,7 @@ export default {
       }
     },
     selectChange(e) {
-      console.log(this.formAlign);
+      console.log(e)
       this.formAlign = Object.assign({}, this.formAlign);
     },
     listChange(index) {
@@ -615,7 +634,7 @@ export default {
 .acceptPrice{
     /deep/.el-input-group__append{
         font-size:12px;
-        width:30px;
+        width:50px;
         input{
             font-size:12px!important;
         }

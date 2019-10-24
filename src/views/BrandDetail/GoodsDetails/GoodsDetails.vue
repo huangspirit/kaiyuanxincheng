@@ -45,9 +45,9 @@
                       <!-- <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> -->
                   </p>
                   <p class="goodsdesc" style="word-break:break-all;">描述：{{goodsinfo.productdesc}}</p>
-                  <P class='goodsdesc'>封装：{{showSelling?'在售':'暂未出售'}}</P>
+                  <P class='goodsdesc'>封装：{{goodsinfo.fenghzhuang}}</P>
                  <div class="cont1">
-                    <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt=""></span> <span>官方参考价：<span style="text-decoration:line-through;">{{goodsinfo.referPrice}}</span></span>
+                    <span  @click="openBig" class="txt">数据手册：<img src="@/assets/image/brandDetail/pdf.png" alt="" style="cursor:pointer;"></span> <span>官方参考价：<span style="text-decoration:line-through;font-size:12px" class="color">US${{goodsinfo.referPrice}}</span></span>
                  </div>
                   <div class="icon">
                       <span v-if="goodsinfo.focus"><i class="el-icon-star-on" ></i>&nbsp;已关注</span>
@@ -61,8 +61,8 @@
                             <span class="btn gray" @click="addInquiry">加入询价蓝</span>
                         </template>
                         <template v-else>
-                            <span class="btn" style=" cursor: unset;background:#bbb" >申请特价</span>
-                            <span class="bt" style=" cursor: unset;background:#bbb" >加入询价蓝</span>
+                            <span style=" cursor: unset;background:#bbb" >申请特价</span>
+                            <span style=" cursor: unset;background:#bbb" >加入询价蓝</span>
                         </template>
                         
                   </div>
@@ -83,8 +83,8 @@
       <div class="detail-informan-con">
           <p class="tit">
             <span>技术参数</span>
-            <span>数据手册
-                 <a class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></a>
+            <span>数据手册 | <a class="color"  @click="openBig" >放大查看</a>
+                 <!-- <a class="el-icon-circle-plus-outline" @click="openBig" title="放大查看"></a> -->
             </span>
           </p>
           <ul class="parameter clear">
@@ -147,6 +147,7 @@ import MerchantList from "_c/MerchantList";
 import SubstituModelList from "_c/SubstituModelList";
 import { baseURL, baseURL2 } from "@/config";
 import { axios, shoppingCar,BrandDetail,home} from "@/api/apiObj";
+import { parse } from 'path';
 
 export default {
   name: "GoodsDetails",
@@ -180,7 +181,8 @@ export default {
                 if(this.UserInforma){
                     this.UserInforma=JSON.parse(this.UserInforma)
                     if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
-                        this.$router.push("/PersonalCenter/SellerIssuesProduct");
+                      
+                        this.$router.push("/PersonalCenter/SellerIssuesProduct?name="+this.goodsinfo.productno);
                     }else{
                         this.$router.push("/OriginalFactoryEntry");
                     }
@@ -217,8 +219,7 @@ export default {
     searchDatasheet(id) {
       let ret = baseURL + "api-g/gods-anon/queryGoodsDatesheet?id=" + id;
       this.downDatasheet = ret;
-      let resp =
-        baseURL2 + "static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
+      let resp =baseURL2+"static/pdf/web/viewer.html?file=" + encodeURIComponent(ret);
       this.datasheet = resp;
       const self = this;
       setTimeout(() => {
@@ -301,6 +302,12 @@ export default {
 
   },
   mounted() {
+      const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
       let obj={
           id:this.$route.query.documentid,
           tag:this.$route.query.tag,
@@ -311,7 +318,6 @@ export default {
           if(res.factorySellerInfo.price_type){
               res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
           }
-          console.log(res)
           this.goodsinfo = res
           this.purchaseObj={
               goods_id: res.id,
@@ -336,9 +342,62 @@ export default {
           }
           this.GetMerchantList()
           this.searchDatasheet(res.id)
+             loading.close()
       })
 
 
+  },
+  watch:{
+       $route: {
+          // val是改变之后的路由，oldVal是改变之前的val
+          handler: function(val, oldVal){
+              const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+      let obj={
+          id:this.$route.query.documentid,
+          tag:this.$route.query.tag,
+          name:this.$route.query.name
+      }
+      axios.request({...BrandDetail.searchResult,params:obj}).then(result=>{
+          let res=result.data.goodsinfo
+          if(res.factorySellerInfo.price_type){
+              res.factorySellerInfo.priceList=ladderPrice(res.factorySellerInfo.price_level)
+          }
+          this.goodsinfo = res
+          this.purchaseObj={
+              goods_id: res.id,
+              goods_name: res.productno,
+              goodsDesc: res.productdesc,
+              goodsImage: res.imageUrl,
+              clude_bill: res.factorySellerInfo.clude_bill,
+              price_unit: res.factorySellerInfo.priceunit,
+              seckill_goods_id: res.factorySellerInfo.seller_goods_id,
+              goods_type:res.factorySellerInfo.goods_type,
+              diliver_place: res.factorySellerInfo.diliver_place,
+              moq:Number(res.factorySellerInfo.moq),
+              mpq:Number(res.factorySellerInfo.mpq),
+              stockcount:res.factorySellerInfo.stockcount,
+              price_type:res.factorySellerInfo.price_type,
+              priceList:res.factorySellerInfo.priceList,
+              seckil_price:res.factorySellerInfo.seckil_price,
+              sellerName: res.factorySellerInfo.seller_name,
+              sellerHeader: res.factorySellerInfo.seller_header,
+              seller_id: res.factorySellerInfo.seller_id,
+              tag: 1,
+          }
+          this.GetMerchantList()
+          this.searchDatasheet(res.id)
+             loading.close()
+      })
+
+          },
+          // 深度观察监听
+          deep: true
+      },
   },
   computed: {
       loginState(){

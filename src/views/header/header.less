@@ -1,5 +1,5 @@
 .header{
-  padding:0 10px;
+  padding:0 30px;
   box-sizing: border-box;
   height:80px;
   line-height: 80px;
@@ -15,6 +15,16 @@
     top: 0;
     z-index: 500;
     background: #4f4f4f;
+    .nav{
+      a{
+        color:#fff;
+        margin-right:25px!important;
+        font-size:16px;
+        &:hover{
+          color: #df3f2f;
+        }
+      }
+    }
   }
   .header-c{
     position: relative;
@@ -32,6 +42,23 @@
     .logo{
       position: relative;
       cursor: pointer;
+      .logowrap{
+        display: flex;
+        line-height: 1;
+        align-items: center;
+        margin-top:10px;
+        margin-right:10px;
+        .text{
+          color:#fff;
+          font-size:14px;
+          font-weight: bold;
+          
+        }
+        .route{
+          color:#2690fa;
+          margin-top:5px;
+        }
+      }
         h1{
           height: 80px;
           position: absolute;
@@ -41,16 +68,26 @@
         }
         img{
           height:60px;
+          margin-right:5px;
         }
     }
     .searchInputWrap{
-      padding-top:20px;
       flex:1;
+      display: flex;
+      .inputwrap{
+        flex:1;
+      }
       /deep/.HeaderSearch{
-        width:80%;
+        padding-top:20px;
         margin:0 auto;
-        max-width: 600px;
-        transform: translateX(-10%);
+        width:60%;
+        min-width:230px;
+        margin-right:8%;
+      }
+      .nav{
+        text-align: center;
+        margin: 0 auto;
+      
       }
     }
     .rightwrap{
@@ -149,8 +186,8 @@
     .nav{
       a{
         color:#fff;
-        margin-right:15px;
-        font-size:16px;
+        margin-right:45px;
+        font-size:18px;
         &:hover{
           color: #df3f2f;
         }

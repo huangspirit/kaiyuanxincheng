@@ -1,7 +1,8 @@
 <template>
   <div class="Login" :style="`height:${this.contHeight}px`">
       <div class="carousel">
-          <el-carousel :interval="5000" height="100%" :loop="true">
+         <img src="@/assets/image/Login/bg.jpg" alt="" style="height:100%;width:100%">
+          <!-- <el-carousel :interval="5000" height="100%" :loop="true">
               <el-carousel-item>
                   <img src="@/assets/image/Login/bg0.jpg" alt="">
               </el-carousel-item>
@@ -11,13 +12,15 @@
               <el-carousel-item>
                   <img src="@/assets/image/Login/bg.jpg" alt="">
               </el-carousel-item>
-          </el-carousel>
+          </el-carousel> -->
       </div>
     <div v-if="!dialogVisible" class="cont">
         <div class="formWrap allWidth clear" v-if="loginFlag">
+            
             <div class="form fr" >
+            
                 <p class="type">
-                    <span @click="change(1)">手机免密登陆</span>
+                    <span @click="change(1)">欢迎来到水木晶城，10秒内急速注册成功！</span>
                 </p>
                 <div class="form-con">
                     <div class="form-con-list" v-if="flag === 1">
@@ -43,8 +46,12 @@
                 </p>
             </div>
             <div class="desc fl">
-                <p>最全面的芯片交易平台</p>
-                <p>引领行业潮流</p>
+                <p class="title">
+                  <span>水木晶城</span>
+                  <span class="line">---</span>
+                  <span class="little"> 用芯链接世界</span>
+                </p>
+                <p class="de"><i>特价直通车，缩短中间环节，平台0差价</i></p>
             </div>
         </div>
       <div class="bind-phone form" v-else>

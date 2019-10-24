@@ -70,6 +70,7 @@
             <span style="width:15%">金额明细</span>
             <span style="width:25%">操作</span>
           </p>
+          
           <BuyerOrderItem
             v-for="item in BuyerOrderList"
             :item="item"

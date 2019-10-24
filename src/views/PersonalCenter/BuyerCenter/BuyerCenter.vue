@@ -29,7 +29,7 @@
                 <ul class="clear">
                     <li>
                         <div class="cont">
-                            <p class="money">{{UserInforma.userTagMap.wallet}}</p>
+                            <p class="money">{{UserInforma.userTagMap.wallet | toFixed(2)}}</p>
                             <p class="desc">钱包余额（元）</p>
                             <p class="router">
                                 <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
@@ -41,7 +41,15 @@
                         </div>
                     </li>
                     <li v-if="UserInforma.userTagMap.vip">
-                        <div class="cont circle clear">
+                        <div class="cont yajin">
+                        <p class="money">{{UserInforma.userTagMap['restcredit-vip'] |toFixed(2)}}</p>
+                        <p class="desc">剩余月结额度（元）</p>
+                        <p class="router">
+                            <span>月结额度：{{UserInforma.userTagMap['credit-vip'] | toFixed(0)}}</span>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
+                           <router-link to="/PersonalCenter/vipDetailList" class="route">明细</router-link>
+                        </p>
+                    </div>
+                        <!-- <div class="cont circle clear">
                             <el-progress type="circle" :width="70" :percentage="creditvipPercente"  class="fl"></el-progress>
                             <div class="text fl">
                                 <p class="desc">
@@ -50,7 +58,7 @@
                                 <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-vip']}}</p>
                                 <router-link to="/PersonalCenter/vipDetailList" class="route">额度明细</router-link>
                             </div>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
             </div>
@@ -107,12 +115,12 @@
           width="700px"
           class="withdrawApplyTotal"
       >
-          <p slot="title" class="title"><strong>钱包余额：￥{{UserInforma.userTagMap.wallet}}</strong></p>
+          <p slot="title" class="title"><strong>钱包余额：￥{{UserInforma.userTagMap.wallet | toFixed(2)}}</strong></p>
           <div class="withdrawApplyTotalCont">
               <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal"  @input="changewithdrawApplyTotal" ></el-input>
               <div v-if="withdrawApplyTotal" class="clear">
                   <div class="withdrawCharge">
-                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge}}</span>
+                      手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge | toFixed(2)}}</span>
                       <div class="desc">
                           <i class="el-icon-question color" ></i>
                           <div class="cont">
@@ -131,8 +139,8 @@
                           </div>
                       </div>
                   </div>
-                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal}}</span></p>
-                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal}}</span></p>
+                  <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal | toFixed(2)}}</span></p>
+                  <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal  | toFixed(2)}}</span></p>
                   <ul v-if="bankList.length">
                       <li class="title">
                           <span>提现方式</span>

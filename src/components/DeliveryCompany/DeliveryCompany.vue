@@ -3,8 +3,8 @@
         <div class="alphabet clear">
             <p v-for="(item,k) in alphabet" :key="k" :class="{'active':currentAlphabet==item}" @click="currentAlphabet=item">{{item}}</p>
         </div>
-        <ul class="list">
-                <template v-for="(item,k) in currentList"v-if="currentList.length" >
+        <ul class="list" v-if="currentList.length" >
+                <template v-for="(item,k) in currentList" >
                     <li :class="currentCode==item.code?'active':''" :key="k" @click="setItem(item)">{{item.name}}</li>
                 </template>
         </ul>

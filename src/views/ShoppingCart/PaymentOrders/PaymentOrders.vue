@@ -43,21 +43,19 @@
     <!-- 扫码支付模态框 -->
     <el-dialog
       :visible.sync="dialogCode"
-      width="300px"
+      width="600px"
       :close-on-click-modal="false"
       center
-      class="dialog-ruleForm-code"
+      class="weichatCode"
     >
-      <p slot="title" class="title">扫码支付</p>
-      <div class="dialog-ruleForm-code-body">
-        <div class="code-image">
-          <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" />
-          <div class="Invalid" v-if="InvalidFlag">
-            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle()" />
-          </div>
+    <div class="weichatCodeCont">
+       <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" class="codeImg"/>
+       <div class="Invalid" v-if="InvalidFlag">
+            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentWe" /><br>
+            <span>刷新重新获取支付二维码</span>
         </div>
-        <p>{{InvalidFlag ? '刷新重新获取支付二维码' : '请使用手机微信扫描二维码进行支付'}}</p>
-      </div>
+    </div>
+
     </el-dialog>
     <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
       <div class="dialog-body" slot="dialog-body">

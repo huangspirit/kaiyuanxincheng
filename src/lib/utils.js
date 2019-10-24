@@ -57,9 +57,16 @@ export const getToken = (tokenName = 'token') => {
 }
 
 export const setTitle = (title) => {
-    window.document.title = title || 'admin'
+    window.document.title = title || '水木晶城'
 }
-
+// 时间格式化（不带时秒分）
+export const TimeForma3 = (value) => {
+    let date = new Date(value)
+    let y = date.getFullYear()
+    let MM = date.getMonth() + 1
+    MM = MM < 10 ? '0' + MM : MM
+    return y + '-' + MM 
+}
 // 时间格式化（不带时秒分）
 export const TimeForma = (value) => {
     let date = new Date(value)
@@ -120,14 +127,15 @@ export const checkAge = (rule, value, callback) => {
         }
     }
 };
-export function ladderPrice(value) {
+export function ladderPrice(value,priceunit) {
     var arr = value.split('@')
     var array = []
+    let leng=priceunit?3:2
     for (var i = 0; i < arr.length; i++) {
         var arr1 = arr[i].split('-')
         array.push({
             num: arr1[0],
-            price: arr1[1]
+            price: Number(arr1[1]).toFixed(leng)
         })
     }
     return array

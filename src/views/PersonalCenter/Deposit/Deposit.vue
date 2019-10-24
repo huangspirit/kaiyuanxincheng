@@ -39,6 +39,7 @@
             </ul>
         </div>
     </div>
+    <div v-html="formhtml" ref='formwrap'></div>
   </div>
 </template>
 <script>
@@ -73,6 +74,7 @@ export default {
       noParams:"",
         timer:null,
         isNeedTimer:false,
+        formhtml:''
     };
   },
   mounted() {
@@ -135,12 +137,21 @@ export default {
         });
     },
     pagePayDeposit() {
+      
       var obj = {
         amount: this.amount
       };
       axios
         .request({ ...topupDeposit.pagePayDeposit, params: obj })
         .then(res => {
+          this.formhtml=res.data.prepay_id;
+          let _this=this;
+          setTimeout(function(){
+             _this.$refs.formwrap.getElementsByTagName('form')[0].charset = "UTF-8";
+           _this.$refs.formwrap.getElementsByTagName('form')[0].target = "_blank";
+            _this.$refs.formwrap.getElementsByTagName('form')[0].submit();
+          },0)
+          return;
           const div = document.createElement("divform");
           div.innerHTML = res.data.prepay_id;
           document.body.appendChild(div);
@@ -231,6 +242,7 @@ export default {
         }
       } else if (index == 1) {
           //标识支付宝
+
           this.isNeedTimer=false;
           this.countNum=0;
           this.qrcode = "";

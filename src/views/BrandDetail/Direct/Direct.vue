@@ -37,8 +37,8 @@
                   <div class="item">
                       <div class="title">品牌</div>
                       <ul class="listwrap">
-                          <li  v-for="(item0,index0) in brandList" @click.stop="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''">
-                              {{item0.brand}}
+                          <li  v-for="(item0,index0) in brandList" @click.stop="getTypeByBrandId(index0)" :class="selectedScreen.brand_id==item0.id?'active':''" :key="index0">
+                              {{item0.branda}}
                           </li>
                       </ul>
                   </div>
@@ -117,22 +117,18 @@
       <!-- 经营品类 -->
       <div class="brand-hot brand-msg">
             <div class="tit bgGray">
+                 <el-input
+                  placeholder="在结果中查询关键词：型号"
+                  class="fr inputSearch"
+                  v-model="valueName"
+                  size="mini"
+                  style="width:200px;"
+                  @keyup.enter.native="hotSearchValue"
+                  >
+                   <el-button slot="append" icon="el-icon-search" @click="hotSearchValue"></el-button>
+                </el-input>
+                <span>产品列表</span>
 
-                <span>商品列表</span>
-<!--                <SearchInput-->
-<!--                    class="clear fr"-->
-<!--                    :value="valueName"-->
-<!--                    :width="350"-->
-<!--                    :height="40"-->
-<!--                    :placeholder="'搜索热卖产品'"-->
-<!--                    :fontSize="14"-->
-<!--                    :btnImgWidth="20"-->
-<!--                    :btnWidth="40"-->
-<!--                    :borderColor="'#fff'"-->
-<!--                    @input="hotSearchValue"-->
-<!--                    @submit="hotSearchsubmit"-->
-<!--                ></SearchInput>-->
-                <!-- 品牌热卖 -->
             </div>
         </div>
       <div class="management-class">
@@ -197,7 +193,14 @@ export default {
       $route: {
           // val是改变之后的路由，oldVal是改变之前的val
           handler: function(val, oldVal){
-              this.init()
+              console.log("luyoubianhu")
+            if(this.$route.query.tag){
+                    this.query=this.$route.query
+                }else{
+                    this.query=this.directJOSN
+                }
+                this.init();
+                this.getPropertyByParentId()
           },
           // 深度观察监听
           deep: true
@@ -286,7 +289,7 @@ export default {
       },
       // 获取热搜的值
       hotSearchValue(val) {
-          this.valueName = val;
+         // this.valueName = val;
           this.currentPage=1;
           this.hasHotResearch=true;
           this.searchType=0;

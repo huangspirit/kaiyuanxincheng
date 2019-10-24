@@ -33,7 +33,7 @@
         </div>
         <!-- 二级切换 -->
         <div class="tab-list-b">
-          <ul>
+          <ul class="clear">
             <li v-if="tabFirstFlag === 0">
               <span
                 v-for="(item,index) in subWaitPay"
@@ -62,10 +62,11 @@
         </div>
         <!-- 列表的内容 -->
         <div class="tab-list-con">
+          
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="3">采购器件明细</th>
+                        <th colspan="4">采购器件明细</th>
                         <th>订单状态</th>
                         <th>合同状态</th>
                         <th>订单金额</th>
@@ -73,51 +74,91 @@
                     </tr>
                 </thead>
                 <tbody>
+                  <tr v-if="BuyerOrderList.length==0">
+                    <td colspan="8">暂无数据</td>
+                    
+                    </tr>
                     <template v-for="item in BuyerOrderList">
                         <tr :key="item.id" class="title">
-                            <td colspan="7" >
+                            <td colspan="8" >
+                                <span v-if="item.orderVo.togetherPay==true" class="he bgColor">合并报关</span>
+                                <span  v-if="item.orderVo.togetherPay==false" class="fen">单独报关</span>
                                 <span class="">订单编号：{{item.orderVo.order_no}}</span>
                                 <span>下单日期：{{item.orderCreateTime | formatDate}}</span>
                                 <span>收货人：{{item.orderVo.receivingName}} {{item.orderVo.phone}}</span>
-                                <span>{{item.orderVo.isMonth?'月结订单':'普通订单'}}</span>
+                                <strong>{{item.orderVo.isMonth?'月结订单':'普通订单'}}</strong>
+                                <div v-if="item.expireTime" class="counttimewrap">
+                                    <CountTime
+                                    class="CountTime"
+                                    v-on:end_callback="countDownE_cb()"
+                                    :currentTime="item1.currentTime"
+                                    :startTime="item1.currentTime"
+                                    :endTime="item1.expireTime"
+                                    :tipText="'距离开始文字1'"
+                                    :tipTextEnd="'离付款截止时间还剩：'"
+                                    :endText="'订单已失效'"
+                                    :dayTxt="'天'"
+                                    :hourTxt="'时'"
+                                    :minutesTxt="'分'"
+                                    :secondsTxt="'秒'"
+                                    ></CountTime>
+                                </div>
                             </td>
                         </tr>
                         <tr v-for="(item1,index) in item.orderInfoList" :key="item1.id">
                             <td class="goodsinfo">
                                 <div style="display:inline-flex;">
-                                    <ImgE :src="item1.goods_image" :w="40" :H="40"></ImgE>
+                                    <ImgE :src="item1.goods_image" :W="40" :H="40"></ImgE>
                                     <span style="display:inline-flex;flex-direction: column;justify-content: space-around ">
-                                        <label for="" >{{item1.goods_name}}</label><br>
-                                        <span>{{item1.goods_desc}}</span>
+                                        <router-link class="color" :to="{
+                                          path:'/sellerGoodsDetail',
+                                          query:{
+                                            seller_goods_id:item1.seckill_goods_id
+                                          }
+                                        }">
+                                          {{item1.goods_name}}
+                                        </router-link>
+                                        <router-link :to="{
+                                          path:'/BrandDetail',
+                                          query:{
+                                            name:item1.goods_brand,
+                                            documentid:item1.goods_brand_id,
+                                            tag:'brand'
+                                          }
+                                        }">{{item1.goods_brand}}</router-link>
+                                        <span class="desc">{{item1.goods_desc}}</span>
                                     </span>
                                 </div>
                             </td>
                             <td class="" style="white-space:nowrap;">
-                                x{{item1.goods_count}}<br>
+                                <strong class="">{{item1.priceunit?'$':'￥'}}{{item1.good_price | toFixed(item1.priceunit?3:2)}}</strong>x{{item1.goods_count}}<br>
                                 <strong v-if="!item1.goods_type">预计于{{item1.complete_date | formatDate}}</strong>
                                 <strong v-if="item1.goods_type">现货</strong>
                                 <br>
                                 <span>{{item1.diliver_place}}交货</span>
                             </td>
-                            <td class="">
+                            <td>
+                              <!-- <span>{{item1.order_status | filterstatus}}</span><br> -->
+                              <strong v-if="item1.payFinalButton">待付尾款:￥{{item1.final_pay | toFixed(2)}}</strong>
+                            </td>
+                            <td class="" style="width:10%;">
                                  <div class="operaBtn">
                                     <div v-if="item1.reason" class="cancleReason">取消原因：{{item1.reason}}</div>
                                     <div class="wrapbtn">
-                                        <a href="javascript:;"
-                                            v-if="item1.confirmChangeDiliverTimeButton"
-                                            @click="confirmChangeDiliverTime(item1)"
-                                        >确认新交期</a>
-                                        <a href="javascript:;"
-                                            v-if="item1.cancleButton"
-                                            size="mini"
-                                            @click="cancleOrder(2,item1.id)"
-                                        >移除商品</a>
-                                        <a href="javascript:;"
+                                        <p class="" v-if="item1.confirmChangeDiliverTimeButton">
+                                          <a href="javascript:;" @click="confirmChangeDiliverTime(item1)" >交期确认</a>
+                                        </p>
+                                        <p class="" v-if="item1.cancleButton">
+                                           <a href="javascript:;"  @click="cancleOrder(2,item1)">取消此零件</a>
+                                        </p>
+                                       <p v-if="item1.receivingGoodsButton">
+                                         <a href="javascript:;"
                                             @click="confirmRecieveGoods(item1.id)"
-                                            v-if="item1.receivingGoodsButton"
-                                        >确认收货</a><br>
+                                        >确认收货</a>
+                                       </p>
+                                       
                                         <a href="javascript:;"
-                                        @click="payfinal(item,item1)"
+                                        @click="payment(1,item1)"
                                             v-if="item1.payFinalButton"
                                         >去付尾款</a>
                                     </div>
@@ -130,7 +171,7 @@
                                     :currentTime="item1.currentTime"
                                     :startTime="item1.currentTime"
                                     :endTime="item1.expireTime"
-                                    :tipText="'距离开始文字1'"
+                                    :tipText="'距离活动开始'"
                                     :tipTextEnd="''"
                                     :endText="'订单已失效'"
                                     :dayTxt="'天'"
@@ -141,15 +182,13 @@
                                 </div>
                             </td>
                             <template v-if="index==0">  
-                                <td  :rowspan="item.orderInfoList.length" class="border_right">
+                                <td  :rowspan="item.orderInfoList.length" class="border_right" style="width:10%;">
                                     {{item.orderVo.orderStatesDesc}}<br>
-                                    <!-- <router-link   @click.native="storageItem(item)" 
-                                        :to="{path:'/PersonalCenter/buyerOrderDetail'}"
-                                    >订单详情</router-link> -->
+                
                                 </td>
                                 <td  :rowspan="item.orderInfoList.length" class="border_right hetong" >
                                         <p>{{item.orderVo.download?'合同未上传':'合同已上传'}}</p>
-                                        <a href="javascript:;" @click="downLoadOrderContract(item.orderVo.contractUrl)"  v-if="item.orderVo.download">下载合同</a>
+                                        <a href="javascript:;" @click="downLoadOrderContract(item.orderVo.contractUrl)" >下载合同</a>
                                     <el-upload
                                         class="upload-demo-uploadContract"
                                         :action="uploadUrl"
@@ -169,19 +208,26 @@
                                     </el-upload>          
                                 </td>
                                 <td  :rowspan="item.orderInfoList.length" class="border_right">
-                                    <p>订单金额：￥{{item.orderVo.order_amount}}</p>
-                                    <p v-if="item.orderVo.order_prepay">当前应付款：￥{{item.orderVo.order_prepay}}</p>
-                                    <div class="">
-                                        <a href="javascript:;" @click="payment(0,item)" v-if="item.orderVo.prePayButton">去付定金</a>
-                                        <!-- <a href="javascript:;" @click="payment(1,item)" v-if="item.orderVo.finalPayButton">去付尾款</a> -->
-                                        <a href="javascript:;"  @click="vipPayment(item)" v-if="item.orderVo.isMonth && item.orderVo.payButton">全额付款</a>
-                                        <a href="javascript:;"  @click="payment(2,item)" v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">全额付款</a>
-                                       
-                                    </div>           
+                                  <div v-if="item.orderVo.order_status==3">{{item.orderVo.orderStatesDesc}}</div>
+                                  <div class="" v-else>
+                                      <p>总订单金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
+                                      <p v-if="!item.orderVo.prePayChannel && !item.orderVo.need_pre_pay">当前应付款：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
+                                      <p v-if="!item.orderVo.prePayChannel && item.orderVo.need_pre_pay">当前应付款：￥{{item.orderVo.order_prepay | toFixed(2)}}</p>
+                                      <div class="">
+                                          <a href="javascript:;" @click="payment(0,item)" v-if="item.orderVo.prePayButton">去付定金</a>
+                                
+                                          <a href="javascript:;"  @click="vipPayment(item)" v-if="item.orderVo.isMonth && item.orderVo.payButton">全额付款</a>
+                                          <a href="javascript:;"  @click="payment(2,item)" v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton">全额付款</a>
+                                        
+                                      </div> 
+                                  </div>       
                                 </td>
                                 <td  :rowspan="item.orderInfoList.length" class="border_right">
-                                        <router-link   @click.native="storageItem(item)" 
-                                        :to="{path:'/PersonalCenter/buyerOrderDetail'}"
+                                        <router-link   
+                                        :to="{
+                                          path:'/PersonalCenter/buyerOrderDetail',
+                                          query:{orderNo:item.orderVo.order_no}
+                                          }"
                                     >订单详情</router-link><br>
                                     <a href="javascript:;"  @click="cancleOrder(1,item.orderVo.id)" v-if="item.orderVo.cancelButton">取消订单</a>
                                 </td>
@@ -201,17 +247,18 @@
       ></Pagination>
     </div>
     <SetTankuang :title="'更新交期提示'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
-      <div class="dialog-body" slot="dialog-body">
+      <div class="dialog-body" slot="dialog-body" style="line-height:30px;">
         <p>
           卖家将此商品的交期更新为
           <strong style>{{currentSecondOrder.complete_date | formatDate}}</strong>
         </p>
         <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>
+        <p>若拒绝接收新交期，请在订单中心取消此零件</p>
       </div>
       <div slot="footer" class="dialog-footer AcceptNewTime" >
-        <el-button type="primary"  @click="isAcceptNewTime(1)" size="mini">确认，接受新交期</el-button>
-        <el-button type="info"  @click="isAcceptNewTime(2)" size="mini">拒绝，取消订单</el-button>
+        <el-button type="info"  @click="isAcceptNewTime(2)" size="mini">拒绝新交期</el-button>
         <el-button @click="dialogVisible = false" size="mini" type="info" >关 闭</el-button>
+         <el-button type="primary"  @click="isAcceptNewTime(1)" size="mini">确认，接受新交期</el-button>
         <!-- <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>  -->
       </div>
     </SetTankuang>
@@ -219,20 +266,25 @@
       center
       :visible.sync="dialogVisible2"
       width="500px"
-      class="confirma-delivery-dialog"
+      class="cancleorder"
       top="20vh"
       lock-scroll
     >
       <p slot="title" class="title">取消订单</p>
       <div class="cancleOrderReason">
-        <!-- <p>确认取消此订单吗?</p> -->
-        <el-input type="textarea" v-model="cancleOrderForm.reason" placeholder="请填写取消订单的原因"></el-input>
+        <div class="reason">
+            <el-input v-model="cancleOrderForm.reason" placeholder="取消订单的原因">
+               <el-button slot="append" icon="el-icon-arrow-down" @click="canclelistShow=true"></el-button>
+            </el-input>
+            <ul class="list" v-if="canclelistShow">
+              <li v-for="item in cancleReason" :key="item.value" @click="ensurecanclereason(item.label)">{{item.value}}</li>
+            </ul>
+        </div>
         <p class="desc">取消后该订单无法恢复</p>
         <p class="desc">
           取消后已支付订单款项会在下一个结账日按原路返回
           结账日为每月15日
         </p>
-        <p></p>
       </div>
       <span slot="footer" class="dialog-footer">
           <el-button  @click="dialogVisible2 = false" class="close">不取消</el-button>
@@ -277,28 +329,37 @@
           width="30%"
         >
          <div>
-             <div class="selectpayType">
-                 <el-button @click="payType=1" :class="{bgColor:payType==1}" class="btn">对公转账</el-button>
-                 <el-button  @click="payType=2" :class="{bgColor:payType==2}" class="btn">在线支付</el-button>
-             </div>
+          <div class="selectpayType">
+              <el-button @click="payType=1" :class="{bgColor:payType==1}" class="btn">对公转账</el-button>
+              <!-- <el-button  @click="payType=2" :class="{bgColor:payType==2}" class="btn">在线支付</el-button> -->
+              <el-button  @click="payType=3" :class="{bgColor:payType==3}" class="btn">微信支付</el-button>
+              <el-button  @click="payType=4" :class="{bgColor:payType==4}" class="btn">支付宝支付</el-button>
+          </div>
+          <div v-if="cancleOrderPayShow" class="color" style="margin-top:20px;">取消商品条件：合并报关下取消该订单需要支付对应的报关费<strong>￥{{item.amount}}</strong></div>
          </div>
           <span slot="footer" class="dialog-footer">
                 <el-button @click="selectedPayType = false">取 消</el-button>
                 <el-button type="primary" @click="submitpayType">确 定</el-button>
               </span>
       </el-dialog>
-      <SetTankuang :title="'银行汇款'" v-if="showDialog" @closeDialogCallBack="closeDialogCallBack">
-          <div class="dialog-body" slot="dialog-body">
+   
+    <!-- <el-dialog
+      :visible.sync="showDialog"
+      center
+    >
+      <p slot="title" class="title">对公转账</p>
+        <div class="RemittancNotes">
+                  <div class="dialog-body" slot="dialog-body">
               <div class="RemittancNotes">
                   <el-form  label-width="80px">
-                      <el-form-item label="汇款凭证:">
-                          <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
+                      <el-form-item label="转账凭证:">
+                       
                           <el-upload
                               class="upload-demo"
-                              ref="upload"
+                              ref="upload0"
                               :limit="1"
                               :action="requestUrl"
-                              :auto-upload="true"
+                              :auto-upload="false"
                               list-type="picture-card"
                               :on-success="handleAvatarSuccess"
                           >
@@ -322,19 +383,90 @@
                   </div>
               </div>
           </div>
-      </SetTankuang>
-         <SetTankuang :title="'银行汇款'" v-if="showDialoglittle" @closeDialogCallBack="closeDialogCallBack">
-          <div class="dialog-body" slot="dialog-body">
-              <div class="RemittancNotes">
-                  <el-form  label-width="80px">
-                      <el-form-item label="汇款凭证:">
-                          <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
+              <div slot="footer" class="dialog-footer " style="text-align:right" >
+                
+                <el-button @click="showDialog = false" size="mini" type="info" >取消</el-button>
+                <el-button type="primary"  @click="submitBank('upload0')" size="mini">确定</el-button>
+                
+              </div>
+          </div>
+    </el-dialog> -->
+        <!-- <el-dialog
+      :visible.sync="showDialoglittle"
+      center
+    >
+      <p slot="title" class="title">支付尾款</p>
+        <div class="RemittancNotes">
+                  <el-form  label-width="120px" :model="litleOrderPay">
+                    <el-form-item label="支付方式：">
+                      <el-radio-group v-model="litleOrderPay.paytype">
+                        <el-radio :label="0" :value="0">对公转账</el-radio>
+                        <el-radio :label="1" :value="1">在线支付</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                      <el-form-item label="汇款凭证：" v-if="litleOrderPay.paytype==0">
+                     
                           <el-upload
                               class="upload-demo"
-                              ref="upload"
+                              ref="upload1"
                               :limit="1"
                               :action="requestUrllittle"
-                              :auto-upload="true"
+                              :auto-upload="false"
+                              list-type="picture-card"
+                              :on-success="handleAvatarSuccess"
+                            
+                          >
+                              <i class="el-icon-plus"></i>
+                              <div
+                                  slot="tip"
+                                  class="el-upload__tip"
+                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                          </el-upload>
+                      </el-form-item>
+                    
+                      <el-form-item label="汇款金额：">
+                          <strong class="color" style="font-size:20px;">￥{{litleOrderPay.final_pay | toFixed(2)}}</strong>
+                      </el-form-item>
+                        <el-form-item label="在线支付：" v-if="litleOrderPay.paytype==1">
+                           <el-radio-group v-model="litleOrderPay.type">
+                            <el-radio :label="0" :value="0">微信</el-radio>
+                            <el-radio :label="1" :value="1">支付宝</el-radio>
+                          </el-radio-group>
+                      </el-form-item>
+                  </el-form>
+                  <div class="desc"  v-if="litleOrderPay.paytype==0">
+                      <p class="tishi">温馨提示：</p>
+                      <p><label for="">汇款方式：</label> <span> 1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
+                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
+                      <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
+                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>
+                  </div>
+                  <div slot="footer" class="dialog-footer "  style="text-align:right" >
+                    <el-button @click="showDialoglittle = false" size="mini" type="info" >取消</el-button>
+                    <el-button type="primary"  @click="paylitleOrder" size="mini" v-if="litleOrderPay.paytype==1">确定</el-button>
+                    <el-button type="primary"  @click="submitBank('upload1')" size="mini" v-if="litleOrderPay.paytype==0">确定</el-button>
+                  </div>
+              </div>
+    </el-dialog> -->
+       <!-- <SetTankuang :title="'取消订单条件'" v-if="showDialogcancle" @closeDialogCallBack="closeDialogCallBack">
+          <div class="dialog-body" slot="dialog-body">
+              <div class="RemittancNotes">
+                <div class="color" style="text-align:center;margin-bottom:10px;font-weight:bolder;font-size:16px">{{cancleOrderPay.desc}}</div>
+                  <el-form  label-width="120px" :model="cancleOrderPay">
+                    <el-form-item label="支付方式：">
+                      <el-radio-group v-model="cancleOrderPay.paytype">
+                        <el-radio :label="0" :value="0">对公转账</el-radio>
+                        <el-radio :label="1" :value="1">在线支付</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                      <el-form-item label="汇款凭证：" v-if="cancleOrderPay.paytype==0">
+                      
+                          <el-upload
+                              class="upload-demo"
+                              ref="upload2"
+                              :limit="1"
+                              :action="requestUrlcancle"
+                              :auto-upload="false"
                               list-type="picture-card"
                               :on-success="handleAvatarSuccess"
                           >
@@ -345,25 +477,71 @@
                               >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
                           </el-upload>
                       </el-form-item>
-                      <el-form-item label="汇款金额:">
-                          <strong class="color" style="font-size:20px;">￥{{item.orderVo.order_prepay | toFixed(2)}}</strong>
+                    
+                      <el-form-item label="汇款金额：">
+                          <strong class="color" style="font-size:20px;">￥{{cancleOrderPay.amount}}</strong>
+                      </el-form-item>
+                        <el-form-item label="在线支付：" v-if="cancleOrderPay.paytype==1">
+                           <el-radio-group v-model="cancleOrderPay.type">
+                            <el-radio :label="0" :value="0">微信</el-radio>
+                            <el-radio :label="1" :value="1">支付宝</el-radio>
+                          </el-radio-group>
                       </el-form-item>
                   </el-form>
-                  <div class="desc">
-                      <p class="tishi">温馨提示:</p>
+                  <div class="desc"  v-if="cancleOrderPay.paytype==0">
+                      <p class="tishi">温馨提示：</p>
                       <p><label for="">汇款方式：</label> <span> 1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
-                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信公众号推送给您</span></p>
+                      <p><label for="">查看结果：</label><span>平台审核结果会以短信或者微信众号推送给您</span></p>
                       <P><label for="">开户银行：</label> <span>招商银行上地支行</span> </p>
                       <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span>110 906 335 410 201</span> </P>
                   </div>
+                  <div slot="footer" class="dialog-footer " style="text-align:right" >
+                    <el-button @click="showDialogcancle = false" size="mini" type="info" >取消</el-button>
+                    <el-button type="primary"  @click="payCancleOrder" size="mini"  v-if="cancleOrderPay.paytype==1">确定</el-button>
+                     <el-button type="primary"   @click="submitBank('upload2')" size="mini"  v-if="cancleOrderPay.paytype==0">确定</el-button>
+                  </div>
               </div>
           </div>
-      </SetTankuang>
+      </SetTankuang> -->
+      <el-dialog
+      :visible.sync="dialogCode"
+      width="600px"
+      :close-on-click-modal="false"
+      center
+      class="weichatCode"
+    >
+    <div class="weichatCodeCont">
+       <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" class="codeImg"/>
+       <div class="Invalid" v-if="InvalidFlag">
+            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle()" /><br>
+            <span>刷新重新获取支付二维码</span>
+        </div>
+    </div>
+
+    </el-dialog>
+      <!-- <el-dialog
+      :visible.sync="dialogCode1"
+      width="600px"
+      :close-on-click-modal="false"
+      center
+      class="weichatCode"
+    >
+    <div class="weichatCodeCont">
+       <img :src="`data:image/jpeg;base64,${payCodeImgUrl}`" class="codeImg"/>
+       <div class="Invalid" v-if="InvalidFlag">
+            <img src="@/assets/image/PersonalCenter/_u1118.png" alt @click="paymentHandle1()" /><br>
+            <span>刷新重新获取支付二维码</span>
+        </div>
+    </div>
+    </el-dialog> -->
+    <bankTransfer :bankTransferObj="bankTransferObj" v-if="bankTransferShow" @closeBankTransfer="bankTransferShow=false" @bankSuccess="bankSuccess"></bankTransfer>
+    <div v-html="formhtml" ref='formwrap'></div>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
 import BuyerOrderItem from "_c/BuyerOrderItem";
+import bankTransfer from "_c/bankTransfer";
 import {axios,buyerOrderCenter} from "../../../api/apiObj";
 import { TimeForma,TimeForma2 } from "@/lib/utils";
 import { baseURL, baseURL2 } from "@/config";
@@ -371,6 +549,11 @@ export default {
   name: "BuyerOrderManagement",
   data() {
     return {
+      formhtml:"",
+      paymentType:0,
+      paymoney:0,
+      bankTransferShow:false,
+      bankTransferObj:{},//公对公转账传参
       // 一级分类列表
       tabFirstList: [
         {
@@ -492,15 +675,44 @@ export default {
           show: false
         }
       ],
+      
+      cancleReason:[
+        {
+          label:'订单信息拍错了',
+          value:'订单信息拍错了'
+        },
+        {
+          label:'不想要了',
+          value:'不想要了'
+        },
+        {
+          label:'地址电话信息填写错误',
+          value:'地址电话信息填写错误'
+        },
+        {
+          label:'没有优惠',
+          value:'没有优惠'
+        },
+        {
+          label:'发货时间延迟了',
+          value:'发货时间延迟了'
+        },
+        {
+          label:'缺货',
+          value:'缺货'
+        },
+      ],
+      canclelistShow:false,
+      cancleOrderPayShow:false,
       orderDate: "",
       tabFirstFlag: "",
       orderParams: {},
       currentPage: 1,
       pageSize: 10,
       SearchInputValue: "",
-        BuyerOrderList:[],
-        BuyerOrderManagementTotal:0,
-          orderInfoList:{},
+      BuyerOrderList:[],
+      BuyerOrderManagementTotal:0,
+      orderInfoList:{},
       downloadUrl2: "",
       //取消订单需要的传参
       cancleOrderForm: {},
@@ -522,6 +734,8 @@ export default {
       payCodeImgUrl: "",
       // 支付二维码的模态框
       dialogCode: false,
+       // 取消订单支付二维码的模态框
+      dialogCode1: false,
       // 刷新二维码的flag
       InvalidFlag: false,
       // 当前支付的状态
@@ -535,21 +749,61 @@ export default {
       selectedPayType:false,
       showDialog:false,
       showDialoglittle:false,
+      showDialogcancle:false,
       //选中的当前订单
       item:{
           orderVo:{}
       },
-      //小订单的ID
-      litleorderId:0,
+      litleOrderPay:{
+        paytype:0,//在线支付
+        type:0//微信
+      },
+      cancleOrderPay:{
+         paytype:0,//在线支付
+        type:0//微信
+      },
+      timep:null,//微信支付后的轮训计时器
     };
   },
   components: {
-    BuyerOrderItem
+    BuyerOrderItem,
+    bankTransfer
   },
 
   watch: {
     currentPage() {
       // this.all();
+    }
+    ,canclereason(reason){
+        this.$set(this.cancleOrderForm,'reason',reason)
+    },
+    showDialoglittle(val){
+     
+      if(!val){
+         clearInterval(this.timep)
+        var element = document.getElementById("divId");
+        if(element){
+            element.parentNode.removeChild(element);
+        }
+       
+      }
+    },
+    showDialogcancle(val){
+      if(!val){
+        clearInterval(this.timep)
+        this.timep=null;
+        var element = document.getElementById("divId");
+        if(element){
+            element.parentNode.removeChild(element);
+        }
+       
+      }
+    },
+    dialogCode(val){
+        if(!val){clearInterval(this.timep);  this.timep=null;}
+    },
+    dialogCode1(val){
+        if(!val){clearInterval(this.timep);  this.timep=null;}
     }
   },
   methods: {
@@ -561,43 +815,15 @@ export default {
         "CancleOrderSubmit",
         "queryExpress"
     ]),
-   
-    //付款事件
-     closeDialogCallBack(){
-          this.showDialog=false
-          this.showDialoglittle=false;
-      },
-      handleAvatarSuccess(res, file) {
-          if(res.resultCode =='200'){
-              this.$message({
-                  type:'success',
-                  message:'上传成功，等待审核'
-              })
-              console.log("shenpi")
-              this.showDialog=false;
-              this.showDialoglittle=false;
-              this.all();
-          }
-      },
-      submitpayType(){
-            if(this.payType==1){
-                this.showDialog=true;
-            }else if(this.payType==2){
-                this.$router.push({
-                    path: "/ShoppingCart/PaymentOrders",
-                    query: {
-                        // payType: x,
-                        // totalPrice: totalPrice,
-                        orderNumber: this.item.orderVo.order_no
-                    }
-                });
-            }
-            this.selectedPayType=false;
-      },
-      //订单详情跳转
-    storageItem(item){
-          localStorage.setItem("buyerOrderDetail",JSON.stringify(item))
-    },
+   ensurecanclereason(reason){
+     this.canclelistShow=false;
+     this.$set(this.cancleOrderForm,'reason',reason);
+   },
+   //银行汇款凭证提交
+  //  submitBank(name){
+  //     this.$refs[name].submit();
+  //  },
+    
     handleCurrentPageChange(x) {
       this.currentPage = x;
       this.all();
@@ -693,9 +919,14 @@ export default {
     },
     all() {
         axios.request({...buyerOrderCenter.queryOrderPersonal,params:this.orderParams}).then(res=>{
-            if(res){
+            if(res && res.data){
                 this.BuyerOrderList=res.data.data;
                 this.BuyerOrderManagementTotal=res.data.total
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              });
             }
         })
     },
@@ -718,7 +949,7 @@ export default {
        
           if (res.resultCode == "200") {
             this.dialogVisible = false;
-            this.$emit("successFlagHandel");
+            this.all()
           }
         });
     },
@@ -748,82 +979,240 @@ export default {
     countDownE_cb: function(item) {
       item.sellStatus = 2;
     },
-    // 支付的轮训
+    // 微信支付的轮训失败后刷新获得新的二维码
     paymentHandle() {
-      this.InvalidFlag = false;
-      let obj = {
-        message_id: this.item.orderVo.order_no,
-        access_token: this.access_token,
-        type: this.currentStatus
-      };
+      this.paymentWe(this.paymentWeSendData)
+      // return;
+      // this.InvalidFlag = false;
+      // let obj = {
+      //     message_id: this.litleOrderPay.id,
+      //     access_token: this.access_token,
+      //     type: 1,
+      // };
+      // this.$store
+      //   .dispatch("SignContract/GetWeChatPay", obj)
+      //   .then(codeResp => {
+      //     this.dialogCode = true;
+      //     this.payCodeImgUrl = codeResp.prepay_id;
+      //     let count = 0;
+      //     // 拿到二维码之后进行轮训获取支付状态
+      //     var _this=this;
+      //     this.timep = setInterval(() => {
+      //       count++;
+      //       if (count === 40) {
+      //         clearInterval(_this.timep);
+      //         _this.timep=null;
+      //         _this.InvalidFlag = true;
+      //       } else {
+      //         _this.InvalidFlag = false;
+      //         _this.$store
+      //           .dispatch("SignContract/GetPayStatus", {
+      //             orderno: this.litleOrderPay.order_no,
+      //             messageid: codeResp.flag,
+      //             access_token: this.access_token
+      //           })
+      //           .then(statusResp => {
+      //             // 如果支付状态是1，支付成功
+      //             if (statusResp === 1) {
+      //               clearInterval(_this.timep);
+      //                 _this.timep=null;
+      //               _this.$message({
+      //                 type: "success",
+      //                 message: "支付成功!"
+      //               });
+      //               _this.all()
+      //             }
+      //           });
+      //       }
+      //     }, 3000);
+      //   })
+      //   .catch(err => {
+      //     this.$message.error(err.message);
+      //   });
+    },
+     // 取消支付的轮训
+    // paymentHandle1() {
+    //   this.InvalidFlag = false;
+    //   this.payCancleOrderWe();
+    // },
+    // payCancleOrder(){
+    //       if(this.cancleOrderPay.type==0){
+    //           this.payCancleOrderWe()
+    //         }else if(this.cancleOrderPay.type==1){
+    //           axios.request({...buyerOrderCenter.payGuanshui,method:'post',params:{orderId:this.cancleOrderPay.id}}).then(res=>{
+    //             const div = document.createElement("div");
+    //             div.setAttribute("id","divId")
+    //               div.innerHTML = res.data.prepay_id;
+    //               document.body.appendChild(div);
+    //               console.log( document.getElementById('divId').getElementsByTagName('form'))
+    //               document.getElementById('divId').getElementsByTagName('form')[0].charset= "UTF-8";
+    //               document.getElementById('divId').getElementsByTagName('form')[0].target = "_blank";
+    //               document.getElementById('divId').getElementsByTagName('form')[0].submit();
+           
+    //           })
+    //     }
+    // },
+    // payCancleOrderWe(){
+    //   axios.request({...buyerOrderCenter.getWechatPayBaoguan,params:{orderId:this.cancleOrderPay.id}}).then(codeResp=>{
+    //     codeResp=codeResp.data;
+    //      this.dialogCode1 = true;
+    //       this.payCodeImgUrl = codeResp.prepay_id;
+    //       let count = 0;
+    //       var _this=this;
+    //       // 拿到二维码之后进行轮训获取支付状态
+    //       this.timep = setInterval(() => {
+    //         count++;
+    //         if (count === 40) {
+    //           clearInterval(_this.timep);
+    //           _this.timep=null;
+    //           _this.InvalidFlag = true;
+    //         } else {
+    //           _this.InvalidFlag = false;
+    //           _this.$store
+    //             .dispatch("SignContract/GetPayStatus", {
+    //               orderno: _this.cancleOrderPay.orderNo,
+    //               messageid: codeResp.flag,
+    //             })
+    //             .then(statusResp => {
+    //               // 如果支付状态是1，支付成功，跳到我的订单页面
+    //               if (statusResp == 1) {
+                  
+    //                  _this.InvalidFlag=true;
+    //                 _this.showDialogcancle=false;
+    //                 _this.dialogCode1=false;
+    //                 _this.dialogVisible2=false;
+    //                 _this.all();
+    //               }else{
+    //                    console.log("等待支付")
+    //               }
+    //             });
+    //         }
+    //       }, 3000);
+    //     })
+    //     .catch(err => {
+    //       this.$message.error(err.message);
+    //     });
+    // },
+    paymentWe(data) {
+       if(this.paymentType==3){
+        //取消零件补交报关费
+        axios.request({...buyerOrderCenter.getWechatPayBaoguan,params:{orderId:this.cancleOrderPay.id}})
+        .then(codeResp=>{
+          this.wepayRes(codeResp.data)
+        })
+        return;
+      }
       this.$store
-        .dispatch("SignContract/GetWeChatPay", obj)
+        .dispatch("SignContract/GetWeChatPay", data)
         .then(codeResp => {
-          console.log(codeResp);
-          this.dialogCode = true;
-          this.payCodeImgUrl = codeResp.prepay_id;
-          let count = 0;
-          // 拿到二维码之后进行轮训获取支付状态
-          let timep = setInterval(() => {
-            count++;
-            if (count === 40) {
-              clearInterval(timep);
-              this.InvalidFlag = true;
-            } else {
-              this.InvalidFlag = false;
-              this.$store
-                .dispatch("SignContract/GetPayStatus", {
-                  orderno: this.item.orderVo.order_no,
-                  messageid: codeResp.flag,
-                  access_token: this.access_token
-                })
-                .then(statusResp => {
-                  console.log(statusResp);
-                  // 如果支付状态是1，支付成功
-                  if (statusResp === 1) {
-                    clearInterval(timep);
-                    this.$message({
-                      type: "success",
-                      message: "支付成功!"
-                    });
-                    this.$router.go(0);
-                  }
-                });
-            }
-          }, 3000);
+          this.wepayRes(codeResp)
         })
         .catch(err => {
           this.$message.error(err.message);
         });
     },
-    //去付子订单的尾款
-     payfinal(item,item1){
-         //需要获取尾款的金额
-         console.log(item1)
-        this.showDialoglittle=true;
-        this.item=item;
-        this.litleorderId=item1.id
+    wepayRes(codeResp){
+          let order_no="";
+          if(this.paymentType==1 || this.paymentType==3){
+            //尾款或者取消零件补交的报关费
+              order_no=this.item.order_no;
+          }else if(this.paymentType==0 || this.paymentType==2 ){
+              //预付款或者全款
+              order_no=this.item.orderVo.order_no;
+          }
+          this.dialogCode = true;
+          this.payCodeImgUrl = codeResp.prepay_id;
+          let count = 0;
+          var _this=this;
+          // 拿到二维码之后进行轮训获取支付状态
+          this.timep = setInterval(() => {
+            count++;
+            if (count === 40) {
+              clearInterval(_this.timep);
+              _this.InvalidFlag = true;
+            } else {
+              _this.InvalidFlag = false;
+              _this.$store
+                .dispatch("SignContract/GetPayStatus", {
+                  orderno: order_no,
+                  messageid: codeResp.flag,
+                })
+                .then(statusResp => {
+                  // 如果支付状态是1，支付成功，跳到我的订单页面
+                  if (statusResp === 1) {
+                    clearInterval(_this.timep);
+                    _this.timep=null;
+                    this.selectedPayType=false;
+                    this.dialogCode = false;
+                    _this.all();
+                  }
+                });
+            }
+          }, 3000);
     },
     // 点击付款
     payment(x,item) {
-        this.item=item
+      this.item=item;
       this.currentStatus = x;
-      // this.paymentHandle();
+      this.payType=1
       let totalPrice = 0;
+    
       switch (x) {
         case 0:
+          this.paymentType=0;//标志付定金
           totalPrice = this.item.order_prepay;
           break;
         case 1:
-          totalPrice = this.item.order_amount - this.item.order_prepay;
+            this.paymentType=1;//标志付尾款
+          totalPrice = this.item.final_pay;
           break;
         case 2:
+           this.paymentType=2;//标志付全款
           totalPrice = this.item.order_amount;
           break;
       }
-        this.selectedPayType=true;
-
+      this.paymoney=totalPrice;
+      this.selectedPayType=true;
+      this.cancleOrderPayShow=false;
     },
+    // //去付子订单的尾款
+    //  payfinal(item1){
+    //    this.paymentType=1;//标识付尾款
+    //    this.item=item1;
+    //    this.selectedPayType=true;
+    //    return;
+    //      //需要获取尾款的金额
+    //     this.showDialoglittle=true;
+    //     this.litleOrderPay={
+    //       ...this.litleOrderPay,
+    //       final_pay:item1.final_pay,
+    //       order_no:item1.order_no,
+    //       id:item1.id
+    //     }
+    // },
+    //确认在线订单尾款支付
+    // paylitleOrder(){
+    //     if(this.litleOrderPay.type==0){
+    //       this.paymentWe()
+    //     }else if(this.litleOrderPay.type==1){
+    //        this.$store
+    //       .dispatch("SignContract/GetAlipayPagePay", {
+    //         orderNo: this.litleOrderPay.id,
+    //         type: 1,
+    //        // access_token: this.access_token
+    //       })
+    //       .then(res => {
+           
+    //          const div = document.createElement("div");
+    //         div.setAttribute("id","divId")
+    //           div.innerHTML = res.prepay_id;
+    //           document.body.appendChild(div);
+    //           document.getElementById('divId').getElementsByTagName('form')[0].charset= "UTF-8";
+    //            document.getElementById('divId').getElementsByTagName('form')[0].target = "_blank";
+    //             document.getElementById('divId').getElementsByTagName('form')[0].submit();
+    //       });
+    //     }
+    // },
     // 月结的付款
     vipPayment(item) {
         this.item=item;
@@ -851,6 +1240,135 @@ export default {
           });
         });
     },
+    //付款事件
+     closeDialogCallBack(){
+          this.showDialog=false
+          this.showDialoglittle=false;
+          this.showDialogcancle=false;
+      },
+      handleAvatarSuccess(res, file) {
+          if(res.resultCode =='200'){
+              this.$message({
+                  type:'success',
+                  message:'上传成功，等待审核'
+              })
+              this.showDialog=false;
+              this.showDialoglittle=false;
+              this.showDialogcancle=false;
+              this.dialogVisible2=false;
+              this.all();
+          }
+      },
+      submitpayType(){
+            if(this.payType==1){//对公转账
+              if(this.paymentType==1){
+                //标识付尾款
+                this.bankTransferObj={
+                url:this.requestUrllittle,
+                money:this.item.final_pay,
+                title:'订单尾款'
+               // time:this.item.orderVo.expireTime
+                }
+              }else if(this.paymentType==3){
+                    //取消零件补交报关税
+                    this.bankTransferObj={
+                    url:this.requestUrlcancle,
+                    money:this.item.amount,
+                    title:'取消零件补交合并报关费'
+                  // time:this.item.orderVo.expireTime
+                    }
+              }
+              else {
+                  this.bankTransferObj={
+                    url:this.requestUrl,
+                    money:this.item.orderVo.order_prepay,
+                    time:this.item.orderVo.expireTime,
+                    title:this.paymentType==0?'订单预付款':'订单全额'
+                  }
+              }
+              this.bankTransferShow=true;
+             this.selectedPayType=false;
+            }
+            else if(this.payType==3){
+              //微信支付
+              let sendData={}
+              if(this.paymentType==1){
+              //需要获取尾款的金额
+                sendData={
+                   message_id:this.item.id,
+                  type:1,//尾款
+                }
+              }else if(this.paymentType==2){
+                //微信支付全款
+                sendData={
+                  message_id:this.item.orderVo.order_no,
+                  type:2,//全款
+                }
+              }else if(this.paymentType==0){
+                //微信支付预付款
+                sendData={
+                  message_id:this.item.orderVo.order_no,
+                  type:0,//预付款
+                }
+              }else if(this.paymentType==3){
+                //补交报关费
+                sendData={
+                  orderId:this.item.id
+                }
+              }
+              this.paymentWeSendData=sendData;
+               this.paymentWe(sendData)
+
+            }else if(this.payType==4){
+              //支付宝支付
+              let sendData={}
+              if(this.paymentType==1){
+                //支付宝尾款支付
+                sendData={
+                  orderNo: this.item.id,
+                  type: 1,//尾款
+                }
+              }else if(this.paymentType==2){
+                //支付宝支付全款
+                sendData={
+                   orderNo: this.item.orderVo.order_no,
+                  type:2,//全款
+                }
+              }else if(this.paymentType==0){
+                //支付宝支付预付款
+                sendData={
+                  orderNo: this.item.orderVo.order_no,
+                  type:0,//预付款
+                }
+              }else if(this.paymentType==3){
+                //支付宝支付预付款
+                sendData={
+                  orderId:this.item.id
+                }
+                   axios.request({...buyerOrderCenter.payGuanshui,method:'post',params:sendData}).then(res=>{
+                        this.formhtml=res.data.prepay_id;
+                        let _this=this;
+                        setTimeout(function(){
+                          _this.$refs.formwrap.getElementsByTagName('form')[0].charset = "UTF-8";
+                          _this.$refs.formwrap.getElementsByTagName('form')[0].target = "_blank";
+                          _this.$refs.formwrap.getElementsByTagName('form')[0].submit();
+                        },0)
+                    })
+                   return;
+              }
+              this.$store
+                .dispatch("SignContract/GetAlipayPagePay", sendData)
+                .then(res => {
+                   this.formhtml=res.prepay_id;
+                  let _this=this;
+                  setTimeout(function(){
+                    _this.$refs.formwrap.getElementsByTagName('form')[0].charset = "UTF-8";
+                    _this.$refs.formwrap.getElementsByTagName('form')[0].target = "_blank";
+                    _this.$refs.formwrap.getElementsByTagName('form')[0].submit();
+                  },0)
+                });
+            }
+      },
     // 上传合同成功的函数
     uploadSuccess(response, file, fileList) {
       this.$message({
@@ -883,6 +1401,12 @@ export default {
       this.dialogVisible2 = true;
       this.cancleOrderForm.flag = type == 1 ? true : false;
       this.cancleOrderForm.orderId = orderId;
+      if(type==2){
+        this.item=orderId;
+        this.cancleOrderForm.orderId = orderId.id;
+         this.cancleOrderPay.id=orderId.id;
+         this.cancleOrderPay.orderNo=orderId.order_no;
+      }
     },
     // 确认取消订单并提交
     DeliveryCancel() {
@@ -892,8 +1416,16 @@ export default {
         orderId: this.cancleOrderForm.orderId,
         flag: this.cancleOrderForm.flag
       }).then(res => {
-        this.dialogVisible2 = false;
-        this.all();
+          this.dialogVisible2 = false;
+        if(res.resultCode=='400'){
+              this.cancleOrderPayShow=true;
+              this.selectedPayType=true;
+              this.paymentType=3;
+              this.item.amount=res.data.amount
+        }else{
+          this.all();
+        }
+        
       });
     },
       confirmRecieveGoods(id){
@@ -911,6 +1443,9 @@ export default {
           }
       })
     },
+     bankSuccess(){
+      this.all();
+    },
   },
   computed: {
     start() {
@@ -927,18 +1462,31 @@ export default {
           );
       },
        requestUrllittle() {
+         //type==1,标志是报关税上传对公转账凭证
           return (
               baseURL +
-              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.item.orderVo.order_no}&orderId=${this.litleorderId}`
+              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.item.order_no}&orderId=${this.item.id}`
+          );
+      },
+      requestUrlcancle() {
+         //type==1,标志是报关税上传对公转账凭证
+         console.log(this.item)
+          return (
+              baseURL +
+              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.item.order_no}&orderId=${this.item.id}&type=1`
           );
       },
     // 上传文件的地址
     uploadUrl() {
       return `${baseURL}api-order/customerCenter/uploadOrderContract`;
     },
+   
+  },
+  destroyed(){
+    clearInterval(this.timep);
+    this.timep=null;
   },
   mounted() {
-    
     if (this.$route.query.code == "success") {
       let path = this.$route.path;
       this.$message.success("订单支付成功");
@@ -958,6 +1506,26 @@ export default {
       },
       formatDate2(val){
           return TimeForma2(val)
+      },
+      filterstatus(val){
+        switch(val){
+          case 0:
+            return '未支付';
+          case 1:
+            return '已完成支付';
+          case 2:
+            return '取消中';
+          case 3:
+            return '已取消';
+          case 4:
+            return '已交货';
+          case 5:
+            return '已付预付款';
+          case 6:
+            return '已发货到质检中心';
+          case 7:
+            return '已从质检中心发出';
+        }
       }
   }
 };
