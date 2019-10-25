@@ -11,19 +11,16 @@
               <p v-if="brandInfo.email">邮件：{{brandInfo.email}}</p> -->
           </div>
         <div class="brand-msg-con clear">
-     
             <div class="brand-msg-con-l">
               <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
-
             </div>
-          
             <div class="brand-msg-con-r">
               <div class="tit">
                 <a :href="brandInfo.brandWeb" >{{brandInfo.name}}
-                   <!-- <a :href="brandInfo.brandWeb" target="_blank" v-if="brandInfo.brandWeb" style="font-size:14px;">({{brandInfo.brandWeb}})</a> -->
-                   </a> 
-                   <strong v-if="brandInfo.hasSeller">该原厂已入驻</strong>
-                   <a v-if="!brandInfo.hasSeller" class="bgColor ruzhu" href="/OriginalFactoryEntry/BasicInforma" >立即入驻</a>
+                  <!-- <a :href="brandInfo.brandWeb" target="_blank" v-if="brandInfo.brandWeb" style="font-size:14px;">({{brandInfo.brandWeb}})</a> -->
+                  </a> 
+                  <strong v-if="brandInfo.hasSeller">该原厂已入驻</strong>
+                <a v-if="!brandInfo.hasSeller" class="bgColor ruzhu"  @click="chipOriginalFactoryEntry">立即入驻</a>
               </div>
               <p>
                 {{brandInfo.brandDesc}}
@@ -127,6 +124,10 @@ export default {
     SubstituModelList
   },
   methods: {
+    chipOriginalFactoryEntry(){
+      console.log(this.brandInfo)
+      this.$router.push("/OriginalFactoryEntry/BasicInforma")
+    },
       init(){
           this.$loading(this.$store.state.loading)
           let obj={

@@ -238,6 +238,8 @@
                     :before-upload="beforeAvatarUpload"
                     :on-success="successUpload4"
                     :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemovetaxpayerimg"
+                    :file-list="taxpayerimgList"
                     :limit="limitNum"
                   >
                     <i class="el-icon-plus"></i>
@@ -271,7 +273,7 @@
                   <li v-for="(item,index) in AgentList" :key="index">
                     <p class="brandName">
                       品牌：
-                      <span>{{item.brand}}</span>
+                      <span>{{item.brandName}}</span>
                     </p>
                     <el-form-item label="有效期：" prop="businesslicensestarttime">
                       <el-date-picker
@@ -290,7 +292,7 @@
                         format="yyyy/MM/dd"
                       ></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="资质图上传：" prop="qualification" class="qualificationmapimgwrap" v-if="AgentList.length">
+                    <el-form-item label="资质图上传：" prop="qualification" class="qualificationmapimgwrap">
                     
                       <el-upload
                         class="upload-demo"
@@ -301,6 +303,7 @@
                         :before-upload="beforeAvatarUpload"
                         :on-success="(res,file,fileList)=>{return successUploadAgency(res,file,fileList,index)}"
                         :on-preview="handlePictureCardPreview"
+                        :file-list="item.qualificationimgList"
                         :limit="1"
                       >
                         <i class="el-icon-plus"></i>
@@ -438,7 +441,7 @@
 <script>
 // import "@/assets/css/ele-form.less";
 // import "@/assets/css/label-checkbox.less";
-import { baseURL } from "@/config";
+import { baseURL,baseURL4 } from "@/config";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { formatDateTime } from "@/lib/utils";
 import VDistpicker from "v-distpicker";
@@ -470,6 +473,7 @@ export default {
       identitynegList: [],
       taxpayerList: [],
       handimageList:[],
+      taxpayerimgList:[],
       // 基本信息
       ruleForm: {
         // 信用代码
@@ -623,17 +627,97 @@ export default {
     },
     ...mapState("OriginalFactoryEntry", ["joinForm", "applyDetailEdit"])
   },
-  watch: {
-    // area(newval){
-    //   console.log(newval)
-    //   if(newval){
-    //     this.ruleForm.companyaddress=this.province+this.city+this.area
-    //   }else{
-    //       this.ruleForm.companyaddress=""
-    //   }
-    // }
+   created() {
+    if (!this.joinForm.residencetype) {
+      this.$router.push({ path: "/OriginalFactoryEntry" })
+    }
   },
-
+  mounted() {
+    if (this.joinForm.residencetype == 3 || this.joinForm.residencetype == 18) {
+      this.AgentListFlag = false;
+    } else {
+      this.AgentListFlag = true;
+    }
+    if(this.joinForm.id){
+        this.qualificationmapList.push({url:baseURL4+this.joinForm.qualificationmapimg})
+        this.identityposList.push({url:baseURL4+this.joinForm.identityposimg})
+        this.identitynegList.push({url:baseURL4+this.joinForm.identitynegimg})
+        this.handimageList.push({url:baseURL4+this.joinForm.handimage})
+        if(this.joinForm.taxpayerimg){
+          let arr=this.joinForm.taxpayerimg.split('@');
+          this.taxpayerimgList=arr.map(item=>{
+            return {url:baseURL4+item}
+          })
+        }
+        // if(this.joinForm.brandIds){
+        //   let brandTime=this.joinForm.qualificationtime.split("@")
+        //   this.joinForm.brandName.forEach((item, index) => {
+        //     let obj = {}
+        //     if(this.joinForm. brand){
+        //       obj={
+        //         brandName: item,
+        //         brand:this.joinForm.brandIds.split("@")[index],
+        //         qualificationendtime: brandTime[index].split("-")[1],
+        //         qualificationstarttime: brandTime[index].split("-")[0],
+        //         qualificationimgList:[{url:baseURL4+this.joinForm.qualification.split('@')[index]}],
+        //         imageUrl:this.joinForm.qualification.split("@")[index]
+        //       };
+        //     }else{
+        //       obj = {
+        //       brandName: item,
+        //       brand:this.joinForm.brandIds.split("@")[index],
+        //     };
+        //     }
+        //     this.AgentList.push(obj);
+        //   });
+        // }
+        
+    }
+    
+    this.ruleForm = { ...this.ruleForm, ...this.joinForm };
+    this.AgentList=this.ruleForm.EndselectBrandList.map((item)=>{
+      if(item.brandTime){
+        return {
+                brandName: item.brand,
+                brand:item.id,
+                qualificationendtime: item.brandTime.split("-")[1],
+                qualificationstarttime: item.brandTime.split("-")[0],
+                qualificationimgList:[{url:baseURL4+item.brandImg}],
+                imageUrl:item.brandImg
+        }
+      }else{
+        return {
+                brandName: item.brand,
+                brand:item.id,
+        }
+      }
+    })
+    this.limitNum = this.ruleForm.brandName.length;
+   
+    //过滤掉新增的品牌
+    // var index = this.AgentList.findIndex(
+    //   item => item.brand === this.$route.query.newBrand
+    // );
+    // var index0 = this.AgentList.findIndex(
+    //   item => item.brand === this.$route.query.newBrand
+    // );
+    // var newArr = [];
+    // this.AgentList.forEach((item, index) => {
+    //   if (index0 == index) {
+    //     //过滤掉新增的品牌的id
+    //     var oldbrand = this.joinForm.brand.split("@");
+    //     oldbrand.splice(index, 1);
+    //     this.joinForm.brand = oldbrand.join("@");
+    //   } else {
+    //     newArr.push(item);
+    //   }
+    // });
+    // this.AgentList = newArr;
+    // this.AgentList.map(item => {
+    //   item["brandmapList"] = [];
+    // });
+    // this.ruleForm.brandName = this.AgentList.map(item => item.brand);
+  },
   methods: {
     ...mapActions("OriginalFactoryEntry", ["GetInsertBrandReview"]),
     ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
@@ -641,10 +725,8 @@ export default {
       let obj = this.ruleForm.creditcode;
       obj = obj.replace(/[\W]/g, "").toUpperCase();
       this.$set(this.ruleForm, "creditcode", obj);
-     
       if (obj.length >= 18) {
         if (this.count < 1) {
-        
           this.showRequireBtn = true;
         } else {
           this.showSetForm = true;
@@ -678,18 +760,31 @@ export default {
     },
     // 平台入驻的确定
     submitForm(formName) {
+      console.log(this.taxpayerimgList)
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.ruleForm.access_token = this.access_token;
+          this.ruleForm.access_token=this.access_token;
           this.ruleForm.isbusinesslicenseend = this.checkboxChangeValue;
           this.ruleForm.businesshours = this.checkboxChangeValue2;
           this.ruleForm.review = "0";
-          // 转换日期格式
-          this.ruleForm.qualificationtime = [];
-          this.AgentList.forEach((item, index) => {
-          this.ruleForm.qualificationtime[index] =
-              item.qualificationstarttime + "-" + item.qualificationendtime;
-          });
+          //品牌的处理
+          if(this.AgentList && this.AgentList.length){
+            let brand={}
+            this.AgentList.forEach((item, index) => {
+            if(index==0){
+              brand.qualification=item.imageUrl
+              brand.brand=item.brand;
+              brand.qualificationtime=item.qualificationstarttime + "-" + item.qualificationendtime;
+              }else if(index>0){
+                brand.qualification=brand.qualification+"@"+item.imageUrl
+                brand.brand=brand.brand+"@"+item.brand
+                brand.qualificationtime= brand.qualificationtime+"@"+item.qualificationstarttime + "-" + item.qualificationendtime;
+              }
+            });
+            this.ruleForm={...this.ruleForm,...brand}
+          }
+          
+        
           // 对上传多张图片的处理
           // let ret = this.ruleForm.qualificationmapimg instanceof Array;
           // if (ret) {
@@ -706,26 +801,34 @@ export default {
           // if (ret3) {
           //   this.ruleForm.qualification = this.ruleForm.qualification.join("@");
           // }
-          let brandImageUrlList=this.AgentList.map(item=>{
-            return item.imageUrl
-          })
-          if(brandImageUrlList.length>0){
-            this.ruleForm.qualification = brandImageUrlList.join("@");
-          }
-          let ret4 = this.ruleForm.qualificationtime instanceof Array;
-          if (ret4) {
-            this.ruleForm.qualificationtime = this.ruleForm.qualificationtime.join(
-              "@"
-            );
-          }
-          if (this.applyDetailEdit.id) {
-            this.ruleForm["id"] = this.applyDetailEdit.id;
-          }
+          // let brandImageUrlList=this.AgentList.map(item=>{
+          //   return item.imageUrl
+          // })
+          // if(brandImageUrlList.length>0){
+          //   this.ruleForm.qualification = brandImageUrlList.join("@");
+          // }
+          // let ret4 = this.ruleForm.qualificationtime instanceof Array;
+          // if (ret4) {
+          //   this.ruleForm.qualificationtime = this.ruleForm.qualificationtime.join(
+          //     "@"
+          //   );
+          // }
+          // if (this.applyDetailEdit.id) {
+          //   this.ruleForm["id"] = this.applyDetailEdit.id;
+          // }
         
-          if(!this.AgentListFlag){
+          if(!this.AgentListFlag && this.ruleForm.residencetype==3){
+            delete this.ruleForm.brand;
+          }
+          if(this.ruleForm.residencetype==3 || this.ruleForm.residencetype==18){
             delete this.ruleForm.qualificationtime;
             delete this.ruleForm.qualification;
           }
+          delete this.ruleForm.brandIds;
+          delete this.ruleForm.brandName;
+          delete this.ruleForm.EndselectBrandList;
+          delete this.ruleForm.businesslicensenum;
+          console.log(this.ruleForm)
           this.GetInsertBrandReview(this.ruleForm)
             .then(res => {
               this.setJoinForm({});
@@ -814,6 +917,11 @@ export default {
         type: "success"
       });
     },
+    handleRemovetaxpayerimg(file,fileList){
+      let arr = this.ruleForm.taxpayerimg.split("@")
+      arr.splice(arr.findIndex(item => baseURL4+item==file.url), 1)
+      this.ruleForm.taxpayerimg=arr.join("@")
+    },
     // 纳税资格人上传
     successUpload4(response,file, fileList) {
       if(this.ruleForm.taxpayerimg){
@@ -851,61 +959,7 @@ export default {
       this.dialogVisible = true;
     }
   },
-  created() {
-    console.log("created,step0joinForm:", this.joinForm);
-    if (!this.joinForm.residencetype) {
-      this.$router.push({ path: "/OriginalFactoryEntry" });
-    }
-  },
-  mounted() {
-    if (this.joinForm.residencetype == 3 || this.joinForm.residencetype == 18) {
-      this.AgentListFlag = false;
-    } else {
-      this.AgentListFlag = true;
-    }
-    if(this.joinForm.id){
-        this.qualificationmapList.push({url:'http://auth.113ic.com/'+this.joinForm.qualificationmapimg})
-        this.identityposList.push({url:'http://auth.113ic.com/'+this.joinForm.identityposimg})
-        this.identitynegList.push({url:'http://auth.113ic.com/'+this.joinForm.identitynegimg})
-        this.handimageList.push({url:'http://auth.113ic.com/'+this.joinForm.handimage})
-        this.joinForm.taxpayerimg="";
-        this.joinForm.qualification="";
-        this.joinForm.qualificationtime=""
-    }
-    this.ruleForm = { ...this.ruleForm, ...this.joinForm };
-    this.limitNum = this.ruleForm.brandName.length;
-    this.ruleForm.brandName.forEach((item, index) => {
-      let obj = {
-        brand: item,
-        qualificationendtime: "",
-        qualificationstarttime: ""
-      };
-      this.AgentList.push(obj);
-    });
-    //过滤掉新增的品牌
-    var index = this.AgentList.findIndex(
-      item => item.brand === this.$route.query.newBrand
-    );
-    var index0 = this.AgentList.findIndex(
-      item => item.brand === this.$route.query.newBrand
-    );
-    var newArr = [];
-    this.AgentList.forEach((item, index) => {
-      if (index0 == index) {
-        //过滤掉新增的品牌的id
-        var oldbrand = this.joinForm.brand.split("@");
-        oldbrand.splice(index, 1);
-        this.joinForm.brand = oldbrand.join("@");
-      } else {
-        newArr.push(item);
-      }
-    });
-    this.AgentList = newArr;
-    this.AgentList.map(item => {
-      item["brandmapList"] = [];
-    });
-    this.ruleForm.brandName = this.AgentList.map(item => item.brand);
-  }
+ 
 };
 </script>
 

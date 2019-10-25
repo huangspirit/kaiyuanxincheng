@@ -12,6 +12,7 @@ const state = {
   headerFxed: true,
   proInformation:{},
   applyDetailEdit:{},
-  title:'水木晶城'
+  title:'水木晶城',
+  AgencyBrandNumLimit:5
 }
 export default state

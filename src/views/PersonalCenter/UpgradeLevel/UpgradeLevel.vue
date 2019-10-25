@@ -61,13 +61,13 @@
                 type="date"
                 placeholder="营业开始日期"
                 style="margin-right:100px"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
+                value-format="yyyy-MM-dd"
+                format="yyyy-MM-dd"
               ></el-date-picker>
               <el-date-picker
                 v-model="ruleForm.termsEnd"
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
+                value-format="yyyy-MM-dd"
+                format="yyyy-MM-dd"
                 type="date"
                 placeholder="营业结束日期"
               ></el-date-picker>
@@ -244,7 +244,7 @@
 <script>
 // import "@/assets/css/ele-form.less";
 // import "@/assets/css/label-checkbox.less";
-import { baseURL } from "@/config";
+import { baseURL,baseURL4 } from "@/config";
 import { mapState, mapActions } from "vuex";
 import { formatDateTime } from "@/lib/utils";
 import VDistpicker from "v-distpicker";
@@ -449,16 +449,16 @@ export default {
       console.log(this.applyDetailEdit, "编辑申请");
       this.ruleForm = this.applyDetailEdit;
       this.taxUrlList.push({
-        url: baseURL + this.applyDetailEdit.url
+        url: baseURL4 + this.applyDetailEdit.url
       });
       this.idUrlBList.push({
-        url: baseURL + this.applyDetailEdit.idUrlB
+        url: baseURL4 + this.applyDetailEdit.idUrlB
       });
       this.idUrlAList.push({
-        url: baseURL + this.applyDetailEdit.idUrlA
+        url: baseURL4 + this.applyDetailEdit.idUrlA
       });
       this.businessList.push({
-        url: baseURL + this.applyDetailEdit.url
+        url: baseURL4 + this.applyDetailEdit.url
       });
       console.log(this.taxUrlList);
     }

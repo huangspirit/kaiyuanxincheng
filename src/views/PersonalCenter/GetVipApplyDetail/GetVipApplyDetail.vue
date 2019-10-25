@@ -46,7 +46,8 @@
     <SetTankuang :title="'申请详情'" v-if="dialogVisible" @closeDialogCallBack="dialogVisible=false">
       <div class="dialog-body" slot="dialog-body">
         <ul v-if="detailList.applyType!='4'" class="applyDetail">
-          <li>
+          <template v-if="detailList.residencetype!='3'">
+            <li>
             <span>公司注册名称：</span>
             <span>{{detailList.companyname}}</span>
           </li>
@@ -92,6 +93,7 @@
               />
             </span>
           </li>
+          </template>
           <li>
             <span>身份证号：</span>
             <span>{{detailList.enterpriseplatformidentity}}</span>
@@ -135,19 +137,23 @@
               />
             </span>
           </li>
-          <template  v-if="detailList.brand">
-          <li :key="index"  v-for="(item,index) in detailList.brand.split('@')">
-            <span>品牌：</span>
-            <span>{{item}}&nbsp; <strong>({{detailList.qualificationtime.split('@')[index]}})</strong></span>
-            <span>品牌LOGO：</span>
-            <span>
-              <img
-                style="margin: 10px 0;"
-                :src="'http://auth.113ic.com/'+ detailList.qualification.split('@')[index]+'?imageView2/2/w/180/h/100'"
-              />
-            </span>
+          <li v-if="detailList.brand && detailList.residencetype=='18'">
+            <span>代理品牌：</span>
+            <span>{{detailList.brand.split('@')}}</span>
           </li>
-             </template>
+          <template  v-if="detailList.brand && detailList.residencetype!='3' && detailList.qualificationtime">
+            <li :key="index"  v-for="(item,index) in detailList.brand.split('@')">
+              <span>品牌：</span>
+              <span>{{item}}&nbsp; <strong>({{detailList.qualificationtime.split('@')[index]}})</strong></span>
+              <span>品牌LOGO：</span>
+              <span>
+                <img
+                  style="margin: 10px 0;"
+                  :src="'http://auth.113ic.com/'+ detailList.qualification.split('@')[index]+'?imageView2/2/w/180/h/100'"
+                />
+              </span>
+            </li>
+            </template>
         </ul>
 
         <ul v-if="detailList.applyType=='4'" class="applyDetail">
@@ -299,11 +305,14 @@ export default {
           }
         })
         .then(res => {
+           this.$router.push({
+                  path: "/OriginalFactoryEntry/BasicInforma"
+                });
           if (res.resultCode == "200") {
             if (res.data) {
               if (obj.applyType != "4") {
-                this.editApply = res.data.baseInfo;
-                  this.setJoinForm(this.editApply);
+                this.editApply = {...res.data.baseInfo,brand:res.data.baseInfo.brandId,brandName:res.data.baseInfo.brand.split('@')};
+                this.setJoinForm(this.editApply);
                // this.$store.state.OriginalFactoryEntry.joinForm = this.editApply;
                 this.$router.push({
                   path: "/OriginalFactoryEntry/BasicInforma"

@@ -58,6 +58,7 @@
               multiple
               placeholder="请选择"
               :multiple-limit="maxBrandNum"
+              @change="changeBrand"
               @focus="FindBrand"
             ></el-select>
           </el-form-item>
@@ -89,7 +90,7 @@ export default {
   data() {
     return {
       // 选择品牌的最大数量
-      maxBrandNum: 3,
+      maxBrandNum: 0,
       //入住类型
       residencetype: "",
       // 基本信息
@@ -169,24 +170,31 @@ export default {
           { required: true, message: "请输入联系人电话", trigger: "blur" },
           { min: 11, max: 11, message: "联系人电话长度为11位", trigger: "blur" }
         ]
-      }
+      },
+      originBrand:[]
     };
   },
   computed: {
     ...mapState("OriginalFactoryEntry", ["joinForm"]),
+    ...mapState({
+        AgencyBrandNumLimit:state => state.AgencyBrandNumLimit
+    }),
     access_token() {
       return localStorage.getItem("access_token");
     }
   },
   watch: {
     residencetype(newval, oldval) {
-      this.ruleForm = { ...this.ruleForm, residencetype: newval };
+      this.ruleForm = { ...this.ruleForm, residencetype: newval};
+      //this.EndselectBrandList=[];
+      if(oldval){
+        this.EndselectBrandList=[];
+        this.ruleForm.brandName=[];
+      }
       if (newval === 1) {
         this.maxBrandNum = 1;
-        this.ruleForm.brandName = [];
-        this.EndselectBrandList = [];
-      } else {
-        this.maxBrandNum = 3;
+      }else{
+        this.maxBrandNum = this.AgencyBrandNumLimit;
       }
     }
   },
@@ -204,8 +212,18 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //将数据保存到store
-          console.log(this.ruleForm)
-          this.setJoinForm(this.ruleForm);
+          if(this.ruleForm.residencetype ==3 ){
+             this.setJoinForm({...this.ruleForm});
+          }else{
+            if(this.EndselectBrandList.length){
+                this.setJoinForm({...this.ruleForm,EndselectBrandList:this.EndselectBrandList});
+            }else{
+              this.$message({
+                message:"请选择品牌"
+              })
+              return;
+            }
+          }
           this.$store.state.OriginalFactoryEntry.active = 1;
           this.$router.push({
             path: "/OriginalFactoryEntry/CheckInformation",
@@ -219,6 +237,17 @@ export default {
         }
       });
     },
+    changeBrand(x){
+      let arr=[]
+      this.EndselectBrandList.forEach(item=>{
+          x.forEach(item0=>{
+            if(item0==item.brand){
+                arr.push(item)
+            }
+          })
+      })
+      this.EndselectBrandList=arr;
+    },
     FindBrand(x) {
       if (this.ruleForm.residencetype) {
         this.selectBrandFlag = true;
@@ -230,6 +259,7 @@ export default {
       this.ruleForm.brandName = [];
     },
     selectBrand(item) {
+      console.log(item)
       this.ruleForm.name = item.brand;
       this.FindBrandList = [];
     },
@@ -247,17 +277,21 @@ export default {
     // 确定选择的品牌
     SureSelectBrand(EndselectBrandList) {
       this.selectBrandFlag = false;
+      console.log(EndselectBrandList)
       let arr = [];
       let arrName = [];
-      EndselectBrandList.forEach(item => {
+      this.EndselectBrandList= EndselectBrandList.map(item => {
         arr.push(item.id);
         arrName.push(item.brand);
+        return {
+          id:item.id,
+          brand:item.brand
+        }
       });
       this.ruleForm.brandName = arrName;
       // console.log(arr)
       // arr.splice(arr.findIndex(item => item === this.$route.query.id),1)
-      this.ruleForm.brand = arr.join("@");
-      console.log(this.ruleForm);
+     // this.ruleForm.brandIds = arr.join("@");
     },
     // 取消选择品牌模态框
     cancelBrandFlag() {
@@ -270,7 +304,33 @@ export default {
     }
   },
   mounted() {
-    console.log("mounted")
+    this.$store.state.OriginalFactoryEntry.active = 0;
+    this.ruleForm = this.joinForm?{...this.joinForm}:{};
+    if(this.ruleForm.residencetype!=3 && this.ruleForm.brandIds){
+      this.EndselectBrandList = this.ruleForm.brandIds.split("@").map((item,index)=>{
+        if(this.ruleForm.qualification){
+
+          return {
+            id:item,
+            brand:this.ruleForm.brandName[index],
+            brandImg:this.ruleForm.qualification.split("@")[index],
+            brandTime:this.ruleForm.qualificationtime.split("@")[index]
+            }
+        }else{
+          
+          return {
+            id:item,
+            brand:this.ruleForm.brandName[index],
+           
+            }
+        }
+      })
+    }
+    // let addBrandName = this.$route.query;
+    // if (addBrandName.brand) {
+    //   this.ruleForm.brandName.push(addBrandName.brand);
+    //   this.EndselectBrandList.push(addBrandName);
+    // }
     this.GetQueryDictionarieList({
       access_token: this.access_token,
       distinguish: "5",
@@ -278,19 +338,16 @@ export default {
     }).then(res => {
       this.typeresidenceList = res;
       this.$nextTick(() => {
-        this.ruleForm.residencetype = res[0].id;
-        this.residencetype = res[0].id;
+        if(this.ruleForm.residencetype){
+          this.residencetype = this.ruleForm.residencetype;
+        }else{
+            this.ruleForm.residencetype = res[0].id;
+            this.residencetype = res[0].id;
+        }
+
       });
     });
-    this.$store.state.OriginalFactoryEntry.active = 0;
-    console.log(this.joinForm)
-    this.ruleForm = {...this.joinForm};
-    this.residencetype = this.ruleForm.residencetype;
-    let addBrandName = this.$route.query;
-    if (addBrandName.brand) {
-      this.ruleForm.brandName.push(addBrandName.brand);
-      this.EndselectBrandList.push(addBrandName);
-    }
+    
   }
 };
 </script>
