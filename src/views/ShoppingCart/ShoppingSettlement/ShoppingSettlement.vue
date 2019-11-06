@@ -127,7 +127,7 @@
     
         <p class="clear">
           <span class="fl" style="margin-top:20px;">
-             <input type="checkbox" checked>  同意接受《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和《<span class="blue" @click='showhetong=true'>{{title}}销售合同</span>》
+             <input type="checkbox" :checked="isAccept" v-model="isAccept">  同意接受《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和《<span class="blue" @click='showhetong=true'>{{title}}销售合同</span>》
           </span>
           <span class="submit bgColor fr" @click="submit">提交订单</span> 
         </p>
@@ -273,81 +273,44 @@
       </div>
     </el-dialog>
      <el-dialog
-          title="温馨提示"
+          :title="title"
           :visible.sync="showGoIndex"
-          width="60%"
+          width="600px"
           >
-          <div class="dialog-body" >
-          <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 </p>
+          <div class="showGoIndex" >
+            <h2 class="color">您的订单已提交成功！</h2>
+            <p class="blue"><span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">“我的订单”</a></p>
+            <div>
+              尊敬的月结用户,为了不影响贵公司的正常交期，请务必于24小时内去订单中心下载对应的购销合同、盖章、扫描或拍照上传并完成支付,否则系统将会自动取消您的订单；谢谢您的配合！
+            </div>
+            <!-- <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 </p> -->
+        </div>
+      <div slot="footer" class="dialog-footer" style="text-align:center;">
+        <el-button type="primary" @click="chipCenterOrder">前往用户中心</el-button>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
-      </span>
       </el-dialog>
        <el-dialog
-          title="温馨提示"
+          :title="title"
           :visible.sync="showGoIndex1"
-          width="60%"
+          width="600px"
           >
-          <div class="dialog-body" >
-          <p>尊敬的用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 ,
-          或<a @click="payMount">立即支付</a></p>
-      </div>
-       <span slot="footer" class="dialog-footer">
-        <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
-        <el-button type="primary"  @click="payMount">立即支付</el-button>
-      </span>
+          <div class="showGoIndex" >
+            <h2 class="color">您的订单已提交成功！</h2>
+            <p class="blue"><span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">“我的订单”</a></p>
+            <div>
+              尊敬的用户,为了不影响贵公司的正常交期，请务必于24小时内完成支付，否则系统将会自动取消您的订单；同时，对应的购销合同可在订单中心下载、盖章、上传；谢谢您的配合！
+            </div>
+        </div>
+        <div slot="footer" class="dialog-footer" style="text-align:center;">
+            <el-button type="primary"  @click="payMount">立即支付</el-button>
+            <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
+        </div>
       </el-dialog>
-    
-    <el-dialog
-          title="银行汇款"
-          :visible.sync="showDialog"
-          width="60%"
-          >
-          <div class="dialog-body">
-              <div class="RemittancNotes" >
-                  <el-form  label-width="80px">
-                      <el-form-item label="汇款凭证:">
-                          <!-- <el-input v-model="bankPayNumber" placeholder="请仔细填写银行汇款编号" type="text"></el-input> -->
-                          <el-upload
-                              class="upload-demo"
-                              ref="upload"
-                              :limit="1"
-                              :action="requestUrl"
-                              :auto-upload="true"
-                              list-type="picture-card"
-                              :before-upload="beforeAvatarUpload"
-                              :on-success="handleAvatarSuccess"
-                              :on-preview="handlePictureCardPreview"
-                              :on-remove="handleRemove"
-                              :file-list="businessList"
-                          >
-                              <i class="el-icon-plus"></i>
-                              <div
-                                  slot="tip"
-                                  class="el-upload__tip"
-                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
-                          </el-upload>
-                      </el-form-item>
-                      <el-form-item label="汇款金额:">
-                          <strong class="color" style="font-size:20px;">￥{{getOrderInfo.money}}</strong>
-                      </el-form-item>
-                  </el-form>
-                  <div class="desc">
-                      <p class="tishi">温馨提示:</p>
-                      <p><label for="">汇款方式：</label> <span class="color">1. 通过专属帐号进行线下汇款充值 > 2. 然后在此处上传汇款凭证</span> </p>
-                      <p><label for="">查看结果：</label><span  class="color">平台审核结果会以短信或者微信公众号推送给您</span></p>
-                      <P><label for="">开户银行：</label> <span  class="color">招商银行上地支行</span> </p>
-                      <P><label for="">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;户：</label><span  class="color">110 906 335 410 201</span> </P>
-                  </div>
-              </div>
-          </div>
-          <div slot="footer" class="dialog-footer fr">
-              <!-- <el-button @click="showDialog = false">取 消</el-button>
-              <el-button type="primary" @click="submitBankPayNumberbtn">提 交</el-button> -->
-          </div>
-    
-       </el-dialog>
+         <bankTransfer 
+         :bankTransferObj="bankTransferObj" 
+         v-if="showDialog"
+          @closeBankTransfer="showDialog=false" 
+         @bankSuccess="bankSuccess"></bankTransfer>
       <el-dialog
           title="选择收货地址"
           :visible.sync="showResetAddress"
@@ -435,6 +398,7 @@
     import { baseURL } from "@/config";
 import VDistpicker from 'v-distpicker'
 import { mapState, mapActions, mapMutations } from "vuex"
+import bankTransfer from "_c/bankTransfer";
 import ShoppingSettlementOItem from "_c/ShoppingSettlementOItem"
 import { setTimeout, setInterval, clearInterval } from "timers"
 import {axios,presonalAdress,shoppingCar,buyerOrderCenter} from "../../../api/apiObj";
@@ -443,6 +407,7 @@ export default {
   name: "ShoppingSettlement",
   data() {
     return {
+        isAccept:false,
         showxieyi:false,
         showhetong:false,
         showResetVoice:false,
@@ -613,16 +578,19 @@ export default {
       // 是不是VIP
       isVIP: false,
       unuscount:0,
-      UScount:0
+      UScount:0,
+      bankTransferObj:{}//公对公转账
     };
   },
   destroyed(){
     clearInterval(this.chipCenterOrderCount)
    this.chipCenterOrderCount=null;
   },
+  
   components: {
     VDistpicker,
-    ShoppingSettlementOItem
+    ShoppingSettlementOItem,
+      bankTransfer
   },
   watch: {
     showGoIndex1(newval,oldval){
@@ -665,19 +633,6 @@ export default {
       }
        
     },
-
-    // 判断运输方式
-    // dilivertype() {
-    //   if (this.dilivertype === "1") {
-    //     this.priceTotalDetail.Postage = 100;
-    //     this.priceTotalDetail.totalPrice =
-    //     this.priceTotalDetail.totalPrice + 100;
-    //   } else {
-    //     this.priceTotalDetail.Postage = 0;
-    //     this.priceTotalDetail.totalPrice =
-    //     this.priceTotalDetail.totalPrice - 100;
-    //   }
-    // },
     // 监听收货地址的变化
     addressValue() {
       this.curentAdressItem = this.addressList.find(
@@ -783,7 +738,6 @@ export default {
     payMount(){
       if(this.paytype==0){
         //在线支付
-        
         this.GetOrderCreater(this.OrderInformation).then(res=>{
             this.orderNumber=res.data;
               this.$router.push({
@@ -795,10 +749,11 @@ export default {
         })
       }else if(this.paytype==1){
           //对公转账
-          this.GetOrderCreater(this.OrderInformation).then(res=>{
-             this.orderNumber=res.data;
               this.getOrderType()
-        })
+        //   this.GetOrderCreater(this.OrderInformation).then(res=>{
+        //      this.orderNumber=res.data;
+        //       this.getOrderType()
+        // })
       }
     },
     // 提交订单
@@ -809,6 +764,10 @@ export default {
       }
       if(!this.defaultAddress.id){
         this.$message.error("请选择配送地址")
+        return;
+      }
+      if(!this.isAccept){
+        this.$message.error("您还未同意接受用户协议")
         return;
       }
       let bill = JSON.parse(this.OrderInformation.bill);
@@ -822,7 +781,7 @@ export default {
       if(this.paytype==0){
         //在线支付
          this.OrderInformation.payWay=false;
-         this.showGoIndex1=true;
+        // this.showGoIndex1=true;
          var _this=this;
          this.chipCenterOrderCount=setInterval(function(){
             if(_this.count==0){
@@ -834,22 +793,29 @@ export default {
           },1000)
         
         this.GetOrderCreater(this.OrderInformation).then(res=>{
-          return;
-       this.$confirm('立即支付订单吗?', '提示', {
-              confirmButtonText: '立即支付',
-              cancelButtonText: '进入订单中心',
-              type: 'warning'
-            }).then(() => {
-             this.orderNumber=res.data;
+          this.orderNumber=res.data;
               this.$router.push({
                   path: "/ShoppingCart/PaymentOrders",
                   query: {
                       orderNumber:res.data,
                   }
               });
-            }).catch(() => {
-              this.$router.push("/PersonalCenter/BuyerOrderManagement")       
-            });
+      //     return;
+      //  this.$confirm('立即支付订单吗?', '提示', {
+      //         confirmButtonText: '立即支付',
+      //         cancelButtonText: '进入订单中心',
+      //         type: 'warning'
+      //       }).then(() => {
+      //        this.orderNumber=res.data;
+      //         this.$router.push({
+      //             path: "/ShoppingCart/PaymentOrders",
+      //             query: {
+      //                 orderNumber:res.data,
+      //             }
+      //         });
+      //       }).catch(() => {
+      //         this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+      //       });
         })
       }else if(this.paytype==1){
           //对公转账
@@ -862,20 +828,21 @@ export default {
               _this.count--;
             }
           },1000)
-           this.showGoIndex1=true;
-          
           this.GetOrderCreater(this.OrderInformation).then(res=>{
-            return;
-             this.$confirm('立即支付订单吗?', '提示', {
-              confirmButtonText: '立即支付',
-              cancelButtonText: '进入订单中心',
-              type: 'warning'
-            }).then(() => {
-              this.orderNumber=res.data;
-              this.getOrderType()
-            }).catch(() => {
-              this.$router.push("/PersonalCenter/BuyerOrderManagement")       
-            });
+           
+             this.orderNumber=res.data;
+             this.showGoIndex1=true;
+            // return;
+            //  this.$confirm('立即支付订单吗?', '提示', {
+            //   confirmButtonText: '立即支付',
+            //   cancelButtonText: '进入订单中心',
+            //   type: 'warning'
+            // }).then(() => {
+            //   this.orderNumber=res.data;
+            //   this.getOrderType()
+            // }).catch(() => {
+            //   this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+            // });
         })
       }else if(this.paytype==2){
         //白条支付
@@ -892,64 +859,63 @@ export default {
           },1000)
         })
       }
-      return;
-      if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
-        //月结用户直接生成订单，去往个人中心
-        this.GetOrderCreater(this.OrderInformation).then(res=>{
-          console.log("月结用户直接生成订单，去往用户中心")
-          this.showGoIndex=true;
-          var _this=this;
-          this.chipCenterOrderCount=setInterval(function(){
-            if(_this.count==0){
-                _this.chipCenterOrder()
-            }else{
-              _this.count--
-            }
-          },1000)
-        })
-      }else if(this.priceTotalDetail.isVIP && !this.priceTotalDetail.isEnough){
-        //月结用户是否愿意生成普通订单，直接去付款
-         this.$confirm('尊敬的月结用户，由于您的余额不足，此订单将转为普通订单，继续提交?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.GetOrderCreater(this.OrderInformation).then(res=>{
-              this.orderNumber=res.data;
-              if(this.paytype==0){
-                  this.$router.push({
-                      path: "/ShoppingCart/PaymentOrders",
-                      query: {
-                          orderNumber:res.data,
-                          // payType: 2,
-                          // totalPrice: this.totalPrice
-                      }
-                  });
-              }else{
-                  this.getOrderType()
-              }
-            })
-        }).catch(() => {
+      // return;
+      // if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
+      //   //月结用户直接生成订单，去往个人中心
+      //   this.GetOrderCreater(this.OrderInformation).then(res=>{
+      //     this.showGoIndex=true;
+      //     var _this=this;
+      //     this.chipCenterOrderCount=setInterval(function(){
+      //       if(_this.count==0){
+      //           _this.chipCenterOrder()
+      //       }else{
+      //         _this.count--
+      //       }
+      //     },1000)
+      //   })
+      // }else if(this.priceTotalDetail.isVIP && !this.priceTotalDetail.isEnough){
+      //   //月结用户是否愿意生成普通订单，直接去付款
+      //    this.$confirm('尊敬的月结用户，由于您的余额不足，此订单将转为普通订单，继续提交?', '提示', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning'
+      //   }).then(() => {
+      //     this.GetOrderCreater(this.OrderInformation).then(res=>{
+      //         this.orderNumber=res.data;
+      //         if(this.paytype==0){
+      //             this.$router.push({
+      //                 path: "/ShoppingCart/PaymentOrders",
+      //                 query: {
+      //                     orderNumber:res.data,
+      //                     // payType: 2,
+      //                     // totalPrice: this.totalPrice
+      //                 }
+      //             });
+      //         }else{
+      //             this.getOrderType()
+      //         }
+      //       })
+      //   }).catch(() => {
          
-        });
-      }else{
-        //普通用户，直接去付款
-          this.GetOrderCreater(this.OrderInformation).then(res=>{
-              this.orderNumber=res.data;
-              if(this.paytype==0){
-                  this.$router.push({
-                      path: "/ShoppingCart/PaymentOrders",
-                      query: {
-                          orderNumber:res.data,
-                          // payType: 2,
-                          // totalPrice: this.totalPrice
-                      }
-                  });
-              }else{
-                  this.getOrderType()
-              }
-          })
-      }
+      //   });
+      // }else{
+      //   //普通用户，直接去付款
+      //     this.GetOrderCreater(this.OrderInformation).then(res=>{
+      //         this.orderNumber=res.data;
+      //         if(this.paytype==0){
+      //             this.$router.push({
+      //                 path: "/ShoppingCart/PaymentOrders",
+      //                 query: {
+      //                     orderNumber:res.data,
+      //                     // payType: 2,
+      //                     // totalPrice: this.totalPrice
+      //                 }
+      //             });
+      //         }else{
+      //             this.getOrderType()
+      //         }
+      //     })
+      // }
     },
 
     // 请求所有的发票信息
@@ -1005,7 +971,7 @@ export default {
       },
     // 新增开票信息
     addInvoiceInforma() {
-        this.ruleFormAddInvoice={}
+      this.ruleFormAddInvoice={}
       this.dialogVisibleAddInvoice = true;
     },
     // 确认开票信息
@@ -1181,12 +1147,13 @@ export default {
           // }
           // return isJPG && isLt2M;
       },
-      handleRemove(file, fileList) {
-          console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-          console.log(file);
-      },
+      // handlePictureCardPreview(file) {
+      //     console.log(file);
+      // },
+      bankSuccess(){
+        this.showGoIndex1=false;
+        this.showGoIndex=false;
+    },
       getOrderType(){
           let countime=1000
           var _this = this;
@@ -1207,13 +1174,17 @@ export default {
                       orderNo: _this.orderNumber,
                       access_token: _this.access_token
                   }).then(res=>{
-                    console.log(res)
                   _this.getOrderInfo=res
                   if( _this.getOrderInfo.money){
                       _this.totalPrice = _this.getOrderInfo.money;
                       loading.close()
                       clearInterval(_this.timer)
                       _this.showDialog=true;
+                      _this.bankTransferObj={
+                        url:_this.requestUrl,
+                        money:_this.getOrderInfo.money,
+                        title:'订单'
+                      }
                   }
               })
           },countime)

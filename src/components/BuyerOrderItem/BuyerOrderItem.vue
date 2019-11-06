@@ -1,6 +1,5 @@
 <template>
   <div class="BuyerOrderItem">
-    <p v-if="item == null">32424</p>
     <div class="list-item">
       <div class="list-item-tit">
         <span>

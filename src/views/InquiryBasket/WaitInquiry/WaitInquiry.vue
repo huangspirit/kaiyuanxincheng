@@ -14,8 +14,8 @@
       </div>
       <div class="allNum">
         <span>
-          总计已选
-          <strong>{{allNum}}</strong> 件商品
+          已选<strong> {{brandNum}} </strong>个厂商
+          共计<strong> {{allNum}} </strong>个型号
         </span>
         <el-button class="batchBtn bgColor" @click="batchApplication" size="mini" v-show="allNum">批量申请</el-button>
         <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
@@ -33,8 +33,8 @@
           </div>
           <div class="allNum">
             <span>
-              已选该商
-              <strong>{{item.subNum}}</strong> 件商品
+              已选
+              <strong>{{item.subNum}}</strong> 个型号
             </span>
             <el-button class="batchBtn bgColor" @click="subSpecial" size="mini" v-show="item.subNum">申请特价</el-button>
             <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
@@ -79,7 +79,7 @@
                     name:listItem.brand
                   }
                 }"
-                >{{listItem.brand}}</router-link>
+                >{{listItem.branda}}</router-link>
                 
                 </h4>
              
@@ -100,11 +100,11 @@
                   >
                     <div v-for="(subitem,index) in listItem.priceList"  :key="index">
                         <strong>{{subitem.num}}+</strong> -------
-                        <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{subitem.price}}</strong>
+                        <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{subitem.price | toFixed(listItem.factorySellerInfo.priceunit?3:2)}}</strong>
                     </div>
                   </div>
                   <div v-else>
-                    <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{listItem.factorySellerInfo.seckil_price}}</strong>
+                    <strong>{{listItem.factorySellerInfo.priceunit?'$':'￥'}}{{listItem.factorySellerInfo.seckil_price | toFixed(listItem.factorySellerInfo.priceunit?3:2)}}</strong>
                     </div>
               </div>
                <div style="height:100%" v-else>
@@ -162,6 +162,7 @@ export default {
       factorySale: [],
       baseListData: [],
       allNum: 0,
+      brandNum:0,
       disabled: true,
       total: 0,
       start: 0
@@ -213,25 +214,37 @@ export default {
       });
     },
     listItemCheck(e, k, index) {
-      this.waitInquiryList[k].baseList[index].itemCheck = !this.waitInquiryList[
-        k
-      ].baseList[index].itemCheck;
+      this.waitInquiryList[k].baseList[index].itemCheck = !this.waitInquiryList[k].baseList[index].itemCheck;
       if (this.waitInquiryList[k].baseList[index].itemCheck == true) {
         this.allNum++;
         this.waitInquiryList[k].subNum++;
+        this.waitInquiryList[k].hasSub=true
         this.baseListData.push(this.waitInquiryList[k].baseList[index]);
       } else {
         this.allNum--;
         this.waitInquiryList[k].subNum--;
         this.baseListData.splice(k, 1);
       }
-      console.log(this.baseListData);
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
+      let brandNum=0
+      this.waitInquiryList.forEach(item=>{
+          let count=0;
+          item.baseList.forEach(item0=>{
+              if(item0.itemCheck){
+                count++;
+              }
+          })
+          if(count){
+            brandNum++
+          }
+      })
+      this.brandNum=brandNum;
       this.allShow();
     },
     subCheck(k, val) {
       if (this.waitInquiryList[k].subCheck == true) {
         this.waitInquiryList[k].subNum = 0;
+        this.brandNum--;
         for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
           this.waitInquiryList[k].baseList[j].itemCheck = false;
           this.allNum--;
@@ -239,6 +252,8 @@ export default {
         }
       } else {
         this.waitInquiryList[k].subNum = 0;
+        this.brandNum++;
+        console.log(this.brandNum)
         for (var j = 0; j < this.waitInquiryList[k].baseList.length; j++) {
           this.waitInquiryList[k].baseList[j].itemCheck = true;
           this.waitInquiryList[k].subNum++;
@@ -246,7 +261,6 @@ export default {
           this.baseListData.push(this.waitInquiryList[k].baseList[j]);
         }
       }
-      console.log(this.baseListData);
       this.waitInquiryList[k].subCheck = !this.waitInquiryList[k].subCheck;
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
       this.allShow();
@@ -256,6 +270,7 @@ export default {
       this.baseListData = [];
       if (this.waitInquiryList.allCheck == true) {
         this.allNum = 0;
+        this.brandNum = 0;
         for (var i = 0; i < this.waitInquiryList.length; i++) {
           this.waitInquiryList[i].subCheck = false;
           this.waitInquiryList[i].subNum = 0;
@@ -265,6 +280,7 @@ export default {
         }
       } else {
         this.baseListData = [];
+        this.brandNum = this.waitInquiryList.length;
         for (var i = 0; i < this.waitInquiryList.length; i++) {
           this.waitInquiryList[i].subCheck = true;
           this.waitInquiryList[i].subNum = 0;
@@ -283,7 +299,6 @@ export default {
       let checkedShow = true;
       let subCheckShow = true;
       let k = 0;
-
       for (var i = 0; i < this.waitInquiryList.length; i++) {
         for (var j = 0; j < this.waitInquiryList[i].baseList.length; j++) {
           if (this.waitInquiryList[i].subCheck == false) {
@@ -303,7 +318,6 @@ export default {
       this.waitInquiryList = Object.assign([], this.waitInquiryList);
     },
     focusOn(val) {
-      console.log(val);
       var obj = {
         favour_type: "1",
         goods_id: val.id,

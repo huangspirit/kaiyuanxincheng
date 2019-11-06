@@ -107,13 +107,15 @@
                         </tr>
                         <tr v-for="(item1,index) in item.orderInfoList" :key="item1.id">
                             <td class="goodsinfo">
-                                <div style="display:inline-flex;">
-                                    <ImgE :src="item1.goods_image" :W="40" :H="40"></ImgE>
+                                <div style="display:inline-flex;align-items:center;">
+                                    <ImgE :src="item1.goods_image" :W="60" :H="60"></ImgE>
                                     <span style="display:inline-flex;flex-direction: column;justify-content: space-around ">
                                         <router-link class="color" :to="{
-                                          path:'/sellerGoodsDetail',
+                                          path:'/BrandDetail/GoodsDetails',
                                           query:{
-                                            seller_goods_id:item1.seckill_goods_id
+                                            tag:'goodsinfo',
+                                            name:item1.goods_name,
+                                            documentid:item1.goods_id
                                           }
                                         }">
                                           {{item1.goods_name}}
@@ -125,7 +127,7 @@
                                             documentid:item1.goods_brand_id,
                                             tag:'brand'
                                           }
-                                        }">{{item1.goods_brand}}</router-link>
+                                        }">{{item1.goods_branda}}</router-link>
                                         <span class="desc">{{item1.goods_desc}}</span>
                                     </span>
                                 </div>
@@ -826,6 +828,11 @@ export default {
     
     handleCurrentPageChange(x) {
       this.currentPage = x;
+       this.orderParams={
+        ...this.orderParams,
+        start:this.start
+      }
+      console.log(this.orderParams)
       this.all();
     },
     tabFirst(item) {
@@ -1156,21 +1163,21 @@ export default {
       this.currentStatus = x;
       this.payType=1
       let totalPrice = 0;
-    
       switch (x) {
         case 0:
           this.paymentType=0;//标志付定金
-          totalPrice = this.item.order_prepay;
+          totalPrice = this.item.orderVo.order_prepay;
           break;
         case 1:
             this.paymentType=1;//标志付尾款
-          totalPrice = this.item.final_pay;
+          totalPrice = this.item.orderVo.final_pay;
           break;
         case 2:
            this.paymentType=2;//标志付全款
-          totalPrice = this.item.order_amount;
+          totalPrice = this.item.orderVo.order_amount;
           break;
       }
+      console.log("全款：", totalPrice)
       this.paymoney=totalPrice;
       this.selectedPayType=true;
       this.cancleOrderPayShow=false;
@@ -1260,6 +1267,7 @@ export default {
           }
       },
       submitpayType(){
+        console.log(this.paymentType)
             if(this.payType==1){//对公转账
               if(this.paymentType==1){
                 //标识付尾款
@@ -1278,10 +1286,19 @@ export default {
                   // time:this.item.orderVo.expireTime
                     }
               }
-              else {
+              else if(this.paymentType==0){
+                //预付款
                   this.bankTransferObj={
                     url:this.requestUrl,
                     money:this.item.orderVo.order_prepay,
+                    time:this.item.orderVo.expireTime,
+                    title:this.paymentType==0?'订单预付款':'订单全额'
+                  }
+              }else if(this.paymentType==2){
+                //预付款
+                  this.bankTransferObj={
+                    url:this.requestUrl,
+                    money:this.item.orderVo.order_amount,
                     time:this.item.orderVo.expireTime,
                     title:this.paymentType==0?'订单预付款':'订单全额'
                   }

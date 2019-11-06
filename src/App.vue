@@ -49,7 +49,7 @@ export default {
   },
   computed:{
     ...mapState({
-      UserInforma:state=>state.UserInforma,
+      UserInforma:state => state.Login.UserInforma,
       headerFxed: state => state.headerFxed,
     })
   },
@@ -103,13 +103,39 @@ export default {
         vertical-align: middle;
     }
 #app {
-   
+  .peruBg{
+    background: #fce9e5
+  }
+   .greenColor{
+     background:#529641;
+     color:#fff;
+   }
+   .gray{
+     color:#999;
+   }
+   .green{
+     color:#529641;
+   }
     .color{
         color:#df3f2f;
     }
     .bgColor{
         background: #df3f2f;
         color:#fff;
+    }
+    .blu{
+     color:#007efe;
+    }
+    .bgBlu{
+      background:#007efe;
+      color:#fff;
+    }
+    .orange{
+      color:rgb(161, 106, 2);
+    }
+    .bgOrange{
+      background: rgb(161, 106, 2);
+      color:#fff;
     }
     .bgGray{
         background:#4f4f4f ;
@@ -119,6 +145,7 @@ export default {
         background: #d5d5d5;
         color:#999;
     }
+   
     color:#999;
     background: #f5f5f5;
     .defaultradioSquare .el-radio__inner{

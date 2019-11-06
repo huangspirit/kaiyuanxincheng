@@ -5,14 +5,14 @@
       <!-- 品牌信息 -->
       <div class="brand-msg allWidth">
           <div class="top">
-              <p class="title"><a href="brandInfo.brandWeb">{{brandInfo.name}}</a> </p>
+              <p class="title"><a :href="brandInfo.brandWeb">{{brandInfo.name}}</a> </p>
               <!-- <p v-if="brandInfo.brandWeb"><a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></p>
               <p v-if="brandInfo.tel">电话：{{brandInfo.tel}}</p>
               <p v-if="brandInfo.email">邮件：{{brandInfo.email}}</p> -->
           </div>
         <div class="brand-msg-con clear">
             <div class="brand-msg-con-l">
-              <ImgE :src="brandInfo.imageUrl" :W="438" :H="178"></ImgE>
+              <ImgE :src="brandInfo.imageUrl" :W="250" :H="178" style="line-height:178px;text-align:center;"></ImgE>
             </div>
             <div class="brand-msg-con-r">
               <div class="tit">
@@ -25,6 +25,7 @@
               <p>
                 {{brandInfo.brandDesc}}
               </p>
+              <div v-if="brandInfo.brandWeb">官方网址：<label for=""><a :href="brandInfo.brandWeb">{{brandInfo.brandWeb}}</a></label></div>
             </div>
         </div>
       </div>
@@ -52,12 +53,13 @@
       <div class="brand-hot brand-msg allWidth">
         <div class="tit bgGray">
            <el-input
-                  placeholder="在结果中查询关键词：型号"
+                  placeholder="在结果中查找型号"
                   class="fr inputSearch"
                   v-model="valueName"
                   size="mini"
-                  style="width:200px;"
+                  style="width:250px;"
                   @keyup.enter.native="hotSearchValue"
+                  clearable
                   >
                    <el-button slot="append" icon="el-icon-search" @click="hotSearchValue"></el-button>
                 </el-input>
@@ -94,7 +96,7 @@
 <script>
 import SubstituModelList from "_c/SubstituModelList";
 //import HotSearch from "_c/HotSearch";
-//import { mapGetters} from "vuex";
+import { mapMutations} from "vuex";
 //import { stat } from "fs";
 import {axios,BrandDetail} from "../../../api/apiObj";
 
@@ -124,8 +126,9 @@ export default {
     SubstituModelList
   },
   methods: {
+      ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     chipOriginalFactoryEntry(){
-      console.log(this.brandInfo)
+       this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.name],residencetype:1});
       this.$router.push("/OriginalFactoryEntry/BasicInforma")
     },
       init(){

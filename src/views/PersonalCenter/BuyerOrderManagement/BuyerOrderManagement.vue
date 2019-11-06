@@ -239,12 +239,6 @@ export default {
   components: {
     BuyerOrderItem
   },
-
-  watch: {
-    currentPage() {
-      // this.all();
-    }
-  },
   methods: {
     ...mapActions("BuyerOrderManagement", ["GetBuyerOrderManagement"]),
     storageItem(item){
@@ -252,6 +246,11 @@ export default {
     },
     handleCurrentPageChange(x) {
       this.currentPage = x;
+      this.orderParams={
+        ...this.orderParams,
+        start:this.start
+      }
+      console.log(this.orderParams)
       this.all();
     },
     tabFirst(item) {

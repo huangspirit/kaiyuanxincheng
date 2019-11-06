@@ -26,6 +26,16 @@
                 padding-bottom: 5px;
                 text-align: center;
                 background:#f2f2f2;
+                .priceunit{
+                  color:green;
+                  cursor: pointer;
+                  padding:0 10px;
+                }
+                .unpriceunit{
+                  color:blue;
+                  cursor: pointer;
+                  padding:0 10px;
+                }
                 .countTime{
                     margin-top:5px;
                     font-size:14px;
@@ -62,15 +72,26 @@
                 }
               .goodsInfo{
                 display:flex;
+                align-items: center;
+                .ImgE{
+                  /deep/img{
+                    width:100%;
+                    height:100%;
+                    max-width:80px;
+                    max-height: 80px;
+                  }
+                }
                 .detail{
                     margin-left:5px;
                     flex: 1;
                     text-align: left;
                     font-size:14px;
-                  line-height:1.7;
-                      .goodsname{
-                        word-break: break-all;
-                      }
+                    line-height:1.7;
+                    .goodsname{
+                      word-break: break-all;
+                      cursor: pointer;
+                      font-size:16px;
+                    }
                 }
               }
 

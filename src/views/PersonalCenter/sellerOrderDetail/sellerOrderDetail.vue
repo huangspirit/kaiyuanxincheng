@@ -4,35 +4,45 @@
           <el-breadcrumb-item @click.native="goback">订单管理</el-breadcrumb-item>
           <el-breadcrumb-item>订单明细</el-breadcrumb-item>
       </el-breadcrumb>
-    <div class="statusList">
-        <div class="top fr">
+    <div class="statusList clear">
+       <div class="fr right" >
+         <p :class="{'bgColor':state==0}">
+            <label>
+              <input type="radio" value="0" name="status" v-model="state" />
+              全部
+            </label>
+          </p>
+          <p :class="{'bgColor':state==1}">
+            <label>
+              <input type="radio" value="1" name="status" v-model="state" />
+              已支付
+            </label>
+          </p>
+          <p :class="{'bgColor':state==2}">
+            <label>
+              <input type="radio" value="2" name="status" v-model="state" />
+              未支付
+            </label>
+          </p>
+          <p :class="{'bgColor':state==3}">
+            <label>
+              <input type="radio" value="3" name="status" v-model="state" />
+              已取消
+            </label>
+          </p>
+        </div>
+        <div class="top">
             <p class="topdesc">
                 <ImgE :src="currentObj.goods_image" :W="40" :H="40"></ImgE>
                 <span class="goods_name color">{{currentObj.goods_name}}</span>
                 <span>
-          <label>批次号：</label>
+          <label>流水号：</label>
           {{currentObj.goods_seller_no}}
         </span>
             </p>
         </div>
-      <p :class="{'bgColor':state==1}">
-        <label>
-          <input type="radio" value="1" name="status" v-model="state" />
-          已支付
-        </label>
-      </p>
-      <p :class="{'bgColor':state==2}">
-        <label>
-          <input type="radio" value="2" name="status" v-model="state" />
-          未支付
-        </label>
-      </p>
-      <p :class="{'bgColor':state==3}">
-        <label>
-          <input type="radio" value="3" name="status" v-model="state" />
-          已取消
-        </label>
-      </p>
+       
+      
     </div>
     <div class="tableWrap">
 
@@ -48,7 +58,7 @@
       <el-table-column prop="create_time" label="下单时间" align="center">
         <template slot-scope="scope">{{scope.row.create_time | formatDate}}</template>
       </el-table-column>
-      <el-table-column prop="expire_order_time" label="交货时间" align="center">
+      <el-table-column prop="expire_order_time" label="交货截止时间" align="center">
         <template slot-scope="scope">{{scope.row.expire_order_time | formatDate}}</template>
       </el-table-column>
       <el-table-column prop="states" label="订单状态" align="center">
@@ -79,8 +89,7 @@ export default {
   data() {
     return {
       goods_seller_id: 0,
-      //默认支付状态
-      state: 1,
+      state: 0,
       currentObj: {},
       tableData: [],
       total: 0,
@@ -146,7 +155,7 @@ export default {
         goods_seller_id: this.goods_seller_id,
         start: this.startNum,
         length: this.pageSize,
-        type: this.state
+         type:this.state
       };
       var _this = this;
       this.GetSellerOrderDetailList(obj).then(res => {

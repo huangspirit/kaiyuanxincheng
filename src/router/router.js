@@ -10,6 +10,15 @@ export default [
 
         }
     },
+    //中国芯
+    {
+        path: '/chinaXin',
+        name: 'chinaXin',
+        component: () => import('@/views/chinaXin'),
+        meta: {
+            title: '中国芯'
+        }
+    },
     //商品详情
     {
         path: '/sellerGoodsDetail',
@@ -423,6 +432,73 @@ export default [
 
             },
             {
+                path: 'Message',
+                name: 'Message',
+                component: () => import('@/views/News'),
+                meta: {
+                    requireAuth: true,
+                    title: '消息'
+                },
+                children: [
+                    //发货通知
+                    {
+                        path: '/',
+                        name: 'start',
+                        component: () => import('@/views/News/start/start'),
+                        meta: {
+                            requireAuth: true,
+                            title: '消息通知'
+                        }
+                    },
+                    {
+                        path: 'dg',
+                        name: 'dg',
+                        component: () => import('@/views/News/dg/dg'),
+                        meta: {
+                            requireAuth: true,
+                            title: '发货通知'
+                        }
+                    },
+                    {
+                        path: 'inquiry',
+                        name: 'inquiry',
+                        component: () => import('@/views/News/inquiry/inquiry'),
+                        meta: {
+                            requireAuth: true,
+                            title: '询价通知'
+                        }
+                    },
+                    {
+                        path: 'sys',
+                        name: 'sys',
+                        component: () => import('@/views/News/sys/sys'),
+                        meta: {
+                            requireAuth: true,
+                            title: '系统通知'
+                        }
+                    },
+                    {
+                        path: 'zfs',
+                        name: 'zfs',
+                        component: () => import('@/views/News/zfs/zfs'),
+                        meta: {
+                            requireAuth: true,
+                            title: '支付通知'
+                        }
+                    },
+                    {
+                        path: 'auth',
+                        name: 'auth',
+                        component: () => import('@/views/News/auth/auth'),
+                        meta: {
+                            requireAuth: true,
+                            title: '支付通知'
+                        }
+                    },
+                ]
+
+            },
+            {
                 path: 'sellerDetailList',
                 name: 'sellerDetailList',
                 component: () => import('@/views/PersonalCenter/PersonalSet/sellerDetailList'),
@@ -669,7 +745,8 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '买家订单',
-                    parentname:"BuyerCenter"
+                    parentname:"BuyerCenter",
+                    keepAlive:true
                 },
                 children: [{
                     path: 'buyerOrderDetail',
@@ -770,6 +847,17 @@ export default [
                     parentname:"BuyerCenter"
                 }
             },
+                // 提升等级结果
+                {
+                    path: 'UpgradeLevelRes',
+                    name: 'UpgradeLevelRes',
+                    component: () => import('@/views/PersonalCenter/UpgradeLevel/UpgradeLevelRes'),
+                    meta: {
+                        requireAuth: true,
+                        title: '月结管理',
+                        parentname:"BuyerCenter"
+                    }
+                },
 
             // 个人设置
             {

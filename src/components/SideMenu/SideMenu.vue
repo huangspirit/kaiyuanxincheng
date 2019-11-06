@@ -11,7 +11,6 @@
         :default-active="defaultActive"
     >
       <template v-for="item in list">
-        
         <SideMenuItem v-if="item.children && item.isShow" :item="item" :key="`list_${item.index}`"></SideMenuItem>
         <router-link :to="item.path" v-else-if="!item.children && item.isShow && !item.isPassWord" :key="`list_${item.index}`" tag="div">
           <el-menu-item :index="item.index">
@@ -60,10 +59,9 @@
 </template>
 
 <script>
-//import SideMenu from "./SideMenu";
 import SideMenuItem from "../SideMenuItem/SideMenuItem";
 import {axios,personCenter}  from "@/api/apiObj";
-// import '@/assets/css/dialog-delect.less'
+
 export default {
   name: "SideMenu",
     data(){

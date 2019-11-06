@@ -116,7 +116,19 @@
                                     </label>
                                     </div> -->
                                 <div>{{item0.diliverTime}}</div>
-                                <div>{{item0.goodsName}}</div>
+                                <div>
+                                     <router-link
+                                        class="color"
+                                        :to="{
+                                        path:'/BrandDetail/GoodsDetails',
+                                        query:{
+                                            tag:'goodsinfo',
+                                            documentid:item0.goodsId,
+                                            name:item0.goodsName
+                                        }
+                                        }"
+                                    >{{item0.goodsName}}</router-link>
+                                    </div>
                                 <div>{{item0.goodsCount}}只</div>
                                 <div>
                                     {{item0.priceunit?'$':'￥'}}{{item0.price}}

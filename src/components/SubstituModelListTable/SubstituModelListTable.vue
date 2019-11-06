@@ -4,8 +4,7 @@
     :data="modelList"
     border
     style="width: 100%"
-    max-height="800"
-    min-height="500">
+   >
     <el-table-column
       fixed
       prop="date"
@@ -13,7 +12,7 @@
       width="150"
       align="center">
       <template slot-scope="scope">
-            <ImgE :src="scope.row.imageUrl" :W="190" :H="190"></ImgE>
+            <ImgE :src="scope.row.imageUrl" :W="90" :H="90" :isBig="true"></ImgE>
       </template>
     </el-table-column>
     <el-table-column
@@ -34,8 +33,9 @@
               }"
                 class="name color"
                 tag="p"
+                style="cursor:pointer;font-size:15px;"
               >{{scope.row.productno}}</router-link>
-                <p>
+                <p style="font-size:12px">
                     <!-- <span>制造商：</span> -->
                     <router-link
                 :to="{
@@ -47,15 +47,15 @@
                 }
               }"
                 class=""
-              > {{scope.row.brand}}</router-link>
+              > {{scope.row.branda}}</router-link>
                 </p>
-              <p>
+              <p style="font-size:12px">
                 {{scope.row.productdesc}}
               </p>
-              <p v-if="scope.row.map">
+              <p v-if="scope.row.map" style="font-size:12px">
                 <span v-if="!scope.row.map.totalSeller">
                   <!-- <span class="nolist">暂无供应商报价</span> -->
-                      <span class="nolist">该器件暂无特价，赶紧抢先发布吧</span>
+                      <span class="nolist gray">该器件暂无特价，赶紧抢先发布吧</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
@@ -75,11 +75,11 @@
       align="center">
       <template slot-scope="scope">
         <div class="btnWrap">
-            <p v-if="scope.row.hasSeller"><el-button class="orange btn" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p>
-            <p v-if="scope.row.hasSeller"><el-button class="orange btn "  @click="specialPrice(scope.$index)" size="mini" >申请特价</el-button></p>
-            <p v-if="!scope.row.hasSeller"><el-button class="orange btn "  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
-            <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">收藏商品</el-button>
-            <span v-if="scope.row.focus" class="bgLightGray btn">已收藏</span>
+            <p v-if="scope.row.hasSeller"><el-button class="orange btn  bgColor" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p>
+            <p v-if="scope.row.hasSeller"><el-button class="orange btn  bgColor"  @click="specialPrice(scope.$index)" size="mini" >申请特价</el-button></p>
+            <p v-if="!scope.row.hasSeller"><el-button class="orange btn bgColor"  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
+            <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">关注器件</el-button>
+            <span v-if="scope.row.focus" class="bgLightGray btn">已关注</span>
         </div>
       </template>
     </el-table-column>

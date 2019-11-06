@@ -4,7 +4,7 @@
             <router-link to="/" tag="div" class="logo">
                 <h1 class="logoText">{{title}}</h1>
                 <div class="logowrap">
-                    <img src="@/assets/logo1.png" alt>
+                    <img src="@/assets/logo2.png" alt>
                     <div>
                         <p class="text">{{title}}</p>
                         <p class="route">icmap.cn</p>
@@ -23,10 +23,10 @@
                     <router-link to="/specialPrice">特价直通车</router-link>
                     <!-- <router-link to="/order">订货跟单区</router-link> -->
                     <router-link to="/oldGoods">呆料掘金池</router-link>
+                     <router-link to="/chinaXin">中国芯</router-link>
                     <router-link to="/OriginalFactoryEntry" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">商家入驻</router-link>
                 </div>
             <div class="rightwrap clear">
-               
                 <!-- <div class="wrap ">
                     <router-link to="/InquiryBasket" class="busket"><i style="display:inline-block;height:15px; vertical-align: middle;"></i>询价篮</router-link>&nbsp;|&nbsp;
                     <router-link to="/ShoppingCart" class="shoppingCar"><i></i>购物车</router-link>&nbsp;|&nbsp;
@@ -42,9 +42,11 @@
                 </router-link>
                 <div class="person-center " @click="PersonalCenter" v-if="loginState">
                     <img :src="UserInforma.headImgUrl" alt class="userImg">
-                    <div class="PersonalCenter-con bgGray" v-if="UserInforma.userTagMap">
+                    <div class="PersonalCenter-con bgGray" >
+                        <span  @click="signOut" style="cursor:pointer">退出账号</span>
+                    </div>
+                    <!-- <div class="PersonalCenter-con bgGray" v-if="UserInforma.userTagMap">
                         <p class="personInfo">
-                            <!-- <span class="tel fr color">{{UserInforma.phone}}</span> -->
                             <span class="name">{{UserInforma.nickname}}</span>
                         </p>
                         <div v-if="UserInforma.userTagMap.tag" class="clear identity">
@@ -64,10 +66,8 @@
                             退出账号
                         </span>
                         </p>
-                    </div>
+                    </div> -->
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -80,7 +80,10 @@
 
             }
         },
-        mounted(){},
+        mounted(){
+            console.log("头部")
+            console.log()
+        },
         computed: {
             ...mapState({
                 title: state => state.title,

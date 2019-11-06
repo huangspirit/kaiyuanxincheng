@@ -2,19 +2,21 @@
   <div class="SellerOrderItem">
     <div class="list-item">
       <div class="list-item-tit">
+        
         <span>
-          <strong>批次号：</strong>
+          <strong>流水号：</strong>
           {{item.goods_seller_no}}
         </span>
         <span v-if="item.trans_no">
           <strong>物流单号：</strong>
+          <span>{{item.trans_no}}</span>
               <el-popover
                   placement="top-start"
                   width="500"
-                  trigger="hover"
+                  trigger="click"
                   @show="getDiliverInfo(item.goods_seller_no)"
               >
-                     <div class="orderpress">
+                     <div class="orderpress" style="max-height:600px;overflow-y:auto;">
                          <p style="margin-bottom:15px;font-size:20px">物流单号：{{item.trans_no}}</p>
                          <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
                          <el-timeline>
@@ -32,7 +34,7 @@
                              </el-timeline-item>
                          </el-timeline>
                      </div>
-                     <span slot="reference" style="color:#0d98ff; cursor: pointer">{{item.trans_no}}</span>
+                     <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-left:15px;">查询物流</span>
                  </el-popover>
         </span>
       </div>
@@ -41,32 +43,77 @@
           <td style="width:24%">
             <!-- <img :src="item.goods_image" alt> -->
             <div class="goodsInfo">
+              <!-- <label  v-if="item.diliverButton && item.priceunit" class="priceunit">
+                <input type="checkbox" name="checking" :value="item.id" v-model="checklist1" ref="input">
+                {{item.diliver_place}}发货
+              </label> -->
+              <label  v-if="item.diliverButton && !item.priceunit" class="unpriceunit">
+                <input type="checkbox" name="checking" :value="item.id" v-model="checklist0" ref="input0">
+                {{item.diliver_place}}发货
+              </label>
               <ImgE :src="item.goods_image" :W="50" :H="50"></ImgE>
               <div class="detail">
                 <p>
-                  <span class="goodsname color">{{item.goods_name}}</span>
+                  <router-link tag="span" class="goodsname color" :to="{
+                    path:'/BrandDetail/GoodsDetails',
+                    query:{
+                      tag:'goodsinfo',
+                      documentid:item.goods_id,
+                      name:item.goods_name
+                    }
+                  }">
+                    {{item.goods_name}}
+                  </router-link>
                 </p>
-                <p>
-                <span>{{item.goods_brand}}</span></p>
+                <p style="color:#999;">
+                品牌：
+                  <router-link :to="{
+                    path:'/BrandDetail',
+                    query:{
+                      tag:'brand',
+                      documentid:item.goods_brand_id,
+                      name:item.goods_brand
+                    }
+                  }">
+                    {{item.goods_brand}}
+                  </router-link>
+                  </p>
               </div>
             </div>
           </td>
           <td style="width:10%">
               <div v-if="item.price_type" class="jieti">
-                    <p v-for="item0 in priceList"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price | toFixed(item.priceunit?3:2)}}</strong> </p>
+                    <p v-for="(item0,index0) in priceList" :key="index0"><strong class="price">{{item0.num}}</strong>--<strong class="price">{{item.priceunit ? '$' : '￥'}}{{item0.price | toFixed(item.priceunit?3:2)}}</strong> </p>
               </div>
               <div v-else>
                   <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.seckil_price | toFixed(item.priceunit?3:2)}}</strong>
               </div>
-              <strong>({{item.priceunit?'含13%增值税':'不含税'}})</strong>
+              <strong>({{item.clude_bill?'含13%增值税':'不含税'}})</strong>
           </td>
-            <td style="width:10%;" >
-                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay | toFixed(item.priceunit?3:2)}}</strong>&nbsp;/
+           <td style="width:8%;" >
+                <strong class="price">{{item.priceunit ? '$' : '￥'}}{{item.totalPay | toFixed(item.priceunit?3:2)}}</strong>
+            </td>
+            <td style="width:8%;" >
                 <strong class="price">{{item.totalPayCount | toFixed(0)}}</strong>
             </td>
           <td style="width:15%">
-           <p>交期：{{item.expireTime | formatDate}}</p>
-            <CountTime
+           <p>{{item.expireTime | formatDate}}</p>
+             <div v-if="item.status==3">
+               <p>已逾期: <span style="color:#f40;">{{item.violate_count}}天</span></p>
+               <p>滞纳金：<span style="color:#f40;">¥ {{item.violate_monney}}</span></p>
+               </div>
+          </td>
+          <td style="width:15%" class="place">
+              <template v-if="item.status==1">
+                  <div v-if="item.diliver_place!='香港'" style="text-align: left;padding:0 5px;">
+                      <p><strong>收货人</strong>：{{item.warehouseRecipient}}</p>
+                      <p><strong>电话</strong>：{{item.warehousePhone}}</p>
+                      <p><strong>地址</strong>：{{item.warehouseAddr}}</p>
+                  </div>
+              </template>
+            <div v-else>
+              暂未发货
+               <CountTime
             class="countTime"
               v-if="item.currentTime"
             v-on:end_callback="countDownE_cb()"
@@ -81,28 +128,7 @@
               :minutesTxt="'钟'"
               :secondsTxt="'秒'"
             ></CountTime>
-             <div v-if="item.status==3">
-               <p>已逾期: <span style="color:#f40;">{{item.violate_count}}天</span></p>
-               <p>滞纳金：<span style="color:#f40;">¥ {{item.violate_monney}}</span></p>
-               </div>
-            <!-- <div v-if="item.status === 1">
-            <p>{{item.complete_date | formatDate}}</p>
-              <p v-if="item.completeDate < 0">距离交期:{{ item.completeDate | completeDate}}天</p>
-              <p v-else style="color:#ff6600">已过交期：{{item.completeDate }}天</p>
-            </div> -->
-          </td>
-          <td style="width:6%">
-            <p>{{item.diliver_place}}</p>
-          </td>
-          <td style="width:15%" class="place">
-              <template v-if="item.status==1">
-                  <div v-if="item.diliver_place!='香港'" style="text-align: left;padding:0 5px;">
-                      <p><strong>收货人</strong>：{{item.warehouseRecipient}}</p>
-                      <p><strong>电话</strong>：{{item.warehousePhone}}</p>
-                      <p><strong>地址</strong>：{{item.warehouseAddr}}</p>
-                  </div>
-              </template>
-            <div v-else>暂未发货</div>
+              </div>
           </td>
           <td style="width:10%">
             <p class="orderStatus">{{item.status | orderStatusFilter}}</p>
@@ -113,8 +139,6 @@
               @show="showPopover(item)"
             >
               <div>
-                <!-- <p style="margin-bottom:30px;font-size:20px">订单号：{{item.order_no}}</p> -->
-                <!-- <p style="margin-bottom:30px;font-size:20px">当前订单状态</p> -->
                 <div>
                   <el-timeline>
                     <el-timeline-item
@@ -136,9 +160,6 @@
             </el-popover>
           </td>
           <td style="width:10%" class="wrapbtn">
-            <!-- <div v-if="item.diliver_place === '香港' ">
-              <el-button class="default" v-if="item.diliverButon" @click="DeliverGoodsPI">发货</el-button>
-            </div> -->
             <div>
               <el-button class="btn bgColor" @click="DeliverGoods(item)" v-if="item.diliverButton" size="mini">发货</el-button>
               <el-button class="btn  bgColor" @click="DeliverGoodsChangeDue(item)" v-if="item.changDiliverButton" size="mini">更改交期</el-button>
@@ -148,6 +169,7 @@
           </td>
         </tr>
       </table>
+      
     </div>
   </div>
 </template>
@@ -156,8 +178,6 @@ import { mapActions, mapState } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
 import Countdown from "_c/Countdown";
 import {axios,sellerOrderCenter} from "../../api/apiObj";
-
-
 export default {
   name: "SellerOrderItem",
   data() {
@@ -167,13 +187,43 @@ export default {
       goods_seller_id: "",
       OrderProcessList: [],
       priceList:[],
-      expressList:[]
+      expressList:[],
+      checklist1:[],
+      checklist0:[]
     };
   },
   props: {
     item: {
       type: Object,
       default: () => ({})
+    }
+  },
+  watch:{
+    checklist1:{
+      handler(val,old){
+        this.$emit('DeliverCheck',{
+          goods_seller_no:this.item.goods_seller_no,
+          goods_seller_id:this.item.goods_seller_id,
+          support_bill:this.item.clude_bill,
+          uid:this.item.uid,
+          itemid:val.length?val[0]:old[0],
+          flag:1,
+          selected:val.length?true:false}
+          )
+      }
+    },
+    checklist0:{
+      handler(val,old){
+         this.$emit('DeliverCheck',{
+            goods_seller_no:this.item.goods_seller_no,
+            goods_seller_id:this.item.goods_seller_id,
+           support_bill:this.item.clude_bill,
+           uid:this.item.uid,
+           itemid:val.length?val[0]:old[0],
+           flag:0,
+           selected:val.length?true:false}
+           )
+      }
     }
   },
     created(){
@@ -183,7 +233,6 @@ export default {
           let arr=this.item.price_level.split("@")
           arr.forEach(item=>{
               let arr1=item.split("-")
-
               this.priceList.push({
                   num:arr1[0],
                   price:arr1[1]
@@ -203,8 +252,6 @@ export default {
         axios.request({...sellerOrderCenter.queryExpress,params:{seller_no:seller_no }}).then(res=>{
             this.expressList=res.data
         })
-
-
       },
       countDownE_cb: function(item) {
           this.$emit("reload")
@@ -330,7 +377,7 @@ export default {
       }
     },
     formatDate(value) {
-      return TimeForma(value);
+      return TimeForma2(value);
     }
   }
 };

@@ -17,9 +17,7 @@ const actions = {
   }, data) {
     return new Promise((resolve, reject) => {
       PublishGoodsListByUser(data).then(res => {
-        console.log(res)
         if (res.resultCode === '200') {
-
           resolve(res.data)
         } else {
           reject(res.message)

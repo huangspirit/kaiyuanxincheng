@@ -1,6 +1,12 @@
 // 商家信息列表
 .MerchantList {
   margin-top:25px;
+  .blue{
+    color:#001ff4;
+  }
+  .gray{
+    color:#999;
+  }
   .title{
     line-height:45px;
     display: flex;
@@ -14,25 +20,50 @@
       color:#fff;
     }
   }
-  .originFactoryTitle{
-    background:#ddd;
-    color:#333;
-    line-height: 38px;
-    padding:0 20px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
   .item{
-    display: flex;
     padding:15px 0;
-    font-size:12px;
+    font-size:13px;
     text-align: center;
     color:#333;
     background:#f5f5f5;
     align-items: center;
     position: relative;
     border-bottom:1px solid #e6e6e6;
-   
+    .infoimg{
+      line-height:50px;
+      height:100%;
+      text-align: center;
+      &>div{
+        display: inline-block;
+        position: relative;
+        .ImgE{
+          height: 100%;
+          border: 2px solid transparent;
+          /deep/img{
+            width:50px;
+            height:50px;
+          }
+        }
+        &:hover{
+          .cover{
+            display: block;
+          }
+        }
+      }
+      .cover{
+        display: none;
+        position: absolute;
+        width:100%;
+        height:100%;
+        left:0%;
+        top:0;
+        background:rgba(0,0,0,0.5);
+        text-align: center;
+        color:#fff;
+        font-size: 20px;
+        z-index:1;
+      }
+    }
     &:hover{
       background: #fff!important;
       box-shadow: 0 0 5px 2px #ddd;
@@ -51,6 +82,9 @@
       &>div{
         display: inline-block;
         vertical-align: middle;
+        width:100%;
+        padding-left:20px;
+        box-sizing: border-box;
       }
       p{
         text-align: left;
@@ -70,14 +104,15 @@
       }
     }
     .timer{
+      text-align: center;
+      
      p{
-       padding-left:30%;
        text-align: left;
        box-sizing: border-box;
-       font-size:12px;
+       font-size:13px;
        color:#999;
        label{
-         color:#333;
+      
          font-size:14px;
        }
      }
@@ -86,6 +121,7 @@
     .info{
       &>div{
         display: inline-flex;
+        width:100%;
         img{
           width:50px;
           height:50px;
@@ -99,9 +135,20 @@
           .tag{
             margin-top:10px;
             font-size:12px;
-            padding: 1px 8px;
+            padding: 1px 6px;
             border-radius: 3px;
-            color:#fff;
+            &.btn{
+              cursor: pointer;
+              &:hover{
+                color:#df3f2f;
+              }
+            }
+            img{
+              width:18px;
+              height:18px;
+              margin-right:3px;
+              vertical-align: middle;
+            }
           }
           .bgLightGray{
             cursor: pointer;
@@ -168,20 +215,6 @@
         .mark{
           vertical-align: bottom;
         }
-
-
-      }
-      .countTime{
-        margin-top:5px;
-        /deep/.counttime{
-          font-size:12px;
-          .timeStr{
-            background: none;
-            margin:0;
-            padding: 0;
-            color:#df3f2f;
-          }
-        }
       }
     }
     .btnWrap{
@@ -202,10 +235,33 @@
       }
 
     }
-    &>div{
+    .flexitemwrap{
+      display: flex;
+      align-items: center;
+    }
+     .flexitem{
       flex:1;
       width:20%;
       float:left;
+      white-space: nowrap;
+     
+    }
+    .countTime{
+      margin-top:5px;
+      width:100%;
+      text-align: right;
+      padding:0 20px;
+      box-sizing: border-box;
+      
+      /deep/.counttime{
+        font-size:13px;
+        .timeStr{
+          background: none;
+          margin:0;
+          padding: 0;
+          color:#001ff4;
+        }
+      }
     }
     /deep/.purchase{
       width:100%;

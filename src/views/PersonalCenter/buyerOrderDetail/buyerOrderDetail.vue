@@ -147,12 +147,14 @@
                                     </td>
                                     <td>
                                         <div class="gpoodsinfo">
-                                            <ImgE :src="value.goods_image" :W="50" :H="50"></ImgE>
+                                            <ImgE :src="value.goods_image" :W="80" :H="80"></ImgE>
                                             <div>
                                                 <router-link class="color" :to="{
-                                                    path:'/sellerGoodsDetail',
+                                                   path:'/BrandDetail/GoodsDetails',
                                                     query:{
-                                                        seller_goods_id:value.seckill_goods_id
+                                                        tag:'goodsinfo',
+                                                        name:value.goods_name,
+                                                        documentid:value.goods_id
                                                     }
                                                     }">
                                                     {{value.goods_name}}
@@ -168,7 +170,7 @@
                                                     }">{{value.goods_brand}}</router-link>
                                                        </p> 
                                                 <!-- <p class="name">{{value.goods_name}}</p> -->
-                                                <p>{{value.goods_desc}}</p>
+                                                <p class="gray">{{value.goods_desc}}</p>
                                             </div>
                                         </div>
                                         </td>
@@ -192,13 +194,14 @@
                                     </td> -->
                                     <td>
                                         <div v-if="value.trans_no">
+                                            <span>{{value.trans_no}}</span>
                                         <el-popover
                                         placement="top-start"
                                         width="500"
-                                        trigger="hover"
+                                        trigger="click"
                                         @show="getDiliverInfo(value.id)"
                                         >
-                                        <div class="orderpress">
+                                        <div class="orderpress" style="max-height:600px;overflow-y:auto;">
                                             <p style="margin-bottom:15px;font-size:20px">物流单号：{{value.trans_no}}</p>
                                             <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
                                             <el-timeline>
@@ -218,8 +221,8 @@
                                         </div>
                                         <span
                                             slot="reference"
-                                            style="color:#0d98ff; cursor: pointer;margin-top:10px"
-                                        >{{value.trans_no}}</span>
+                                            style="color:#0d98ff; cursor: pointer;margin-left:10px;"
+                                        >查询物流</span>
                                         </el-popover>
                                     </div>
                                     <p v-else>暂无物流信息</p>
@@ -1004,6 +1007,9 @@ import { baseURL, baseURL2,imgBaseUrl } from "@/config";
                                 background: rgba(0,0,0,0.03)
                             }
                         } 
+                        p{
+                            margin-top:10px;
+                        }
                         .name{
                             font-weight: bold;
                             margin-bottom:10px;

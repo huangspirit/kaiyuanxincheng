@@ -53,12 +53,13 @@
           <div class="brand-hot brand-msg">
               <div class="tit bgGray">
                  <el-input
-                  placeholder="在结果中查询关键词：型号"
+                  placeholder="在结果中查找型号"
                   class="fr inputSearch"
                   v-model="valueName"
                   size="mini"
-                  style="width:200px;"
+                  style="width:250px;"
                   @keyup.enter.native="hotSearchValue"
+                  clearable
                   >
                    <el-button slot="append" icon="el-icon-search" @click="hotSearchValue"></el-button>
                 </el-input>

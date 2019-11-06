@@ -20,7 +20,7 @@
                   </p>
             <p>
                 <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
-                <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | tagFilter}}</span>
+                <span  class="type color" v-if="UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=3">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                 <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
             </p>
 <!--            <div>信用等级：{{UserInforma.userTagMap.userLevel}}</div>-->
@@ -40,7 +40,6 @@
                             <router-link to="/PersonalCenter/buyerDetailList" >明细</router-link>
                         </p>
                     </div>
-
                 </li>
                 <li  v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
                     <div class="cont yajin">
@@ -80,7 +79,7 @@
                           <span>售卖额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
                           <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
                         </p>
-                          <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+                        <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
                     </div>
                     <!-- <div class="cont circle clear">
                         <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
@@ -90,13 +89,17 @@
                             </p>
                             <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
                             <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
-                          
                         </div>
                     </div> -->
-
                 </li>
             </ul>
         </div>
+        <!-- <div v-if="UserInforma.messageCount">
+            <router-link to="/News"  class="messageCountWrap" tag="div">
+            <p>消息</p> 
+            <div  class="mess bgColor">{{UserInforma.messageCount}}</div>
+        </router-link>
+        </div> -->
     </div>
     <!-- 个人信息设置 -->
     <ul class="informa-set clear">

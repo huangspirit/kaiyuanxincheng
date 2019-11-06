@@ -26,17 +26,17 @@
         <div>
       </div>
       <div class="pay-price">
-        <span class="pay-price-l">*请在 23小时59分钟 以内支付完成，如未完成此订单将自动关闭。需重新购买！</span>
+        <span class="pay-price-l">*请在完成下单24小时内完成支付，如未完成此订单将自动关闭。需重新购买！</span>
         <div class="pay-price-r">
           <p>
             <span>{{orderInfo.payType | payTypeFilter}}</span>
-            <span class="price">￥ {{totalPrice}}</span>
+            <span class="price">￥{{totalPrice}}</span>
           </p>
-            <div>
-                <span class="goCenter submit" @click="goCenter">返回订单中心</span>
-                <span class="submit" @click="submit">立即支付</span>
-            </div>
-          <p>我有疑问，需要反馈？</p>
+          <div>
+            <span class="goCenter submit" @click="goCenter">返回订单中心</span>
+            <span class="submit" @click="submit">立即支付</span>
+          </div>
+          <!-- <p>我有疑问，需要反馈？</p> -->
         </div>
       </div>
     </div>

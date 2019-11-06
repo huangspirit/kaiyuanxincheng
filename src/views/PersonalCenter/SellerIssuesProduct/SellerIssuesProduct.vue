@@ -6,7 +6,6 @@
             <el-breadcrumb-item>发布特价</el-breadcrumb-item>
         </el-breadcrumb> -->
         <div class="SellerIssuesProduct" @click="noSelect">
-           
             <el-form
                 :model="ruleForm"
                 :rules="rules"
@@ -17,7 +16,7 @@
              <p class="title">温馨提示：以下填写的信息将会直接展示给买家，发布成功后将不能修改，请仔细填写！</p>
                 <el-form-item label="器件型号：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
-                    <p class="desc" style="padding-top:5px;">若您输入的型号晶城没有收录，请及时反馈给我们；&nbsp;<a href="/feedback">&nbsp;反馈&nbsp;>></a></p>
+                    <p class="desc" style="padding-top:5px;color:#b3b3b3">若您输入的型号晶城没有收录，请及时反馈给我们；&nbsp;<a href="/feedback">&nbsp;反馈&nbsp;>></a></p>
                     <ul class="selectProductList" v-if="selectProductList.length">
                         <li
                             v-for="item in selectProductList"
@@ -29,10 +28,18 @@
                     <div class="select-product-list" v-if="selectProductObj && selectProductObj.productno">
                         <div class="product-t">
                             <div class="detail">
-                                <ImgE :src="selectProductObj.imgurl" :W="100" :H="100"></ImgE>
-                                <div >
-                                    <p ><span>型号：</span><span class="color">{{selectProductObj.productno}}</span></p>
-                                    <p><span>品牌：</span>{{selectProductObj.branda}}</p>
+                                <ImgE :src="selectProductObj.imgurl" :W="80" :H="80"></ImgE>
+                                <div style="margin-left:5px;">
+                                    <p><span>型号：</span><strong>{{selectProductObj.productno}}</strong></p>
+                                    <p><span>品牌：</span><router-link :to="{
+                                        path:'/BrandDetail/GoodsDetails',
+                                        query:{
+                                            tag:'goodsinfo',
+                                            documentid:selectProductObj.brand,
+                                            name:selectProductObj.branda
+                                        }
+                                    }">{{selectProductObj.branda}}</router-link></p>
+                                    <p v-if="selectProductObj.refer_price"><span>官方参考价：</span>${{selectProductObj.refer_price}}</p>
                                 </div>
                             </div>
                             <p>
@@ -58,7 +65,7 @@
                         <el-radio :label="true" :value="true">现货</el-radio>
                         <el-radio :label="false" :value="false">订货</el-radio>
                     </el-radio-group>
-                    <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单24小时内发货，若发货时间超过24小时需要选择订货哦</p>
+                    <!-- <p class="desc" v-if="ruleForm.goods_type">现货商品需在买家下单24小时内发货，若发货时间超过24小时需要选择订货哦</p> -->
                     <p class="desc" v-if="!ruleForm.goods_type">只能一口价，买家下单订货商品时距离交期超过7天，可用预付款方式付款</p>
                 </el-form-item>
                  <el-form-item label="批号：" prop="base_no" v-if="ruleForm.goods_type">
@@ -84,7 +91,7 @@
                         <el-radio :label="false" :value="false">否</el-radio>
                     </el-radio-group>
                     <!-- <p class="desc"  v-if="!ruleForm.clude_bill && !ruleForm.support_bill">是否系统提供发票,不提供发票增加2%手续费</p> -->
-                        <p class="desc" v-if="ruleForm.is_old_product">器件发布后将会放到呆料区，有利于用户快速找到购买，批号大于2年的可认为是呆料</p>
+                        <p class="desc gray" v-if="ruleForm.is_old_product">器件发布后将会放到呆料区，有利于用户快速找到购买，批号大于2年的可认为是呆料</p>
                     <!-- <span class="small-sp"  v-if="!ruleForm.clude_bill">是否系统提供发票,不提供发票增加2%手续费</span> -->
                 </el-form-item>
                 <el-form-item label="是否含税价：" v-if="priceunitMark!='$'">
@@ -97,11 +104,11 @@
                 </el-form-item>
                 <el-form-item label="出价方式：">
                     <el-radio-group v-model="ruleForm.price_type" class="defaultradioSquare">
-                        <el-radio :label="true" :value="true" v-if="ruleForm.goods_type">阶梯价</el-radio>
+                        <el-radio :label="true" :value="true" v-if="ruleForm.goods_type && !ruleForm.is_old_product">阶梯价</el-radio>
                         <el-radio :label="false" :value="false">一口价</el-radio>
                     </el-radio-group>
                     <p class="desc" v-if="ruleForm.goods_type && ruleForm.price_type">只适合现货，价格降序填写，数量升序填写</p>
-                    <div class="form-item" v-if="ruleForm.price_type">
+                    <div class="form-item" v-if="ruleForm.price_type && ruleForm.price_type">
                         <div class="stepped-price" v-for="(item,k) in SteppedPriceListlength" :key="k">
                             <div class="steppedItem">
                                 <label>数量：</label>
@@ -120,12 +127,11 @@
                         </div>
                         <div class="add-stepped-price">
                             <p v-if="SteppedPriceListlength === 3" style="color:#ff6600" >最多添加三个阶梯价格</p>
-                            <!-- <span @click="addSteppedPrice" class="add">+添加阶梯价格</span> -->
                             <span @click="resetSteppedPrice" class="reset">重置阶梯价格</span>
                         </div>
                     </div>
                 </el-form-item>
-                <el-form-item label="价格：" prop="seckil_price" v-if="ruleForm.price_type === false">
+                <el-form-item label="价格：" prop="seckil_price" v-if="ruleForm.price_type === false || ruleForm.is_old_product">
                     <el-input v-model="ruleForm.seckil_price" @input="changeSeckil_price" min="0" style="width:35%">
                         <template slot="prepend">{{priceunitMark}}</template>
                     </el-input>
@@ -136,33 +142,28 @@
                    <el-input v-model="ruleForm.moq" style="width:35%" @input="inputmoq" :min="minmoq" :disabled="ruleForm.price_type">
                        <template slot="append">只</template>
                    </el-input>
-                   <span class="descRight">此数量为用户可买的最小数量</span>
+                   <span class="descRight gray">此数量为用户可买的最小数量</span>
                 </el-form-item>
                 <el-form-item label="最小增量MPQ：" prop="mpq">
                     <el-input v-model="ruleForm.mpq"  style="width:35%">
                        <template slot="append">只</template>
                    </el-input>
-                     <span class="descRight">客户只能购买这个数量的整数倍+最小订购量</span>
+                     <span class="descRight gray">客户只能购买这个数量的整数倍+最小订购量</span>
 
                 </el-form-item>
                 <el-form-item label="售卖数量：" prop="stock_count">
                     <el-input v-model="ruleForm.stock_count" @input="changeStockCount"  style="width:35%" placeholder="大于最小订购量" @blur="blurStockCount">
                        <template slot="append">只</template>
                     </el-input>
-                     <span class="descRight">请发布真实售卖数量</span>
+                     <span class="descRight gray">请发布真实售卖数量</span>
                     <p class="small" style="color:#ff6600" v-if="SellerCredit.tag!=1 && (needCredit > SellerCredit.restcredit)">您的信誉额度剩余为￥{{SellerCredit.restcredit}}，设置库存需要￥{{needCredit}}</p>
                 </el-form-item>
                 <el-form-item label="售卖期限：">
                     <el-radio-group v-model="ruleForm.seller_always" class="defaultradioSquare">
                         <el-radio :label="true" :value="true"  v-if="ruleForm.goods_type">长期卖</el-radio>
-                        <el-radio :label="false" :value="false">限时卖</el-radio>
+                        <el-radio :label="false" :value="false" v-if="!ruleForm.is_old_product">限时卖</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <!-- <el-form-item label="多长时间后交货：" prop="day_interval" v-if="ruleForm.seller_always">
-                    <el-input v-model="ruleForm.day_interval">
-                        <template slot="append">天</template>
-                    </el-input>
-                </el-form-item> -->
                 <el-form-item label="起止时间：" prop="end_date" v-if="!ruleForm.seller_always">
                     <el-date-picker
                         v-model="ruleForm.start_date"
@@ -209,7 +210,9 @@
                         ref="upload"
                         :auto-upload="true"
                         list-type="picture-card"
+                        :on-remove="handleRemoveimg"
                         :on-preview="handlePictureCardPreview"
+                        :file-list="imglist"
                         multiple
                     >
                         <i class="el-icon-plus avatar-uploader-icon"></i>
@@ -221,7 +224,7 @@
                     </el-upload>
                     <div style="margin-top:15px;">
                         <p style="color:#ff6600;line-height:20px" v-if="needImg">必选项，有利于您的商品销售</p>
-                        <p style>图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
+                        <p style>图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</p>
                     </div>
 
                 </el-form-item>
@@ -242,14 +245,10 @@
 <style lang="less" scoped>
     @import "./SellerIssuesProduct.less";
 </style>
-
 <script>
-
-    // import "@/assets/css/ele-form.less";
-    // import "@/assets/css/label-checkbox.less";
-    import { baseURL } from "@/config";
-    import { mapActions,mapState } from "vuex";
-    import { type } from "os";
+    import {baseURL,baseURL4,baseURL3} from "@/config";
+    import {mapActions,mapState } from "vuex";
+    import {axios,sellerCenter} from "@/api/apiObj"
     export default {
         name: "SellerIssuesProduct",
         data() {
@@ -306,6 +305,8 @@
                 // 是不是自己开发票
                 //support_billFlag: false,
                 // 是不是一口价
+                //图片回显
+                imglist:[],
                 ruleForm: {
                     //是否为呆料
                     is_old_product:false,
@@ -326,9 +327,9 @@
                     // 是否含税
                     clude_bill: false,
                     // 价格方式
-                    price_type: true,
+                    price_type: false,
                     // 售卖的方式，是不是长期卖
-                    seller_always: false,
+                    seller_always: true,
                     // 价格
                     seckil_price: "",
                     moq: "",
@@ -349,15 +350,15 @@
                     price_level: "",
                     // 多长时间后交货
                     day_interval: "",
-                    // // 源头公司名称
-                    // SourceCompany: "",
-                    // // 上次购买时间
-                    // LastPurchaseTime: "",
-                    // // 商品源头证明
-                    // SourceImg: ""
-                    
                 },
                 rules: {
+                    base_no:[
+                         {
+                            required: true,
+                            message: "请输入批号",
+                            trigger: "blur"
+                        }
+                    ],
                     goods_name: [
                         {
                             required: true,
@@ -386,31 +387,25 @@
                             required: true,
                             message: "请输入moq",
                             trigger: "blur",
-                            type: "string"
                         },
-                        { min: 1, message: "moq最低为1", trigger: "blur" }
                     ],
                     mpq: [
                         {
                             required: true,
                             message: "请输入mpq",
                             trigger: "blur",
-                            type: "string"
                         },
-                        { min: 1, message: "mpq最低为1", trigger: "blur" }
                     ],
                     stock_count: [
                         {
                             required: true,
                             message: "请输入真实可卖数量",
                             trigger: "blur",
-                            type: "string"
                         },
-                        { min: 1, message: "请输入真实可卖数量不低于1", trigger: "blur" }
                     ],
                     start_date: [
                         {
-                            type: "string",
+                          
                             required: true,
                             message: "请输入开始日期",
                             trigger: "change"
@@ -418,7 +413,6 @@
                     ],
                     end_date: [
                         {
-                            type: "string",
                             required: true,
                             message: "请输入结束日期",
                             trigger: "change"
@@ -426,7 +420,7 @@
                     ],
                     complete_date: [
                         {
-                            type: "string",
+                          
                             required: true,
                             message: "请选择预计交期时间",
                             trigger: "change"
@@ -435,6 +429,7 @@
                 }
             };
         },
+       
         filters:{
             addPriceFilter(val,length){
                 return (Number(val)*1.13).toFixed(length)
@@ -484,30 +479,34 @@
                         this.exchange=1;
                         this.priceunitMark="￥"
                         this.priceunit = "￥人民币";
-                         this.ruleForm.priceunit=false
+                        this.ruleForm.priceunit=false
                     }
                 }
             },
             // 是不是含税
             "ruleForm.clude_bill": {
                 handler() {
-                    if (this.ruleForm.clude_bill) {
-                        this.ruleForm.support_bill = true;
-                        //this.support_billFlag = false;
-                    } else {
-                        this.ruleForm.support_bill = false;
-                       // this.support_billFlag = true;
+                    this.ruleForm.support_bill=this.ruleForm.clude_bill
+                }
+            },
+            "ruleForm.is_old_product":{
+                handler(){
+                    if(this.ruleForm.is_old_product){
+                         this.$set(this.ruleForm,'price_type',false)
+                         this.$set(this.ruleForm,'seller_always',true)
                     }
                 }
             },
             // 价格类型，是不是一口价
             "ruleForm.price_type": {
                 handler() {
-                    this.$set(this.ruleForm,'stock_count','')
                     if (this.ruleForm.price_type) {
                         this.$set(this.ruleForm,'moq',this.SteppedPriceListobj.num0)
                     } else {
                          this.$set(this.ruleForm,"moq","")
+                    }
+                    if(this.ruleForm.moq>this.ruleForm.stock_count){
+                        this.$set(this.ruleForm,'stock_count',this.ruleForm.moq)
                     }
                 }
             },
@@ -517,29 +516,13 @@
                     if (!this.ruleForm.goods_type) {
                         this.ruleForm.is_old_product=false;
                         this.ruleForm.price_type = false;
-                       
+                       this.ruleForm.seller_always=false;
                     } else {
                         this.ruleForm.price_type = true;
                         
                     }
                 }
             },
-            // 是不是长期售卖
-            "ruleForm.seller_always": {
-                handler() {
-                    // if (this.ruleForm.seller_always) {
-                    //     this.ruleForm.start_date = "2019/06/06";
-                    //     this.ruleForm.end_date = "2019/06/06";
-                    //     this.ruleForm.complete_date = "2019/06/06";
-                    //     this.ruleForm.day_interval="1"
-                    // } else {
-                    //     this.ruleForm.start_date = "";
-                    //     this.ruleForm.end_date = "";
-                    //     this.ruleForm.complete_date = "";
-                    // }
-                }
-            }
-
         },
         methods: {
             ...mapActions("SellerIssuesProduct", [
@@ -723,8 +706,14 @@
                 let obj =this.SteppedPriceListobj['num'+k]+"";
                 obj = obj.replace(/\D/g,'');
                 this.SteppedPriceListobj['num'+k]=obj;
-                this.minmoq=this.SteppedPriceListobj.num0;
-                this.$set(this.ruleForm,"moq",this.SteppedPriceListobj.num0)
+                console.log("改变")
+                if(k==0){
+                     this.minmoq=this.SteppedPriceListobj.num0;
+                    this.$set(this.ruleForm,"moq",this.SteppedPriceListobj.num0)
+                    if(this.ruleForm.stock_count<this.SteppedPriceListobj.num0){
+                         this.$set(this.ruleForm,"stock_count",this.SteppedPriceListobj.num0)
+                    }
+                }
             },
             //输入库存
             changeStockCount(){
@@ -787,6 +776,7 @@
             },
             // 发布商品
             submitForm(formName) {
+                console.log(this.ruleForm)
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         let flag2 = true;
@@ -807,6 +797,10 @@
                         if(this.ruleForm.price_type){
                             for(let index=0;index<this.SteppedPriceListlength;index++){
                                 if(this.SteppedPriceListobj['num'+index] && this.SteppedPriceListobj['price'+index]){
+                                    if(this.SteppedPriceListobj['num'+index]<=this.SteppedPriceListobj['num'+(index-1)] ||  this.SteppedPriceListobj['price'+index]>= this.SteppedPriceListobj['price'+(index-1)]){
+                                        this.$message.error("阶梯价格请按照要求填写!");
+                                            return ;
+                                    }
                                     arr.push(`${this.SteppedPriceListobj['num'+index]}-${this.SteppedPriceListobj['price'+index]}`);
                                 }
                             }
@@ -818,7 +812,6 @@
                                 this.ruleForm.seckil_price = this.SteppedPriceListobj.price0;
                             }
                         }
-
                         this.ruleForm.price_level = arr.join("@");
                         this.ruleForm.goods_count = this.ruleForm.stock_count;
                         this.ruleForm.access_token = this.access_token;
@@ -847,7 +840,6 @@
                             delete this.ruleForm.start_date;
                             delete this.ruleForm.end_date;
                         }
-                        console.log(this.ruleForm)
                         if (flag2) {
                             this.GetPublishGoods(this.ruleForm)
                                 .then(res => {
@@ -925,12 +917,12 @@
                 this.ruleForm.SourceImg = response.name;
             },
             beforeAvatarUpload(file) {
-                const isLt2M = file.size / 1024 / 1024 < 2;
+                // const isLt2M = file.size / 1024 / 1024 < 2;
 
-                if (!isLt2M) {
-                    this.$message.error("上传头像图片大小不能超过 2MB!");
-                }
-                return isLt2M;
+                // if (!isLt2M) {
+                //     this.$message.error("上传头像图片大小不能超过 2MB!");
+                // }
+                // return isLt2M;
             },
             // 添加到阶梯价格
             addSteppedPrice() {
@@ -958,6 +950,93 @@
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
+            },
+             handleRemoveimg(file,fileList){
+                let arr = this.ruleForm.image_urls.split("@")
+                arr.splice(arr.findIndex(item => baseURL3+item==file.url), 1)
+                this.ruleForm.image_urls=arr.join("@")
+             },
+            //回显数据
+            repeat(obj){
+                if(obj.complete_date){
+                    obj.complete_date=this.TimeForma2(obj.complete_date,'date')
+                }
+                if(obj.start_date){
+                    obj.start_date=this.TimeForma2(obj.start_date);
+                    obj.end_date=this.TimeForma2(obj.end_date);
+                }
+                if(obj.priceunit){
+                    this.diliver_place_flag=1
+                }else{
+                     this.diliver_place_flag=2
+                }
+                if(obj.image_urls){
+                    this.imglist=obj.image_urls.split("@").map(item=>{
+                        return {url:baseURL3+"/"+item}
+                    })
+                }
+                if(obj.price_type){
+                    this.SteppedPriceListlength=obj.price_level.split("@").length;
+                    let priceobj={}
+                    obj.price_level.split("@").forEach((item ,index)=> {
+                        priceobj['num'+index]=Number(item.split("-")[0])
+                        priceobj['price'+index]=Number(item.split("-")[1])
+                        if(index==0){
+                            priceobj['placeholdernum'+index]='大于0';
+                            priceobj['placeholderprice'+index]='大于0';
+                        }else{
+                             priceobj['placeholdernum'+index]='大于'+ priceobj['num'+(index-1)];
+                            priceobj['placeholderprice'+index]='大于'+priceobj['price'+(index-1)];
+                        }
+                        
+                    });
+                    this.SteppedPriceListobj=priceobj;
+                }
+                delete obj.uid;
+                delete obj.id;
+                delete obj.publish_date;
+                delete obj.is_special_price;
+                delete obj.publish_date;
+                delete obj.publish_exchange
+                delete obj.real_seckil_price;
+                delete obj.product_no;
+                delete obj.isable;
+                this.ruleForm=obj;
+                        //商品名称
+                     let sendobj={
+                            start: 0,
+                            length: 10,
+                            name: obj.goods_name,
+                        }
+                    if(this.UserInforma.userTagMap.tag==1){
+                        obj={...obj,brand:this.UserInforma.userTagMap.brand}
+                    }
+                    this.GetSerarchGoods(sendobj).then(res => {
+                       if(res.data.length){
+                            this.selectProductObj = res.data[0];
+                       }
+                    });
+            },
+            TimeForma2(value,type){
+                let date = new Date(value)
+                let y = date.getFullYear()
+                let MM = date.getMonth() + 1
+                MM = MM < 10 ? '0' + MM : MM
+                let d = date.getDate()
+                d = d < 10 ? '0' + d : d
+               
+                if(type=="date"){
+                    return y + '/' + MM + '/' + d
+                }else{
+                     let h = date.getHours()
+                    h = h < 10 ? '0' + h : h
+                    let m = date.getMinutes()
+                    m = m < 10 ? '0' + m : m
+                    let s = date.getSeconds()
+                    s = s < 10 ? '0' + s : s;
+                    return y + '/' + MM + '/' + d + ' ' + h + ':' + m + ':' + s
+                }
+                
             }
         },
         mounted() {
@@ -979,7 +1058,7 @@
                 });
                 //
                 if(this.$route.query.name){
-                    //商品名称
+                    //根据商品名称发布
                      let obj={
                             start: 0,
                             length: 10,
@@ -989,7 +1068,6 @@
                         obj={...obj,brand:this.UserInforma.userTagMap.brand}
                     }
                     this.GetSerarchGoods(obj).then(res => {
-                       // this.selectProductList = res.data;
                        if(res.data.length){
                            this.ruleForm.goods_name = res.data[0].productno;
                             this.ruleForm.goods_id = res.data[0].id;
@@ -998,7 +1076,18 @@
                        }
                         
                     });
-                    }
+                    };
+                    //重新发布
+                    if(this.$route.query.seller_id){
+                        axios.request({...sellerCenter.querySellerGoodsDetail,params:{seller_id:this.$route.query.seller_id}}).then(res=>{
+                            this.repeat(res.data)
+                        })
+                        
+                }
+                    
+        },
+        detroryed(){
+            sessionStorage.removeItem("publishItem")
         }
     };
 </script>

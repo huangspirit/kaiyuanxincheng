@@ -2,38 +2,17 @@
     padding: 20px;
     min-height: 800px;
     background: #fff;
-
     .AddVoice {
         margin-bottom:10px;
     }
-
-    >.el-table {
-        .el-table__body-wrapper {
-            .el-table__body {
-                .el-table__row {
-                    >td:nth-child(1) {
-                        .cell {
-                            display: flex;
-                            height: 120px;
-                            line-height: 120px;
-                            text-align: center;
-                            align-items: center;
-                            img {
-                                width: 120px;
-                            }
-
-                            div {
-                                margin-left: 20px;
-
-                                >p {
-                                    line-height: 25px;
-                                }
-                            }
-                        }
-                    }
-
-
-                }
+    /deep/.el-table{
+        .goodsinfo{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            &>div{
+                text-align: left;
+                margin-left:5px;
             }
         }
     }

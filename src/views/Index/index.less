@@ -7,6 +7,20 @@
       color:#df3f2f;
     }
   }
+  .topRuzhu{
+    border-radius: 3px;
+    padding:8px 25px;
+    bottom:8vh;
+    position: absolute;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index:91;
+    cursor: pointer;
+    font-size:28px;
+    &:hover{
+      box-shadow: 0 0 2px 2px #df3f2f;
+    }
+  }
   .message{
     position: absolute;
     top:80px;
@@ -99,13 +113,13 @@
         margin-top:30px;
         border-radius: 3px;
         /deep/.search{
-          height:50px;
-          line-height: 50px;
+          height:60px;
+          line-height: 60px;
           .ipt{
             .btn{
-              line-height:50px;
+              line-height:60px;
               .el-icon-search{
-                margin-top:10px;
+                margin-top:15px;
               }
             }
           }
@@ -167,6 +181,9 @@
           box-shadow: 0 0 10px 2px #ddd;
           transform: scale(1.003,1.003,1);
           transition: all 0.2s;
+          .goodsType{
+            display:block;
+          }
       
         }
         &.noMargin{
@@ -176,23 +193,21 @@
           position: absolute;
           left:0;
           top:0;
+          z-index:1;
           img{
             width:60px;
           }
         }
         .goodsType{
           position: absolute;
-          right:25px;
-          top:15px;
-          background:#ff7d0b;
+          right:0;
+          top:0;
           color:#fff;
-          font-size:12px;
-          padding:1px 7px;
-          border-radius: 3px;
+          font-size:14px;
+          padding:3px 7px;
           z-index: 1;
-          &.goods_type{
-            background: #f40;
-          }
+          display:none;
+         
         }
         .wrapImg{
           position: relative;
@@ -205,7 +220,7 @@
             background: rgba(0,0,0,0.05);
             position: absolute;
             width:100%;
-            height:220px;
+            height:200px;
             z-index: 1;
             top:0;
             left:0;
@@ -574,7 +589,8 @@
 
           }
           &.goodsName{
-            width:300px;
+            width:250px;
+       
           }
         }
       }
@@ -588,11 +604,12 @@
             background:#fff;
           }
           .goodsName{
-            width:300px;
+            width:250px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             cursor: pointer;
+            text-align: left;
             &:hover{
               color:#df3f2f;
             }
@@ -603,7 +620,6 @@
               color:#df3f2f;}
           }
           .purchase{
-
             &:hover{
               font-weight: bold;
             }
@@ -830,7 +846,6 @@
             // border-top-left-radius: 40px;
             padding-left:20px;
             cursor: pointer;
-           
             &:hover{
               background: #fff;
               color:#df3f2f;
@@ -853,23 +868,33 @@
       }
       .prodclass-m {
         float: left;
-        padding: 0 60px;
+        padding: 0 30px;
         flex:1;
         background:url("../../assets/image/banner/bg_2.png") 0 0 no-repeat;
         background-size: 100% 100%;
         .wrap{
-          border-bottom:1px solid #d5d5d5;
+          // border-bottom:1px solid #d5d5d5;
           width:100%;
+          display: flex;
+          flex-wrap: wrap;
+          .item{
+            padding:0 5px;
+            width:33%;
+            box-sizing: border-box;
+            a{
+              display:block;
+              padding:5px;
+              cursor: pointer;
+              border:1px solid #d9e1ef;
+              margin-bottom:20px;
+             
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+          }
         }
-        a{
-          display: inline-block;
-          border-bottom:1px solid #d5d5d5;
-          padding:15px;
-          min-width:25%;
-          box-sizing:border-box;
-          margin-bottom:-1px;
-          cursor: pointer;
-        }
+       
       }
 
       .prodclass-r {

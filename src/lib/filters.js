@@ -65,7 +65,7 @@ Vue.filter('tagFilter', (value) => {
         case 2:
           return "代理商";
         case 3:
-          return "商城卖家";
+          return "商家";
         case 18:
           return "企业分销商";
       }

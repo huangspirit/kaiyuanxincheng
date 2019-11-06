@@ -13,7 +13,7 @@ export const PublishGoodsListByUser = (data) => {
 // 下架产品
 export const UpdatePublishGoodsSatus = (data) => {
   return axios.request({
-    url: `api-g/goods-b/updatePublishGoodsSatus?access_token=${data.access_token}`,
+    url: `api-g/goods-b/updatePublishGoodsSatus`,
     method: 'post',
     data: JSON.stringify(data),
     params: {}

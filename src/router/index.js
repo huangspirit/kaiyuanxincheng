@@ -10,7 +10,7 @@ const router = new Router({
     routes
 })
 router.beforeEach((to, from, next) => {
-    if (from.path == '/PersonalCenter/GetVipApplyDetail' || from.path == '/PersonalCenter/AgencyQualification') {
+    if (from.path == '/PersonalCenter/GetVipApplyDetail' || from.path == '/PersonalCenter/AgencyQualification' ||  from.path == '/PersonalCenter/UpgradeLevelRes') {
     } else {
         store.dispatch("applyEdit", {});
     }

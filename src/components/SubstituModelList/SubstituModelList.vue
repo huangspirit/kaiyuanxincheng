@@ -17,7 +17,7 @@
 <!--            </div>-->
           <div class="model-list-t clear">
             <div class="TabImage">
-              <ImgE :src="item.imageUrl" :W="190" :H="190"></ImgE>
+              <ImgE :src="item.imageUrl" :W="160" :H="160"></ImgE>
             </div>
             <div class="text">
               <router-link
@@ -33,7 +33,7 @@
                 tag="p"
               >{{item.productno}}</router-link>
               
-                <p>
+                <p >
                     <!-- <span>品牌：</span> -->
                     <router-link
                       :to="{
@@ -46,13 +46,13 @@
                     }"
                     > {{item.brand}}</router-link>
                 </p>
-              <p>
+              <p class="gray">
                 <!-- <span>描述：</span> -->
                 {{item.productdesc}}
               </p>
               <p v-if="item.map">
                 <span v-if="!item.map.totalSeller">
-                  <span class="nolist">该器件暂无特价，赶紧抢先发布吧</span>
+                  <span class="nolist color">该器件暂无特价，赶紧抢先发布吧</span>
                 </span>
                 <span v-else>
                   <span>共有</span>

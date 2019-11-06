@@ -42,12 +42,11 @@
           <p class="tab-list-con-tit">
             <span style="width:24%">商品信息</span>
             <span style="width:10%">单价</span>
-            <span style="width:10%">总金额/总数量</span>
+            <span style="width:8%">总金额</span>
+            <span style="width:8%">总数量</span>
             <span style="width:15%">交期</span>
-            <span style="width:6%">交货地</span>
             <span style="width:15%">收货仓库地址</span>
             <span style="width:10%">当前状态</span>
-
             <span style="width:10%">操作</span>
           </p>
           <div v-if="SellerOrderManagementList.length==0" class="nocont">暂无数据</div>
@@ -59,6 +58,7 @@
             @DeliverGoodsChangeDue="DeliverGoodsChangeDue"
             @DeliverGoodsInvoice="DeliverGoodsInvoice(item)"
             @reload="all"
+            @DeliverCheck="DeliverCheck"
           >
             <el-button slot="detail" class=" bgColor" @click="storageItem(item)" size="mini">
               <router-link
@@ -69,6 +69,9 @@
           </SellerOrderItem>
         </div>
       </div>
+       <div><el-button v-if="checklist0.length" @click="confirmDelivi(0)">国内合并发货</el-button>
+       <!-- <el-button v-if="checklist1.length" @click="confirmDelivi(0)">香港合并发货</el-button> -->
+       </div>
       <Pagination
         v-if="SellerOrderTotal"
         :page-size="pageSize"
@@ -157,9 +160,6 @@
             label-width="150px"
             class="demo-ruleForm"
           >
-<!--            <el-form-item label="PI单号" prop="namePI">-->
-<!--              <el-input v-model="ruleFormPI.bi_no"></el-input>-->
-<!--            </el-form-item>-->
             <el-form-item label="上传PI单号">
               <el-upload
                 class="avatar-uploader"
@@ -286,8 +286,6 @@
 @import "./SellerOrderManagement.less";
 </style>
 <script>
-// import "@/assets/css/ele-form.less";
-// import "@/assets/css/label-checkbox.less";
 import DeliveryCompany from "_c/DeliveryCompany";
 import SellerOrderItem from "_c/SellerOrderItem";
 import { mapState, mapActions } from "vuex";
@@ -299,6 +297,8 @@ export default {
   name: "OrderManagement",
   data() {
     return {
+      checklist0:[],
+      checklist1:[],
       //中央收货地址
       storehouseList: [],
       currentStorehouse: {},
@@ -375,17 +375,7 @@ export default {
         bi_url: "",
         id: ""
       },
-      rulesPI: {
-        // namePI: [
-        //   { required: true, message: "请输入PI单号", trigger: "blur" },
-        //   {
-        //     min: 5,
-        //     max: 30,
-        //     message: "PI单号长度在5 到 30 个字符",
-        //     trigger: "blur"
-        //   }
-        // ]
-      },
+      rulesPI: {},
       // 更改交期
       ruleFormChangeDue: {
         nameChangeDue: ""
@@ -414,7 +404,8 @@ export default {
       },
       //开发票
       sysBillDefault: {},
-      orderParams: {}
+      orderParams: {},
+      diliveryType:2,//0:合并国内发货，1：合并香港发货，2：单个发货
     };
   },
   methods: {
@@ -461,6 +452,7 @@ export default {
     },
     handleCurrentPage(x) {
       this.currentPage = x;
+      console.log(this.currentPage)
       this.all();
     },
     //查看发订单明细出发事件
@@ -477,9 +469,10 @@ export default {
     //搜索框事件
     SearchSubmit() {},
     DeliverGoods(item) {
+      this.diliveryType=2  //0:合并国内发货，1：合并香港发货，2：单个发货
       this.currentOrder_item = item;
       this.currentItem = item;
-      if (item.diliver_place == "香港") {
+      if (item.priceunit) {
         this.centerDialogVisiblePI = true;
       } else {
         this.centerDialogVisible = true;
@@ -488,16 +481,45 @@ export default {
     },
     DeliverGoodsChangeDue(item) {
       this.centerDialogVisibleChangeDue = true;
-      console.log("更改交期：", item);
+    
       this.currentItem = item;
     },
     DeliverGoodsInvoice(item) {
       this.currentItem = item;
       this.centerDialogVisibleInvoice = true;
       axios.request(sellerOrderCenter.querySysBill).then(res => {
-        console.log(res);
         this.sysBillDefault = res.data;
       });
+    },
+    DeliverCheck(val){
+     //flag==0 国内发货，flag==1 香港发货
+       if(val.selected){
+           this['checklist'+val.flag].push({
+             id:val.itemid,
+             uid:val.uid,
+             need_seller_bill:val.support_bill,
+             goods_seller_id:val.goods_seller_id,
+             goods_seller_no:val.goods_seller_no
+           })
+         }else{
+           let arr=[]
+           this['checklist'+val.flag].forEach(item=>{
+              if(item.id!=val.itemid){
+                  arr.push(item)
+              }
+            })
+            this['checklist'+val.flag]=arr
+         }
+    },
+    confirmDelivi(type){
+       //0:合并国内发货，1：合并香港发货，2：单个发货
+       this.diliveryType=type;
+       if (type==1) {
+        this.centerDialogVisiblePI = true;
+      } else {
+        this.centerDialogVisible = true;
+        this.GetCenterChangeAddress();
+      }
     },
     // 上传PI单成功的回调
     handleAvatarSuccess(res, file) {
@@ -543,21 +565,36 @@ export default {
       this.commandValue = x;
     },
     submitForm(formName) {
-      this.deliveryInfo.goodsName = this.currentOrder_item.goods_name;
-      this.deliveryInfo.id = this.currentOrder_item.id;
-    
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios
+           if(this.diliveryType==2){
+              this.deliveryInfo.goodsName = this.currentOrder_item.goods_name;
+              this.deliveryInfo.id = this.currentOrder_item.id;
+             axios
             .request({
               ...sellerOrderCenter.diliverGoods,
               params: this.deliveryInfo
             })
             .then(res => {
-          
               this.centerDialogVisible = false;
               this.all();
             });
+           }else{
+              let sendobj={
+                order:JSON.stringify(this.checklist0),
+                trans:JSON.stringify(this.deliveryInfo)
+              }
+              axios.request({
+                ...sellerOrderCenter.diliverBatchGoods,
+                method:'post',
+                data:sendobj
+              }).then(res=>{
+                 this.centerDialogVisible = false;
+                this.all();
+                this.checklist0=[]
+              })
+           }
+          
         } else {
           this.$message.error("请完善信息!");
           return false;

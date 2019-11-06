@@ -18,6 +18,10 @@ const common = {
     },
     getuserInfo:{
         url:"api-u/users/current"
+    },
+    //获取月结详情
+    findVipDetail:{
+        url:"api-u/vip/findVipDetail"
     }
 
 }
@@ -110,6 +114,10 @@ const buyerOrderCenter = {
     }
 }
 const sellerOrderCenter = {
+    //批量国内发货
+    diliverBatchGoods:{
+        url:"api-order/sellerCenter/diliverBatchGoods"
+    },
     querySellerCenterSummary:{
         url:"api-order/selllerCenter/querySellerCenterSummary"
     },
@@ -133,7 +141,7 @@ const sellerOrderCenter = {
     },
     queryBillListBySeller: {
         url: "/api-order/sellerCenter/queryBillListBySeller"
-    },
+    }
 }
 const sellerCenter = {
     //商品上下架管理
@@ -147,6 +155,14 @@ const sellerCenter = {
     //卖家结算账单
     saveSellerCheckApply:{
         url:'/api-order/sellerCenter/saveSellerCheckApply'
+    },
+    //根据seller_id查询发布商品 的详情
+    querySellerGoodsDetail:{
+        url:"api-g/goods/querySellerGoodsDetail"
+    },
+    //追加库存
+    updateStockCount:{
+        url:"api-g/goods-b/updateStockCount"
     }
 }
 const personCenter = {

@@ -13,12 +13,12 @@
                             <h3 class="small"><img src="@/assets/image/index/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>
                         </li>
                     </ul>
-<!--                    <h3 class="small"><img src="@/assets/image/index/message.png" alt="" style="margin-right:10px;">{{ item.desc }}</h3>-->
                 </el-carousel-item>
             </el-carousel>
+            
         </div>
         <div class="banner">
-            <!-- <p class="tit">用芯链接世界</p> -->
+            
             <img :src="bannerList[2]['url']" alt="" style="height:100%;width:100%;">
             <!-- <el-carousel>
                 <el-carousel-item v-for="(item,k) in bannerList" :key="k" >
@@ -27,14 +27,17 @@
             </el-carousel> -->
             <div class="wrapSearch allWidth">
                 <p class="tit">
-                    找低价   买特价   开源节流
+                    <span>用芯链接世界</span><span style="margin-left:30px;">低价才是王道</span>
+                    <!-- 找低价   买特价   开源节流 -->
                     <!-- <countTo :endVal="brandTotal" :duration="4"></countTo>个厂商
                     <countTo :endVal="catergoryTotal" :duration="4"></countTo>种产品
                     <countTo :endVal="productTotal" :duration="4"></countTo>个产品 -->
                 </p>
-                <p class="desc"><span>用芯链接世界</span><span style="margin-left:30px;">低价才是王道</span></p>
+                <p class="desc">
+                    <!-- <span>用芯链接世界</span><span style="margin-left:30px;">低价才是王道</span> -->
+                    </p>
                  <HeaderSearch ref="HeaderSearch" class="headerSeach"></HeaderSearch>
-                <ul class="hot-search">
+                <ul class="hot-search clear">
                     <li
                         @click="searchLink(item)"
                         v-for="(item, k) in HotSearchList"
@@ -42,6 +45,7 @@
                     >{{item.name}}</li>
                 </ul>
             </div>
+             <span @click="settle" class="topRuzhu bgColor"  v-if="!isSeller">立即入驻</span>
         </div>
         <div class="specialGoods allWidth">
             <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
@@ -54,9 +58,10 @@
                      <span class="mark" v-if="item.tag==2">
                         <img src="@/assets/image/index/tag1.png" alt="">
                     </span>
-                    <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span>
+                    <span class="goodsType" :class="item.goods_type?'greenColor':'bgColor'">{{item.goods_type?'现':'订'}}</span>
                     <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
-                        <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
+                        <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="350" :H="200" v-if="item.sellerGoodsImageUrl"></ImgE>
+                        <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
                     </div>
@@ -89,10 +94,12 @@
                                 <div class="wrapInfo clear">
                                     <div class="clear">
                                         <div class="wrap">
-                                            <img :src="item.userImgeUrl" alt="" >
+                                            <img :src="item.userImgeUrl" alt="">
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>
@@ -147,7 +154,9 @@
                 </div>
                 <ul class="originGoodsList fl">
                     <li v-for="(item ,index) in originGoodsList" @click="chipSellerGoodsDetal(item)" :key="index">
-                        <ImgE :src="item.goodsImageUrl" :W="250" :H="150"  >
+                           <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="250" :H="150" v-if="item.sellerGoodsImageUrl"></ImgE>
+                        <ImgE :src="item.goodsImageUrl" :W="250" :H="150" v-if="!item.sellerGoodsImageUrl">
+                      
                         </ImgE>
                         <div class="goodsInfo">
                             <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
@@ -167,7 +176,7 @@
                             <div class="desc">{{item.goodsDesc}}</div>
                             <div class="count"><span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;<span>最小增量:&nbsp;{{item.mpq}}只</span></div>
                             <div class="marking">
-                                <span>{{item.tag | tagFilter}}</span>
+                                <span v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
                                 <span>{{item.diliverPlace}}</span>
                                 <span>{{item.goods_type?'现货':'订货'}}</span>
                             </div>
@@ -208,11 +217,12 @@
                 <div class="goodsList fl">
                     <ul class="titleList bgColor">
                         <li class="goodsName">供应商</li>
-                        <li class="goodsName">型号</li>
+                        <li class="goodsName" style="text-align:left;">型号</li>
                         <li class="item">品牌</li>
+                        <li class="item">批号</li>
                         <li class="item">数量</li>
-                        <li class="item">交货地点</li>
                         <li class="item">清仓价</li>
+                        <li class="item">交货地点</li>
                         <li class="item">购买</li>
                     </ul>
                     <ol>
@@ -222,7 +232,7 @@
                                 <div>
                                     <p>{{item.sellerName}}</p>
                                     <p>
-                                        <span class="btn blue"> {{item.tag | tagFilter}}</span> 
+                                        <span class="btn blue" v-if="item.tag!=3"> {{item.tag | tagFilter}}</span> 
                                         <span v-if="item.focus" class="btn orange">已关注</span>
                                         <span v-if="!item.focus" class="btn focus"  @click.stop="addFocus(k,'oldProduct')">关注</span>
                                     </p>
@@ -241,8 +251,9 @@
                                     {{item.brandName}}
                                 </router-link>
                                 </div>
+                            <div class="oneitem">{{item.base_no}}</div>
                             <div class="oneitem">{{item.goodsStockCount}}</div>
-                            <div class="oneitem">{{item.diliverPlace}}</div>
+                          
                             <div class="color stepPriceWrap oneitem">
                                 <div v-if="item.priceType" class="stepPrice">
                                     {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price'] | toFixed(item.priceUnit?3:2)}}&nbsp;<i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
@@ -257,7 +268,8 @@
                                      {{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}
                                 </span>
                             </div>
-                            <div  @click="chipSellerGoodsDetal(item)"   class="color oneitem purchase" >购买</div>
+                            <div class="oneitem">{{item.diliverPlace}}</div>
+                            <div  @click="chipSellerGoodsDetal(item)"   class="color oneitem purchase" >立即购买</div>
                         </li>
                     </ol>
                 </div>
@@ -329,7 +341,14 @@
                 </div>
                 <div class="prodclass-m">
                     <div class="fl wrap">
-                        <a v-for="(item,k ) in secondCategory" @click="chipUndirect(k)" :key="k">{{item.name}}</a>
+                        <div v-for="(item,k ) in secondCategory" @click="chipUndirect(k)" :key="k" class="item">
+                            <a :title="item.name">
+                            <ImgE :src="item.imgUrl" :W="40" :H="25" style="text-align:center;"></ImgE>
+                            
+                            {{item.name}}
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="prodclass-r">
@@ -364,10 +383,12 @@
     import countTo from "_c/countTo";
     import {TimeForma2,TimeForma} from "../../lib/utils";
     import {ladderPrice} from "../../lib/utils";
+    import {baseURL3} from "@/config"
 
     export default {
         data(){
             return {
+                baseURL3:baseURL3,
                 bannerList:[
                     {
                         url:require("@/assets/image/banner/1.jpg")
@@ -710,8 +731,6 @@
             } else {
                 this.setloginState(false)
             }
-
-
             this.screenHeight=window.screen.height;
             this.screenWidth=window.screen.width;
             this.$store.state.headerFxed = false;

@@ -10,11 +10,13 @@
                 </div> -->
                 <div class="fr ">
                     <el-input
-                        placeholder="在结果中查询关键词：型号"
+                        placeholder="在结果中查找型号"
                         v-model="name"
                         size="mini"
                         class="inputSearch"
+                         style="width:250px;"
                            @keyup.enter.native="inputHandler"
+                           clearable
                       >
                          <el-button slot="append" icon="el-icon-search" @click="inputHandler"></el-button>
                     </el-input>
@@ -71,7 +73,7 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgColor" v-if="item.tag!=3">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>

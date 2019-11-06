@@ -7,18 +7,28 @@
       <el-breadcrumb-item>发票管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="BuyerInvoiceManagement">
-        <el-button class="bgColor AddVoice"> <router-link tag="span" to="/PersonalCenter/InvoiceInformationManagement" >管理开票信息</router-link></el-button>
+       <el-select v-model="orderDate" @change="orderManageList(orderDate)" placeholder="请选择查询时间段">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        <!-- <el-button class="bgColor AddVoice"> <router-link tag="span" to="/PersonalCenter/InvoiceInformationManagement" >管理开票信息</router-link></el-button> -->
       <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="orderTitle" align="center" width="400px"  label="商品">
+        <el-table-column prop="orderTitle" align="center" width="400px"  label="商品" >
           <template slot-scope="scope">
-            <img :src="scope.row.goodsPicture" alt />
+            <div class="goodsinfo">
+            <ImgE :src="scope.row.goodsPicture" :W="60" :H="60"></ImgE>
             <div>
               <p>
                 <span>订单编号：</span>
-                <span style="color:#E84F47;">{{scope.row.orderNo}}</span>
+                <span class="color">{{scope.row.orderNo}}</span>
               </p>
               <p>{{scope.row.orderTitle}}</p>
               <p>{{scope.row.orderCreateTime | formatDate}}</p>
+            </div>
             </div>
           </template>
         </el-table-column>
@@ -46,12 +56,31 @@
 <script>
 import { formatDate } from "@/lib/utils";
 import { axios, sellerOrderCenter } from "@/api/apiObj";
-import "./BuyerInvoiceManagement.less";
+
 export default {
   name: "BuyerInvoiceManagement",
   data() {
     return {
-      tableData: []
+      tableData: [],
+       options: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "3",
+          label: "最近三天"
+        },
+        {
+          value: "7",
+          label: "一周"
+        },
+        {
+          value: "14",
+          label: "两周"
+        }
+      ],
+      orderDate:"",
     };
   },
   mounted() {
@@ -62,19 +91,26 @@ export default {
       axios
         .request({
           ...sellerOrderCenter.billManager,
-          params: { start: 0, length: 10 }
+          params: { 
+            start: 0,
+            length: 10 ,
+            day:this.orderDate
+             }
         })
         .then(res => {
-          console.log(res);
           if (res.resultCode == "200") {
             this.tableData = res.data.data;
           }
         });
+    },
+    orderManageList(val){
+      this.getInvoceList();
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "./BuyerInvoiceManagement.less";
 </style>
 

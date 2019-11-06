@@ -40,31 +40,10 @@
           </span>
         </p>
         <p class="cla-sp">您后续也可以在'用户中心>我的订单>待付款'栏目中上传合同</p>
-        <p class="contract">
-          <!-- <label class="label">
-            <input type="checkbox" v-model="contractValue" />
-            <span>
-              <img src="@/assets/image/inquirybasket/_u11390.png" alt v-if="contractValue" />
-            </span>
-          </label> -->
-          
+        <p class="contract">    
            <el-checkbox  v-model="contractValue">不签合同<span class="cla-sp" v-if="WholeParagraph">您是全款买家，可以不签合同，直接付款</span></el-checkbox>
         </p>
         <p class="submit" @click="submit">{{contractValue ? '直接去付款' : '我已上传合同，下一步'}}</p>
-        <!-- <div style="height:800px;width:300px">
-          <form
-            name="punchout_form"
-            method="post"
-            action="https://openapi.alipay.com/gateway.do?charset=utf-8&amp;method=alipay.trade.page.pay&amp;sign=Hg7MBQcAGL0%2F9GGDCUVWlsc4PK3MER%2BzPBjcMBOgQ2mHVxYyixaWgvoE%2FST3GS1XuiE6v4FV73SOwvVPEIldKYX4f%2BkknrXidXXZxy1DSrAx%2BxStCf5Ab%2FF%2BF7zuuo3Eo%2B1eiyZutrACbVhohCekHkrvwxURaq8j578Su6xWhWoPo%2B%2FsmNAp0kq0vhly9A4eMlDtVL6cF0Zx0QcH2WjACF8cexfNbaNYnXsaKtQlul%2BaCsPMjDmOKIqOc4jKWiz%2BqBjGl2LJXa9lgevvyi3B6z3dwEMhQTou2hYT6QzHdQCnQpdJdS9cPj9w%2FxnaBKJ14vRvScpS%2FRLgQ9kl7k6rEA%3D%3D&amp;return_url=https%3A%2F%2Fwww.113ic.com%2F&amp;notify_url=https%3A%2F%2Fapi.113ic.com%2Fapi-order%2Falipay%2Fnotisfy&amp;version=1.0&amp;app_id=2019062665646509&amp;sign_type=RSA&amp;timestamp=2019-06-29+13%3A40%3A57&amp;alipay_sdk=alipay-sdk-java-dynamicVersionNo&amp;format=json"
-          >
-            <input
-              type="hidden"
-              name="biz_content"
-              value="{&quot;out_trade_no&quot;:&quot;CO61-201906281774&quot;,&quot;total_amount&quot;:0.60,&quot;subject&quot;:&quot;订单CO61-201906281774共1种商品&quot;,&quot;product_code&quot;:&quot;FAST_INSTANT_TRADE_PAY&quot;,&quot;goods_detail&quot;:&quot;[{\&quot;body\&quot;:\&quot;人民币\&quot;,\&quot;goods_id\&quot;:\&quot;6\&quot;,\&quot;goods_name\&quot;:\&quot;25AA02E64T-I/OT\&quot;,\&quot;price\&quot;:0.1000,\&quot;quantity\&quot;:6}]&quot;}"
-            >
-            <input type="submit" value="立即支付">
-          </form>
-        </div>-->
       </div>
     </div>
 

@@ -1,10 +1,10 @@
 <template>
     <div class="cont">
-       <router-link to="/News"  class="messageCountWrap" tag="div">
+       <!-- <router-link to="/News"  class="messageCountWrap" tag="div">
             <span></span>
             <p>消息</p> 
             <div v-if="UserInforma.messageCount" class="mess">{{UserInforma.messageCount}}</div>
-        </router-link>
+        </router-link> -->
       <router-link to="/PersonalCenter" class="personal" tag="div">
             <span></span>
             <p>用户中心</p> 

@@ -44,8 +44,8 @@
             </el-form-item>
             <el-form-item label="公司成立日期：" prop="startDate">
               <el-date-picker
-                value-format="yyyy/MM/dd"
-                format="yyyy/MM/dd"
+                value-format="yyyy-MM-dd"
+                format="yyyy-MM-dd"
                 v-model="ruleForm.startDate"
                 type="date"
                 placeholder="选择日期"
@@ -72,7 +72,7 @@
                 placeholder="营业结束日期"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="公司详细地址：" prop="address">
+            <el-form-item label="公司注册地址：" prop="address">
               <el-input v-model="ruleForm.address"></el-input>
               <p class="small">填写与营业执照一致的地址</p>
             </el-form-item>
@@ -80,7 +80,8 @@
               <el-input v-model="ruleForm.conName"></el-input>
             </el-form-item>
             <el-form-item label="联系人手机号：" prop="telephone">
-              <el-input v-model="ruleForm.telephone"></el-input>
+              <el-input v-model="ruleForm.telephone"   maxlength="11"
+                  show-word-limit></el-input>
             </el-form-item>
             <h3 class="tit-h3">企业资质上传（所有资质需要加盖红章）</h3>
             <div class="form2-item">
@@ -92,7 +93,7 @@
                 <p class="small">最新版营业执照，需加盖公司红章</p>
               </div>
               <div class="form-item-con">
-                <el-form-item label="营业执照上传：" prop="url">
+                <el-form-item label="营业执照上传：" prop="url" class="imgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -110,7 +111,7 @@
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                     <img :src="exampleDiagram" alt />
@@ -136,7 +137,7 @@
                     show-word-limit
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="上传正面照片：" prop="idUrlA">
+                <el-form-item label="上传正面照片：" prop="idUrlA" class="imgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -152,12 +153,12 @@
                   >
                     <i class="el-icon-plus"></i>
                   </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(zheng)">
+                    <img :src="zheng" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
-                <el-form-item label="上传反面照片：" prop="idUrlB">
+                <el-form-item label="上传反面照片：" prop="idUrlB" class="imgwrap">
                   <el-upload
                     class="upload-demo"
                     ref="upload"
@@ -175,11 +176,11 @@
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
 
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(fan)">
+                    <img :src="fan" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -195,7 +196,7 @@
                 <p class="small">2.提供近三个月内开票方为公司开具的增值税发票一张</p>
                 <p class="small">3.上述条件至少上传一项</p>
               </div>
-              <div class="form-item-con">
+              <div class="form-item-con imgwrap">
                 <el-form-item label="资质图上传：" prop="taxUrl">
                   <el-upload
                     class="upload-demo"
@@ -214,7 +215,7 @@
                     <div
                       slot="tip"
                       class="el-upload__tip"
-                    >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                    >图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</div>
                   </el-upload>
                   <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                     <img :src="exampleDiagram" alt />
@@ -262,6 +263,9 @@ export default {
       dialogImageUrl: "",
       // 示例图
       exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
+      identityExam: require("@/assets/image/OriginalFactoryEntry/timg.jpg"),
+      zheng: require("@/assets/image/OriginalFactoryEntry/zheng.jpg"),
+      fan: require("@/assets/image/OriginalFactoryEntry/fan.jpg"),
       // 预览图片
       dialogVisible: false,
       province: "",
@@ -446,7 +450,6 @@ export default {
   components: { VDistpicker },
   mounted() {
     if (this.applyDetailEdit.id) {
-      console.log(this.applyDetailEdit, "编辑申请");
       this.ruleForm = this.applyDetailEdit;
       this.taxUrlList.push({
         url: baseURL4 + this.applyDetailEdit.url
@@ -460,7 +463,7 @@ export default {
       this.businessList.push({
         url: baseURL4 + this.applyDetailEdit.url
       });
-      console.log(this.taxUrlList);
+     
     }
     this.ruleForm["residencetype"] = "4";
     this.ruleForm = Object.assign({}, this.ruleForm);
@@ -531,7 +534,6 @@ export default {
               data: this.ruleForm
             })
             .then(res => {
-              console.log(res);
               this.$message.success("提交成功");
               this.$router.push("/PersonalCenter/GetVipApplyDetail");
             });
@@ -543,11 +545,11 @@ export default {
     },
     // 上传之前图片的大小
     beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 1;
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 1MB!");
-      }
-      return isLt2M;
+      // const isLt2M = file.size / 1024 / 1024 < 1;
+      // if (!isLt2M) {
+      //   this.$message.error("上传头像图片大小不能超过 1MB!");
+      // }
+      // return isLt2M;
     },
     // 资质上传图
     successUpload1(res) {

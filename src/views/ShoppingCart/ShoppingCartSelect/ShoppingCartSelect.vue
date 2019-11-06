@@ -52,7 +52,7 @@
                       <img :src="item.sellerUrl" alt />
                       <div>
                         <p class="name">{{item.sellerName}}</p>
-                        <p class="tag">{{item.sellerTag | tagFilter}}</p>
+                        <p class="tag" v-if="item.sellerTag!=3">{{item.sellerTag | tagFilter}}</p>
                       </div>
                     </div>
                     <div class="btn unactive" v-if="item.focus">已关注</div>
@@ -61,7 +61,7 @@
                 </div>
               </div>
               <template v-for="(item1,index) in item.list">
-                <ul class="listDetail" :key="index">
+                <ul class="listDetail" :key="index" :class="!item1.isenable?'unenable':''">
                   <li class="imgWrap" style="width:15%;">
                     <label class="checkBox" v-if="item1.isenable">
                       <input
@@ -89,14 +89,7 @@
                         }
                       }"><strong>{{item1.goods_name}}</strong></router-link></p>
                     <template>
-                      <p v-if="item1.focus" class="guanzhu unguanzhu">
-                        <span>已关注</span>
-                      </p>
-                      <p v-else @click="guanzhu(1,k,index)" class="guanzhu">
-                        <span>关注</span>
-                      </p>
-                    </template>
-                    <p class="desc">品牌：
+                       <p class="desc">品牌：
                       <router-link :to="{
                         path:'/BrandDetail',
                         query:{
@@ -106,35 +99,23 @@
                         }
                       }">
                       {{item1.brandName}}</router-link>
-                      
                       </p>
+                      <p v-if="item1.focus" class="guanzhu unguanzhu">
+                        <span>已关注</span>
+                      </p>
+                      <p v-else @click="guanzhu(1,k,index)" class="guanzhu">
+                        <span>关注</span>
+                      </p>
+                    </template>
+                   
                   </li>
                   <li style="width:17%" class="place">
-                    <p>{{item1.diliverPlace}}</p>
+                      <p>{{item1.goods_type?'现货':'订货'}}</p>
                     <template>
                       <p v-if="item1.goods_type && item1.day_interval">{{item1.day_interval | filterhours}}小时内交货</p>
                       <p v-else>{{item1.expireTime | formatDate}}</p>
                     </template>
-                    <template>
-                      <p v-if="item1.goods_type">
-                        现货
-                        <span
-                          style="font-size:12px;color:#F22E2E;"
-                          v-if="!item1.seller_always"
-                        >(限时卖)</span>
-                      </p>
-                      <p v-else>
-                        订货
-                        <span
-                          style="font-size:12px;color:#F22E2E;"
-                          v-if="item1.seller_always"
-                        >(长期卖)</span>
-                        <span
-                          style="font-size:12px;color:#F22E2E;"
-                          v-if="!item1.seller_always"
-                        >(限时卖)</span>
-                      </p>
-                    </template>
+                      <p>{{item1.diliverPlace}}交货</p>
                   </li>
                   <template>
                     <li style="width:10%" class="price" v-if="item1.priceType">

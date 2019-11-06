@@ -18,7 +18,7 @@
                   </p>
                   <p>
                       <span  class="type color"  v-if="UserInforma.userTagMap.vip">月结用户</span>
-                      <span  class="type color" v-if="UserInforma.userTagMap.seller">{{UserInforma.userTagMap.tag | tagFilter}}</span>
+                      <span  class="type color" v-if="UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=3">{{UserInforma.userTagMap.tag | tagFilter}}</span>
                       <router-link to="/OriginalFactoryEntry" tag="span"  class="type color" v-if="!UserInforma.userTagMap.seller">申请入驻</router-link>
                   </p>
                   <p>信用等级：{{UserInforma.userTagMap.userLevel}}</p>

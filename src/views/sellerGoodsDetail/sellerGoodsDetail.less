@@ -83,10 +83,12 @@
         justify-content: space-between;
         .bigImg{
           width:100%;
-          padding-top:90%;
+          // padding-top:90%;
           text-align: center;
           position: relative;
           box-sizing:border-box;
+          flex:1;
+          line-height: 260px;
           &:after{
             content:"";
             position: absolute;
@@ -135,7 +137,7 @@
               display: inline-block;
               border:1px solid transparent;
               height:100%;
-              line-height:100px;
+              line-height:90px;
               width:30%;
               margin-right:3.3%;
               text-align:center;
@@ -150,13 +152,6 @@
                 left:0;
                 right:0;
                 z-index:1;
-              }
-              /deep/.ImgE{
-                img{
-                  max-height:80%;
-                  max-width:80%;
-                }
-
               }
               &.active{
                 border:1px solid #d5d5d5;
@@ -195,10 +190,10 @@
           font-size:30px;
           font-weight: bold;
           margin-bottom:7px;
-          cursor: pointer;
-          &:hover{
-            color: #df3f2f;
-          }
+          // cursor: pointer;
+          // &:hover{
+          //   color: #df3f2f;
+          // }
         }
         .time{
             line-height:35px;
@@ -227,7 +222,7 @@
               }
             }
             .includBill{
-              color:#5e5eff;
+              
               font-size:14px;
               margin-left:15px;
             }
@@ -244,6 +239,7 @@
               height:100%;
               width:1px;
               margin:0 auto;
+              margin-right:20%;
             }
             div{
               flex:1;
@@ -261,6 +257,9 @@
           padding:15px 0;
           border-bottom:1px dashed #eee;
           position: relative;
+          .sellerName{
+            margin-right:15px;
+          }
           &:hover{
            // color:#df3f2f;
             .wrapInfo{
@@ -358,7 +357,15 @@
           line-height:1.7;
           color:#999;
           margin-bottom:7px;
-        
+          .ImgE{
+            width:70px;
+            height:30px;
+            border:1px solid #ddd;
+            /deep/img{
+              width:100%;
+              height:100%;
+            }
+          }
           span{
             margin-left:30px;
             cursor: pointer;

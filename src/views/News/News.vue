@@ -33,7 +33,6 @@ export default {
   },
     mounted(){
       this.init();
-
     },
     computed:{
       start(){
@@ -65,7 +64,7 @@ export default {
                         id:p,
                         num:res.data[p],
                         imgUrl:"../static/img/message/"+p+".png",
-                        path:`/News/${p}`
+                        path:`/PersonalCenter/Message/${p}`
                     })
                 }
                 this.MenuTabList=list;

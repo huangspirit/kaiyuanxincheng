@@ -95,7 +95,7 @@
         }
         .item{
             color:rgba(102,102,102,1);
-            margin-top:15px;
+           margin-bottom:10px;
             line-height:1;
             padding:20px;
             background:#fff;
@@ -111,7 +111,7 @@
                 h3{
                     font-weight:600;
                     font-size:18px;
-                    margin-bottom:28px;
+                    margin-bottom:22px;
                 }
             }
             .cont{

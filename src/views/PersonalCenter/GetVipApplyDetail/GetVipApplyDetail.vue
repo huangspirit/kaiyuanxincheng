@@ -313,7 +313,6 @@ export default {
               if (obj.applyType != "4") {
                 this.editApply = {...res.data.baseInfo,brand:res.data.baseInfo.brandId,brandName:res.data.baseInfo.brand.split('@')};
                 this.setJoinForm(this.editApply);
-               // this.$store.state.OriginalFactoryEntry.joinForm = this.editApply;
                 this.$router.push({
                   path: "/OriginalFactoryEntry/BasicInforma"
                 });

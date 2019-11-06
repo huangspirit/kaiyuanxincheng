@@ -63,67 +63,71 @@
                       </ul>
                   </div>
               </div>
-              <div class="clear">
-                <div class="selected clear fl">
-                  <ul class="fl">
-                      <li>
-                          <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
-                              <el-radio :label="true" :value="true" name="goods_type"  @click.native.prevent="cancleChecked1(true)">现货</el-radio><br>
-                              <el-radio :label="false" :value="false" name="goods_type"  @click.native.prevent="cancleChecked1(false)">订货</el-radio>
-                          </el-radio-group>
-                      </li>
-                  </ul>
-                  <ul class="fl">
-                      <li>
-                          <el-radio-group v-model="selectedGoods.create_tag" class="defaultradioSquare label editAddress">
-                              <el-radio :label="true" :value="true" name="create_tag"  @click.native.prevent="cancleChecked(true)">原厂直供</el-radio><br>
-                              <el-radio :label="false" :value="false" name="create_tag"  @click.native.prevent="cancleChecked(false)">代理商</el-radio>
-                          </el-radio-group>
-                      </li>
-                  </ul>
-                  <ul class="fl">
-                      <li>
-                          <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
-                          <br>
-                          <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox>
-                      </li>
-                  </ul>
-
-                  <!--            <ul class="number fr">-->
-                  <!--                <li>-->
-                  <!--                    共筛选出-->
-                  <!--                    <strong>{{ScreenProductTotal}}</strong>个结果-->
-                  <!--                </li>-->
-                  <!--            </ul>-->
+          
+               <div >
+                <div class="clear result" >
+                    <div class="selected clear fl">
+                    <ul class="fl">
+                        <li>
+                            <el-radio-group v-model="selectedGoods.goods_type" class="defaultradioSquare label editAddress">
+                                <el-radio :label="true" :value="true" name="goods_type"  @click.native.prevent="cancleChecked1(true)">现货</el-radio>
+                                <!-- <br><el-radio :label="false" :value="false" name="goods_type"  @click.native.prevent="cancleChecked1(false)">订货</el-radio> -->
+                            </el-radio-group>
+                        </li>
+                    </ul>
+                    <ul class="fl">
+                        <li>
+                            <el-radio-group v-model="selectedGoods.create_tag" class="defaultradioSquare label editAddress">
+                                <el-radio :label="true" :value="true" name="create_tag"  @click.native.prevent="cancleChecked(true)">原厂直供</el-radio><br>
+                                <!-- <el-radio :label="false" :value="false" name="create_tag"  @click.native.prevent="cancleChecked(false)">代理商</el-radio> -->
+                            </el-radio-group>
+                        </li>
+                    </ul>
+                    <ul class="fl">
+                        <li>
+                            <el-checkbox  class="defaultradioSquare label editAddress" @change="changeSpecialPrice($event)" v-model="SpecialPrice">特价商品</el-checkbox>
+                            <!-- <br>
+                            <el-checkbox class="defaultradioSquare label editAddress" v-if="selectedGoods.goods_type!=false" @change="changeIsOldProduct($event)" v-model="isOLdProduct">呆料清仓</el-checkbox> -->
+                        </li>
+                    </ul>
+                    </div>
+                    <div class="res fl">
+                          <span style="font-size:20px;color:#333;width:auto;white-space:nowrap;font-weight:bolder;margin-right:20px;border:none"> 符合条件的结果：
+                        {{ScreenProductTotal}}</span>
+                        <div class="showSelectedScreen">
+                           
+                            <template v-for="(item,k) in selectedScreen" >
+                                <span :key="k" v-if="k!='brand_id'">
+                        {{item}} 
+                        <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> 
+                        </span>
+                            </template>
+                        
+                    </div>
+                    </div>
                 </div>
-                <div class="res fl">
-                    符合条件的结果：
-                    {{ScreenProductTotal}}
-                    <div class="showSelectedScreen">
-                      <span v-for="(item,k) in selectedScreen" :key="k" v-if="k!='brand_id'">{{item}} <i @click="delselectedScreenItem(k)" class="el-icon-circle-close"></i> </span>
-                  </div>
+                <div class="btnWrap">
+                   
+                        <span @click="changeType"  v-if="propertyCount>0 && ScreenProductTotal" class="btn bgColor">应用已选参数</span>
+                        <span  v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
+                         <span @click="resetScreen" class="gray btn">清除已选参数</span>
                 </div>
-               
               </div>
-              <div class="btnWrap">
-                    <span @click="resetScreen" class="gray btn">清除已选参数</span>
-                    <span @click="changeType"  v-if="propertyCount>0 && ScreenProductTotal" class="btn bgColor">应用已选参数</span>
-                    <span  v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
-                </div>
           </div>
       </div>
 
-    <div class="cont">
+    <div class="cont" >
       <!-- 经营品类 -->
       <div class="brand-hot brand-msg">
             <div class="tit bgGray">
                  <el-input
-                  placeholder="在结果中查询关键词：型号"
+                  placeholder="在结果中查找型号"
                   class="fr inputSearch"
                   v-model="valueName"
                   size="mini"
-                  style="width:200px;"
+                  style="width:250px;"
                   @keyup.enter.native="hotSearchValue"
+                  clearable
                   >
                    <el-button slot="append" icon="el-icon-search" @click="hotSearchValue"></el-button>
                 </el-input>
@@ -179,6 +183,7 @@ export default {
         searchType:0,
         valueName:"",
         hasHotResearch:false,
+
     };
   },
   watch: {
@@ -233,6 +238,18 @@ export default {
     }),
   },
   methods: {
+    //   handleScroll() {
+    //             var scrollTop =
+    //                 window.pageYOffset ||
+    //                 document.documentElement.scrollTop ||
+    //                 document.body.scrollTop;
+    //             if (scrollTop > 200) {
+    //                 this.showFloatResult = true;
+    //             } else {
+    //                  this.showFloatResult = false;
+    //             }
+    //             console.log(this.showFloatResult)
+    //         },
       handleInput(k){
           //搜索属性
           let obj={
@@ -479,7 +496,11 @@ export default {
           this.query=this.directJOSN
       }
       this.init();
-      this.getPropertyByParentId()
-  }
+      this.getPropertyByParentId();
+        // window.addEventListener("scroll", this.handleScroll);
+  },
+//   destroyed() {
+//             window.removeEventListener("scroll", this.handleScroll);
+//         }
 };
 </script>

@@ -6,7 +6,7 @@
 
         <div>
           <p>{{item.sellerName}}</p>
-          <span  class="tag y-con">{{item.tag | tagFilter}}</span>
+          <span  class="tag y-con" v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
         </div>
       </div>
     </td>
@@ -145,7 +145,7 @@
           <span class="close" @click="closeAddCar">X</span>
           <span class="arrow"></span>
         </div>
-        <ButtonIcon :width="130" :height="34" :fonstSize="12" @click="purchase">购买</ButtonIcon>
+        <ButtonIcon :width="130" :height="34" :fonstSize="12" @click="purchase">跟单</ButtonIcon>
         <ButtonIcon :width="130" :height="34" :fonstSize="12" @click="addCar">加入购物车</ButtonIcon>
       </div>
     </td>

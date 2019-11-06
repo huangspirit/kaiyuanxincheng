@@ -63,8 +63,16 @@
                     <div class="goodsDesc">
                       <ImgE :src="item0.goodsImage" :W="50" :H="50"></ImgE>
                       <div>
-                        <p>型号：{{item0.goodsName}}</p>
-                        <p>描述：{{item0.goodsDesc}}</p>
+                        <p class="color">{{item0.goodsName}}</p>
+                         <p>品牌：<router-link :to="{
+                          path:'/BrandDetail',
+                          query:{
+                            tag:'brand',
+                            documentid:item0.brandId,
+                            name:item0.brandName
+                          }
+                        }">{{item0.brandName}}</router-link></p>
+                        <p class="gray">描述：{{item0.goodsDesc}}</p>
                       </div>
                   </div>
                   </td>

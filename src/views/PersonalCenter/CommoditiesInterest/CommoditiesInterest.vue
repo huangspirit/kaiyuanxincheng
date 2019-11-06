@@ -60,10 +60,10 @@
                     }
                 }" class="brand">
                        
-                        {{item.goodsBase.brand}}
+                        {{item.goodsBase.branda}}
                     </router-link>
                     </p>
-                    <P class="xh">
+                    <P class="xh gray">
                         <span>描述：</span>
                         {{item.goodsBase.productdesc}}
                     </P>

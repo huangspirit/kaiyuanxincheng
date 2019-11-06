@@ -1,8 +1,5 @@
 <template>
     <div class="specialPrice">
-        <!-- <div class="banner">
-            <img src="@/assets/image/specialPrice/specailPrice.png" alt="">
-        </div> -->
         <div class="cont allWidth">
             <div class="title">
                 <!-- <div class="fr btn" v-if="showGetMore" @click="getMore">
@@ -10,13 +7,15 @@
                 </div> -->
                 <div class="fr ">
                     <el-input
-                        placeholder="在结果中查询关键词：型号"
+                        placeholder="在结果中查找型号"
                         v-model="name"
                         size="mini"
                         class="inputSearch"
                         @keyup.enter.native="inputHandler"
+                         style="width:250px;"
+                         clearable
                         >
-                         <el-button slot="append" icon="el-icon-search" @click="inputHandler"></el-button>
+                         <el-button slot="append" icon="el-icon-search" @click="inputHandler" class="append"></el-button>
                     </el-input>
                 </div>
                 <ul class="clear">
@@ -25,7 +24,7 @@
                 </ul>
             </div>
             <div class="goodsList" >
-                <ul class="list">
+                <ul class="list" v-if="specialList.length">
                  <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  >
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
@@ -35,7 +34,8 @@
                     </span>
                     <!-- <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span> -->
                     <div class="wrapImg"  @click="chipSellerGoodsDetal(item)">
-                        <ImgE :src="item.goodsImageUrl" :W="380" :H="200">
+                        <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="350" :H="200" v-if="item.sellerGoodsImageUrl"></ImgE>
+                        <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl">
                         </ImgE>
                         <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
                     </div>
@@ -71,7 +71,7 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgColor" v-if="item.tag!=3">{{item.tag | tagFilter}}</span> 
                                             </p>
                                         </div>
                                     </div>
@@ -130,9 +130,11 @@
     import {ladderPrice} from "../../lib/utils";
     import {axios,home,shoppingCar} from "../../api/apiObj";
      import {mapState,mapActions,mapMutations} from 'vuex';
+     import {baseURL3} from "@/config"
     export default {
         data(){
             return {
+                baseURL3:baseURL3,
                 specialList:[],
                 categoryList:[],
                 pageSize:9,
@@ -162,6 +164,7 @@
         },
         methods:{
             ...mapMutations(['setloginState']),
+         
             currentChange(x){
                 this.currentPage=x;
                 let category;
@@ -176,6 +179,7 @@
                 if(this.categoryList[this.selectedK]){
                     category=this.categoryList[this.selectedK].id
                 }
+             
                 this.getSpecialOfferList(category)
             },
             countDownE_cb(){
@@ -217,6 +221,7 @@
                 if(this.categoryList[k]){
                     category=this.categoryList[k].id
                 }
+            
                 this.getSpecialOfferList(category)
             },
             getCategroy(){
@@ -231,28 +236,30 @@
                 })
             },
             getSpecialOfferList(categoryId){
+                    console.log(categoryId)
                 let obj={
                     start:this.start,
                     length:this.pageSize,
                  //   special_price:false,
                    // goods_type:true,
-                   is_old_product:false,
+                    is_old_product:false,
                     status:1,
-                    catergory_id:categoryId
                 }
                  if(this.name){
                     obj.name=this.name
+                }
+                if(categoryId){
+                    obj.catergory_id=categoryId
                 }
                 axios.request({...home.SpecialOfferList,params:obj}).then(res=>{
                     if(res.data.data.length){
                         this.specialList=res.data.data.map(item=>{
                             if(item.priceType){
                                 //标识阶梯价
-                                item.priceList=ladderPrice(item.priceLevel)
+                               item.priceList=ladderPrice(item.priceLevel)
                             }
                             return item;
                         });
-                      
                     }else{
                         this.specialList=[];
                         this.$message({
@@ -261,19 +268,17 @@
                         });
                     }
                      this.total=res.data.total;
-                    // if(res.data.data.length<this.pageSize){
-                    //     this.currentPage=0;
-                    // }
                 })
+
             },
-            getMore(){
-                this.currentPage++;
-                let category;
-                if(this.categoryList[this.selectedK]){
-                    category=this.categoryList[this.selectedK].id
-                }
-                this.getSpecialOfferList(category)
-            }
+            // getMore(){
+            //     this.currentPage++;
+            //     let category;
+            //     if(this.categoryList[this.selectedK]){
+            //         category=this.categoryList[this.selectedK].id
+            //     }
+            //     this.getSpecialOfferList(category)
+            // }
         }
     }
 </script>

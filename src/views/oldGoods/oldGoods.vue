@@ -10,11 +10,13 @@
                 </div> -->
                 <div class="fr ">
                     <el-input
-                        placeholder="在结果中查询关键词：型号"
+                        placeholder="在结果中查找型号"
                         v-model="name"
                         size="mini"
                       @keyup.enter.native="inputHandler"
                          class="inputSearch"
+                             style="width:250px;"
+                             clearable
                       >
                          <el-button slot="append" icon="el-icon-search" @click="inputHandler"></el-button>
 
@@ -29,9 +31,10 @@
                 <thead>
                     <tr class="title">
                         <th class="info">供应商</th>
-                        <th class="name">型号</th>
+                        <th>图片</th>
+                        <th class="name" >型号</th>
                         <th>品牌</th>
-                        <th>批号/交货地点</th>
+                        <th>批号/交货</th>
                         <th>数量</th>
                         <th>清仓价</th>
                         <th>操作</th>
@@ -46,12 +49,27 @@
                                     <div class="fl">
                                         <p>{{item.sellerName}}</p>
                                         <p>
-                                            <span class="tag" :class="{'bgColor':item.tag==1}">{{item.tag | tagFilter}}</span>
+                                            <span class="tag" :class="{'bgColor':item.tag==1}" v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
                                             <span class="tag bgLightGray"  v-if="!item.focus" @click.stop="addFocus(k)" style="cursor:pointer;">关注</span>
                                             <span class="orange tag" v-if="item.focus">已关注</span>
                                         </p>
                                     </div>
                                 </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!-- <template v-for="(item0,index0) in item.sellerGoodsImageUrl.split('@')">
+                            <div :key="item0" v-if="index0==0">
+                                <span class="cover"></span>
+                                <ImgE :src="baseURL3+'/'+item0" :W="50" :H="50"></ImgE>
+                            </div>
+                            </template>
+                             -->
+                            <div class="goodsImage">
+                                <span class="cover el-icon-zoom-in" @click="bigImg(item.sellerGoodsImageUrl?item.sellerGoodsImageUrl:item.goodsImageUrl)"></span>
+                                <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50" v-if="item.sellerGoodsImageUrl"></ImgE>
+                                <ImgE :src="item.goodsImageUrl" :W="50" :H="50" v-if="!item.sellerGoodsImageUrl">
+                                </ImgE>
                             </div>
                         </td>
                         <td class="name" @click.stop="chipSellerGoodsDetal(item)">{{item.goods_name}}</td>
@@ -65,7 +83,6 @@
                                 }
                             }" 
                             class="brandName"
-                            tag="span"
                             >
                                 {{item.brandName}}
                             </router-link>
@@ -79,24 +96,24 @@
                         </td>
                         <td >
                             <div class="stepPrice">
-                                <strong v-if="item.priceType">
+                                <strong v-if="item.priceType" style="font-size:16px;">
                                    {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price}}&nbsp;<i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
                                     <ul class="priceList">
                                         <li v-for="(item0,index0) in item.priceList" :key="index0">
-                                            {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price}}({{!item.priceUnit?'含税':'不含税'}})
+                                            {{item0.num}}+---{{item.priceUnit?'$':'￥'}}{{item0.price | toFixed(item.priceUnit?3:2)}}({{!item.priceUnit?'含税':'不含税'}})
                                         </li>
                                     </ul>
                                 </strong>
-                                <strong v-if="!item.priceType">
+                                <strong v-if="!item.priceType" style="font-size:16px;">
                                     {{item.priceUnit?'$':'￥'}}{{
-                                        item.goodsPrice
+                                        item.goodsPrice | toFixed(item.priceUnit?3:2)
                                     }}
                                 </strong>
                             </div>
-                            <p class="desc">{{item.priceUnit?'不含税':'含13%增值税'}}</p>
+                            <p class="desc">（{{item.priceUnit?'不含税':'含13%增值税'}}）</p>
                         </td>
                         <td @click.stop="chipSellerGoodsDetal(item)">
-                             <a class="color">购买</a>
+                             <a class="color">立即购买</a>
                         </td>
                     </tr>
                 </tbody>
@@ -108,10 +125,24 @@
             :pageSize="pageSize"
             :total="total">
         </Pagination>
+        <el-dialog
+            title=""
+            :visible.sync="showbigImg"
+           >
+           <div>
+                <el-carousel height="500px" indicator-position="outside">
+                    <el-carousel-item v-for="item in bigimg.split('@')" :key="item" style="line-height:420px;">
+                        <img :src="baseURL3+'/'+item" alt="" style="max-height:400px;" v-if="item.indexOf('http')==-1">
+                        <img :src="item" alt="" style="max-height:400px;" v-if="item.indexOf('http')!=-1">
+                    </el-carousel-item>
+                    </el-carousel>
+           </div>
+            </el-dialog>
         </div>
     </div>
 </template>
 <script>
+    import {baseURL3} from "@/config";
   import {mapState,mapActions,mapMutations} from 'vuex';
     import {ladderPrice} from "../../lib/utils";
     import {axios,home,shoppingCar} from "../../api/apiObj";
@@ -126,7 +157,10 @@
                 total:0,
                 showGetMore:true,
                 name:'',
-                categoryId:''
+                categoryId:'',
+                baseURL3:baseURL3,
+                showbigImg:false,
+                bigimg:''
             }
         },
        
@@ -145,6 +179,10 @@
         },
         methods:{
               ...mapMutations(['setloginState']),
+              bigImg(url){
+                  this.showbigImg=true;
+                  this.bigimg=url
+              },
             addFocus(index){
                  if(!this.loginState){
                     this.$router.push('/Login')

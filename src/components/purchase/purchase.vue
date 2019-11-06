@@ -8,7 +8,7 @@
                     <p>库存:{{item.stockcount}}</p>
                 </div>
                 <div>
-                    购买量：<el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
+                    跟单量：<el-input-number  v-model="count" size="mini" @blur="handleBlur($event)" @change="handleChange($event)" :min="item.moq"  :max="item.stockcount"  :step="item.mpq"  step-strictly></el-input-number>
                 </div>
                 <div>单价: <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong></div>
                 <div>总计: <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong></div>
@@ -16,7 +16,7 @@
             </div>
             <div v-if="mini" class="mini">
                 <div class="top">
-                    <div>购买量</div>
+                    <div>跟单量</div>
                     <div>单价</div>
                     <div>总计</div>
                     <div>操作</div>

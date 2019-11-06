@@ -4,7 +4,7 @@
       <img :src="item.list[0].sellerHeader" alt>
       <div>
         <p>{{item.name}}</p>
-        <span class="bgColor">{{item.list[0].tag | tagFilter}}</span>
+        <span class="bgColor" v-if="item.list[0].tag!=3">{{item.list[0].tag | tagFilter}}</span>
         <!-- <span v-if="item.list[0].tag === '1'">原厂商户</span>
         <span v-if="item.list[0].tag === '2'">代理商</span>
         <span v-if="item.list[0].tag === '3'">商家</span> -->
@@ -23,7 +23,7 @@
       <div class="item" v-for="value in item.list" :key="value.goods_id">
         <div class="desc">
             <span class="img">
-              <ImgE :src="value.goodsImage" :W="158" :H="158"></ImgE>
+              <ImgE :src="value.goodsImage" :W="80" :H="80"></ImgE>
             </span>
             <div class="text">
               <router-link 
@@ -38,12 +38,10 @@
               tag="p">
                 {{value.goods_name}}
               </router-link>
-              <p class="desc">{{value.goodsDesc}}</p>
-              <!-- <p class="btnwrap">
-                <span>{{value.tag | tagFilter}}</span>
-                <span>{{value.diliver_place}}交货</span>
-                <span>{{value.seller_always?'现货':'订货'}}</span>
-              </p> -->
+              <p class="desc">
+               {{value.goodsDesc}}
+                </p>
+            
             </div>
         </div>
          <div class="oneitem">
@@ -84,7 +82,7 @@ export default {
   data() {
     return {
         totalPrice: 0,
-        unittotalPrice:0
+        unittotalPrice:0,
     };
   },
   props: {

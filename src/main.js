@@ -10,6 +10,7 @@ import TabImageFoot from '_c/TabImageFoot'
 import TabImage from '_c/TabImage'
 import Pagination from '_c/Pagination'
 import ImgE from '_c/ImgE'
+import ImgElist from '_c/ImgElist'
 import uploadImg from '_c/uploadImg'
 import HeaderSearch from '_c/HeaderSearch'
 import CountTime from "_c/countTime";
@@ -25,6 +26,7 @@ Vue.component('TabImageFoot', TabImageFoot)
 Vue.component('TabImage', TabImage)
 Vue.component('Pagination', Pagination)
 Vue.component('ImgE', ImgE)
+Vue.component('ImgElist', ImgElist)
 Vue.component('uploadImg', uploadImg)
 Vue.component('HeaderSearch', HeaderSearch)
 Vue.component('CountTime', CountTime)

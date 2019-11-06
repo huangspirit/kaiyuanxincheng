@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb  separator-class="el-icon-arrow-right">
 <!--      <el-breadcrumb-item>买家中心</el-breadcrumb-item>-->
-      <el-breadcrumb-item to="/PersonalCenter/BuyerInvoiceManagement">发票管理</el-breadcrumb-item>
+      <!-- <el-breadcrumb-item to="/PersonalCenter/BuyerInvoiceManagement">发票管理</el-breadcrumb-item> -->
       <el-breadcrumb-item>开票信息管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="InvoiceInformationManagement">
