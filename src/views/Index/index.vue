@@ -310,7 +310,7 @@
                              @mouseleave="item.show=false"
                              @mouseenter="item.show=true"
                         >
-                            <ImgE :src="item.imgurl" :W="300" :H="150"></ImgE>
+                            <ImgE :src="item.imgurl" :W="200" :H="150"></ImgE>
                             <transition name="el-zoom-in-left">
                                 <div class="coverFlag clear bgColor" v-show="item.show">
                                     <p class="brandName">{{item.branda}}</p>
@@ -364,7 +364,7 @@
                                         name:item.brand
                                     }
                                 }">
-                                   <ImgE :src="item.imgurl" :W="190" :H="80"></ImgE>
+                                   <ImgE :src="item.imgurl" :W="160" :H="80"></ImgE>
                                 </router-link>
                                 
                             </li>

@@ -61,24 +61,30 @@ export default {
               icon: require("@/assets/image/sidemenuicon/SellerIssuesProduct.png")
             },
             {
+              title: "产品管理",
+              index: "1_4",
+              name: "sellerPushProduct",
+              path: "/PersonalCenter/sellerPushProduct",
+              icon: require("@/assets/image/sidemenuicon/SellerCommodityManagement.png")
+            },
+            {
               name: "inquiryList",
               title: "询价单列表",
-              index: "1_4",
+              index: "1_5",
               path: "/PersonalCenter/inquiryList",
-             
               icon: require("@/assets/image/sidemenuicon/inquiryList.png")
             },
             {
               title: "发票管理",
-              index: "1_5",
+              index: "1_6",
               path: "/PersonalCenter/SellerInvoiceManagement",
               icon: require("@/assets/image/sidemenuicon/SellerInvoiceManagement.png")
             },
             {
               title: "账单中心",
-              index: "1_6",
+              index: "1_7",
               name: "SellerBillCenter",
-               class:"active",
+              class: "active",
               path: "/PersonalCenter/SellerBillCenter",
               icon: require("@/assets/image/sidemenuicon/BuyerBillCenter.png")
             }
@@ -126,7 +132,7 @@ export default {
               title: "账单中心",
               name: "BuyerBillCenter",
               index: "2_5",
-               class:"active",
+              class: "active",
               path: "/PersonalCenter/BuyerBillCenter",
               icon: require("@/assets/image/sidemenuicon/BuyerBillCenter.png")
             },
@@ -284,28 +290,39 @@ export default {
           }
           if (UserInforma.userTagMap.vipStatus == 0) {
             //月结待审核
-            if (item0.name == "UpgradeLevel" || item0.name == "UpgradeLevelRes") {
+            if (
+              item0.name == "UpgradeLevel" ||
+              item0.name == "UpgradeLevelRes"
+            ) {
               item0.show = "hidden";
             }
             if (item0.name == "UpgradeLevelverify") {
               item0.show = true;
             }
-          }else if(UserInforma.userTagMap.vipStatus == 2 || UserInforma.userTagMap.vipStatus == 1){
+          } else if (
+            UserInforma.userTagMap.vipStatus == 2 ||
+            UserInforma.userTagMap.vipStatus == 1
+          ) {
             //拒绝月结提升或 已经是月结
-             if (item0.name == "UpgradeLevelRes"  ) {
+            if (item0.name == "UpgradeLevelRes") {
               item0.show = true;
             }
-            if ( item0.name == "UpgradeLevelverify" || item0.name == "UpgradeLevel") {
-              item0.show = 'hidden';
+            if (
+              item0.name == "UpgradeLevelverify" ||
+              item0.name == "UpgradeLevel"
+            ) {
+              item0.show = "hidden";
             }
-          }
-          else if( UserInforma.userTagMap.vipStatus == 3){
+          } else if (UserInforma.userTagMap.vipStatus == 3) {
             //拒绝月结提升
-             if (item0.name == "UpgradeLevel") {
-              item0.show =true ;
+            if (item0.name == "UpgradeLevel") {
+              item0.show = true;
             }
-            if (item0.name == "UpgradeLevelRes"  || item0.name == "UpgradeLevelverify") {
-              item0.show = 'hidden';
+            if (
+              item0.name == "UpgradeLevelRes" ||
+              item0.name == "UpgradeLevelverify"
+            ) {
+              item0.show = "hidden";
             }
           }
 

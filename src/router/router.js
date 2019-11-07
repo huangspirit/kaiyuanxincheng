@@ -596,6 +596,30 @@ export default [
                     parentname:"SellerCenter"
                 }
             },
+             // 原厂产品管理
+
+             {
+                path: 'sellerPushProduct',
+                name: 'sellerPushProduct',
+                component: () => import('@/views/PersonalCenter/sellerPushProduct'),
+                meta: {
+                    requireAuth: true,
+                    title: '产品管理',
+                    parentname:"SellerCenter"
+                },
+               
+            },
+            //原厂发布产品
+            {
+                path: 'sellerPushProduct/publish',
+                name: 'publish',
+                component: () => import('@/views/PersonalCenter/sellerPushProduct/publish'),
+                meta: {
+                    requireAuth: true,
+                    title: '发布产品',
+                    parentname:"sellerPushProduct"
+                },
+            },
             // 卖家发布完成
             {
                 path: 'SuccessfulCommodityRelease',
