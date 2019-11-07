@@ -175,10 +175,9 @@
               size="mini"
               @blur="handleBlur($event)"
               @change="handleChange($event)"
-              :min="sellerGoodsInfo.moq"
+              :min="sellerGoodsInfo.goodsStockCount>sellerGoodsInfo.moq?sellerGoodsInfo.moq:sellerGoodsInfo.goodsStockCount"
               :max="sellerGoodsInfo.goodsStockCount"
               :step="sellerGoodsInfo.mpq"
-              step-strictly
             ></el-input-number>
             <span>最多可购买数量：{{sellerGoodsInfo.goodsStockCount}}只</span>
           </div>
@@ -317,7 +316,7 @@ export default {
         this.sellerGoodsImageUrlList = arr.map(item => {
           return baseURL3 + "/" + item;
         });
-       // this.sellerGoodsImageUrlList.push(this.sellerGoodsInfo.goodsImageUrl);
+        // this.sellerGoodsImageUrlList.push(this.sellerGoodsInfo.goodsImageUrl);
       } else {
         this.sellerGoodsImageUrlList.push(this.sellerGoodsInfo.goodsImageUrl);
       }
@@ -368,12 +367,19 @@ export default {
       }
     },
     handleEnter(k) {
-      console.log(k);
       this.selectedstr = k;
       this.bigImgstr = k;
     },
     handleBlur(event) {
       let e = event.target.value;
+      if (
+        this.sellerGoodsInfo.goodsStockCount >
+        this.sellerGoodsInfo.mpq + this.sellerGoodsInfo.moq
+      ) {
+        this.count = this.sellerGoodsInfo.moq + Math.round((e - this.sellerGoodsInfo.moq) / this.sellerGoodsInfo.mpq) * this.sellerGoodsInfo.mpq;
+      } else {
+        this.count = e;
+      }
       this.handleChange(e);
     },
     handleChange(e) {
@@ -401,8 +407,7 @@ export default {
         currentPrice = obj.seckil_price;
       }
       this.price = currentPrice;
-      this.count = e;
-      this.money = e * currentPrice;
+      this.money = this.count * currentPrice;
     },
     submitPurchase() {
       let item = this.purchaseObj;

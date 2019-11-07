@@ -456,9 +456,11 @@ export default {
           //改变全局的搜索类型
           this.searchType=0;
           if (this.query.brandId) {
+              console.log("0")
             this.getSearchByBrandId()
           }
           else {
+              console.log("1")
               let obj={
                   tag: this.query.tag,
                   id: this.query.documentid,
@@ -470,6 +472,7 @@ export default {
                   this.$loading(this.$store.state.loading).close();
                   this.ProductnformaList=res.data.direct.data;
                   this.total=res.data.direct.total;
+                    console.log(res.data)
                   this.query={...this.query,parentName:res.data.parentName,parentId:res.data.parentId,}
               })
           }
@@ -491,8 +494,13 @@ export default {
   },
   mounted() {
       if(this.$route.query.tag){
+          //搜索跳转
+           console.log("搜索跳转")
           this.query=this.$route.query
       }else{
+          //从父级跳转
+          console.log("从父级跳转")
+          console.log("this.directJOSN",this.directJOSN)
           this.query=this.directJOSN
       }
       this.init();

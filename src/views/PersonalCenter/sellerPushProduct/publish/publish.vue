@@ -17,15 +17,42 @@
             <div>Analog Devidle segrgrr</div>
           </el-form-item>
           <el-form-item label="一级类目：" prop="region">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select
+              v-model="value"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请输入一级类目关键词"
+              :remote-method="getOneClass"
+              :loading="loading"
+            
+            >
+              <el-option
+                v-for="item in oneClassList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="二级类目：" prop="region">
-            <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select
+              v-model="value"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              placeholder="请输入一级类目关键词"
+              :remote-method="getTwoClass"
+              :loading="loading"
+            >
+              <el-option
+                v-for="item in twoClassList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <div class="titleDesc">
@@ -34,7 +61,7 @@
           <el-form-item label="产品型号：" prop="name">
             <el-input v-model="ruleForm.name" style="width:300px;"></el-input>
           </el-form-item>
-          <el-form-item label="产品描述：" prop="desc" >
+          <el-form-item label="产品描述：" prop="desc">
             <el-input type="textarea" v-model="ruleForm.desc" style="width:400px;"></el-input>
           </el-form-item>
           <el-form-item label="基本单位：" prop="name">
@@ -97,7 +124,11 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="器件链接：" prop="name">
-            <el-input v-model="ruleForm.name" placeholder="为了器件尽快通过审核，请提供厂商网址链接" style="width:400px;"></el-input>
+            <el-input
+              v-model="ruleForm.name"
+              placeholder="为了器件尽快通过审核，请提供厂商网址链接"
+              style="width:400px;"
+            ></el-input>
           </el-form-item>
           <div class="titleDesc">
             <span>扩展属性</span>
@@ -113,7 +144,7 @@
             <div v-for="(item,index) in addAttrList" :key="index">
               <el-input v-model="ruleForm.name" placeholder="属性名" size="mini"></el-input>&nbsp;
               <el-input v-model="ruleForm.name" placeholder="参数值" size="mini"></el-input>
-               <i class="color el-icon-error" @click="removeAddAttr(index)"></i>
+              <i class="color el-icon-error" @click="removeAddAttr(index)"></i>
             </div>
           </el-form-item>
           <el-form-item>
@@ -131,9 +162,11 @@ export default {
   data() {
     return {
       ruleForm: {},
+      oneClassList:[],
+      twoClassList:[],
       priceunit: true,
       attributeList: ["系列", "封装", "包装形式"],
-      addAttrList:[{},{}],
+      addAttrList: [{}, {}],
       rules: {
         name: [
           { required: true, message: "请输入活动名称", trigger: "blur" },
@@ -177,11 +210,41 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
-    addAttr(){
-        this.addAttrList.push({})
+    getOneClass(query){
+        console.log("getoneClass")
+         if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.options = this.list.filter(item => {
+              return item.label.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          this.options = [];
+        }
     },
-    removeAddAttr(index){
-        this.addAttrList.splice(index,1)
+    getTwoClass(query){
+          console.log("getTwoClass")
+           if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.options = this.list.filter(item => {
+              return item.label.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          this.options = [];
+        }
+    },
+    addAttr() {
+      this.addAttrList.push({});
+    },
+    removeAddAttr(index) {
+      this.addAttrList.splice(index, 1);
     }
   }
 };
@@ -206,7 +269,7 @@ export default {
         padding-bottom: 10px;
         span {
           margin-right: 50px;
-          font-size:18px;
+          font-size: 18px;
         }
       }
       .el-icon-error {

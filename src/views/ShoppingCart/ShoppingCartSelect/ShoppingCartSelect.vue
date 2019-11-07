@@ -145,9 +145,9 @@
                       @blur="handleBlur($event,k,index)"
                       @change="handleChange($event,k,index)"
                       :max="item1.goodsStockCount"
-                      :min="item1.moq"
+                      :min="item1.goodsStockCount>item1.moq?item1.moq:item1.goodsStockCount"
                       :step="item1.mpq"
-                      step-strictly
+                   
                     ></el-input-number>
                     <p>起订量:{{item1.moq}}只</p>
                     <p>最小增量:{{item1.mpq}}只</p>
@@ -410,6 +410,17 @@ export default {
     },
     handleBlur(event, k, index) {
       let e = event.target.value;
+      let obj = this.goodsList[k].list[index];
+      console.log(obj)
+       if (
+        obj.goodsStockCount >
+        obj.mpq + obj.moq
+      ) {
+        obj.count = obj.moq + Math.round((e - obj.moq) / obj.mpq) * obj.mpq;
+      } else {
+       obj.count = e;
+      }
+      this.goodsList[k].list[index]=obj;
       this.handleChange(e, k, index);
     },
     handleChange(e, k, index) {
