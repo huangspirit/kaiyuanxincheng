@@ -29,7 +29,7 @@
               <img v-if="item.subCheck == true" src="@/assets/image/inquirybasket/checked.png" alt />
             </span>
             <span>{{item.sellerName}}</span>
-            <ImgE  :src="item.sellerUrl" :W="80" :H="20"></ImgE>
+            <ImgE  :src="item.sellerUrl" :W="80" :H="20" style="line-height:20px;"></ImgE>
           </div>
           <div class="allNum">
             <span>
@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import "./WaitInquiry.less";
+
 import { axios, shoppingCar } from "@/api/apiObj";
 import { ladderPrice } from "@/lib/utils";
 import { debuglog } from "util";
@@ -584,7 +584,7 @@ export default {
           width:25%;
           text-align: right;
           button{
-            width:70px;
+            width:80px;
             margin-bottom:10px;
           }
         }

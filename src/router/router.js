@@ -356,6 +356,14 @@ export default [
             title: '登录'
         }
     },
+    //普通卖家详情
+    {
+        path:"/sellerShopDetail",
+        component: () => import('@/views/sellerShopDetail'),
+        meta: {
+            title: '商家详情'
+        },
+    },
     // 品牌详情
     {
         path: '/BrandDetail',
@@ -368,7 +376,8 @@ export default [
         children: [{
                 path: '/',
                 // name: 'AllBrand',
-                component: () => import('@/views/BrandDetail/AllBrand')
+            //component: () => import('@/views/BrandDetail/AllBrand')
+              component: () => import('@/views/sellerOriginDetail')
             },
             // 一级类商品
             {
@@ -497,6 +506,15 @@ export default [
                     },
                 ]
 
+            },
+            {
+                path: 'sellerComment',
+                name: 'sellerComment',
+                component: () => import('@/views/PersonalCenter/sellerComment'),
+                meta: {
+                    requireAuth: true,
+                    title: '评论管理'
+                }
             },
             {
                 path: 'sellerDetailList',
@@ -933,6 +951,17 @@ export default [
             //         title: '信誉额'
             //     }
             // },
+            // 收货地址
+            {
+                path: 'feedBack',
+                name: 'feedBack',
+                component: () => import('@/views/PersonalCenter/feedBack'),
+                meta: {
+                    requireAuth: true,
+                    title: '反馈结果',
+                    parentname:"PersonalCenter"
+                }
+            },
             // 收货地址
             {
                 path: 'ShippingAddress',

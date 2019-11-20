@@ -1,12 +1,12 @@
 <template>
   <div class="ShoppingCartSelect">
-    <div class="ShoppingCart-con">
+    <div class="ShoppingCart-con" style="margin-top:50px">
       <!-- 搜索 -->
       <div class="ShoppingCart-title">
-        <span class="total">
+        <p class="total">
           <span>购物车</span>
-          <!--          <span class="num">()</span>-->
-        </span>
+          <el-button  @click="delbatch" class="fr" type="primary" v-if="disabledNum">一键清除无效商品</el-button>
+        </p>
       </div>
       <!-- 列表 -->
       <div class="ShoppingCart-list">
@@ -45,13 +45,13 @@
                 </label>
                 <!--                    <span>{{item.sellerName}} <span style="font-size:12px">({{item.sellerTag | tagFilter}})</span></span>-->
                 <div class="ImgE">
-                  <img :src="item.sellerUrl" alt />
-                  <span style="margin-left:10px;font-size:14px;">{{item.sellerName}}</span>
+                  <img :src="item.sellerUrl" alt  style="cursor:pointer;" @click="chipShop(item)"/>
+                  <span style="margin-left:10px;font-size:14px;cursor:pointer;"  @click="chipShop(item)">{{item.sellerName}}</span>
                   <div class="content">
                     <div class="top">
-                      <img :src="item.sellerUrl" alt />
+                      <img :src="item.sellerUrl" alt style="cursor:pointer;" @click="chipShop(item)"/>
                       <div>
-                        <p class="name">{{item.sellerName}}</p>
+                        <p class="name"  style="cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
                         <p class="tag" v-if="item.sellerTag!=3">{{item.sellerTag | tagFilter}}</p>
                       </div>
                     </div>
@@ -110,7 +110,7 @@
                    
                   </li>
                   <li style="width:17%" class="place">
-                      <p>{{item1.goods_type?'现货':'订货'}}</p>
+                      <p :class="item1.goods_type?'green':'color'" >{{item1.goods_type?'现货':'订货'}}</p>
                     <template>
                       <p v-if="item1.goods_type && item1.day_interval">{{item1.day_interval | filterhours}}小时内交货</p>
                       <p v-else>{{item1.expireTime | formatDate}}</p>
@@ -268,8 +268,9 @@ export default {
   name: "ShoppingCartSelect",
   data() {
     return {
+      disabledNum:0,
       ShoppingCartAllCheckbox: false,
-      pageSize: 2,
+      pageSize: 20,
       currentPage: 1,
       total: 0,
       goodsList: [],
@@ -282,6 +283,47 @@ export default {
   methods: {
     ...mapMutations("MerchantList", ["setBuyOneGoodsDetail"]),
     // ...mapActions("shoppingCart", ["GetAllShoppingCartList"]),
+    delbatch(){
+      //批量删除无效的商品
+      console.log(this.goodsList)
+      let arr=[]
+      this.goodsList.forEach(item => {
+          item.list.map(item0 => {
+            if(!item0.isenable){
+              arr.push(item0.id)
+            }
+          });
+        });
+        console.log(arr)
+        let obj={
+          ids:arr.join('@')
+        }
+        axios
+        .request({ ...shoppingCar.deleteBatchShoppingCar, params: obj })
+        .then(res => {
+          this.$message.success("成功移除");
+          this.init();
+        });
+    },
+     chipShop(item){
+              
+                if(item.sellerTag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                            seller_id:item.sellerId
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                           
+                            sellerId:item.sellerId
+                        }
+                    })
+                }
+            },
     ShoppingCartAllCheck(e) {
       this.ShoppingCartAllCheckbox = e.target.checked;
       this.goodsList = this.goodsList.map(item => {
@@ -337,8 +379,12 @@ export default {
             } else {
               item0.money = item0.moq * item0.goodsPrice;
             }
+            if(!item0.isenable){
+            this.disabledNum++;
+          }
             return item0;
           });
+          
           return item;
         });
         this.total = res.data.total;
@@ -411,7 +457,6 @@ export default {
     handleBlur(event, k, index) {
       let e = event.target.value;
       let obj = this.goodsList[k].list[index];
-      console.log(obj)
        if (
         obj.goodsStockCount >
         obj.mpq + obj.moq

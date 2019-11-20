@@ -7,4 +7,5 @@ export const baseURL = process.env.NODE_ENV === 'production' ?
 export const baseURL2 = "/"
 export const baseURL3 = "http://brand.113ic.com";
 export const imgBaseUrl ="//deposite.113ic.com/";
-export const baseURL4="http://auth.113ic.com/"
+export const baseURL4="http://auth.113ic.com/";
+export const goodspictureURL="http://goodspicture.113ic.com/"

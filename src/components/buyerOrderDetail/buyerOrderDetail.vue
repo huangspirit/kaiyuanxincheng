@@ -17,7 +17,15 @@
                             <span class="color">订单未完成</span>
                         </p>
                     </div>
-                    <div class="right" v-if="OrderProcessList.length">
+                    <div v-if="OrderProcessList.length" class="center">
+                         <p>当前订单状态</p>
+                         <div style="height: 300px;">
+                            <el-steps direction="vertical">
+                                <el-step :title="formatDate2(item.createtime)"  v-for="item in OrderProcessList" :key="item.id" :description="item.ordesc"></el-step>
+                            </el-steps>
+                            </div>
+                    </div>
+                    <!-- <div class="right" v-if="OrderProcessList.length">
                         <p>当前订单状态</p>
                         <ul >
                             <li v-for="item in OrderProcessList" :key="item.id">
@@ -32,7 +40,7 @@
                             </li>
                            
                         </ul>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="cont">
                     <ul>

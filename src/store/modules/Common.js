@@ -8,15 +8,7 @@ const state = {
 }
 
 const getters = {
-    // SpecialOfferList (state) {
-    //     return state.SpecialOfferList
-    // },
-    // OfferListTotal (state) {
-    //     return state.OfferListTotal
-    // },
-    // HotSearchList (state) {
-    //     return state.HotSearchList
-    // }
+    
 }
 
 const actions = {
@@ -46,8 +38,30 @@ const actions = {
                 }
             )
         })
+    },
+    //反馈条目
+    GetQueryItem(){
+        return new Promise((resolve, reject) => {
+            axios.request(common.queryItem).then(
+                res=>{
+                    resolve(res)
+                   /// commit('SetCenterChangeAddress', res)
+                }
+            )
+        })
+    },
+    //保存反馈
+    saveFeed(context,data){
+        
+        return new Promise((resolve, reject) => {
+            axios.request({...common.save,data:JSON.parse(data),method:'post'}).then(
+                res=>{
+                    resolve(res)
+                  
+                }
+            )
+        })
     }
-
 }
 
 const mutations = {

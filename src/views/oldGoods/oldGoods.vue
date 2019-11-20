@@ -30,9 +30,10 @@
             <table class="goodsList" >
                 <thead>
                     <tr class="title">
-                        <th class="info">供应商</th>
+                      
                         <th>图片</th>
                         <th class="name" >型号</th>
+                          <th class="info">供应商</th>
                         <th>品牌</th>
                         <th>批号/交货</th>
                         <th>数量</th>
@@ -42,21 +43,7 @@
                 </thead>
                 <tbody class="list">
                     <tr  v-for="(item,k) in specialList" class="item clear" :class="(k+1)%2==0?'noMargin':''" :key="k"  >
-                        <td class="info">
-                            <div class="infoWrap">
-                                <div  class="clear">
-                                    <img :src="item.userImgeUrl" alt="" class="fl">
-                                    <div class="fl">
-                                        <p>{{item.sellerName}}</p>
-                                        <p>
-                                            <span class="tag" :class="{'bgColor':item.tag==1}" v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
-                                            <span class="tag bgLightGray"  v-if="!item.focus" @click.stop="addFocus(k)" style="cursor:pointer;">关注</span>
-                                            <span class="orange tag" v-if="item.focus">已关注</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
+                        
                         <td>
                             <!-- <template v-for="(item0,index0) in item.sellerGoodsImageUrl.split('@')">
                             <div :key="item0" v-if="index0==0">
@@ -73,6 +60,23 @@
                             </div>
                         </td>
                         <td class="name" @click.stop="chipSellerGoodsDetal(item)">{{item.goods_name}}</td>
+                        <td class="info">
+                            <div class="infoWrap">
+                                <div  class="clear" style="text-align:left;">
+                                    <img :src="item.userImgeUrl" alt="" class="fl" @click="chipShop(item)"  style="cursor:pointer;">
+                                    <div class="fl">
+                                        <p @click="chipShop(item)" style="cursor:pointer;">{{item.sellerName}}</p>
+                                        <p>
+                                            <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
+                                             <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
+                                              <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
+                                            <span class="tag bgLightGray"  v-if="!item.focus" @click.stop="addFocus(k)" style="cursor:pointer;">关注</span>
+                                            <span class="bgd5 tag" v-if="item.focus">已关注</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         <td>
                             <router-link :to="{
                                 path:'/BrandDetail',
@@ -87,7 +91,8 @@
                                 {{item.brandName}}
                             </router-link>
                          </td>
-                        <td> {{item.base_no}}
+                        <td>
+                            <span class="green">{{item.base_no}}</span> 
                             <p class="desc">{{item.diliverPlace}}交货</p>
                         </td>
                         <td >
@@ -200,6 +205,27 @@
                         _this.$set(_this.specialList[index],"focus",true)
                         _this.$message.success("已关注");
                     });
+            },
+            chipShop(item){
+               
+                if(item.tag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                            tag:'brand',
+                            documentid:item.brandId,
+                            name:item.brandName
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                           
+                            sellerId:item.sellerId
+                        }
+                    })
+                }
             },
             chipSellerGoodsDetal(item){
                 //跳转商品详情

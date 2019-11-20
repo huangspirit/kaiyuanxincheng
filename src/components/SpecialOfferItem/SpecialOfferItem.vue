@@ -74,7 +74,9 @@
                 <img :src="item.userImgeUrl" alt>
                 <div class="username">
                 <span class="name">{{item.sellerName}}</span>
-                <span class="brd">{{item.tag | tagFilter}}</span>
+                 <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> 
               </div>
               </div>
             </div>

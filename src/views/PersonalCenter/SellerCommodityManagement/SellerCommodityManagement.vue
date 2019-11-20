@@ -17,6 +17,15 @@
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
+          <ul class="clear">
+            <li
+              v-for="item in goodsTypelist"
+              :key="item.id"
+              :class="{bgColor:currentGoodsType.id === item.id}"
+              @click="tabFirstGoodsType(item)"
+            >{{item.name}}</li>
+            
+          </ul>
           <el-select v-model="orderDate" @change="orderManageList(orderDate)" placeholder="请选择"  style="width:150px;margin-right:20px;">
             <el-option
               v-for="item in options"
@@ -25,7 +34,7 @@
               :value="item.value"
             ></el-option>
           </el-select>
-           <el-select v-model="goodsType" placeholder="请选择" style="width:150px;" @change="goodsTypeChange">
+           <!-- <el-select v-model="goodsType" placeholder="请选择" style="width:150px;" @change="goodsTypeChange">
               <el-option
               label="全部类型"
               value=""
@@ -38,7 +47,7 @@
               label="订货"
               value="false"
             ></el-option>
-          </el-select>
+          </el-select> -->
              <el-input
                         placeholder="输入型号"
                         v-model="SearchInputValue"
@@ -89,7 +98,7 @@
                       />
                     </label>
                   </td>
-                  <td class="goodsInfo">
+                  <td class="goodsInfo" >
                     <div class="wrap">
                       <ImgE :src="item.goodsImageUrl" :W="60" :H="60"></ImgE>
                       <div>
@@ -140,7 +149,7 @@
                   </td>
 
                   <td>
-                    <span>{{item.goods_type ? '现货' : '期货'}}</span>
+                    <span :class="item.goods_type ?'green':'color'">{{item.goods_type ? '现货' : '订货'}}</span>
                     <p
                       v-if="!item.goods_type && item.deliverTime"
                     >预计交期{{item.deliverTime | formatDate}}</p>
@@ -299,6 +308,19 @@ export default {
           id: 1,
           name: "已下架",
           isenable: false
+        }
+      ],
+      currentGoodsType:{},
+      goodsTypelist:[
+        {
+          id: 0,
+          name: "现货",
+          goodsType: true
+        },
+        {
+          id: 1,
+          name: "订货",
+          goodsType: false
         }
       ],
       options: [
@@ -553,6 +575,11 @@ export default {
     },
     tabFirst(item) {
       this.currentModlue = item;
+      this.currentPage = 1;
+      this.all();
+    },
+    tabFirstGoodsType(item){
+this.currentGoodsType = item;
       this.currentPage = 1;
       this.all();
     },

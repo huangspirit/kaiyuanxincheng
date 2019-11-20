@@ -1,0 +1,246 @@
+.content {
+    color: #333;
+    font-size:14px;
+    padding-top:5px;
+    background:#fff;
+    padding-bottom:10px;
+    .inputSearch{
+        /deep/.el-input-group__append{
+            background:#df3f2f;
+            color:#fff;
+        }
+    }
+    .showqualification{
+        .wrap{
+            text-align:center;
+            background:#e3e3e3;
+            /deep/.ImgE{
+                img{
+                    border:1px solid #ddd;
+                }
+            }
+            h3{
+                background:#999;
+                line-height: 40px;
+                text-align: left;
+                padding:0 20px;
+                color:#fff;
+            }
+        }
+    }
+    & > div {
+      margin-top: 15px;
+    }
+    .top,
+    .middle {
+      display: flex;
+      .left {
+        width:210px;
+        box-sizing: border-box;
+      }
+      .right {
+        flex: 1;
+      }
+    }
+    .top{
+        .left{
+            background: #e3e3e3;
+            margin-right:3px;
+          
+            .sellerinfo{
+                text-align: center;
+                padding:10px;
+                border-bottom:1px solid #333;
+                p{
+                    margin-top:10px;
+                }
+                img{
+                    width:60px;
+                    height:60px;
+                }
+                span{
+                margin-right:5px;
+                padding:2px 5px;
+                font-size:12px;
+                border-radius: 3px;
+                
+                }
+            }
+            .score{
+                padding:10px;
+                &>div{
+                    white-space: nowrap;
+                    margin-bottom:6px;
+                }
+            }
+        }
+        .right{
+            .tit{
+                background:#e3e3e3;
+                line-height:45px;
+                padding-left:10px;
+            }
+            .brandagent{
+                display:flex;
+                flex-wrap:wrap;
+                margin-top:10px;
+                li{
+                    width:25%;
+                    padding:10x;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                    text-align: center;
+                   
+                }
+                /deep/.ImgE{
+                    border:1px solid #e3e3e3;
+                    background:#fff;
+                    &:hover{
+                        box-shadow: 0 0 2px 2px #e3e3e3;
+                    }
+                }
+            }
+        }
+    }
+    .middle{
+        margin-top:15px;
+        .left{
+            border:1px solid #e3e3e3;
+            margin-right:3px;
+            &>div{
+                padding:5px;
+                line-height:25px;
+                &>p{
+                    border-bottom:1px solid #999;
+                    line-height:30px;
+                    margin-bottom:10px;
+                }
+                
+                ul{
+                    margin-left:30px;
+                    li{
+                        cursor: pointer;
+                       font-weight: bold;
+                    }
+                }
+            }
+        }
+        .right{
+            .tit{
+                display:flex;
+                justify-content: space-between;
+                border-bottom:1px solid #999;
+                padding:10px;
+               
+            }
+            .goodslist{
+                display:flex;
+                flex-wrap:wrap;
+                .itemone{
+                    position: relative;
+                    padding:10px;
+                    border:1px solid #ddd;
+                    cursor: pointer;
+                    width:23%;
+                    margin-right:2%;
+                    box-sizing: border-box;
+                    margin-top:2%;
+                    p{
+                        line-height: 25px;
+                        height:25px;
+                        overflow: hidden;
+                        width:100%;
+                        text-overflow: ellipsis;
+                        strong{
+                            font-size:18px;
+                        }
+                    }
+                    .mark{
+                        position: absolute;
+                        left:-1px;
+                        top:-1px;
+                        height:25px;
+                        width:25px;
+                        line-height: 25px;
+                        text-align:center;
+                        z-index:1;
+                    }
+                }
+            }
+        }
+    }
+    .bottom {
+      &>.tit {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #333;
+        padding: 10px 0;
+        margin-bottom: 10px;
+      }
+      .Pagination /deep/ .el-pagination{
+          padding:0;
+      }
+      .comment {
+        .list {
+          .itemone {
+            margin-bottom: 10px;
+            padding: 15px;
+            display: flex;
+            &>.left{
+                padding:0 20px;
+                width:150px;
+                box-sizing: border-box;
+                text-align: center;
+                img{
+                    width:70px;
+                    height:70px;
+                    margin:10px auto;
+                }
+            }
+            &>.right{
+                flex:1;
+                .tit{
+                    padding:0 15px;
+                    margin-bottom:15px;
+                }
+                .content{
+                    background:#fff;
+                    padding:10px;
+                    min-height:50px;
+                }
+                .scorewrap{
+                    display: flex;
+                    justify-content: space-between;
+                    &>div{
+                        flex:1;
+                        padding:10px;
+                        
+                    }
+                    .img{
+                        img{
+                            width:60px;
+                            margin-right:10px;
+                        }
+                    }
+                    .score>div{
+                        display: flex;
+                        margin-bottom:5px;
+                        img{
+                            height:20px;
+                            margin-right:10px;
+                        }
+                    }
+                }
+                .reply{
+                    padding:15px;
+                    border-top:1px solid #333;
+                    p{
+                        margin-bottom:6px;
+                    }
+                }
+            }
+          }
+        }
+      }
+    }
+  }

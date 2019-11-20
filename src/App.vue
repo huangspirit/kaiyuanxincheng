@@ -79,6 +79,10 @@ export default {
         background: #fff!important;
         min-width:1080px;
     }
+    .el-timeline{
+    max-height: 400px;
+    overflow-y:auto;
+  }
     .allWidth{
         min-width:1024px;
         max-width:1200px;
@@ -103,12 +107,19 @@ export default {
         vertical-align: middle;
     }
 #app {
+  .bgd5{
+    background:#d5d5d5;
+    color:#fff;
+  }
   .peruBg{
     background: #fce9e5
   }
    .greenColor{
      background:#529641;
      color:#fff;
+   }
+   .borderGreen{
+      border:1px solid #529641;
    }
    .gray{
      color:#999;
@@ -123,6 +134,9 @@ export default {
         background: #df3f2f;
         color:#fff;
     }
+    .borderColor{
+      border:1px solid #df3f2f;
+    }
     .blu{
      color:#007efe;
     }
@@ -130,12 +144,18 @@ export default {
       background:#007efe;
       color:#fff;
     }
+    .borderBlu{
+      border:1px solid #007efe;
+    }
     .orange{
       color:rgb(161, 106, 2);
     }
     .bgOrange{
       background: rgb(161, 106, 2);
       color:#fff;
+    }
+    .borderOrange{
+      border:1px solid rgb(161, 106, 2);
     }
     .bgGray{
         background:#4f4f4f ;
@@ -325,5 +345,6 @@ export default {
     color: #df3f2f;
     font-weight:bold;
   }
+  
 }
 </style>

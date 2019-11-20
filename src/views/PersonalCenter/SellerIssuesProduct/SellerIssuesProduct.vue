@@ -1,10 +1,10 @@
 <template>
     <!--发布商品  -->
     <div>
-        <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
-   <el-breadcrumb-item>卖家中心</el-breadcrumb-item>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+   <!-- <el-breadcrumb-item>卖家中心</el-breadcrumb-item> -->
             <el-breadcrumb-item>发布特价</el-breadcrumb-item>
-        </el-breadcrumb> -->
+        </el-breadcrumb>
         <div class="SellerIssuesProduct" @click="noSelect">
             <el-form
                 :model="ruleForm"
@@ -16,7 +16,7 @@
              <p class="title">温馨提示：以下填写的信息将会直接展示给买家，发布成功后将不能修改，请仔细填写！</p>
                 <el-form-item label="器件型号：" prop="goods_name" class="selectProduct">
                     <el-input v-model="ruleForm.goods_name" placeholder="请输入商品详细型号" @input="SearchBrand"  @blur="SearchBrandBlur" style="width:50%;"></el-input>
-                    <p class="desc" style="padding-top:5px;color:#b3b3b3">若您输入的型号晶城没有收录，请及时反馈给我们；&nbsp;<a href="/feedback">&nbsp;反馈&nbsp;>></a></p>
+                    <p class="desc" style="padding-top:5px;color:#b3b3b3">若您输入的型号晶城没有收录，请及时反馈给我们；&nbsp;<a @click="showModalfeed=true">&nbsp;反馈&nbsp;>></a></p>
                     <ul class="selectProductList" v-if="selectProductList.length">
                         <li
                             v-for="item in selectProductList"
@@ -165,7 +165,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="起止时间：" prop="end_date" v-if="!ruleForm.seller_always">
-                    <el-date-picker
+                    <!-- <el-date-picker
                         v-model="ruleForm.start_date"
                         type="datetime"
                         placeholder="开始时间"
@@ -185,7 +185,18 @@
                         type="datetime"
                         placeholder="结束时间"
                         :picker-options="pickerOptions1"
-                    ></el-date-picker>
+                    ></el-date-picker> -->
+                      <el-date-picker
+                        v-model="twotime"
+                        type="datetimerange"
+                        value-format="yyyy/MM/dd HH:mm:ss"
+                        format="yyyy/MM/dd HH:mm:ss"
+                        range-separator="至"
+                        start-placeholder="开始时间"
+                        end-placeholder="结束时间"
+                          @change="handleTimeChange"
+                          :picker-options="pickerOptions">
+                        </el-date-picker>
                 </el-form-item>
                 <el-form-item label="预计交期：" prop="complete_date" v-if="!ruleForm.seller_always && !ruleForm.goods_type" class="clear">
                     <el-date-picker
@@ -240,12 +251,14 @@
         <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt />
         </el-dialog>
+          <feed-back v-if="showModalfeed" :showfeedback="showModalfeed" @submitSuc="showModalfeed=false"></feed-back>
     </div>
 </template>
 <style lang="less" scoped>
     @import "./SellerIssuesProduct.less";
 </style>
 <script>
+    import feedBack from "_c/feedback"
     import {baseURL,baseURL4,baseURL3} from "@/config";
     import {mapActions,mapState } from "vuex";
     import {axios,sellerCenter} from "@/api/apiObj"
@@ -253,9 +266,11 @@
         name: "SellerIssuesProduct",
         data() {
             return {
+                showModalfeed:false,
+                twotime:'',
                 pickerOptions: {
                     disabledDate: (time) => {
-                        return time < new Date();
+                        return time < new Date()-24*3600*1000;
                     }
                 },
                 pickerOptions1: {
@@ -435,6 +450,9 @@
                 return (Number(val)*1.13).toFixed(length)
             },
         },
+         components:{
+            feedBack
+        },
         computed: {
             needCredit(){
                 return this.exchange*Number(this.ruleForm.stock_count)*this.selectedPrice
@@ -532,6 +550,10 @@
                 "querySellerCredit"
             ]),
             //监控时间
+            handletwoTimeChange(date){
+                console.log(this.twotime)
+               
+            },
              handleTimeChange0(date){
                 var _this=this;
                 this.$set(this.ruleForm,"end_date","")
@@ -540,8 +562,11 @@
                      let nowData0 = new Date(date)
                     return time.getTime()<nowData0;
                 })
+                console.log(this.ruleForm)
             },
             handleTimeChange(date){
+                this.ruleForm.start_date=this.twotime[0]
+                this.ruleForm.end_date=this.twotime[1]
                 var _this=this;
                 this.$set(this.ruleForm,"complete_date","")
                 this.$set(this.pickerOptions3,"disabledDate",function(time){
@@ -833,7 +858,7 @@
                         }else{
                              //现货有批号，并且默认一天发货
                              delete this.ruleForm.complete_date;
-                            this.ruleForm.day_interval="1"
+                            this.ruleForm.day_interval=this.ruleForm.priceunit?2:1
                         }
                         if(this.ruleForm.seller_always){
                             //长期卖

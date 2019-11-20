@@ -1,13 +1,28 @@
 <template>
   <li class="ShoppingSettlementOItem">
     <div class="title">
-      <img :src="item.list[0].sellerHeader" alt>
+      <img :src="item.list[0].sellerHeader" alt />
       <div>
         <p>{{item.name}}</p>
-        <span class="bgColor" v-if="item.list[0].tag!=3">{{item.list[0].tag | tagFilter}}</span>
+        <span
+          class="tag bgColor"
+          v-if="item.list[0].tag==1"
+          style="margin-right:10px;"
+        >{{item.list[0].tag | tagFilter}}</span>
+        <span
+          class="tag bgBlu"
+          v-if="item.list[0].tag==2"
+          style="margin-right:10px;"
+        >{{item.list[0].tag | tagFilter}}</span>
+        <span
+          class="tag bgOrange"
+          v-if="item.list[0].tag==18"
+          style="margin-right:10px;"
+        >{{item.list[0].tag | tagFilter}}</span>
+        <!-- <span class="bgColor" v-if="item.list[0].tag!=3">{{item.list[0].tag | tagFilter}}</span> -->
         <!-- <span v-if="item.list[0].tag === '1'">原厂商户</span>
         <span v-if="item.list[0].tag === '2'">代理商</span>
-        <span v-if="item.list[0].tag === '3'">商家</span> -->
+        <span v-if="item.list[0].tag === '3'">商家</span>-->
       </div>
     </div>
     <div class="list">
@@ -22,11 +37,11 @@
       </ul>
       <div class="item" v-for="value in item.list" :key="value.goods_id">
         <div class="desc">
-            <span class="img">
-              <ImgE :src="value.goodsImage" :W="80" :H="80"></ImgE>
-            </span>
-            <div class="text">
-              <router-link 
+          <span class="img">
+            <ImgE :src="value.goodsImage" :W="60" :H="60"></ImgE>
+          </span>
+          <div class="text">
+            <router-link
               :to="{
                   path:'/BrandDetail/GoodsDetails',
                   query:{
@@ -34,31 +49,33 @@
                     documentid:value.goods_id,
                     name:value.goods_name
                   }
-              }"  class="name color"
-              tag="p">
-                {{value.goods_name}}
-              </router-link>
-              <p class="desc">
-               {{value.goodsDesc}}
-                </p>
-            
-            </div>
+              }"
+              class="name color"
+              tag="p"
+            >{{value.goods_name}}</router-link>
+            <p class="desc" :title="value.goodsDesc">{{value.goodsDesc}}</p>
+          </div>
         </div>
-         <div class="oneitem">
-            <strong>{{value.seller_always?'现货':'订货'}}</strong>
-       </div>
-       <div class="oneitem">
-            <span class="color">{{value.price_unit ? '$' : '￥'}}{{value.goods_price | toFixed(item.price_unit?3:2)}}
-              <br><span class="clude_bill">({{!value.price_unit ? '含13%增值税' : '不含税'}})</span>
-            </span>
-       </div>
+        <div class="oneitem">
+          <strong>{{value.seller_always?'现货':'订货'}}</strong>
+        </div>
+        <div class="oneitem">
+          <span class="color">
+            {{value.price_unit ? '$' : '￥'}}{{value.goods_price | toFixed(item.price_unit?3:2)}}
+            <br />
+            <span class="clude_bill blu">({{!value.price_unit ? '含13%增值税' : '不含税'}})</span>
+          </span>
+        </div>
         <div class="oneitem">{{value.goods_count}}只</div>
-        <div class="oneitem">{{value.price_unit ? '$' : '￥'}}{{value.total_price | toFixed(item.price_unit?3:2)}}</div>
+        <div
+          class="oneitem"
+        >{{value.price_unit ? '$' : '￥'}}{{value.total_price | toFixed(item.price_unit?3:2)}}</div>
         <div class="oneitem">￥{{value.guanshuiTotal | toFixed(2)}}</div>
         <div class="oneitem">
           <span v-if="value.diliver_date">{{value.diliver_date | TimeFormaTime}}</span>
           <span v-if="value.goods_type">{{value.day_interval | filterhours}}小时内</span>
-           <br>{{value.diliver_place}}交货
+          <br />
+          {{value.diliver_place}}交货
         </div>
       </div>
     </div>
@@ -69,11 +86,11 @@
             <span class="color" v-if="unittotalPrice && totalPrice">&nbsp;+&nbsp;</span>
             <span class="color" v-if="unittotalPrice">${{this.unittotalPrice | toFixed(3)}}</span>
       </div>
-    </div> -->
+    </div>-->
   </li>
 </template>
 <style lang="less" scoped>
-    @import "./ShoppingSettlementOItem.less";
+@import "./ShoppingSettlementOItem.less";
 </style>
 <script>
 import { TimeForma } from "@/lib/utils";
@@ -81,8 +98,8 @@ export default {
   name: "ShoppingSettlementOItem",
   data() {
     return {
-        totalPrice: 0,
-        unittotalPrice:0,
+      totalPrice: 0,
+      unittotalPrice: 0
     };
   },
   props: {
@@ -92,23 +109,21 @@ export default {
     TimeFormaTime(x) {
       return TimeForma(x);
     },
-      // toFixed(val,num){
-      //   return Number(val).toFixed(num)
-      // },
-      filterhours(val){
-        return Number(val)*24;
-      },
+    // toFixed(val,num){
+    //   return Number(val).toFixed(num)
+    // },
+    filterhours(val) {
+      return Number(val) * 24;
+    }
   },
   mounted() {
     this.item.list.forEach(item => {
-        if(item.price_unit){
-            this.unittotalPrice += item.total_price;
-        }else{
-            this.totalPrice += item.total_price;
-        }
-
+      if (item.price_unit) {
+        this.unittotalPrice += item.total_price;
+      } else {
+        this.totalPrice += item.total_price;
+      }
     });
-
   }
 };
 </script>

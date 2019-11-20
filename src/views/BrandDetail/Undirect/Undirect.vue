@@ -3,7 +3,7 @@
     <div class="BrandDetail-tit">
       <div class="wrapper allWidth">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/brand' }">全部品牌</el-breadcrumb-item>
           <el-breadcrumb-item
             :to="{
             path:'/BrandDetail',
@@ -259,8 +259,6 @@ export default {
     send(item) {
       this.parent_id = item.catergoryId;
       this.listFlag = item.catergoryId;
-      console.log(item);
-      console.log(this.query);
       let query = {
         parentId: item.catergoryId,
         parentName: this.query.name,
@@ -442,7 +440,10 @@ export default {
         }
       }
       &:hover {
-        box-shadow: 0 0 2px 2px #d5d5d5;
+        p{
+ box-shadow: 0 0 2px 2px #d5d5d5;
+        }
+       
       }
       &.avtive {
         border-color: #df3f2f;

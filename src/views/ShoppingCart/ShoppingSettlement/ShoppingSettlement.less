@@ -13,7 +13,7 @@
       text-align: left;
       font-size:16px;
       line-height:1.7;
-      text-indent: 35px;
+      // text-indent: 35px;
     }
   }
   .blue{
@@ -441,17 +441,27 @@
       .totalDetail{
         background :#f5f5f5;
         padding:20px;
-        display:flex;
+       
         font-size:14px;
+        &>div{
+          display:flex;
+          justify-content: space-between;
+        }
         .left{
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+         
         
         }
+        .desc{
+          p{
+            margin-top:10px;
+          }
+        }
         .count{
-          flex:1;
           text-align: right;
+          width:450px;
           p{
             &:after{
               content: "";

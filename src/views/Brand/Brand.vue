@@ -154,10 +154,11 @@ export default {
         .then(res => {
         this.$loading(this.$store.state.loading).close();
           if (res.resultCode == "200") {
-            this.findBrandList = res.data;
+            this.findBrandList = res.data.result1;
             this.findBrandListKey = Object.keys(this.findBrandList);
             this.listKey = this.findBrandListKey[0];
-            this.imgList = this.findBrandList[this.listKey]
+           // this.imgList = this.findBrandList[this.listKey]
+             this.imgList = res.data.brandPicture[true]
               if(this.imgList.length>5){
                   this.animate = true;
                   this.interval = setInterval(this.scroll, 5000);

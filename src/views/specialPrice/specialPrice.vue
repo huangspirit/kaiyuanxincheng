@@ -24,15 +24,170 @@
                 </ul>
             </div>
             <div class="goodsList" >
-                <ul class="list" v-if="specialList.length">
-                 <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  >
+                <ul class="list clear" v-if="specialList.length">
+                    <li v-for="(item,k) in specialList" class="item fl" :class="(k+1)%3==0?'noMargin':''" :key="k">
+          <span
+            class="goodsType"
+            :class="item.goods_type?'greenColor':'bgColor'"
+            :title="item.goods_type?'现货':'订货'"
+          >{{item.goods_type?'现':'订'}}</span>
+          <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
+            <ImgE
+              :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]"
+              :W="350"
+              :H="200"
+              v-if="item.sellerGoodsImageUrl"
+            ></ImgE>
+            <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl"></ImgE>
+          </div>
+          <div style="padding:0 15px;" class="newClass">
+            <div @click="chipSellerGoodsDetal(item)" class="goodsName" :title="item.goods_name">{{item.goods_name}}</div>
+            <div class="gray desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
+            <div class="brand">
+              品牌：
+              <router-link
+                :to="{
+                                    path:'/BrandDetail',
+                                    query:{
+                                        tag:'brand',
+                                        documentid:item.brandId,
+                                        name:item.brandName
+                                    }
+                                }"
+              >{{item.brandName}}</router-link>
+            </div>
+            <div class="tagwrap">
+              <span :class="item.goods_type?'borderGreen green':'borderColor color'">{{item.goods_type?'现货':'订货'}}</span>
+              <span class="borderColor">{{item.diliverPlace}}交货</span>
+              <span class="borderBlu" :class="item.seller_always?'':'color'">{{item.seller_always?'长期特价':'限时抢购'}}</span>
+            </div>
+            <div class="info">
+              <div class="sellerInfo fr">
+                <p class="img">
+                  <img :src="item.userImgeUrl" alt @click="chipShop(item)" />
+                </p>
+                <div class="wrapInfo clear">
+    
+                    <div class="wrap" @click="chipShop(item)">
+                      <img :src="item.userImgeUrl" alt />
+                      <div :title="item.sellerName" >
+                        <p style="margin:10px 0;">{{item.sellerName}}</p>
+                        <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
+                        <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
+                        <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
+                         <span class="tag bgOrange">保</span>
+                      </div>
+                    </div>
+                 <div class="score">
+                     <div >入驻时间：{{item.settleTime | formatDate}}</div>
+                     <div style="margin-bottom:20px;">企业资质：已认证</div>
+                     <div class="scoreitem">
+                        <span>产品质量：</span>
+                        <span class="color" v-if="item.mapComment.profileA>item.mapComment.profileB">
+                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                            <span>高于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                            <span class="el-icon-top"></span>
+                        </span>
+                        <span class="green" v-if="item.mapComment.profileA<item.mapComment.profileB">
+                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                            <span>低于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                            <span class="el-icon-bottom"></span>
+                        </span>
+                        <span v-if="item.mapComment.profileA==item.mapComment.profileB">
+                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                            <span>等于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                        </span>
+                    </div>
+                     <div class="scoreitem">
+                        <span>发货速度：</span>
+                        <span class="color" v-if="item.mapComment.deliverA>item.mapComment.deliverB">
+                        <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                        
+                        <span>高于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                        <span class="el-icon-top"></span>
+                        </span>
+                        <span class="green" v-if="item.mapComment.deliverA<item.mapComment.deliverB">
+                        <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                        <span>低于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                        <span class="el-icon-bottom"></span>
+                        </span>
+                        <span v-if="item.mapComment.deliverA==item.mapComment.deliverB">
+                        <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                        <span>等于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                        </span>
+                    </div>
+                     <div class="scoreitem">
+                        <span>服务支持：</span>
+                        <span class="color" v-if="item.mapComment.serviceA>item.mapComment.serviceB">
+                        <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+                        
+                        <span>高于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                        <span class="el-icon-top"></span>
+                        </span>
+                        <span class="green" v-if="item.mapComment.serviceA<item.mapComment.serviceB">
+                        <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+
+                        
+                        <span>低于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                        <span class="el-icon-bottom"></span>
+                        </span>
+                        <span v-if="item.mapComment.serviceA==item.mapComment.serviceB">
+                        <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+                        <span>等于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                        </span>
+                    </div>
+                 </div>
+                  <p style="center">
+                    <span class="borderColor" style="padding:2px 5px;border-radius:4px;cursor:pointer;"  @click="chipShop(item)">进入店铺</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="price">
+              <strong
+                class="green"
+                v-if="!item.priceType"
+              >一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
+              <strong
+                class="color"
+                v-if="item.priceType"
+              >阶梯价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
+              <span  v-if="item.priceType">起</span>
+            </div>
+
+            <div class="blu" >
+                <span v-if="item.day_interval">下单后{{item.day_interval | filterHours}}小时内可发货</span>
+            </div>
+              <div class="time clear blu" v-if="!item.seller_always && item.expireTime">
+                <span class="fl">
+                  <img src="@/assets/image/index/timer.png" alt />
+                  距离特价结束：
+                </span>
+                <CountTime
+                  class="fl"
+                  v-on:end_callback="countDownE_cb()"
+                  :currentTime="item.currentTime"
+                  :startTime="item.currentTime"
+                  :endTime="item.expireTime"
+                  :tipText="'距离活动开始'"
+                  :tipTextEnd="''"
+                  :endText="'活动已失效'"
+                  :dayTxt="'天'"
+                  :hourTxt="'小时'"
+                  :minutesTxt="'分'"
+                  :secondsTxt="'秒'"
+                ></CountTime>
+              </div>
+          </div>
+        </li>
+                 <!-- <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k"  > 
                     <span class="mark" v-if="item.tag==1">
                         <img src="@/assets/image/index/tag.png" alt="">
                     </span>
                      <span class="mark" v-if="item.tag==2">
                         <img src="@/assets/image/index/tag1.png" alt="">
                     </span>
-                    <!-- <span class="goodsType" :class="item.goods_type?'goods_type':''">{{item.goods_type?'现货':'订货'}}</span> -->
+                    <span class="goodsType" :class="item.goods_type?'greenColor':'bgColor'" :title="item.goods_type?'现货':'订货'">{{item.goods_type?'现':'订'}}</span>
                     <div class="wrapImg"  @click="chipSellerGoodsDetal(item)">
                         <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="350" :H="200" v-if="item.sellerGoodsImageUrl"></ImgE>
                         <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl">
@@ -63,11 +218,11 @@
                         <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
                         <div>
                             <div class="sellerInfo fr">
-                                <p class="img"><img :src="item.userImgeUrl" alt=""></p>
+                                <p class="img"><img :src="item.userImgeUrl" alt=""  @click="chipShop(item)"></p>
                                 <p class="sellerName">{{item.sellerName}}</p>
                                 <div class="wrapInfo clear">
                                     <div class="clear">
-                                        <div class="wrap">
+                                        <div class="wrap"  @click="chipShop(item)">
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
@@ -96,12 +251,12 @@
                                 </router-link>
                             </div>
                         <div class="count"><span>起订量：&nbsp;{{item.moq}}只</span>
-                        <!-- <span>最小增量：&nbsp;{{item.mpq}}只</span> -->
+                      
                         </div>
                          <div class="place" style="margin-top:3px;">
                             <span v-if="item.deliverTime">预计于 {{item.deliverTime | formatDate}}</span>
                             <span v-if="item.goods_type">现货</span>
-                            <!-- <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span> -->
+                          
                             &nbsp;<span>{{item.diliverPlace}}交货</span>
                         </div>
                         </div>
@@ -112,7 +267,7 @@
                         </div>
                         <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
                     </div>
-                    </li>
+                    </li>-->
                 </ul>
                 <Pagination
                     v-if="total"
@@ -127,10 +282,11 @@
     </div>
 </template>
 <script>
-    import {ladderPrice} from "../../lib/utils";
+    import {ladderPrice,TimeForma} from "../../lib/utils";
     import {axios,home,shoppingCar} from "../../api/apiObj";
      import {mapState,mapActions,mapMutations} from 'vuex';
      import {baseURL3} from "@/config"
+
     export default {
         data(){
             return {
@@ -156,7 +312,10 @@
         filters:{
             filterHours(val){
                 return parseFloat(val)*24
-            }
+            },
+            formatDate(val) {
+                return TimeForma(val);
+                },
         },
         mounted(){
             this.getCategroy();
@@ -207,7 +366,27 @@
                         _this.$message.success("已关注");
                     });
             },
-          
+          chipShop(item){
+              
+                if(item.tag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                            tag:'brand',
+                            documentid:item.brandId,
+                            name:item.brandName
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                            
+                            sellerId:item.sellerId
+                        }
+                    })
+                }
+            },
             chipSellerGoodsDetal(item){
                 //跳转商品详情
                 sessionStorage.setItem('sellerGoodsDetail',JSON.stringify(item))

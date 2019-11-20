@@ -59,30 +59,36 @@ export default {
               index: "1_3",
               path: "/PersonalCenter/SellerIssuesProduct",
               icon: require("@/assets/image/sidemenuicon/SellerIssuesProduct.png")
+            },  {
+              title: "评论管理",
+              index: "1_4",
+              name: "comment",
+              path: "/PersonalCenter/sellerComment",
+              icon: require("@/assets/image/sidemenuicon/comment.png")
             },
             {
-              title: "产品管理",
-              index: "1_4",
+              title: "产品库管理",
+              index: "1_5",
               name: "sellerPushProduct",
               path: "/PersonalCenter/sellerPushProduct",
-              icon: require("@/assets/image/sidemenuicon/SellerCommodityManagement.png")
+              icon: require("@/assets/image/sidemenuicon/product.png")
             },
             {
               name: "inquiryList",
               title: "询价单列表",
-              index: "1_5",
+              index: "1_6",
               path: "/PersonalCenter/inquiryList",
               icon: require("@/assets/image/sidemenuicon/inquiryList.png")
             },
             {
               title: "发票管理",
-              index: "1_6",
+              index: "1_7",
               path: "/PersonalCenter/SellerInvoiceManagement",
               icon: require("@/assets/image/sidemenuicon/SellerInvoiceManagement.png")
             },
             {
               title: "账单中心",
-              index: "1_7",
+              index: "1_8",
               name: "SellerBillCenter",
               class: "active",
               path: "/PersonalCenter/SellerBillCenter",
@@ -244,7 +250,7 @@ export default {
           if (UserInforma.userTagMap.seller == true) {
             if (UserInforma.userTagMap.tag != 1) {
               item.children = item.children.map(item0 => {
-                if (item0.name == "inquiryList") {
+                if (item0.name == "inquiryList" || item0.name=="sellerPushProduct") {
                   item0.show = "hidden";
                 }
                 if (item0.name == "SellerBillCenter") {

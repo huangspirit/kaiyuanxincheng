@@ -6,6 +6,52 @@
     padding-bottom: 40px;
     width:100%;
     box-sizing: border-box;
+   /deep/ .el-timeline {
+      max-height: 100px;
+      overflow-y: scroll;
+    }
+    .orprocessdesc{
+      p{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-align: left;
+ margin-bottom:10px;
+      }
+      
+    }
+    .btnGreen{
+      border:1px solid forestgreen;
+      border-radius: 3px;
+      padding:2px 5px;
+      color:#333;
+      margin-top:10px ;
+      display: inline-block;
+      min-width:60px;
+      text-align: center;
+    }
+    .btnColor{
+      border:1px solid #df3f2f;
+      border-radius: 3px;
+      padding:2px 5px;
+      color:#333;
+      margin:10px auto 0;
+      display: inline-block;
+      min-width:60px;
+      width:70px;
+      text-align: center;
+    }
+    .btnbgGray{
+      border-radius: 3px;
+      padding:4px 10px;
+      color:#fff;
+  
+      background:#e3e3e3;
+      width:70px;
+      margin:10px auto 0;
+     
+    }
     .SearchInput {
       border-bottom: 2px solid #fff;
     }
@@ -102,6 +148,7 @@
             td,th{
                 padding:10px;
                 text-align: center;
+                border-bottom:1px solid #f2f2f2;
             }
             .border_right{
                 border-left:1px solid #ddd;

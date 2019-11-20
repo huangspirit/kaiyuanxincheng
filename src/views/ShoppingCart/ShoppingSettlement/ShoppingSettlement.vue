@@ -1,95 +1,142 @@
 <template>
   <div class="ShoppingSettlement">
     <div class="Order-information">
-        <div class="address">
-            <div class="title">
-               
-                <span>配送地址</span>
-            </div>
-            <div class="cont" v-if="allAddress.length">
-                  <span v-if="defaultAddress.isdefault">默认</span>&nbsp;&nbsp;
-                  <span>{{defaultAddress.receivingName}}&nbsp;&nbsp; {{defaultAddress.phone}}</span>&nbsp;&nbsp;
-                  <span>{{defaultAddress.address}} {{defaultAddress.detailedAddress}}</span>&nbsp;&nbsp;
-                  <span class="btn blue" @click="showResetAddress=true">地址管理</span>
-            </div>
-            <div  v-else class="cont">
-                暂无收货地址 &nbsp;&nbsp;<a href="javascript:;" class="btn bgColor" @click="addNewAdrress">添加</a>
-            </div>
+      <div class="address">
+        <div class="title">
+          <span>配送地址</span>
         </div>
-        <div class="setinvoice">
-            <div class="title">
-                <!-- <div class="fr" @click="showResetVoice=true" v-if="allInvoice.length>1">
+        <div class="cont" v-if="allAddress.length">
+          <span v-if="defaultAddress.isdefault">默认</span>&nbsp;&nbsp;
+          <span>{{defaultAddress.receivingName}}&nbsp;&nbsp; {{defaultAddress.phone}}</span>&nbsp;&nbsp;
+          <span>{{defaultAddress.address}} {{defaultAddress.detailedAddress}}</span>&nbsp;&nbsp;
+          <span class="btn blue" @click="showResetAddress=true">地址管理</span>
+        </div>
+        <div v-else class="cont">
+          暂无收货地址 &nbsp;&nbsp;
+          <a href="javascript:;" class="btn bgColor" @click="addNewAdrress">添加</a>
+        </div>
+      </div>
+      <div class="setinvoice">
+        <div class="title">
+          <!-- <div class="fr" @click="showResetVoice=true" v-if="allInvoice.length>1">
                     <span class="btn bgColor" >选择</span>
-                </div> -->
-                <span>发票信息</span>
-            </div>
-            <div class="cont">
-              <p style="margin-bottom:20px;">
-                发票公司：{{DefaultInvoiceObject.id?DefaultInvoiceObject.corporatename:'暂无发票信息'}}
-                 <span class="btn blue"  @click="showAllInvoice=true">修改</span>
-                <span class="btn blue"  @click="addInvoiceInforma">使用新的开票信息</span>
-              </p>
-                <p>
-                    <el-radio-group v-model="selectedGoodsBillSetOff" @change="handleChangeGoodsBillSetOff">
-                        <el-radio v-for="item in GoodsBillSetOffList" :value="item.id" :label="item.id" :key="item.id">{{item.name}}</el-radio>
-                    </el-radio-group>
-                   </p>
-                <p class="color" v-show="showAllInvoice">
-                    提醒：订单提交后不可更改！如有疑问或其他需求请先联系客服人员，否则相关损失由客户自行承担。
-                </p>
-                <ul class="showallInvoice" v-show="showAllInvoice">
-                  <li v-for="item in allInvoice" :key="item.id" :class="{default:item.isdefault,active:item.id==DefaultInvoiceObject.id}">
-                            <div class="wrap" @click="resetInvoce(item)">
-                            <span class="mark bgColor" v-if="item.isdefault">默认</span>
-                            <p>公司名称： {{item.corporatename}}</p>
-                            <p>税号/统一信用代码证号：{{item.billno}}</p>
-                            <p>开户银行：{{item.openingbank}}</p>
-                            <p>银行账户：{{item.bankaccount}}</p>
-                            <p>开票地址：{{item.registeredaddress}}</p>
-                            <p>开票电话：{{item.registeredphone}}</p>
-                          </div>
-                         
-                  </li>
-                </ul>
-                <div @click="showAllInvoice=false" v-if="showAllInvoice" style="text-align:center;border:1px solid #ddd;margin-top:10px;" title="确认" class='btn'><i class="el-icon-arrow-up  blue"  style="font-size:20px;"></i><i class="" style="font-size:14px;font-style:normal;">确认</i></div>
-            </div>
+          </div>-->
+          <span>发票信息</span>
         </div>
-        <div class="payType">
-          <p class="title">
-            <span>支付方式</span>
+        <div class="cont">
+          <p style="margin-bottom:20px;">
+            发票公司：{{DefaultInvoiceObject.id?DefaultInvoiceObject.corporatename:'暂无发票信息'}}
+            <span
+              class="btn blue"
+              @click="showAllInvoice=true"
+            >修改</span>
+            <span class="btn blue" @click="addInvoiceInforma">使用新的开票信息</span>
           </p>
-          <ul class="type">
-            <li class="typeone">
-              <el-radio v-model="paytype" label="0">在线支付</el-radio>
-                <span><img src="../../../assets/image/icon/weichat.png" alt="">微信</span>
-                <span><img src="../../../assets/image/icon/zhifubao.png" alt="">支付宝</span>
-            </li>
-            <li class="typetwo clear">
-              <el-radio v-model="paytype" label="1">公对公转账</el-radio><br>
-              <div v-if='paytype==1' class="desc clear">
-                  <p><strong>*收款账户信息如下：</strong>
-                  <!-- <a href="" class="blue fr downbtn" >下载汇款信息</a> -->
-                  </p>
-                  <p><span>公&nbsp;司&nbsp;名&nbsp;称&nbsp;：</span><span>北京晶圆电子有限公司</span></p>
-                  <p><span>开&nbsp;户&nbsp;银&nbsp;行&nbsp;：</span><span>招商银行北京上地支行</span></p>
-                  <p><span>银&nbsp;行&nbsp;账&nbsp;号&nbsp;：</span><span>110 906 335 410 201</span></p>
-                  <p>请务必用对应的开票公司汇款，汇款完成后请上传汇款底单挥着转账凭证;</p>
+          <p>
+            <el-radio-group v-model="selectedGoodsBillSetOff" @change="handleChangeGoodsBillSetOff">
+              <el-radio
+                v-for="item in GoodsBillSetOffList"
+                :value="item.id"
+                :label="item.id"
+                :key="item.id"
+              >{{item.name}}</el-radio>
+            </el-radio-group>
+          </p>
+          <p class="color" v-show="showAllInvoice">提醒：订单提交后不可更改！如有疑问或其他需求请先联系客服人员，否则相关损失由客户自行承担。</p>
+          <ul class="showallInvoice" v-show="showAllInvoice">
+            <li
+              v-for="item in allInvoice"
+              :key="item.id"
+              :class="{default:item.isdefault,active:item.id==DefaultInvoiceObject.id}"
+            >
+              <div class="wrap" @click="resetInvoce(item)">
+                <span class="mark bgColor" v-if="item.isdefault">默认</span>
+                <p>公司名称： {{item.corporatename}}</p>
+                <p>税号/统一信用代码证号：{{item.billno}}</p>
+                <p>开户银行：{{item.openingbank}}</p>
+                <p>银行账户：{{item.bankaccount}}</p>
+                <p>开票地址：{{item.registeredaddress}}</p>
+                <p>开票电话：{{item.registeredphone}}</p>
               </div>
             </li>
-            <li class="typethree" >
-              <!-- v-if="this.priceTotalDetail.isVIP" -->
-                <el-radio v-model="paytype" label="2" v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough">月结白条</el-radio>
-                 <el-radio v-model="paytype" label="2" v-if="(!this.priceTotalDetail.isVIP) || !this.priceTotalDetail.isEnough" disabled="">月结白条</el-radio>
-             <span v-if="this.priceTotalDetail.isVIP">
-               目前剩余月结白条额度￥{{priceTotalDetail.restLine | toFixed(2)}}元;
-               <a class="blue" href="javascript:;" @click="showUplevel=true">提升额度</a>
-               </span> 
-               <span v-if="!this.priceTotalDetail.isVIP">
-               目前您还不是月结用户; <router-link class="blue" to="/PersonalCenter/UpgradeLevel">申请月结</router-link>
-               </span>
-            </li>
           </ul>
+          <div
+            @click="showAllInvoice=false"
+            v-if="showAllInvoice"
+            style="text-align:center;border:1px solid #ddd;margin-top:10px;"
+            title="确认"
+            class="btn"
+          >
+            <i class="el-icon-arrow-up blue" style="font-size:20px;"></i>
+            <i class style="font-size:14px;font-style:normal;">确认</i>
+          </div>
         </div>
+      </div>
+      <div class="payType">
+        <p class="title">
+          <span>支付方式</span>
+        </p>
+        <ul class="type">
+          <li class="typeone">
+            <el-radio v-model="paytype" label="0">在线支付</el-radio>
+            <span>
+              <img src="../../../assets/image/icon/weichat.png" alt />微信
+            </span>
+            <span>
+              <img src="../../../assets/image/icon/zhifubao.png" alt />支付宝
+            </span>
+          </li>
+          <li class="typetwo clear">
+            <el-radio v-model="paytype" label="1">公对公转账</el-radio>
+            <br />
+            <div v-if="paytype==1" class="desc clear">
+              <p>
+                <strong>*收款账户信息如下：</strong>
+                <!-- <a href="" class="blue fr downbtn" >下载汇款信息</a> -->
+              </p>
+              <p>
+                <span>公&nbsp;司&nbsp;名&nbsp;称&nbsp;：</span>
+                <span>北京晶圆电子有限公司</span>
+              </p>
+              <p>
+                <span>开&nbsp;户&nbsp;银&nbsp;行&nbsp;：</span>
+                <span>招商银行北京上地支行</span>
+              </p>
+              <p>
+                <span>银&nbsp;行&nbsp;账&nbsp;号&nbsp;：</span>
+                <span>110 906 335 410 201</span>
+              </p>
+              <p>请务必用对应的开票公司汇款，汇款完成后请上传汇款底单挥着转账凭证;</p>
+            </div>
+          </li>
+          <li class="typethree">
+            <!-- v-if="this.priceTotalDetail.isVIP" -->
+            <el-radio
+              v-model="paytype"
+              label="2"
+              v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough"
+            >月结白条</el-radio>
+            <el-radio
+              v-model="paytype"
+              label="2"
+              v-if="(!this.priceTotalDetail.isVIP) || !this.priceTotalDetail.isEnough"
+              disabled
+            >月结白条</el-radio>
+            <span v-if="this.priceTotalDetail.isVIP">
+              目前剩余月结白条额度￥{{priceTotalDetail.restLine | toFixed(2)}}元;
+              <!-- <a
+                class="blue"
+                href="javascript:;"
+                @click="showUplevel=true"
+              >提升额度</a>-->
+            </span>
+            <span v-if="!this.priceTotalDetail.isVIP">
+              目前您还不是月结用户;
+              <router-link class="blue" to="/PersonalCenter/UpgradeLevel">申请月结</router-link>
+            </span>
+          </li>
+        </ul>
+      </div>
       <!-- 订单商品 -->
       <div class="order-product">
         <p class="title">
@@ -103,33 +150,66 @@
         <!-- 开具发票 -->
         <!-- 结算金额明细 -->
         <div class="totalDetail clear">
-          <div class="left">
-            <p>目前平台暂不支持用户自行报关，国内交货所有货物将折算成人民币价格；</p>
+          <div>
+            <div class="left">
+              <p>目前平台暂不支持用户自行报关，国内交货所有货物将折算成人民币价格；</p>
+            </div>
+            <div class="count">
+              <p>
+                <span class="fr">￥{{priceTotalDetail.rmbtotalPrice | toFixed(2)}}</span>
+                <strong>人民币</strong>
+                共{{unuscount}}种器件，金额小计：
+              </p>
+              <p>
+                <strong>美元</strong>
+                共{{UScount}}种器件，金额小计：
+                <span
+                  class="fr"
+                >US${{priceTotalDetail.usdTotalPrice | toFixed(3)}}</span>
+              </p>
+              <p>
+                今日美元汇率牌价：
+                <span class="fr">{{priceTotalDetail.exchange}}</span>
+              </p>
+            </div>
+          </div>
+          <div >
             <div class="desc">
-              <p>*海关增值税13%；与国内产品销售暂行税率一致； </p>
+              <p>*海关增值税13%；与国内产品销售暂行税率一致；</p>
               <p>*关税：是依据海关公布的产品来对应关税，若有关税疑问，请联系客服</p>
               <p>*清关服务费；按本批次总货值的万分之五收取，不足300元按300收取；每报关一次收取一次费用；</p>
             </div>
+            <div class="count">
+            <p>
+              海关增值税13%：
+              <span
+                class="fr"
+              >￥{{priceTotalDetail.usdTotalPrice*priceTotalDetail.exchange*0.13 | toFixed(2)}}</span>
+            </p>
+            <p>
+              关税：
+              <span class="fr">￥{{priceTotalDetail.Guanshui}}</span>
+            </p>
+            <p>
+              清关服务费：
+              <span class="fr">￥{{priceTotalDetail.GuanshuiService}}</span>
+            </p>
           </div>
-           <div class="count">
-              <p><span class="fr">￥{{priceTotalDetail.rmbtotalPrice | toFixed(2)}}</span><strong>人民币</strong>共{{unuscount}}种器件，金额小计： </p>
-               <p><strong>美元</strong>共{{UScount}}种器件，金额小计：<span class="fr">US${{priceTotalDetail.usdTotalPrice | toFixed(3)}}</span></p>
-               <p>今日美元汇率牌价：<span class="fr">{{priceTotalDetail.exchange}}</span></p>
-               <p>海关增值税13%：<span class="fr">￥{{priceTotalDetail.usdTotalPrice*priceTotalDetail.exchange*0.13 | toFixed(2)}}</span></p>
-               <p>关税：<span class="fr">￥{{priceTotalDetail.Guanshui}}</span></p>
-               <p>清关服务费：<span class="fr">￥{{priceTotalDetail.GuanshuiService}}</span></p>
           </div>
+          
         </div>
-        <div class="clear totalCount" >
+        <div class="clear totalCount">
           <p class="fl">*运费说明，单一供应商购买金额500元以上为包国内邮费，500元以下为顺丰到付</p>
-            <p class="fr">应付人民币总额：￥{{priceTotalDetail.totalPrice | toFixed(2)}}</p>
+          <p class="fr">应付人民币总额：￥{{priceTotalDetail.totalPrice | toFixed(2)}}</p>
         </div>
-    
+
         <p class="clear">
           <span class="fl" style="margin-top:20px;">
-             <input type="checkbox" :checked="isAccept" v-model="isAccept">  同意接受《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和《<span class="blue" @click='showhetong=true'>{{title}}销售合同</span>》
+            <label><input type="checkbox" :checked="isAccept" v-model="isAccept" />本人已阅读并同意接受</label>
+            <!-- 《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和 -->
+            《<a class="blue" @click="showhetong=true">{{title}}销售合同</a>》
           </span>
-          <span class="submit bgColor fr" @click="submit">提交订单</span> 
+          <span class="submit bgColor fr" @click="submit">提交订单</span>
         </p>
       </div>
     </div>
@@ -185,49 +265,44 @@
       </span>
     </el-dialog>
     <!-- 选择管理发票 -->
-      <el-dialog
-          :visible.sync="dialogVisibleAddInvoice"
-          width="700px"
-      >
-          <p slot="title" class="title">{{dialogTitleAddInvoice ? "新增开票信息" : '编辑开票信息'}}</p>
-          <div class="dialo-body">
-              <el-form
-                  :model="ruleFormAddInvoice"
-                  :rules="rulesAddInvoice"
-                  ref="ruleForm"
-                  label-width="200px"
-                  class="demo-ruleForm"
-              >
-                  <el-form-item label="公司名称：" prop="corporatename">
-                      <el-input v-model="ruleFormAddInvoice.corporatename" ></el-input>
-                  </el-form-item>
-                  <el-form-item label="税号/统一信用代码证号：" prop="billno">
-                      <el-input v-model="ruleFormAddInvoice.billno"  maxlength="18"
-                                show-word-limit></el-input>
-                  </el-form-item>
-                  <el-form-item label="开户银行：" prop="openingbank">
-                      <el-input v-model="ruleFormAddInvoice.openingbank"></el-input>
-                  </el-form-item>
-                  <el-form-item label="银行账号：" prop="bankaccount">
-                      <el-input v-model="ruleFormAddInvoice.bankaccount"></el-input>
-                  </el-form-item>
-                  <el-form-item label="开票电话：" prop="registeredphone">
-                      <el-input v-model="ruleFormAddInvoice.registeredphone"
-                               ></el-input>
-                  </el-form-item>
-                  <el-form-item label="开票地址：" prop="registeredaddress">
-                      <el-input v-model="ruleFormAddInvoice.registeredaddress"></el-input>
-                  </el-form-item>
-                  <el-form-item label="设为默认">
-                      <el-switch v-model="ruleFormAddInvoice.isdefault"></el-switch>
-                  </el-form-item>
-              </el-form>
-          </div>
-          <div slot="footer" class="dialo-footer">
-              <el-button @click="dialogVisibleAddInvoice = false">取 消</el-button>
-              <el-button type="primary" @click="submitFormAddInvoice('ruleForm')">确认发票信息</el-button>
-          </div>
-      </el-dialog>
+    <el-dialog :visible.sync="dialogVisibleAddInvoice" width="700px">
+      <p slot="title" class="title">{{dialogTitleAddInvoice ? "新增开票信息" : '编辑开票信息'}}</p>
+      <div class="dialo-body">
+        <el-form
+          :model="ruleFormAddInvoice"
+          :rules="rulesAddInvoice"
+          ref="ruleForm"
+          label-width="200px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="公司名称：" prop="corporatename">
+            <el-input v-model="ruleFormAddInvoice.corporatename"></el-input>
+          </el-form-item>
+          <el-form-item label="税号/统一信用代码证号：" prop="billno">
+            <el-input v-model="ruleFormAddInvoice.billno" maxlength="18" show-word-limit></el-input>
+          </el-form-item>
+          <el-form-item label="开户银行：" prop="openingbank">
+            <el-input v-model="ruleFormAddInvoice.openingbank"></el-input>
+          </el-form-item>
+          <el-form-item label="银行账号：" prop="bankaccount">
+            <el-input v-model="ruleFormAddInvoice.bankaccount"></el-input>
+          </el-form-item>
+          <el-form-item label="开票电话：" prop="registeredphone">
+            <el-input v-model="ruleFormAddInvoice.registeredphone"></el-input>
+          </el-form-item>
+          <el-form-item label="开票地址：" prop="registeredaddress">
+            <el-input v-model="ruleFormAddInvoice.registeredaddress"></el-input>
+          </el-form-item>
+          <el-form-item label="设为默认">
+            <el-switch v-model="ruleFormAddInvoice.isdefault"></el-switch>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="footer" class="dialo-footer">
+        <el-button @click="dialogVisibleAddInvoice = false">取 消</el-button>
+        <el-button type="primary" @click="submitFormAddInvoice('ruleForm')">确认发票信息</el-button>
+      </div>
+    </el-dialog>
     <el-dialog :visible.sync="dialogInvoice" width="1000px" center class="dialog-ruleForm-Invoice">
       <p slot="title" class="title">发票历史信息</p>
       <!-- 添加发票的模态框 -->
@@ -235,8 +310,8 @@
         <ul class="InvoiceInforma-list">
           <li v-for="item in InvoiceList" :key="item.id" class="Invoiceitem">
             <div class="defaultInvoiceMark" v-if="item.isdefault">
-              <span class="cont"> 默认</span>
-              </div>
+              <span class="cont">默认</span>
+            </div>
             <div class="item-l">
               <div class="item-l-name">
                 <p>
@@ -268,195 +343,214 @@
       </div>
       <div slot="footer" class="dialog-invoice-footer">
         <p @click="addInvoiceInforma" class="addInvoiceInforma">+新增开票信息</p>
-          <p @click="selectInvoiceSubmit" class="InvoiceSubmit">确定</p>
+        <p @click="selectInvoiceSubmit" class="InvoiceSubmit">确定</p>
         <p @click="dialogInvoice = false" class="cancle">取消</p>
       </div>
     </el-dialog>
-     <el-dialog
-          :title="title"
-          :visible.sync="showGoIndex"
-          width="600px"
-          >
-          <div class="showGoIndex" >
-            <h2 class="color">您的订单已提交成功！</h2>
-            <p class="blue"><span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">“我的订单”</a></p>
-            <div>
-              尊敬的月结用户,为了不影响贵公司的正常交期，请务必于24小时内去订单中心下载对应的购销合同、盖章、扫描或拍照上传并完成支付,否则系统将会自动取消您的订单；谢谢您的配合！
-            </div>
-            <!-- <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 </p> -->
+    <el-dialog :title="title" :visible.sync="showGoIndex" width="600px">
+      <div class="showGoIndex">
+        <h2 class="color">您的订单已提交成功！</h2>
+        <p class="blue">
+          <span class="counttime">{{count}}s</span>后自动跳转到
+          <a @click="chipCenterOrder">“我的订单”</a>
+        </p>
+        <div class="blue">
+          <p>1、在线支付与公对公转帐订单将务必于24小时内完成支付，否则订单将自动取消;</p>
+          <p>
+            2、月结“白条用户” 请到对应订单中下载《购销合同》，在完成签字和盖章上传后订单方可使用白条进行全额支付！谢谢您的配合！
+            谢谢您的配合！
+          </p>
+
+          <!-- 尊敬的月结用户,为了不影响贵公司的正常交期，
+              请务必于24小时内去订单中心下载对应的购销合同、盖章、扫描或拍照上传并完成支付,否则系统将会自动取消您的订单；
+          谢谢您的配合！-->
         </div>
-      <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="chipCenterOrder">前往用户中心</el-button>
+        <!-- <p>尊敬的月结用户，您的订单已提交，<span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">用户中心>>>我的订单</a>下载上传合同 </p> -->
       </div>
-      </el-dialog>
-       <el-dialog
-          :title="title"
-          :visible.sync="showGoIndex1"
-          width="600px"
+      <div slot="footer" class="dialog-footer" style="text-align:center;">
+        <el-button @click="chipCenterOrder" type="info">前往用户中心</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :title="title" :visible.sync="showGoIndex1" width="600px">
+      <div class="showGoIndex">
+        <h2 class="color">您的订单已提交成功！</h2>
+        <p class="blue">
+          <span class="counttime">{{count}}s</span>后自动跳转到
+          <a @click="chipCenterOrder">“我的订单”</a>
+        </p>
+        <div class="blue">
+          <p>1、在线支付与公对公转帐订单将务必于24小时内完成支付，否则订单将自动取消;</p>
+          <p>
+            2、月结“白条用户” 请到对应订单中下载《购销合同》，在完成签字和盖章上传后订单方可使用白条进行全额支付！谢谢您的配合！
+            谢谢您的配合！
+          </p>
+          <!-- 尊敬的用户,为了不影响贵公司的正常交期，请务必于24小时内完成支付，否则系统将会自动取消您的订单；同时，对应的购销合同可在订单中心下载、盖章、上传；谢谢您的配合！ -->
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer" style="text-align:center;">
+        <el-button type="primary" @click="payMount" class="bgColor">立即支付</el-button>
+        <el-button type="info">
+          <span @click="chipCenterOrder">前往用户中心</span>
+        </el-button>
+      </div>
+    </el-dialog>
+    <bankTransfer
+      :bankTransferObj="bankTransferObj"
+      v-if="showDialog"
+      @closeBankTransfer="showDialog=false"
+      @bankSuccess="bankSuccess"
+    ></bankTransfer>
+    <el-dialog title="选择收货地址" :visible.sync="showResetAddress" width="60%">
+      <div class="selectedAddress">
+        <ul>
+          <li
+            v-for="(item,k) in allAddress"
+            :key="k"
+            @click="selectedDefaultAddress(k)"
+            :class="defaultAddress.id==item.id?'bgColor':''"
           >
-          <div class="showGoIndex" >
-            <h2 class="color">您的订单已提交成功！</h2>
-            <p class="blue"><span class="counttime">{{count}}s</span>后自动跳转到<a @click="chipCenterOrder">“我的订单”</a></p>
-            <div>
-              尊敬的用户,为了不影响贵公司的正常交期，请务必于24小时内完成支付，否则系统将会自动取消您的订单；同时，对应的购销合同可在订单中心下载、盖章、上传；谢谢您的配合！
+            <span class="defaultAddress" v-if="item.isdefault">默</span>
+            <span>{{item.receivingName}}&nbsp;&nbsp; {{item.phone}}</span>&nbsp;&nbsp;
+            <span>{{item.address}} {{item.detailedAddress}}</span>
+          </li>
+        </ul>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addNewAdrress">添加新地址</el-button>
+        <el-button type="primary" @click="showResetAddress = false">确认</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="选择开票信息" :visible.sync="showResetVoice" width="70%">
+      <div class="selectedVoice">
+        <ul>
+          <li
+            v-for="(item,k) in allInvoice"
+            :key="k"
+            @click="selectedDefaultVoice(k)"
+            :class="DefaultInvoiceObject.id==item.id?'bgColor':''"
+          >
+            <div class="defaultInvoiceMark">
+              <span v-if="item.isdefault">默</span>
             </div>
-        </div>
-        <div slot="footer" class="dialog-footer" style="text-align:center;">
-            <el-button type="primary"  @click="payMount">立即支付</el-button>
-            <el-button><a @click="chipCenterOrder">前往用户中心</a></el-button>
-        </div>
-      </el-dialog>
-         <bankTransfer 
-         :bankTransferObj="bankTransferObj" 
-         v-if="showDialog"
-          @closeBankTransfer="showDialog=false" 
-         @bankSuccess="bankSuccess"></bankTransfer>
-      <el-dialog
-          title="选择收货地址"
-          :visible.sync="showResetAddress"
-          width="60%"
-          >
-          <div class="selectedAddress">
-              <ul>
-                  <li v-for="(item,k) in allAddress" :key="k" @click="selectedDefaultAddress(k)" :class="defaultAddress.id==item.id?'bgColor':''">
-                    <span class="defaultAddress" v-if="item.isdefault">默</span>
-                    <span>{{item.receivingName}}&nbsp;&nbsp; {{item.phone}}</span>&nbsp;&nbsp;
-                    <span>{{item.address}} {{item.detailedAddress}}</span>
-                  </li>
-              </ul>
-          </div>
-          <span slot="footer" class="dialog-footer">
-             <el-button type="primary" @click="addNewAdrress">添加新地址</el-button>
-    <el-button type="primary" @click="showResetAddress = false">确认</el-button>
-  </span>
-      </el-dialog>
-
-      <el-dialog
-          title="选择开票信息"
-          :visible.sync="showResetVoice"
-          width="70%"
-         >
-          <div class="selectedVoice">
-              <ul>
-                  <li v-for="(item,k) in allInvoice" :key="k"  @click="selectedDefaultVoice(k)" :class="DefaultInvoiceObject.id==item.id?'bgColor':''">
-                      <div class="defaultInvoiceMark">
-                          <span v-if="item.isdefault" >默</span>
-                      </div>
-                      <div class="list clear">
-                          <p>公司名称：{{item.corporatename}}</p>
-                          <p>统一信用代码：{{item.billno}}</p>
-                          <p>开票电话：{{item.registeredphone}}</p>
-                          <p>开户地址：{{item.registeredaddress}}</p>
-                          <p>开户银行：{{item.openingbank}}</p>
-                          <p>银行账户：{{item.bankaccount}}</p>
-                      </div>
-
-                  </li>
-              </ul>
-          </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
-          </span>
-      </el-dialog>
-      <el-dialog  :title="`${title}用户协议`"
-          :visible.sync="showxieyi"
-          width="70%">
-        <div>暂无内容</div>
-      </el-dialog>
-      <el-dialog  :title="`${title}销售合同`"
-          :visible.sync="showhetong"
-          width="70%">
-        <div>暂无内容</div>
-      </el-dialog>
-      <el-dialog  title="提升额度"
-          :visible.sync="showUplevel"
-          width="600px">
-        <div>
-          <el-form ref="upLevelform" :model="upLevelform" label-width="150px" :rules="rulesUpLevelform">
+            <div class="list clear">
+              <p>公司名称：{{item.corporatename}}</p>
+              <p>统一信用代码：{{item.billno}}</p>
+              <p>开票电话：{{item.registeredphone}}</p>
+              <p>开户地址：{{item.registeredaddress}}</p>
+              <p>开户银行：{{item.openingbank}}</p>
+              <p>银行账户：{{item.bankaccount}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :title="`${title}用户协议`" :visible.sync="showxieyi" width="70%">
+      <div>暂无内容</div>
+    </el-dialog>
+    <el-dialog :title="`${title}销售合同`" :visible.sync="showhetong" width="70%">
+      <div>暂无内容</div>
+    </el-dialog>
+    <el-dialog title="提升额度" :visible.sync="showUplevel" width="600px">
+      <div>
+        <el-form
+          ref="upLevelform"
+          :model="upLevelform"
+          label-width="150px"
+          :rules="rulesUpLevelform"
+        >
           <el-form-item label="申请额度：" prop="creditTotal">
             <el-input v-model="upLevelform.creditTotal" type="number">
-              <span slot="prefix" >￥</span>
+              <span slot="prefix">￥</span>
             </el-input>
           </el-form-item>
-           <el-form-item label="申请人姓名：" prop="contactname">
+          <el-form-item label="申请人姓名：" prop="contactname">
             <el-input v-model="upLevelform.contactname"></el-input>
           </el-form-item>
-           <el-form-item label="申请人电话" prop="contactphone">
+          <el-form-item label="申请人电话" prop="contactphone">
             <el-input v-model="upLevelform.contactphone"></el-input>
           </el-form-item>
         </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="showUplevel = false">取 消</el-button>
-          <el-button type="primary" @click="submitUplevel('upLevelform')">确 定</el-button>
-        </span>
-      </el-dialog>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showUplevel = false">取 消</el-button>
+        <el-button type="primary" @click="submitUplevel('upLevelform')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-    import { baseURL } from "@/config";
-import VDistpicker from 'v-distpicker'
-import { mapState, mapActions, mapMutations } from "vuex"
+import { baseURL } from "@/config";
+import VDistpicker from "v-distpicker";
+import { mapState, mapActions, mapMutations } from "vuex";
 import bankTransfer from "_c/bankTransfer";
-import ShoppingSettlementOItem from "_c/ShoppingSettlementOItem"
-import { setTimeout, setInterval, clearInterval } from "timers"
-import {axios,presonalAdress,shoppingCar,buyerOrderCenter} from "../../../api/apiObj";
+import ShoppingSettlementOItem from "_c/ShoppingSettlementOItem";
+import { setTimeout, setInterval, clearInterval } from "timers";
+import {
+  axios,
+  presonalAdress,
+  shoppingCar,
+  buyerOrderCenter
+} from "../../../api/apiObj";
 //import { constants } from "crypto";
 export default {
   name: "ShoppingSettlement",
   data() {
     return {
-        isAccept:false,
-        showxieyi:false,
-        showhetong:false,
-        showResetVoice:false,
-        showResetAddress:false,
-        showAllInvoice:false,
-        showUplevel:false,
-        upLevelform:{},
-        rulesUpLevelform:{
-          creditTotal: [
-            { required: true, message: "请输入申请的额度", trigger: "blur" }
-          ],
-          contactname: [
-            { required: true, message: "请输入申请人姓名", trigger: "blur" }
-          ],
-          contactphone: [
-            { required: true, message: "请输入申请人联系电话", trigger: "blur" }
-          ],
-        },
-        timer:null,
-        businessList:[],
-        //收货地址
-        defaultAddress:{},
-        allAddress:[],
-        //开票
-        DefaultInvoiceObject: {},
-        needInvoice:true,
-        allInvoice:[],
-        GoodsBillSetOffList:[],
-        selectedGoodsBillSetOff:0,
-        selectedGoodsBillSetOffObj:{},
-        //0标识在线支付
-        paytype:"0",
-        //生成的订单bianhao
-        orderNumber:"",
-        getOrderInfo:{},
-        //对公转账
-        showDialog:false,
-        //购买商品总数
-        goodsCount:0,
+      isAccept: false,
+      showxieyi: false,
+      showhetong: false,
+      showResetVoice: false,
+      showResetAddress: false,
+      showAllInvoice: false,
+      showUplevel: false,
+      upLevelform: {},
+      rulesUpLevelform: {
+        creditTotal: [
+          { required: true, message: "请输入申请的额度", trigger: "blur" }
+        ],
+        contactname: [
+          { required: true, message: "请输入申请人姓名", trigger: "blur" }
+        ],
+        contactphone: [
+          { required: true, message: "请输入申请人联系电话", trigger: "blur" }
+        ]
+      },
+      timer: null,
+      businessList: [],
+      //收货地址
+      defaultAddress: {},
+      allAddress: [],
+      //开票
+      DefaultInvoiceObject: {},
+      needInvoice: true,
+      allInvoice: [],
+      GoodsBillSetOffList: [],
+      selectedGoodsBillSetOff: 0,
+      selectedGoodsBillSetOffObj: {},
+      //0标识在线支付
+      paytype: "0",
+      //生成的订单bianhao
+      orderNumber: "",
+      getOrderInfo: {},
+      //对公转账
+      showDialog: false,
+      //购买商品总数
+      goodsCount: 0,
       //月结用户提交订单成功后需要跳转
-      count:60,
+      count: 60,
       //月结订单跳转
-      showGoIndex:false,
+      showGoIndex: false,
       //普通订单跳转
-      showGoIndex1:false,
+      showGoIndex1: false,
       //自定跳转计时器
-      chipCenterOrderCount:null,
+      chipCenterOrderCount: null,
       //判断是否有订单信息
-      hasCont:true,
+      hasCont: true,
       // 添加发票的模态框的title
       dialogTitleAddInvoice: true,
       // 添加发票的flag
@@ -528,7 +622,7 @@ export default {
       // 配送的方式
       dilivertype: "1",
       ruleForm: {
-        isdefault:false,
+        isdefault: false,
         address: "",
         receivingName: "",
         phone: "",
@@ -537,7 +631,7 @@ export default {
         telAreaCode: "010",
         postalCode: "",
         detailedAddress: "",
-        isEnable: 1,
+        isEnable: 1
       },
       rules: {
         receivingName: [
@@ -572,78 +666,72 @@ export default {
       // 价格总和明细
       priceTotalDetail: {},
       // 下单的所有信息
-      OrderInformation: {
-       
-      },
+      OrderInformation: {},
       // 是不是VIP
       isVIP: false,
-      unuscount:0,
-      UScount:0,
-      bankTransferObj:{}//公对公转账
+      unuscount: 0,
+      UScount: 0,
+      bankTransferObj: {} //公对公转账
     };
   },
-  destroyed(){
-    clearInterval(this.chipCenterOrderCount)
-   this.chipCenterOrderCount=null;
+  destroyed() {
+    clearInterval(this.chipCenterOrderCount);
+    this.chipCenterOrderCount = null;
   },
-  
+
   components: {
     VDistpicker,
     ShoppingSettlementOItem,
-      bankTransfer
+    bankTransfer
   },
   watch: {
-    showGoIndex1(newval,oldval){
-
-      if(newval==false && oldval==true){
-        this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+    showGoIndex1(newval, oldval) {
+      if (newval == false && oldval == true) {
+        this.$router.push("/PersonalCenter/BuyerOrderManagement");
       }
     },
-    showGoIndex(newval,oldval){
-      if(newval==false && oldval==true){
-        this.$router.push("/PersonalCenter/BuyerOrderManagement")       
+    showGoIndex(newval, oldval) {
+      if (newval == false && oldval == true) {
+        this.$router.push("/PersonalCenter/BuyerOrderManagement");
       }
     },
-    addressList(){
-      let count=0;
+    addressList() {
+      let count = 0;
       this.addressList.forEach(item => {
-        if(item.isdefault){
+        if (item.isdefault) {
           count++;
-          this.curentAdressItem=item;
-          this.addressValue=item.id
+          this.curentAdressItem = item;
+          this.addressValue = item.id;
         }
       });
-      if(!count){
-          this.curentAdressItem=this.addressList[0];
-          this.addressValue=this.addressList[0].id
+      if (!count) {
+        this.curentAdressItem = this.addressList[0];
+        this.addressValue = this.addressList[0].id;
       }
     },
-    InvoiceList(){
-      let count=0
-      this.InvoiceList.forEach(item=>{
-        if(item.isdefault){
+    InvoiceList() {
+      let count = 0;
+      this.InvoiceList.forEach(item => {
+        if (item.isdefault) {
           count++;
-          this.DefaultInvoice=item.id;
-          this.DefaultInvoiceObject=item;
+          this.DefaultInvoice = item.id;
+          this.DefaultInvoiceObject = item;
         }
-      }) 
-      if(!count){
-         this.DefaultInvoice=this.InvoiceList[0].id;
-          this.DefaultInvoiceObject=this.InvoiceList[0];
+      });
+      if (!count) {
+        this.DefaultInvoice = this.InvoiceList[0].id;
+        this.DefaultInvoiceObject = this.InvoiceList[0];
       }
-       
     },
     // 监听收货地址的变化
     addressValue() {
       this.curentAdressItem = this.addressList.find(
         item => item.id === this.addressValue
       );
-    },
- 
-   
+    }
   },
   methods: {
-    ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+    ...mapMutations("MerchantList", ["setBuyOneGoodsDetail"]),
     ...mapActions("ShoppingSettlement", [
       "GetAllReceivingAddress",
       "GetAddAddress",
@@ -652,55 +740,65 @@ export default {
       "GetAllPersonalInvoice",
       "GetOrderCreater"
     ]),
-   
-    submitUplevel(formName){
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-              axios.request({...buyerOrderCenter.increaseCredit,data:this.upLevelform}).then(res=>{
-                if(res){
-                 // this.handleChangeGoodsBillSetOff();
-                  this.showUplevel=false;
-                  this.$message('申请已提交')
-                }
-              })
-          }
-        })
-    },
-    resetInvoce(item){
-       this.DefaultInvoice=item.id;
-       this.DefaultInvoiceObject=item;
-    },
-      //修改发票类型
-      handleChangeGoodsBillSetOff(e){
-          this.GoodsBillSetOffList.map(item=>{
-              if(item.id==e){
-                  this.selectedGoodsBillSetOffObj=item;
-                  let val1=0,val2=0;
-                  if(this.priceTotalDetail.rmbtotalPrice){
-                       val1=(item.setoff)*(this.priceTotalDetail.rmbtotalPrice)/100;
-                  }
-                  if(this.priceTotalDetail.usdTotalPrice){
-                       val2=(item.setoff)*(this.priceTotalDetail.exchange*this.priceTotalDetail.usdTotalPrice)/100;
-                  }
-                  this.$set(this.priceTotalDetail,'needPayBillTotal',val1+val2)
+
+    submitUplevel(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          axios
+            .request({
+              ...buyerOrderCenter.increaseCredit,
+              data: this.upLevelform
+            })
+            .then(res => {
+              if (res) {
+                // this.handleChangeGoodsBillSetOff();
+                this.showUplevel = false;
+                this.$message("申请已提交");
               }
-          })
-      },
-      //修改地址
-      selectedDefaultAddress(k){
-          this.defaultAddress=this.allAddress[k]
-      },
-        //修改发票
-      selectedDefaultVoice(k){
-        this.DefaultInvoice=this.allInvoice[k].id
-        this.DefaultInvoiceObject=this.allInvoice[k]
-      },
+            });
+        }
+      });
+    },
+    resetInvoce(item) {
+      this.DefaultInvoice = item.id;
+      this.DefaultInvoiceObject = item;
+    },
+    //修改发票类型
+    handleChangeGoodsBillSetOff(e) {
+      this.GoodsBillSetOffList.map(item => {
+        if (item.id == e) {
+          this.selectedGoodsBillSetOffObj = item;
+          let val1 = 0,
+            val2 = 0;
+          if (this.priceTotalDetail.rmbtotalPrice) {
+            val1 = (item.setoff * this.priceTotalDetail.rmbtotalPrice) / 100;
+          }
+          if (this.priceTotalDetail.usdTotalPrice) {
+            val2 =
+              (item.setoff *
+                (this.priceTotalDetail.exchange *
+                  this.priceTotalDetail.usdTotalPrice)) /
+              100;
+          }
+          this.$set(this.priceTotalDetail, "needPayBillTotal", val1 + val2);
+        }
+      });
+    },
+    //修改地址
+    selectedDefaultAddress(k) {
+      this.defaultAddress = this.allAddress[k];
+    },
+    //修改发票
+    selectedDefaultVoice(k) {
+      this.DefaultInvoice = this.allInvoice[k].id;
+      this.DefaultInvoiceObject = this.allInvoice[k];
+    },
     //跳转到个人中心订单列表
-    chipCenterOrder(){
-        clearInterval(this.chipCenterOrderCount)
-        this.count=60;
-        //this.showGoIndex=false;
-        this.$router.push({"path":"/PersonalCenter/BuyerOrderManagement"})
+    chipCenterOrder() {
+      clearInterval(this.chipCenterOrderCount);
+      this.count = 60;
+      //this.showGoIndex=false;
+      this.$router.push({ path: "/PersonalCenter/BuyerOrderManagement" });
     },
     // 关闭信息的模态框
     handleClose2(formName) {
@@ -732,24 +830,24 @@ export default {
     addNewAdrress() {
       this.dialogAddress = true;
       this.addressText = true;
-      this.showResetAddress=false;
+      this.showResetAddress = false;
     },
     //提交订单后需要选择是否立即支付
-    payMount(){
-      if(this.paytype==0){
+    payMount() {
+      if (this.paytype == 0) {
         //在线支付
-        this.GetOrderCreater(this.OrderInformation).then(res=>{
-            this.orderNumber=res.data;
-              this.$router.push({
-                  path: "/ShoppingCart/PaymentOrders",
-                  query: {
-                      orderNumber:res.data,
-                  }
-              });
-        })
-      }else if(this.paytype==1){
-          //对公转账
-              this.getOrderType()
+        this.GetOrderCreater(this.OrderInformation).then(res => {
+          this.orderNumber = res.data;
+          this.$router.push({
+            path: "/ShoppingCart/PaymentOrders",
+            query: {
+              orderNumber: res.data
+            }
+          });
+        });
+      } else if (this.paytype == 1) {
+        //对公转账
+        this.getOrderType();
         //   this.GetOrderCreater(this.OrderInformation).then(res=>{
         //      this.orderNumber=res.data;
         //       this.getOrderType()
@@ -758,106 +856,104 @@ export default {
     },
     // 提交订单
     submit() {
-      if(!this.DefaultInvoiceObject.id){
-        this.$message.error("请选择发票信息")
+      if (!this.DefaultInvoiceObject.id) {
+        this.$message.error("请选择发票信息");
         return;
       }
-      if(!this.defaultAddress.id){
-        this.$message.error("请选择配送地址")
+      if (!this.defaultAddress.id) {
+        this.$message.error("请选择配送地址");
         return;
       }
-      if(!this.isAccept){
-        this.$message.error("您还未同意接受用户协议")
+      if (!this.isAccept) {
+        this.$message.error("您还未同意接受用户协议");
         return;
       }
       let bill = JSON.parse(this.OrderInformation.bill);
       bill.content_id = this.DefaultInvoiceObject.id;
-      bill.billtype=this.selectedGoodsBillSetOff;
+      bill.billtype = this.selectedGoodsBillSetOff;
       this.OrderInformation.add_id = this.defaultAddress.id;
       this.OrderInformation.dilivertype = this.dilivertype;
       this.OrderInformation.type = "1";
       this.OrderInformation.bill = JSON.stringify(bill);
       // 进行下单,三种情况
-      if(this.paytype==0){
+      if (this.paytype == 0) {
         //在线支付
-         this.OrderInformation.payWay=false;
+        this.OrderInformation.payWay = false;
         // this.showGoIndex1=true;
-         var _this=this;
-         this.chipCenterOrderCount=setInterval(function(){
-            if(_this.count==0){
-                _this.chipCenterOrder()
-            }else{
-              _this.count--;
+        var _this = this;
+        this.chipCenterOrderCount = setInterval(function() {
+          if (_this.count == 0) {
+            _this.chipCenterOrder();
+          } else {
+            _this.count--;
+          }
+        }, 1000);
 
+        this.GetOrderCreater(this.OrderInformation).then(res => {
+          this.orderNumber = res.data;
+          this.$router.push({
+            path: "/ShoppingCart/PaymentOrders",
+            query: {
+              orderNumber: res.data
             }
-          },1000)
-        
-        this.GetOrderCreater(this.OrderInformation).then(res=>{
-          this.orderNumber=res.data;
-              this.$router.push({
-                  path: "/ShoppingCart/PaymentOrders",
-                  query: {
-                      orderNumber:res.data,
-                  }
-              });
-      //     return;
-      //  this.$confirm('立即支付订单吗?', '提示', {
-      //         confirmButtonText: '立即支付',
-      //         cancelButtonText: '进入订单中心',
-      //         type: 'warning'
-      //       }).then(() => {
-      //        this.orderNumber=res.data;
-      //         this.$router.push({
-      //             path: "/ShoppingCart/PaymentOrders",
-      //             query: {
-      //                 orderNumber:res.data,
-      //             }
-      //         });
-      //       }).catch(() => {
-      //         this.$router.push("/PersonalCenter/BuyerOrderManagement")       
-      //       });
-        })
-      }else if(this.paytype==1){
-          //对公转账
-           this.OrderInformation.payWay=false;
-           var _this=this;
-           this.chipCenterOrderCount=setInterval(function(){
-            if(_this.count==0){
-                _this.chipCenterOrder()
-            }else{
-              _this.count--;
-            }
-          },1000)
-          this.GetOrderCreater(this.OrderInformation).then(res=>{
-           
-             this.orderNumber=res.data;
-             this.showGoIndex1=true;
-            // return;
-            //  this.$confirm('立即支付订单吗?', '提示', {
-            //   confirmButtonText: '立即支付',
-            //   cancelButtonText: '进入订单中心',
-            //   type: 'warning'
-            // }).then(() => {
-            //   this.orderNumber=res.data;
-            //   this.getOrderType()
-            // }).catch(() => {
-            //   this.$router.push("/PersonalCenter/BuyerOrderManagement")       
-            // });
-        })
-      }else if(this.paytype==2){
+          });
+          //     return;
+          //  this.$confirm('立即支付订单吗?', '提示', {
+          //         confirmButtonText: '立即支付',
+          //         cancelButtonText: '进入订单中心',
+          //         type: 'warning'
+          //       }).then(() => {
+          //        this.orderNumber=res.data;
+          //         this.$router.push({
+          //             path: "/ShoppingCart/PaymentOrders",
+          //             query: {
+          //                 orderNumber:res.data,
+          //             }
+          //         });
+          //       }).catch(() => {
+          //         this.$router.push("/PersonalCenter/BuyerOrderManagement")
+          //       });
+        });
+      } else if (this.paytype == 1) {
+        //对公转账
+        this.OrderInformation.payWay = false;
+        var _this = this;
+        this.chipCenterOrderCount = setInterval(function() {
+          if (_this.count == 0) {
+            _this.chipCenterOrder();
+          } else {
+            _this.count--;
+          }
+        }, 1000);
+        this.GetOrderCreater(this.OrderInformation).then(res => {
+          this.orderNumber = res.data;
+          this.showGoIndex1 = true;
+          // return;
+          //  this.$confirm('立即支付订单吗?', '提示', {
+          //   confirmButtonText: '立即支付',
+          //   cancelButtonText: '进入订单中心',
+          //   type: 'warning'
+          // }).then(() => {
+          //   this.orderNumber=res.data;
+          //   this.getOrderType()
+          // }).catch(() => {
+          //   this.$router.push("/PersonalCenter/BuyerOrderManagement")
+          // });
+        });
+      } else if (this.paytype == 2) {
         //白条支付
-         this.OrderInformation.payWay=true;
-        this.GetOrderCreater(this.OrderInformation).then(res=>{
-          this.showGoIndex=true;
-          var _this=this;
-          this.chipCenterOrderCount=setInterval(function(){
-            if(_this.count==0){
-                _this.chipCenterOrder()
-            }else{
+        this.OrderInformation.payWay = true;
+        this.GetOrderCreater(this.OrderInformation).then(res => {
+          this.showGoIndex = true;
+          var _this = this;
+          this.chipCenterOrderCount = setInterval(function() {
+            if (_this.count == 0) {
+              _this.chipCenterOrder();
+            } else {
               _this.count--;
             }
-          },1000)
-        })
+          }, 1000);
+        });
       }
       // return;
       // if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
@@ -896,7 +992,7 @@ export default {
       //         }
       //       })
       //   }).catch(() => {
-         
+
       //   });
       // }else{
       //   //普通用户，直接去付款
@@ -919,59 +1015,66 @@ export default {
     },
 
     // 请求所有的发票信息
-    getAllInvoice()
-    {
-        axios.request({...shoppingCar.queryUserBill,params:{start:0,length:20}}).then(res=>{
-            console.log(res)
-           if(res.data.total==1){
-                this.DefaultInvoiceObject=res.data.data[0]
-            }else if(res.data.total>1){
-               let count=0;
-                res.data.data.forEach(item=>{
-                    if(item.isdefault){
-                        this.DefaultInvoiceObject=item;
-                        count++;
-                    }
-                })
-               if(count==0){
-                   this.DefaultInvoiceObject=res.data.data[0]
-               }
-            }
-            this.allInvoice=res.data.data
+    getAllInvoice() {
+      axios
+        .request({
+          ...shoppingCar.queryUserBill,
+          params: { start: 0, length: 20 }
         })
+        .then(res => {
+          console.log(res);
+          if (res.data.total == 1) {
+            this.DefaultInvoiceObject = res.data.data[0];
+          } else if (res.data.total > 1) {
+            let count = 0;
+            res.data.data.forEach(item => {
+              if (item.isdefault) {
+                this.DefaultInvoiceObject = item;
+                count++;
+              }
+            });
+            if (count == 0) {
+              this.DefaultInvoiceObject = res.data.data[0];
+            }
+          }
+          this.allInvoice = res.data.data;
+        });
       // this.GetAllPersonalInvoice({
       //   start: 0,
       //   length: 10,
       //   access_token: this.access_token
       // });
     },
-      // 获取全部的收货地址
-      getAllAddress() {
-          axios.request({...presonalAdress.getAllAdress,params:{start:0,length:20}}).then(res=>{
-              if(res.data){
-                  if(res.data.total==1){
-                      this.defaultAddress=res.data.data[0]
-                  }
-                  else if(res.data.total>1){
-                      let count=0;
-                      res.data.data.forEach(item=>{
-                          if(item.isdefault){
-                              this.defaultAddress=item;
-                              count++
-                          }
-                      })
-                      if(count==0){
-                          this.defaultAddress=res.data.data[0]
-                      }
-                  };
-                  this.allAddress= res.data.data;
+    // 获取全部的收货地址
+    getAllAddress() {
+      axios
+        .request({
+          ...presonalAdress.getAllAdress,
+          params: { start: 0, length: 20 }
+        })
+        .then(res => {
+          if (res.data) {
+            if (res.data.total == 1) {
+              this.defaultAddress = res.data.data[0];
+            } else if (res.data.total > 1) {
+              let count = 0;
+              res.data.data.forEach(item => {
+                if (item.isdefault) {
+                  this.defaultAddress = item;
+                  count++;
+                }
+              });
+              if (count == 0) {
+                this.defaultAddress = res.data.data[0];
               }
-
-          })
-      },
+            }
+            this.allAddress = res.data.data;
+          }
+        });
+    },
     // 新增开票信息
     addInvoiceInforma() {
-      this.ruleFormAddInvoice={}
+      this.ruleFormAddInvoice = {};
       this.dialogVisibleAddInvoice = true;
     },
     // 确认开票信息
@@ -1048,7 +1151,7 @@ export default {
           this.$message.error(err);
         });
     },
-      //新建地址
+    //新建地址
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -1056,14 +1159,20 @@ export default {
           // this.ruleForm.access_token = this.access_token;
 
           if (this.addressText) {
-              axios.request({...presonalAdress.AddAddress,method:"post",data:this.ruleForm}).then(res=>{
-            // this.GetAddAddress(this.ruleForm)
-            //   .then(res => {
-            
+            axios
+              .request({
+                ...presonalAdress.AddAddress,
+                method: "post",
+                data: this.ruleForm
+              })
+              .then(res => {
+                // this.GetAddAddress(this.ruleForm)
+                //   .then(res => {
+
                 this.$message({
-                    message: res.message,
-                    type: 'success'
-                  });     
+                  message: res.message,
+                  type: "success"
+                });
                 this.dialogAddress = false;
                 this.getAllAddress();
               })
@@ -1073,7 +1182,7 @@ export default {
           } else {
             this.GetUpdateAddress(this.ruleForm)
               .then(res => {
-                console.log("gengxin")
+                console.log("gengxin");
                 this.$message({
                   type: "success",
                   message: res.message
@@ -1091,11 +1200,11 @@ export default {
         }
       });
     },
-     // this.GetAllReceivingAddress({
-     //    start: 0,
-     //    length: 10
-     //  })
-   // },
+    // this.GetAllReceivingAddress({
+    //    start: 0,
+    //    length: 10
+    //  })
+    // },
     // 关闭时的回调
     closeDialogAddress(formName) {
       this.$refs[formName].resetFields();
@@ -1114,97 +1223,99 @@ export default {
       this.DefaultInvoiceObject = this.InvoiceList.find(
         item => item.id === this.DefaultInvoice
       );
-      if(!this.DefaultInvoiceObject){
-        this.$message.error(
-          '请先选择开票信息'
-        )
-      }else{
-            this.dialogInvoice = false;
+      if (!this.DefaultInvoiceObject) {
+        this.$message.error("请先选择开票信息");
+      } else {
+        this.dialogInvoice = false;
       }
     },
-      closeDialogCallBack(){
-          this.showDialog=false
-      },
-      handleAvatarSuccess(res, file) {
-          if(res.resultCode =='200'){
-              this.$message({
-                  type:'success',
-                  message:'上传成功，等待审核'
-              })
-              this.showDialog=false
-              this.$router.push("/PersonalCenter/BuyerOrderManagement")
-          }
-      },
-      beforeAvatarUpload(file) {
-          // const isJPG = file.type === 'image/jpeg';
-          // const isLt2M = file.size / 1024 / 1024 < 2;
-
-          // if (!isJPG) {
-          //   this.$message.error('上传头像图片只能是 JPG 格式!');
-          // }
-          // if (!isLt2M) {
-          //   this.$message.error('上传头像图片大小不能超过 2MB!');
-          // }
-          // return isJPG && isLt2M;
-      },
-      // handlePictureCardPreview(file) {
-      //     console.log(file);
-      // },
-      bankSuccess(){
-        this.showGoIndex1=false;
-        this.showGoIndex=false;
+    closeDialogCallBack() {
+      this.showDialog = false;
     },
-      getOrderType(){
-          let countime=1000
-          var _this = this;
-          const loading = this.$loading({
-              lock: true,
-              text: 'Loading',
-              spinner: 'el-icon-loading',
-              background: 'rgba(0, 0, 0, 0.7)'
-          });
-          let count=30
-          this.timer=setInterval(function(){
-              count--;
-              if(count<0){
-                  clearInterval(_this.timer)
-              }
-              _this.$store
-                  .dispatch("SignContract/getQueryOrderInfo", {
-                      orderNo: _this.orderNumber,
-                      access_token: _this.access_token
-                  }).then(res=>{
-                  _this.getOrderInfo=res
-                  if( _this.getOrderInfo.money){
-                      _this.totalPrice = _this.getOrderInfo.money;
-                      loading.close()
-                      clearInterval(_this.timer)
-                      _this.showDialog=true;
-                      _this.bankTransferObj={
-                        url:_this.requestUrl,
-                        money:_this.getOrderInfo.money,
-                        title:'订单'
-                      }
-                  }
-              })
-          },countime)
-
-      },
-      getGoodsBillSetOffList(){
-        axios.request({...shoppingCar.queryGoodsBillSetOffList,params:{isenable:true,start:0,length:100}}).then(res=>{
-            if(res){
-                    this.GoodsBillSetOffList=res.data.data;
-                    res.data.data.forEach((item,index)=>{
-                        if(index==0){
-                            this.selectedGoodsBillSetOff=item.id;
-                            this.selectedGoodsBillSetOffObj=item
-                            return;
-                        }
-                    })
+    handleAvatarSuccess(res, file) {
+      if (res.resultCode == "200") {
+        this.$message({
+          type: "success",
+          message: "上传成功，等待审核"
+        });
+        this.showDialog = false;
+        this.$router.push("/PersonalCenter/BuyerOrderManagement");
+      }
+    },
+    beforeAvatarUpload(file) {
+      // const isJPG = file.type === 'image/jpeg';
+      // const isLt2M = file.size / 1024 / 1024 < 2;
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!');
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!');
+      // }
+      // return isJPG && isLt2M;
+    },
+    // handlePictureCardPreview(file) {
+    //     console.log(file);
+    // },
+    bankSuccess() {
+      this.showGoIndex1 = false;
+      this.showGoIndex = false;
+    },
+    getOrderType() {
+      let countime = 1000;
+      var _this = this;
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
+      let count = 30;
+      this.timer = setInterval(function() {
+        count--;
+        if (count < 0) {
+          clearInterval(_this.timer);
+        }
+        _this.$store
+          .dispatch("SignContract/getQueryOrderInfo", {
+            orderNo: _this.orderNumber,
+            access_token: _this.access_token
+          })
+          .then(res => {
+            _this.getOrderInfo = res;
+            if (_this.getOrderInfo.money) {
+              _this.totalPrice = _this.getOrderInfo.money;
+              loading.close();
+              clearInterval(_this.timer);
+              _this.showDialog = true;
+              _this.bankTransferObj = {
+                url: _this.requestUrl,
+                money: _this.getOrderInfo.money,
+                title: "订单"
+              };
             }
-        })
-      }
+          });
+      }, countime);
     },
+    getGoodsBillSetOffList() {
+      axios
+        .request({
+          ...shoppingCar.queryGoodsBillSetOffList,
+          params: { isenable: true, start: 0, length: 100 }
+        })
+        .then(res => {
+          if (res) {
+            this.GoodsBillSetOffList = res.data.data;
+            res.data.data.forEach((item, index) => {
+              if (index == 0) {
+                this.selectedGoodsBillSetOff = item.id;
+                this.selectedGoodsBillSetOffObj = item;
+                return;
+              }
+            });
+          }
+        });
+    }
+  },
   filters: {
     // ToFixed(x,length) {
     //   if(length){
@@ -1216,129 +1327,126 @@ export default {
   },
   computed: {
     ...mapState({
-      title:state => state.title,
-      buyOneGoodsDetail:state =>JSON.parse(state.MerchantList.buyOneGoodsDetail),
+      title: state => state.title,
+      buyOneGoodsDetail: state =>
+        JSON.parse(state.MerchantList.buyOneGoodsDetail),
       addressList: state => state.ShoppingSettlement.addressList,
       InvoiceList: state => state.ShoppingSettlement.InvoiceList
     }),
     access_token() {
       return sessionStorage.getItem("access_token");
     },
-      requestUrl() {
-          return (
-              baseURL +
-              `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.orderNumber}`
-          );
-      },
-  },
-  created(){
-    if(!this.buyOneGoodsDetail.data){
-       this.$router.push({
-                    path: "/",
-                  });
+    requestUrl() {
+      return (
+        baseURL +
+        `api-order/customerCenter/uploadBankTransferNo?access_token=${this.access_token}&orderNo=${this.orderNumber}`
+      );
     }
-
-
   },
-  mounted(){
-      this.getGoodsBillSetOffList();
-      this.getAllInvoice();
-      //获取全部的收货地址
-      this.getAllAddress();
-      this.$store.state.shoppingCart.active = 1;
-      // 获取全部的发票
-      // 将运费方式改为到付
-      this.dilivertype = "0";
-      let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
-      this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
-      this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
-      this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
-      let UScount=0;
-      let unuscount=0
-      for (var key in DetailData) {
-          DetailData[key].forEach(item => {
-            if(item.price_unit){
-            //  UScount+=Number(item.goods_count)
-            UScount++;
-            }else{
-            //  unuscount+=Number(item.goods_count)
-            unuscount++;
-            }
-              this.goodsCount = this.goodsCount + Number(item.goods_count)
-          })
-          this.DetaileData.push({
-              name: key,
-              list: DetailData[key]
-          });
-      }
-      this.UScount=UScount;
-      this.unuscount=unuscount
+  created() {
+    if (!this.buyOneGoodsDetail.data) {
+      this.$router.push({
+        path: "/"
+      });
+    }
+  },
+  mounted() {
+    this.getGoodsBillSetOffList();
+    this.getAllInvoice();
+    //获取全部的收货地址
+    this.getAllAddress();
+    this.$store.state.shoppingCart.active = 1;
+    // 获取全部的发票
+    // 将运费方式改为到付
+    this.dilivertype = "0";
+    let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
+    this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
+    this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
+    this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
+    let UScount = 0;
+    let unuscount = 0;
+    for (var key in DetailData) {
+      DetailData[key].forEach(item => {
+        if (item.price_unit) {
+          //  UScount+=Number(item.goods_count)
+          UScount++;
+        } else {
+          //  unuscount+=Number(item.goods_count)
+          unuscount++;
+        }
+        this.goodsCount = this.goodsCount + Number(item.goods_count);
+      });
+      this.DetaileData.push({
+        name: key,
+        list: DetailData[key]
+      });
+    }
+    this.UScount = UScount;
+    this.unuscount = unuscount;
   }
-}
+};
 </script>
 <style lang="less" scoped>
-    @import "./ShoppingSettlement.less";
+@import "./ShoppingSettlement.less";
 
-    .counttime{
-        color:red;
-        font-weight:bolder;
+.counttime {
+  color: red;
+  font-weight: bolder;
+}
+.invoiceFlag {
+  .el-checkbox__label {
+    font-size: 16px;
+  }
+}
+.el-radio__inner {
+  display: none;
+}
+.address-distpicker {
+  .distpicker-address-wrapper {
+    select {
+      font-size: 14px;
     }
-    .invoiceFlag{
-        .el-checkbox__label{
-            font-size:16px;
-        }
-    }
-    .el-radio__inner{
-        display: none;
-    }
-    .address-distpicker {
-        .distpicker-address-wrapper{
-            select{
-                font-size:14px;
-            }
-        }
-    }
-    .Add-Invoice-shpoing{
-        .el-form-item__label{
-            font-size:14px;
-        }
-        .el-input__inner{
-            height:40px;
-            border-width:1px;
-        }
-    }
+  }
+}
+.Add-Invoice-shpoing {
+  .el-form-item__label {
+    font-size: 14px;
+  }
+  .el-input__inner {
+    height: 40px;
+    border-width: 1px;
+  }
+}
 </style>
 <style scoped>
-
-    .editAddress>label{
-        width: 100%;
-    }
-    .editAddress>>>.el-radio__label{
-        width:100%;
-    }
-    .wrap>>>.el-icon-close{
-        display:none;
-    }
-    .wrap>>>.el-dialog__body{
-        padding-top:0;
-    }
-    .wrap>>>.el-dialog__body p{
-        width:80%;
-        margin:0 auto;
-        font-size:16px;
-        line-height: 40px;
-        padding-bottom: 50px;
-    }
-    .wrap>>>.el-dialog__body p a{
-        display:inline-block;
-        color:#0068df;
-        cursor: pointer;
-        margin:0 10px;
-
-    }
-    .wrap>>>.el-dialog__body p a:hover{
-        text-decoration:underline;
-        font-weight: bolder;
-        color:peru;
-    }
+.editAddress > label {
+  width: 100%;
+}
+.editAddress >>> .el-radio__label {
+  width: 100%;
+}
+.wrap >>> .el-icon-close {
+  display: none;
+}
+.wrap >>> .el-dialog__body {
+  padding-top: 0;
+}
+.wrap >>> .el-dialog__body p {
+  width: 80%;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 40px;
+  padding-bottom: 50px;
+}
+.wrap >>> .el-dialog__body p a {
+  display: inline-block;
+  color: #0068df;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.wrap >>> .el-dialog__body p a:hover {
+  text-decoration: underline;
+  font-weight: bolder;
+  color: peru;
+}
 </style>

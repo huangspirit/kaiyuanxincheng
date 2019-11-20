@@ -2,7 +2,7 @@
   <div class="sellerGoodsDetail">
     <div class="BrandDetail-tit">
       <el-breadcrumb separator-class="el-icon-arrow-right " class="allWidth">
-        <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/brand' }">全部品牌</el-breadcrumb-item>
         <el-breadcrumb-item
           :to="{ path: '/BrandDetail',query:{tag:'brand',documentid:goodsinfo.brandId,name:goodsinfo.brand} }"
         >{{goodsinfo.branda}}</el-breadcrumb-item>
@@ -52,7 +52,7 @@
             <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn">
               <i class="el-icon-star-off"></i>&nbsp;关注此器件
             </span>
-            <!--                        <span @click="addInquiry"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>-->
+            <span @click="addInquiry"  v-if="sellerGoodsInfo.tag == 1" class="btn"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>
             <!-- <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span> -->
             <!-- <span class="btn" @click="pushlishspecialPrice"><i class="el-icon-plus "></i>&nbsp;我有特价</span> -->
           </div>
@@ -156,8 +156,8 @@
           </div>
           <div class="seller fl">
             此器件由以下供应商提供：
-            <img :src="sellerGoodsInfo.userImgeUrl" alt />
-            <span class="sellerName">{{sellerGoodsInfo.sellerName}}</span>
+            <img :src="sellerGoodsInfo.userImgeUrl" alt @click="chipShop" style="cursor:pointer;"/>
+            <span class="sellerName"  style="cursor:pointer;"  @click="chipShop">{{sellerGoodsInfo.sellerName}}</span>
             <span
               class="color"
               v-if="sellerGoodsInfo.tag == 1"
@@ -183,7 +183,8 @@
           </div>
           <div class="btnwrap fl" style="width:100%">
             <span class="btn bgColor" @click="submitPurchase">立即跟单</span>
-            <span class="btn bgOrange" @click="pushlishspecialPrice">我有特价</span>
+            <span class="btn bgOrange" @click="pushlishspecialPrice" v-if="sellerGoodsInfo.tag != 1">我有特价</span>
+              <span class="btn bgOrange" @click="specialPrice" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
             <span class="btn bgGray" @click="addShopingCar">加入购物车</span>
             <router-link
               style="font-size:14px;margin-left:10px;"
@@ -304,7 +305,6 @@ export default {
       UserInforma: sessionStorage.getItem("UserInforma")
     };
   },
-  created() {},
   mounted() {
     let obj = sessionStorage.getItem("sellerGoodsDetail");
     if (this.$route.query.seller_goods_id) {
@@ -348,6 +348,27 @@ export default {
   methods: {
     ...mapMutations("MerchantList", ["setBuyOneGoodsDetail"]),
     getsellerGoodsDetail() {},
+    chipShop(){
+     
+      if(this.sellerGoodsInfo.tag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                            tag:'brand',
+                            documentid:this.sellerGoodsInfo.brandId,
+                            name:this.sellerGoodsInfo.brandName
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                          
+                            sellerId:this.sellerGoodsInfo.sellerId
+                        }
+                    })
+                }
+    },
     init() {
       this.getDetail();
       this.searchDatasheet(this.sellerGoodsInfo.goods_id);

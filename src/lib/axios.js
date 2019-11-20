@@ -63,10 +63,14 @@ class HttpRequest {
     })
   }
   request (options) {
-      let contentType="application/json"
+      let contentType="application/json; charset=UTF-8"
       if(options.method=='get'){
           contentType='text/plain;charset=UTF-8'
       }
+      if(options["Content-Type"]){
+        contentType=options["Content-Type"]
+      }
+      
     let access_token=sessionStorage.getItem("access_token")
     const instance = axios.create()
     if(access_token){

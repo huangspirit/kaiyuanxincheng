@@ -20,8 +20,8 @@
       <ul class="interes-list">
         <li v-for="(item,index) in goodsList" class="clear" :key="index">
 <!--          <TabImage :width="146"></TabImage>-->
-            <div class="left">
-                <div class="imgwrap fl">
+            <div class="left" style="flex:1;display:flex;align-items:center;">
+                <div class="imgwrap fl" >
                     <router-link
                         :to="{
                             path:'/BrandDetail/GoodsDetails',
@@ -31,10 +31,10 @@
                             name:item.goodsBase.productno
                             }
                             }"
-                    >  <ImgE :src="item.goodsBase.imageUrl" :W="100" :H="100"></ImgE></router-link>
+                    >  <ImgE :src="item.goodsBase.imageUrl" :W="60" :H="60"></ImgE></router-link>
 
                 </div>
-                <div class="text fl">
+                <div class="text fl" >
                   
                     <router-link
                         :to="{
@@ -76,16 +76,15 @@
                 </div>
             </div>
             <div class="operation fr">
-                <span @click="addInquiry(index)" class="bgColor">
-                    <i class="el-icon-open"></i>加询价篮
+                <span @click="addInquiry(index)" class="bgGray" v-if="item.goodsBase.factorySellerInfo.seller_goods_id">
+                    <!-- <i class="el-icon-open"></i> -->
+                    加询价篮
                 </span>
                 <br>
-                <span @click="canclePub(index)" class="bgColor">
-                    <i class="el-icon-star-on"></i>取消关注
-                </span>
-                <br>
-                <span class="specialPrice bgColor" @click="specialPrice">
-                    <i class="el-icon-plus"></i> 我有特价
+              
+                <span class="specialPrice bgOrange" @click="specialPrice">
+                    <!-- <i class="el-icon-plus"></i> -->
+                     我有特价
                 </span>
                 <br>
                 <router-link
@@ -101,9 +100,12 @@
                     class="bgColor"
                     v-if="item.goodsBase.map && item.goodsBase.map.totalSeller"
                 >
-                    <i class="el-icon-s-promotion"></i>
+                    <!-- <i class="el-icon-s-promotion"></i> -->
                     立即采购
-                </router-link>
+                </router-link><br>
+                  <span @click="canclePub(index)" >
+                    <i class="el-icon-star-on"></i>取消关注
+                </span>
             </div>
         </li>
       </ul>

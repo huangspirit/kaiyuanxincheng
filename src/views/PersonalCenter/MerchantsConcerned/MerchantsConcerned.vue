@@ -22,7 +22,7 @@
         <li v-for="item in data" :key="item.id">
           <!-- 品牌信息 -->
           <div class="brand-information">
-            <ImgE :src="item.headUrl" :W="100" :H="100" style="width:10vw;text-align:center;"></ImgE>
+            <div @click="chipShop(item)"><ImgE :src="item.headUrl" :W="100" :H="100" style="width:10vw;text-align:center;cursor:pointer" ></ImgE></div>
             <p class="name">{{item.sellerName}}<span class="tag yc bgColor">{{item.user_tag | catergoryIdFilter}}</span></p>
             <span class="focus-on" @click="deleteGoodsFavourite(item.id)">取消关注</span>
           </div>
@@ -80,6 +80,25 @@ export default {
         }
     },
   methods: {
+    chipShop(item){
+               
+                if(item.user_tag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                           seller_id:item.seller_id
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                         
+                            sellerId:item.sellerId
+                        }
+                    })
+                }
+            },
     tabChange(x) {
       this.catergory_id = this.title[x].catergoryId;
       this.currentPage=1;

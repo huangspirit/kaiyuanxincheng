@@ -60,6 +60,11 @@ export default {
           inputpassword:''
     };
   },
+  watch:{
+    showinputPassword(newval){
+      console.log(newval)
+    }
+  },
   methods: {
        withDraw(){
             //先验证是否设置提现密码

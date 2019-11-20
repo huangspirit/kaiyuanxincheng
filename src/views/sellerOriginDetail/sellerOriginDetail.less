@@ -1,0 +1,233 @@
+.content{
+    color:#333;
+    padding-top:15px;
+    .title{
+        padding:15px;
+        margin-bottom:15px;
+        .hasSeller{
+            margin-left:15px;
+            font-size:12px;
+            border-radius: 3px;
+            padding:2px 6px;
+        }
+        img{
+            widows: 70px;
+            height:40px;
+            margin-right: 15px;
+        }
+    }
+    .baseInfo{
+        display:flex;
+        height:120px;
+        .left{
+            line-height: 120px;
+            text-align: center;
+            width:200px;
+            border:1px solid #ddd;
+            margin-right:15px;
+            overflow: hidden;
+            img{
+                max-height:99%;
+                max-width:99%;
+
+            }
+        }
+        .right{
+            height:100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex:1;
+            min-height:0;
+            min-width:0;
+            .link{
+                height:35px;
+                line-height:50px;
+            }
+            .desc{
+               
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 4;
+                overflow: hidden;
+                min-height:0;
+                min-width: 0;
+                line-height: 1.7;
+                font-size:13px;
+
+            }
+        }
+    }
+    .cateGory{
+        margin-bottom:15px;
+        .tit{
+           display:flex;
+           overflow: hidden;
+          margin-top:15px;
+          height:50px;
+            .name{
+                border-bottom:1px solid #df3f2f;
+                padding:0 5px;
+                height: 30px;
+                line-height:30px;
+            }
+            .square{
+                height:60px;
+                width:1px;
+                transform: rotate(45deg) translate(-1px,-29px) ;
+                background:#df3f2f;
+            }
+            .line{
+                border-top:1px solid #ddd;
+                flex:1;
+                margin-left:29px;
+            }
+        }
+        .itemone{
+            &>div{
+                margin-left:15px;
+                font-size:16px;
+                &:hover{
+                    color:#df3f2f;
+                }
+            }
+            ol{
+                margin-left:40px;
+                display: flex;
+                flex-wrap: wrap;
+                li{
+                    width:25%;
+                    overflow: hidden;
+                    margin-top:10px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    &:hover{
+                        color:#df3f2f
+                    }
+                }
+            }
+        }
+    }
+    .goodsListWrap{
+        .tit{
+            border-bottom:1px solid #333;
+            margin-top:20px;
+            padding-bottom:10px;
+            display: flex;
+            justify-content: space-between;
+            .Pagination{
+                /deep/.el-pagination{
+                    padding:0;
+                }
+            }
+        }
+        .goodslist{
+            display:flex;
+            flex-wrap:wrap;
+            .itemone{
+                position: relative;
+                padding:10px;
+                border:1px solid #ddd;
+                cursor: pointer;
+                width:18%;
+                margin-right:2%;
+                box-sizing: border-box;
+                margin-top:2%;
+                p{
+                    line-height: 25px;
+                    height:25px;
+                    overflow: hidden;
+                    width:100%;
+                    text-overflow: ellipsis;
+                    strong{
+                        font-size:18px;
+                    }
+                }
+                .mark{
+                    position: absolute;
+                    left:-1px;
+                    top:-1px;
+                    height:25px;
+                    width:25px;
+                    line-height: 25px;
+                    text-align:center;
+                    z-index:1;
+                }
+            }
+        }
+    }
+    .bottom {
+        &>.tit {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #333;
+          padding: 10px 0;
+          margin-bottom: 10px;
+        }
+        .Pagination /deep/ .el-pagination{
+            padding:0;
+        }
+        .comment {
+          .list {
+            .itemone {
+              margin-bottom: 10px;
+              padding: 15px;
+              display: flex;
+              &>.left{
+                  padding:0 20px;
+                  width:150px;
+                  box-sizing: border-box;
+                  text-align: center;
+                  img{
+                      width:70px;
+                      height:70px;
+                      margin:10px auto;
+                  }
+              }
+              &>.right{
+                  flex:1;
+                  .tit{
+                      padding:0 15px;
+                      margin-bottom:15px;
+                  }
+                  .content{
+                      background:#fff;
+                      padding:10px;
+                      min-height:50px;
+                  }
+                  .scorewrap{
+                      display: flex;
+                      justify-content: space-between;
+                      &>div{
+                          flex:1;
+                          padding:10px;
+                          
+                      }
+                      .img{
+                          img{
+                              width:60px;
+                              margin-right:10px;
+                          }
+                      }
+                      .score>div{
+                          display: flex;
+                          margin-bottom:5px;
+                          img{
+                              height:20px;
+                              margin-right:10px;
+                          }
+                      }
+                  }
+                  .reply{
+                      padding:15px;
+                      border-top:1px solid #333;
+                      p{
+                          margin-bottom:6px;
+                      }
+                  }
+              }
+            }
+          }
+        }
+      }
+}

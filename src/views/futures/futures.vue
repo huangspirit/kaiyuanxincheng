@@ -73,7 +73,10 @@
                                             <img :src="item.userImgeUrl" alt="" >
                                             <p :title="item.sellerName">
                                                 {{item.sellerName}}<br>
-                                               <span class="tag bgColor" v-if="item.tag!=3">{{item.tag | tagFilter}}</span> 
+                                                  <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span> 
+                                               <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> 
+                                             
                                             </p>
                                         </div>
                                     </div>

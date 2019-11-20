@@ -87,7 +87,7 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-        <el-dialog title="更新提现密码" :visible.sync="showsetpassword"  width="30%">
+        <el-dialog title="更新交易密码" :visible.sync="showsetpassword"  width="30%">
             <el-form :model="setform" label-width="100px">
                 <el-form-item label="旧密码">
                     <el-input v-model="setform.password"  show-password></el-input>

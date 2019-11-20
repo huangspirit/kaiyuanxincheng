@@ -3,7 +3,7 @@
   <div class="GoodsDetails">
     <div class="BrandDetail-tit">
       <el-breadcrumb separator-class="el-icon-arrow-right " class="allWidth">
-        <el-breadcrumb-item :to="{ path: '/' }">全部品牌</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/brand' }">全部品牌</el-breadcrumb-item>
         <el-breadcrumb-item
           :to="{ path: '/BrandDetail',query:{tag:'brand',documentid:goodsinfo.brandId,name:goodsinfo.brand} }"
         >{{goodsinfo.branda}}</el-breadcrumb-item>
@@ -60,7 +60,7 @@
             </span>
             <span>
               官方参考价：
-              <span style="text-decoration:line-through;font-size:16px" v-if="goodsinfo.priceunit">{{goodsinfo.priceunit.toUpperCase()}}{{goodsinfo.referPrice}}</span>
+              <span style="text-decoration:line-through;font-size:16px" >${{goodsinfo.referPrice}}</span>
             </span>
           </div>
           <div class="icon">

@@ -64,12 +64,12 @@
               <router-link
                   tag="span"
                 :to="{path:'/PersonalCenter/SellerOrderManagement/SellerOrderDetail',query:{id:item.goods_seller_id}}"
-              >订单明细</router-link>
+                style="width:60px;text-align:center;">订单明细</router-link>
             </el-button>
           </SellerOrderItem>
         </div>
       </div>
-       <div><el-button v-if="checklist0.length" @click="confirmDelivi(0)">国内合并发货</el-button>
+       <div class="fr"><el-button v-if="checklist0.length" @click="confirmDelivi(0)">国内合并发货</el-button>
        <!-- <el-button v-if="checklist1.length" @click="confirmDelivi(0)">香港合并发货</el-button> -->
        </div>
       <Pagination
@@ -254,18 +254,18 @@
             <el-form-item label="当前交期:">
               <p class="text">{{currentItem.expireTime | formatDate}}</p>
             </el-form-item>
-            <el-form-item label="交期延期:" prop="nameChangeDue">
+            <el-form-item label="交期变更为:" prop="nameChangeDue">
               <el-date-picker
                 v-model="ruleFormChangeDue.nameChangeDue"
                 type="datetime"
                 placeholder="新交期时间"
                 style="margin-right:100px"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd"
+                format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="温馨提示:">
-              <p style="color:#ff6600">更改交期超过7天，买家可在24小时之内撤销订单；每个商品订单交期只能更改一次；在老交期前7天之后无法更改新交期；</p>
+              <p style="color:#ff6600">更改交期超过7天，买家可在24小时之内撤销订单；每个商品订单交期只能更改一次；</p>
             </el-form-item>
           </el-form>
         </div>

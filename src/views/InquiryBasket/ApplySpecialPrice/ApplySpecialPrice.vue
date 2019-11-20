@@ -381,8 +381,10 @@ export default {
       topShow: false,
       checked: true,
       productData: [],
-      oneData: [],
-        proInformation:""
+      oneData: {
+        map:{}
+      },
+      proInformation:""
     };
   },
   computed: {
@@ -415,7 +417,7 @@ export default {
     } else {
       if (this.proInformation.goodsbaseIno) {
         this.oneData = this.proInformation.goodsbaseIno;
-     
+     console.log("oneData:",this.oneData)
         this.formAlign = {...this.formAlign,...this.proInformation};
         if(this.proInformation.insteadNo){
           let arr= this.proInformation.insteadNo.split("@");
@@ -433,6 +435,7 @@ export default {
 
       } else {
         this.oneData = this.proInformation;
+          console.log("oneData:",this.oneData)
       }
       this.topShow = true;
     }

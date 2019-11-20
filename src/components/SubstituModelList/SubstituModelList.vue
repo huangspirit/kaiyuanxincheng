@@ -65,10 +65,10 @@
               </p>
                 <p class="btnWrap">
                     <span class="bgColor btn" @click="pushlishspecialPrice(k)" v-if="!item.hasSeller">我有特价</span>
-                    <span class="orange btn "  @click="specialPrice(k)" v-if="item.hasSeller">申请特价</span>
+                    <span class="bgOrange btn "  @click="specialPrice(k)" v-if="item.hasSeller">申请特价</span>
                       <span class="bgColor btn" @click="addInquiry(k)" v-if="item.hasSeller">询价篮</span>
-                    <span v-if="!item.focus" class="gray btn" @click="focus(k)">关注此器件</span>
-                    <span v-if="item.focus" class="gray">已关注</span>
+                    <span v-if="!item.focus" class="bgGray btn" @click="focus(k)">关注此器件</span>
+                    <span v-if="item.focus" class="bgd5">已关注</span>
                 </p>
             </div>
           </div>

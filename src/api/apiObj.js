@@ -10,18 +10,30 @@ const common = {
     querySysMessage: {
         url: "api-n/notification-anon/querySysMessage"
     },
-    resetme:{
-        url:"api-u/users/me"
+    resetme: {
+        url: "api-u/users/me"
     },
-    refresh_token:{
-        url:"sys/refresh_token"
+    refresh_token: {
+        url: "sys/refresh_token"
     },
-    getuserInfo:{
-        url:"api-u/users/current"
+    getuserInfo: {
+        url: "api-u/users/current"
     },
     //获取月结详情
-    findVipDetail:{
-        url:"api-u/vip/findVipDetail"
+    findVipDetail: {
+        url: "api-u/vip/findVipDetail"
+    },
+    //反馈
+    queryItem: {
+        url:"api-b/feed/queryItem"
+    },
+    //保存反馈
+    save:{
+        url:"api-b/feed/save"
+    },
+    //获取反馈的内容
+    queryFeedList:{
+        url:"api-b/feed/queryFeedList"
     }
 
 }
@@ -49,38 +61,40 @@ const home = {
         url: "api-g/gods-anon/queryCatergoryHomePage"
     },
     //获取特价直供的分类
-    queryDirectC:{
-        url:"api-g/gods-anon/queryDirectC"
+    queryDirectC: {
+        url: "api-g/gods-anon/queryDirectC"
     }
 
 }
-const footer={
-    queryWebConfigTitle:{
-        url:"api-b/webFront/queryWebConfigTitle"
+const footer = {
+    queryWebConfigTitle: {
+        url: "api-b/webFront/queryWebConfigTitle"
     },
-    queryConfigDetail:{
-        url:"api-b/web/queryConfigDetail"
+    queryConfigDetail: {
+        url: "api-b/web/queryConfigDetail"
     }
 };
 const buyerOrderCenter = {
+    //增加评论
+    insertOrderComment: { url: "api-order/order/insertOrderComment" },
     //支付宝支付取消订单时的报关税
-    payGuanshui:{url:"api-order/alipay/payGuanshui"}, 
+    payGuanshui: { url: "api-order/alipay/payGuanshui" },
     //微信支付取消订单时的报关税
-    getWechatPayBaoguan:{url:"api-order/wechat/getWechatPayBaoguan"},
+    getWechatPayBaoguan: { url: "api-order/wechat/getWechatPayBaoguan" },
     //对公转账支付取消订单时的报关税
-    uploadBankTransferNo:{url:"api-order/customerCenter/uploadBankTransferNo"},
-       //提升额度
-    increaseCredit:{
-        url:'api-b/vipApply/increaseCredit',
-        method:'post'
+    uploadBankTransferNo: { url: "api-order/customerCenter/uploadBankTransferNo" },
+    //提升额度
+    increaseCredit: {
+        url: 'api-b/vipApply/increaseCredit',
+        method: 'post'
     },
     //获取买家订单
-    queryOrderPersonal:{
-        url:"api-order/customerCenter/queryOrderPersonal"
+    queryOrderPersonal: {
+        url: "api-order/customerCenter/queryOrderPersonal"
     },
     //获取买家订单详情
-    queryOrderDeatil:{
-        url:"api-order/customerCenter/queryOrderDeatil"
+    queryOrderDeatil: {
+        url: "api-order/customerCenter/queryOrderDeatil"
     },
     //确认更改交期
     confirmChangeDiliverTime: {
@@ -96,30 +110,34 @@ const buyerOrderCenter = {
         url: "/api-g/goods-b/queryPublishGoodsListByUser"
     },
     //确认收货
-    confirmRecieveGoods:{
-        url:"api-order/customerCenter/confirmRecieveGoods"
+    confirmRecieveGoods: {
+        url: "api-order/customerCenter/confirmRecieveGoods"
     },
     //月结查询订单
-    vipOrderBill:{
-        url:"api-order/customerCenter/vipOrderBill"
+    vipOrderBill: {
+        url: "api-order/customerCenter/vipOrderBill"
     },
-    vipOrderBillCheck :{
-        url:"api-order/customerCenter/vipOrderBillCheck",method:"post"
+    vipOrderBillCheck: {
+        url: "api-order/customerCenter/vipOrderBillCheck", method: "post"
     },
-    queryOrderBillCheckList:{
-        url:"api-order/customerCenter/queryOrderBillCheckList"
+    queryOrderBillCheckList: {
+        url: "api-order/customerCenter/queryOrderBillCheckList"
     },
-    vipOrderBillForPay:{
-        url:"api-order/customerCenter/vipOrderBillForPay"
+    vipOrderBillForPay: {
+        url: "api-order/customerCenter/vipOrderBillForPay"
+    },
+    //月结改普通订单
+    changePayMent:{
+        url:"/api-order/customerCenter/changePayMent"
     }
 }
 const sellerOrderCenter = {
     //批量国内发货
-    diliverBatchGoods:{
-        url:"api-order/sellerCenter/diliverBatchGoods"
+    diliverBatchGoods: {
+        url: "api-order/sellerCenter/diliverBatchGoods"
     },
-    querySellerCenterSummary:{
-        url:"api-order/selllerCenter/querySellerCenterSummary"
+    querySellerCenterSummary: {
+        url: "api-order/selllerCenter/querySellerCenterSummary"
     },
     diliverGoods: {
         url: "/api-order/sellerCenter/diliverGoods"
@@ -145,64 +163,105 @@ const sellerOrderCenter = {
 }
 const sellerCenter = {
     //商品上下架管理
-    updateBatchPublishGoodsSatus:{
-        url:"api-g/goods-b/updateBatchPublishGoodsSatus"
+    updateBatchPublishGoodsSatus: {
+        url: "api-g/goods-b/updateBatchPublishGoodsSatus"
     },
     //卖家账单中心查询
     queryAccountDetail: {
         url: "/api-order/sellerCenter/queryAccountDetail"
     },
     //卖家结算账单
-    saveSellerCheckApply:{
-        url:'/api-order/sellerCenter/saveSellerCheckApply'
+    saveSellerCheckApply: {
+        url: '/api-order/sellerCenter/saveSellerCheckApply'
     },
     //根据seller_id查询发布商品 的详情
-    querySellerGoodsDetail:{
-        url:"api-g/goods/querySellerGoodsDetail"
+    querySellerGoodsDetail: {
+        url: "api-g/goods/querySellerGoodsDetail"
     },
     //追加库存
-    updateStockCount:{
-        url:"api-g/goods-b/updateStockCount"
+    updateStockCount: {
+        url: "api-g/goods-b/updateStockCount"
+    },
+    //原厂发布产品
+    //获取类目
+    queryCatergory: {
+        url: "api-g/goods-b/queryCatergory"
+    },
+    //获取二级分类的属性
+    queryExproperty: {
+        url: "api-g/goods-b/queryExproperty"
+    },
+    saveGoodsBaseInfo: {
+        url: 'api-g/goods-b/saveAGoodsBaseInfo'
+    },
+    saveBatchGoodsExinfo: {
+        url: "api-g/goods-b/saveBatchGoodsExinfo"
+    },
+    //校验产品是否重复
+    searchDisrictGoods: {
+        url: "api-g/goods-b/searchDisrictGoods"
+    },
+    //獲取产品基础库类别
+    querySllerCatergory: {
+        url: "api-g/goods/querySllerCatergory"
+    },
+    //获取产品列表
+    querySllerStockGoodsList: {
+        url: "api-g/goods/querySllerStockGoodsList"
+    },
+    //获取产品详情
+    findGoodsBaseInfoById: {
+        url: "api-g/goods-b/findGoodsBaseInfoById"
+    },
+    //更新产品的基础信息
+    updateGoodsBaseInfo: {
+        url: "api-g/goods-b/updateGoodsBaseInfo"
+    },
+    //更新產品屬性
+    updateGoodsExinfo: {
+        url: "api-g/goods-b/updateGoodsExinfo"
     }
+
 }
 const personCenter = {
+
     //买家中心汇总页面
     queryCustomerCenterSummary: {
         url: "api-u/users-anon/queryCustomerCenterSummary"
     },
-    queryUserConsumeDetailList:{
-        url:"api-u/users/queryUserConsumeDetailList"
+    queryUserConsumeDetailList: {
+        url: "api-u/users/queryUserConsumeDetailList"
     },
     //提现的相关接口
-    saveBank:{
-        url:"api-b/draw/saveBank",method:'post'
+    saveBank: {
+        url: "api-b/draw/saveBank", method: 'post'
     },
-    getBankList:{
-        url:"api-b/draw/getBankList"
+    getBankList: {
+        url: "api-b/draw/getBankList"
     },
-    deleBank:{
-        url:"api-b/draw/deleBank"
+    deleBank: {
+        url: "api-b/draw/deleBank"
     },
-    checkSetPassword:{
-        url:'api-b/draw/checkSetPassword'
+    checkSetPassword: {
+        url: 'api-b/draw/checkSetPassword'
     },
-    count:{
-        url:"api-b/draw/count"
+    count: {
+        url: "api-b/draw/count"
     },
-    saveDraw:{
-        url:"api-b/draw/saveDraw",method:"post"
+    saveDraw: {
+        url: "api-b/draw/saveDraw", method: "post"
     },
-    savedrawPassword:{
-        url:"api-b/draw/savedrawPassword",method:"post"
+    savedrawPassword: {
+        url: "api-b/draw/savedrawPassword", method: "post"
     },
-    updatedrawPassword:{
-        url:"api-b/draw/updatedrawPassword",method:"post"
+    updatedrawPassword: {
+        url: "api-b/draw/updatedrawPassword", method: "post"
     },
-    checkdrawPassword:{
-        url:"api-b/draw/checkdrawPassword",method:'post'
+    checkdrawPassword: {
+        url: "api-b/draw/checkdrawPassword", method: 'post'
     },
-    getDrawList:{
-        url:"api-b/draw/getDrawList"
+    getDrawList: {
+        url: "api-b/draw/getDrawList"
     }
 }
 const message = {
@@ -221,11 +280,11 @@ const message = {
 }
 const shoppingCar = {
 
-    queryGoodsBillSetOffList:{
-        url:"api-g/goods-b/queryGoodsBillSetOffList"
+    queryGoodsBillSetOffList: {
+        url: "api-g/goods-b/queryGoodsBillSetOffList"
     },
-    queryUserBill:{
-        url:"/api-u/userBill/queryUserBill"
+    queryUserBill: {
+        url: "/api-u/userBill/queryUserBill"
     },
     insertShoppingCar: {
         url: "/api-g/sc/insertShoppingCar"
@@ -260,7 +319,7 @@ const shoppingCar = {
     searchSheetList: {
         url: "api-g/ic/queryInquirySheetList"
     },
-    
+
 }
 const siderInquiryList = {
     // 全部 批复
@@ -275,8 +334,8 @@ const siderInquiryList = {
         url: "/api-g/ic/reApplyInquirySheet"
     },
     //询价复议
-    reApplyInquirySheetPrice:{
-        url:"api-g/ic/reApplyInquirySheetPrice"
+    reApplyInquirySheetPrice: {
+        url: "api-g/ic/reApplyInquirySheetPrice"
     }
 
 }
@@ -308,6 +367,21 @@ const BrandDetail = {
         method: "post"
     }
 
+}
+const sellerShop = {
+    //回复评论
+    replyOrderComment:{url:"api-order/order/replyOrderComment"},
+    //获取评论
+    orderCommentList:{
+        url:"api-order/order-anon/orderCommentList"
+    },
+    //获取商家详情
+    querySellerShop:{
+        url:"api-g/gods-anon/querySellerShop"
+    },
+    queryUserInfo:{
+        url:"api-u/users-anon/queryUserInfo"
+    }
 }
 const FactoryEntry = {
     queryCompnayInfo: {
@@ -398,5 +472,6 @@ export {
     presonalAdress,
     personCenter,
     topupDeposit,
-    agentFication
+    agentFication,
+    sellerShop
 }

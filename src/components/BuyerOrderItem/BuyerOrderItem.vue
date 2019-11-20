@@ -133,7 +133,7 @@
                 class="wrapbtn"
                 v-if="item.orderVo.isMonth && item.orderVo.payButton"
               >
-                <span @click="vipPayment" class="bgColor">全额付款</span>
+                <span @click="vipPayment" class="bgColor">白条支付</span>
               </div>
               <div
                 class="wrapbtn"

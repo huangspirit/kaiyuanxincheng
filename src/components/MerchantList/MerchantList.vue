@@ -29,19 +29,21 @@
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;">{{item.sellerName}}</p>
+                  <p style="font-size:15px;cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
                   <p>
                     <span
                       class="tag bgColor"
                       style="margin-right:10px;"
                       v-if="item.tag!=3"
                     >{{item.tag | tagFilter}}</span>
-                    <span class="btn tag" v-if="!item.focus" @click="focus(index)">
+                    <span class="bgColor tag" v-if="!item.focus" @click="focus(index)" style="cursor:pointer;">关注此卖家</span>
+                      <span class="bgd5 tag" v-if="item.focus" >已关注</span>
+                    <!-- <span class="btn tag" v-if="!item.focus" @click="focus(index)">
                       <img src="@/assets/image/icon/unfocus.png" alt />关注此卖家
                     </span>
                     <span class="tag" v-if="item.focus">
                       <img src="@/assets/image/icon/focus.png" alt />已关注
-                    </span>
+                    </span> -->
                   </p>
                 </div>
               </div>
@@ -166,19 +168,25 @@
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;">{{item.sellerName}}</p>
+                  <p style="font-size:15px;cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
                   <p>
                     <span
-                      class="tag blue greenColor"
+                      class="tag bgColor"
+                      v-if="item.tag==1"
                       style="margin-right:10px;"
-                      v-if="item.tag!=3"
                     >{{item.tag | tagFilter}}</span>
-                    <span class="btn tag" v-if="!item.focus" @click="focus(index)">
-                      <img src="@/assets/image/icon/unfocus.png" alt />关注此卖家
-                    </span>
-                    <span class="tag" v-if="item.focus">
-                      <img src="@/assets/image/icon/focus.png" alt />已关注
-                    </span>
+                    <span
+                      class="tag bgBlu"
+                      v-if="item.tag==2"
+                      style="margin-right:10px;"
+                    >{{item.tag | tagFilter}}</span>
+                    <span
+                      class="tag bgOrange"
+                      v-if="item.tag==18"
+                      style="margin-right:10px;"
+                    >{{item.tag | tagFilter}}</span>
+                      <span class="bgColor tag" v-if="!item.focus" @click="focus(index)" style="cursor:pointer;">关注此卖家</span>
+                      <span class="bgd5 tag" v-if="item.focus" >已关注</span>
                   </p>
                 </div>
               </div>
@@ -360,8 +368,28 @@ export default {
   },
 
   methods: {
+    chipShop(item){
+       if(item.tag==1){
+                    this.$router.push({
+                        path:"/BrandDetail",
+                        query:{
+                            tag:'brand',
+                            documentid:item.brandId,
+                            name:item.brandName
+                        }
+                    })
+                }else{
+                    this.$router.push({
+                        path:"/sellerShopDetail",
+                        query:{
+                          
+                            sellerId:item.sellerId
+                        }
+                    })
+                }
+    },
     bigimg(url, index) {
-      console.log("fangda");
+    
       this.dialogVisible = true;
       this.dialogImageUrl = url;
       this.initialIndex = index;
