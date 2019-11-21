@@ -113,13 +113,16 @@ export default {
     };
   },
   computed: {
-  
+   ...mapState({
+         title: state => state.title,
+      loginState: state => state.loginState,
+      UserInforma:state => state.Login.UserInforma,
+    }),
     start() {
       return (this.currentPage - 1) * this.pageSize;
     },
  
   },
- 
   components: {
    // MerchantList,
    // HotSearch,
@@ -128,8 +131,20 @@ export default {
   methods: {
       ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     chipOriginalFactoryEntry(){
-       this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.name],residencetype:1});
+      if (this.loginState) {
+       
+        if(this.UserInforma.userTagMap.seller){
+          this.$message({
+            message:'您已是'+this.title+'的商家，不能再次入驻！',
+            type:'warning'
+          })
+            return;
+        }
+     this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.name],residencetype:1});
       this.$router.push("/OriginalFactoryEntry/BasicInforma")
+      } else {
+        this.$router.push("/Login");
+      }
     },
       init(){
           this.$loading(this.$store.state.loading)

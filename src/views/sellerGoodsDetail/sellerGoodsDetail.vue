@@ -628,10 +628,10 @@ export default {
       factorySellerInfo.priceType = factorySellerInfo.price_type;
       factorySellerInfo.priceLevel = factorySellerInfo.price_level;
       factorySellerInfo.seckilPrice = factorySellerInfo.seckil_price;
-      this.$store.dispatch("promation", {
+      this.$store.dispatch("promation", [{
         ...this.goodsinfo,
         factorySellerInfo: factorySellerInfo
-      });
+      }]);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
     pushlishspecialPrice() {

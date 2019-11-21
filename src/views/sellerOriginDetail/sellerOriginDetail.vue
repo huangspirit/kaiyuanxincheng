@@ -4,7 +4,7 @@
       <img :src="brandInfo.imageUrl" alt />
       <span>{{brandInfo.name}}</span>
       <span class="bgColor hasSeller" v-if="brandInfo.hasSeller">已入驻</span>
-      <span class="bgColor hasSeller" v-if="!brandInfo.hasSeller" style="cursor:pointer;">去入驻</span>
+      <span class="bgColor hasSeller" v-if="!brandInfo.hasSeller" style="cursor:pointer;" @click="chipOriginalFactoryEntry">去入驻</span>
     </div>
     <div class="baseInfo">
       <div class="left">
@@ -309,8 +309,34 @@ export default {
       this.getbrandInfo(this.$route.query.seller_id);
     }
   },
+  computed:{
+      ...mapState({
+         title: state => state.title,
+      loginState: state => state.loginState,
+      UserInforma:state => state.Login.UserInforma,
+    })
+  },
   methods: {
+     ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     ...mapMutations("Direct", ["savedirectJOSN"]),
+    chipOriginalFactoryEntry(){
+      if (this.loginState) {
+       
+        if(this.UserInforma.userTagMap.seller){
+          this.$message({
+            message:'您已是'+this.title+'的商家，不能再次入驻！',
+            type:'warning'
+          })
+            return;
+        }
+    
+       this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.brandName],residencetype:1});
+      this.$router.push("/OriginalFactoryEntry/BasicInforma")
+      } else {
+        this.$router.push("/Login");
+      }
+      
+    },
     send(item,item0) {
       this.parent_id = item.catergoryId;
       this.listFlag = item.catergoryId;

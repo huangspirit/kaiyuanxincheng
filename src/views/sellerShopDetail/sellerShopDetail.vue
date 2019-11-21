@@ -350,11 +350,11 @@
         </ul>
       </div>
     </div>
-    <el-dialog title :visible.sync="showqualification" width="700px" class="showqualification">
-      <el-carousel height="600px" indicator-position="outside">
+    <el-dialog title :visible.sync="showqualification" width="700px" class="showqualification" top="10vh">
+      <el-carousel height="500px" indicator-position="outside">
         <el-carousel-item v-for="item in sellerinfo.qualification.list" :key="item.id">
           <div class="wrap">
-            <ImgE :src="sellerinfo.qualification.url+item.qualificationImg" :W="600" :H="500"></ImgE>
+            <ImgE :src="sellerinfo.qualification.url+item.qualificationImg" :W="600" :H="400"></ImgE>
             <h3>代理品牌：{{item.brandName}}</h3>
           </div>
         </el-carousel-item>

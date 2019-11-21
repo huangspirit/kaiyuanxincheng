@@ -82,7 +82,7 @@
             <div class="tagwrap">
               <span :class="item.goods_type?'borderGreen green':'borderColor color'">{{item.goods_type?'现货':'订货'}}</span>
               <span class="borderColor">{{item.diliverPlace}}交货</span>
-              <span class="borderBlu" :class="item.seller_always?'color':''">{{item.goods_type?'限时抢购':'长期特价'}}</span>
+              <span class="borderBlu" :class="item.seller_always?'':'color'">{{item.seller_always?'长期特价':'限时抢购'}}</span>
             </div>
             <div class="info">
               <div class="sellerInfo ">
@@ -414,13 +414,13 @@
               <div class="goodsName taginfo">
                 <img :src="item.userImgeUrl" alt style="cursor:pointer;" @click="chipShop(item)" />
                 <div>
-                  <p style="cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
+                  <p class="sellerName" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
                   <p>
                     <span class="btn blue" v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
                     <span v-if="item.focus" class="btn bgd5">已关注</span>
                     <span
                       v-if="!item.focus"
-                      class="btn focus"
+                      class="btn focus bgColor"
                       @click.stop="addFocus(k,'oldProduct')"
                     >关注</span>
                   </p>
@@ -443,7 +443,7 @@
                                 }"
                 >{{item.brandName}}</router-link>
               </div>
-              <div class="oneitem">{{item.base_no}}</div>
+              <div class="oneitem green">{{item.base_no}}</div>
               <div class="oneitem">{{item.goodsStockCount}}</div>
 
               <div class="color stepPriceWrap oneitem">
@@ -627,13 +627,16 @@ export default {
     ...mapState({
       title: state => state.title,
       headerFxed: state => state.headerFxed,
-      loginState: state => state.loginState
+      loginState: state => state.loginState,
+      // UserInforma:state => state.Login.UserInforma,
     })
   },
   watch: {
     selected(k) {
-      this.catergoryBrandList = this.CatergoryList[k].list;
-      this.querySecondCatergory(k);
+      this.catergoryBrandList = this.CatergoryList[k].brandList;
+      this.secondCategory = this.CatergoryList[k].childernList;
+    //  this.querySecondCatergory(k);
+        
     }
   },
   filters: {
@@ -657,7 +660,6 @@ export default {
       //获取分类
       await this.queryCatergoryHomePage(0);
     },
-
     querySysMessage() {
       var _this = this;
       axios
@@ -783,9 +785,10 @@ export default {
         .request({ ...home.queryCatergoryHomePage, params: obj })
         .then(res => {
           this.CatergoryList = res.data;
-          this.catergoryBrandList = res.data[0].list;
+          this.catergoryBrandList = res.data[0].brandList;
+          this.secondCategory = res.data[0].childernList;
           this.interval = setInterval(this.scroll, 5000);
-          this.querySecondCatergory(0);
+         // this.querySecondCatergory(0);
         });
     },
     querySecondCatergory(k) {
@@ -882,6 +885,14 @@ export default {
     settle() {
       //商家入驻
       if (this.loginState) {
+         if(this.UserInforma.userTagMap.seller){
+          this.$message({
+            message:'您已是'+this.title+'的商家，不能再次入驻！',
+            type:'warning'
+          })
+            return;
+        }
+    
         this.$router.push("/OriginalFactoryEntry");
       } else {
         this.$router.push("/Login");
@@ -952,7 +963,7 @@ export default {
       this.GetUserInforma({
         access_token: sessionStorage.getItem("access_token")
       }).then(res => {
-        this.UserInforma = res;
+         this.UserInforma = res;
         this.isSeller = this.UserInforma.userTagMap.seller;
       });
     } else {

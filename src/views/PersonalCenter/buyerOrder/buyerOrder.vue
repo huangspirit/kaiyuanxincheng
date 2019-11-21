@@ -362,15 +362,8 @@
                                           query:{orderNo:item.orderVo.order_no}
                                           }"
                       >
-                        <a class="btnGreen">详情</a>
+                        <a class="btnGreen">订单详情</a>
                       </router-link>
-                      <br />
-                      <a
-                        href="javascript:;"
-                        @click="cancleOrder(1,item.orderVo.id)"
-                        v-if="item.orderVo.cancelButton"
-                        class="gray"
-                      >取消订单</a>
                       <div v-if="item.orderVo.expireTime" class="counttimewrap">
                         <CountTime
                           class="CountTime"
@@ -387,6 +380,12 @@
                           :secondsTxt="'秒'"
                         ></CountTime>
                       </div>
+                      <a
+                        href="javascript:;"
+                        @click="cancleOrder(1,item.orderVo.id)"
+                        v-if="item.orderVo.cancelButton"
+                        class="gray"
+                      >取消订单</a>
                     </td>
                   </template>
                 </tr>

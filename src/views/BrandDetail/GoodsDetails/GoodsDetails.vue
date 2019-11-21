@@ -79,11 +79,11 @@
               v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.seller_goods_id"
             >
               <span class="btn bgOrange" @click="specialPrice">申请特价</span>
-              <span class="btn bgGray" @click="addInquiry">加入询价蓝</span>
+              <span class="btn bgGray" @click="addInquiry">加入询价篮</span>
             </template>
             <template v-else>
               <span style=" cursor: unset;background:#bbb">申请特价</span>
-              <span style=" cursor: unset;background:#bbb">加入询价蓝</span>
+              <span style=" cursor: unset;background:#bbb">加入询价篮</span>
             </template>
           </div>
         </div>
@@ -315,10 +315,14 @@ export default {
       factorySellerInfo.priceType = factorySellerInfo.price_type;
       factorySellerInfo.priceLevel = factorySellerInfo.price_level;
       factorySellerInfo.seckilPrice = factorySellerInfo.seckil_price;
-      this.$store.dispatch("promation", {
+      this.$store.dispatch("promation", [{
         ...this.goodsinfo,
         factorySellerInfo: factorySellerInfo
-      });
+      }]);
+      console.log({
+        ...this.goodsinfo,
+        factorySellerInfo: factorySellerInfo
+      })
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     }
   },

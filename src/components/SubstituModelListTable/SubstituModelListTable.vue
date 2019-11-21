@@ -223,7 +223,7 @@ export default {
           if(factorySellerInfo.seckil_price){
               factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
           }
-          let obj={goodsbaseIno:{...item,factorySellerInfo:factorySellerInfo}}
+          let obj=[{...item,factorySellerInfo:factorySellerInfo}]
           this.$store.dispatch("promation", obj);
           this.$router.push("/InquiryBasket/ApplySpecialPrice");
 

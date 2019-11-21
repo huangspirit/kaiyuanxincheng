@@ -50,8 +50,7 @@
                 alt
               />
             </div>
-              
-            </div>
+          </div>
           <div class="goodsImg">
               <ImgE :src="listItem.imageUrl " :W="200" :H="200"></ImgE>
           </div>

@@ -194,11 +194,10 @@
                     </ul>
                 </div>
                 <div class="list clear">
-                    <div class="title">采购清单</div>
+                    <!-- <div class="title">采购清单</div> -->
                     <table border="1">
                         <thead>
                             <tr>
-                                <th>供应商</th>
                                 <th>器件信息</th>
                                 <th>单价</th>
                                 <th>数量</th>
@@ -212,8 +211,23 @@
                         <tbody>
                             <template  v-for="item in orderInfoList">
                                 <div :key="item.id"></div>
-                                <tr v-for="(value,index) in item.list" :key="value.id">
-                                    <td :rowspan="item.list.length" v-if="index==0" style="border-right:1px solid #ddd;">
+                                <template v-for="(value,index) in item.list" >
+                                  <tr :key="index" v-if="index==0" class="tit">
+                                    <td colspan="8">
+                                      <div style="cursor:pointer;display:flex;"  @click="chipShop(value)">
+                                            <img :src="value.headImgUrl" alt="" class="userimage" style="margin-right:10px;">
+                                            <div>
+                                                    <p style="margin:5px;">{{value.username}}</p>
+                                        <span class="tag bgColor" v-if="value.tag==1">{{value.tag | tagFilter}}</span>
+                                             <span class="tag bgBlu" v-if="value.tag==2">{{value.tag | tagFilter}}</span>
+                                              <span class="tag bgOrange" v-if="value.tag==18">{{value.tag | tagFilter}}</span>
+                                            </div>
+                                       
+                                        </div>
+                                    </td>
+                                  </tr>
+                                <tr :key="value.id">
+                                    <!-- <td :rowspan="item.list.length" v-if="index==0" style="border-right:1px solid #ddd;">
                                         <div style="cursor:pointer;display:flex;"  @click="chipShop(value)">
                                             <img :src="value.headImgUrl" alt="" class="userimage" style="margin-right:10px;">
                                             <div>
@@ -224,8 +238,7 @@
                                             </div>
                                        
                                         </div>
-                                        
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div class="gpoodsinfo">
                                             <ImgE :src="value.goods_image" :W="80" :H="80"></ImgE>
@@ -292,7 +305,7 @@
                                         </div>
                                         <span
                                             slot="reference"
-                                            style="color:#0d98ff; cursor: pointer;margin-left:10px;"
+                                            style="color:#0d98ff; cursor: pointer;margin-left:10px;text-decoration: underline;"
                                         >查询物流</span>
                                         </el-popover>
                                     </div>
@@ -318,6 +331,7 @@
                                                 >去评价</el-button></p>
                                     </td>
                                 </tr>
+                                </template>
                             </template>
                             
                         </tbody>
@@ -770,6 +784,8 @@ import bankTransfer from "_c/bankTransfer";
                         })
                         this.orderInfoList=obj;
                         this.countObj=count;
+                        console.log(this.orderInfoList);
+                        console.log(this.countObj)
         
                 })
             },
@@ -1567,6 +1583,7 @@ this.payment(2, this.transPaymentobj);
                 table{
                     width:100%;
                     text-align: center;
+                    border:1px solid #ddd;
                     td,th{
                         padding:8px;
                         
@@ -1574,6 +1591,8 @@ this.payment(2, this.transPaymentobj);
                     th{
                         font-size:1vw;
                          white-space: nowrap;
+                         background:#ddd;
+                         line-height:40px;
                     }
                     td{
                         font-size:13px;
@@ -1592,6 +1611,9 @@ this.payment(2, this.transPaymentobj);
                     tr{
                         border-bottom:1px solid #ddd;
                     }
+                    .tit{
+                      background:#f2f2f2;
+                    }
                     .paynoImg{
                         height:20px;
                         cursor: cell;
@@ -1606,7 +1628,7 @@ this.payment(2, this.transPaymentobj);
                         display:flex;
                         align-items: center;
                         text-align: left;
-                        justify-content: center;
+                        // justify-content: center;
                         .ImgE{
                                 /deep/img{
                               

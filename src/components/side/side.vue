@@ -111,7 +111,7 @@ export default {
     border-top: 1px solid #fff;
     cursor: pointer;
     height: 70px;
-    width:70px;
+    width:60px;
     box-sizing: border-box;
     transition: all 0.3s;
     p {
