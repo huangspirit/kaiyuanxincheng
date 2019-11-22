@@ -148,6 +148,10 @@ const sellerOrderCenter = {
     querySysBill: {
         url: "/api-u/userBill/querySysBill"
     },
+    //根据billId查询开票信息
+    findBillContent: {
+        url: "/api-u/users-anon/findBillContent"
+    },
     billManager: {
         url: "/api-order/customerCenter/billManager"
     },

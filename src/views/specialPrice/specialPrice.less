@@ -49,7 +49,8 @@
     .goodsList{
       margin-top:20px;
       .list{
-       
+        display: flex;
+        flex-wrap: wrap;
         .item{
        
           width:32%;
@@ -64,6 +65,7 @@
           border: 1px solid #e7e7e7;
           box-sizing: border-box;
           background:#fff;
+         
           &:hover{
             box-shadow: 0 0 10px 2px #ddd;
             // transform: scale(1.003,1.003,1);
@@ -95,6 +97,7 @@
              
               overflow: hidden;
               text-overflow: ellipsis;
+              white-space: nowrap;
            
             }
             .price{
@@ -106,7 +109,10 @@
             }
             .goodsName{
               font-size:18px;
-           
+              cursor: pointer;
+              &:hover{
+                color:#df3f2f;
+              }
             }
             .time{
                 display:flex;
@@ -114,7 +120,6 @@
                 .counttime {
                     font-size:12px;
                 }
-          
             }
            
             .tagwrap{

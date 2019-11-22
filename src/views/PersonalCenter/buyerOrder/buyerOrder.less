@@ -190,17 +190,30 @@
                     span{
                         margin-right:15px;
                     }
+                    
                 }
+            }
+            .orderMoney{
+              text-align: left;
+              label{
+                display: inline-block;
+                width:40%;
+                margin-right:5px;
+                text-align: right;
+                margin-top:6px;
+              }
             }
             .CountTime{
                 font-size:12px;
                 white-space: nowrap;
                 font-weight: bolder;
                 margin-top:5px;
+                /deep/p{&>span:first-of-type{
+                  color:#333!important;
+                }}
                 /deep/.timeStr{
                     margin:0;
                     padding:0;
-                    color:#df3f2f;
                     background:#fff;
                 }
             }

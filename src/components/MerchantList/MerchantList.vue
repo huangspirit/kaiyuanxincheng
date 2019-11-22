@@ -2,8 +2,8 @@
   <!-- 商家列表 -->
   <div class="MerchantList" ref="searchBar" v-if="total">
     <ul class="title bgGray clear">
-      <li>实物图</li>
-      <li>商家</li>
+      <li style="width:10%">实物图</li>
+      <li style="width:30%">商家</li>
       <!-- <li>器件与订购描述</li> -->
       <li>交货周期</li>
       <li>订购条件</li>
@@ -15,21 +15,22 @@
       <template v-for="(item,index) in MerchantList">
         <div v-if="item.tag==1" class="item originFactory clear" :key="index">
           <div class="flexitemwrap">
-            <div class="infoimg flexitem clear">
-              <template v-for="(item0 ,index0) in item.sellerGoodsImageUrl.split('@')">
-                <div :key="item0" v-if="index0<3">
-                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,index0)">
+            <div class="infoimg flexitem clear" style="width:10%">
+         
+                <div  >
+                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
                     <i class="el-icon-zoom-in"></i>
                   </span>
-                  <ImgE :src="baseURL3+'/'+item0" :W="50" :H="50"></ImgE>
+                  <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
                 </div>
-              </template>
+             
             </div>
-            <div class="info flexitem">
+            <div class="info flexitem" style="width:30%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
+                  <p style="font-size:15px;cursor:pointer;max-width:140px;overflow:hidden;text-overflow:ellipsis;
+                  white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
                   <p>
                     <span
                       class="tag bgColor"
@@ -154,21 +155,22 @@
         </div>
         <div v-else class="item clear" :key="index">
           <div class="flexitemwrap">
-            <div class="infoimg flexitem">
-              <template v-for="(item0 ,index0) in item.sellerGoodsImageUrl.split('@')">
-                <div :key="item0" v-if="index0<3">
-                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,index0)">
+            <div class="infoimg flexitem" style="width:10%">
+           
+                <div  >
+                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
                     <i class="el-icon-zoom-in"></i>
                   </span>
-                  <ImgE :src="baseURL3+'/'+item0" :W="50" :H="50"></ImgE>
+                  <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
                 </div>
-              </template>
+          
             </div>
-            <div class="info flexitem">
+            <div class="info flexitem" style="width:30%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;" @click="chipShop(item)">{{item.sellerName}}</p>
+                  <p style="font-size:15px;cursor:pointer;font-size:15px;cursor:pointer;max-width:140px;overflow:hidden;text-overflow:ellipsis;
+                  white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
                   <p>
                     <span
                       class="tag bgColor"

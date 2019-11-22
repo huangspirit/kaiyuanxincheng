@@ -1290,7 +1290,8 @@ export default {
               _this.bankTransferObj = {
                 url: _this.requestUrl,
                 money: _this.getOrderInfo.money,
-                title: "订单"
+                title: "订单",
+                danweiName:_this.DefaultInvoiceObject.corporatename
               };
             }
           });

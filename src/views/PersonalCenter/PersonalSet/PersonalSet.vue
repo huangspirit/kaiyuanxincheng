@@ -208,8 +208,8 @@
       </li>
       <li>
         <div class="cont" @click="setPassword">
-          <p class="name">帐户管理密码</p>
-         <div class="desc" >&nbsp;</div>
+          <p class="name">帐户密码管理</p>
+         <div class="desc" >此密码用于管理账单和提现</div>
           <p class="marginTop">
             <span>重新设置</span>
             <span class="el-icon-arrow-right fr"></span>

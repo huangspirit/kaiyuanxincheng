@@ -21,10 +21,12 @@
     <router-link to="/InquiryBasket" class="busket" tag="div">
       <span></span>
       <p>询价篮</p>
+        <div v-if="UserInforma.shoppingCarMap" class="mess">{{UserInforma.shoppingCarMap[2]}}</div>
     </router-link>
     <router-link to="/ShoppingCart" class="shoppingCar" tag="div">
       <span></span>
       <p>购物车</p>
+        <div v-if="UserInforma.shoppingCarMap" class="mess">{{UserInforma.shoppingCarMap[1]}}</div>
     </router-link>
 
     <div class="feedback" @click="showModal=true">
@@ -258,7 +260,7 @@ export default {
       line-height: 1.2;
       border-radius: 20px;
       font-size: 12px;
-      min-width: 25px;
+      min-width: 20px;
       box-sizing: border-box;
       text-align: center;
       

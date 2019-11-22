@@ -66,14 +66,14 @@
          
           </el-form-item>
          
- <el-form-item label="转账金额：" prop="transMoney">
+ <!-- <el-form-item label="转账金额：" prop="transMoney">
             <el-input v-model="ruleForm.transMoney"></el-input>
             <div
               class="desc color"
               v-if="ruleForm.transMoney && ruleForm.transMoney!=bankTransferObj.money"
               style="text-align:left;"
             >您输入的转账金额和应付金额不相等</div>
-          </el-form-item>
+          </el-form-item> -->
           </div>
          
         </el-form>
@@ -104,10 +104,13 @@ export default {
       dialogVisible: false,
       dialogImageUrl: "",
       disabled: false,
-      ruleForm: {},
+      ruleForm: {
+        payCompany:this.bankTransferObj.danweiName
+      },
       bandlist:[
           "农业银行","工商银行",'建设银行', '招商银行','交通银行'
       ],
+      
       rules: {
         payCompany: [
           { required: true, message: "请输入付款公司名称", trigger: "blur" }
@@ -115,9 +118,9 @@ export default {
         customerBank: [
           { required: true, message: "请输入转账银行", trigger: "blur" }
         ],
-        transMoney: [
-          { required: true, message: "请输入付款金额", trigger: "blur" }
-        ]
+        // transMoney: [
+        //   { required: true, message: "请输入付款金额", trigger: "blur" }
+        // ]
       },
       hasSelectImg: false
     };
