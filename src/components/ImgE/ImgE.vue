@@ -2,13 +2,13 @@
   <div style="display:inline-block;vertical-align: middle;" :style="`height:${this.H}px;width:${this.W}px;`">
     <span class="ImgE" :style="`height:${this.H}px;width:${this.W}px;line-height:${this.H}px;text-align:center;`">
         <span class="cover el-icon-zoom-in" :style="`line-height:${this.H}px`"  @click="showBigImg=true" v-if="isBig"></span>
-        <img :src="`${ src ? src : 'errorGoodsImgUrl'}?imageView2/2/w/${this.W}/h/${this.H}` " alt=''
+        <img :src="`${ (src && src!='-') ? src : errorGoodsImgUrl}?imageView2/2/w/${this.W}/h/${this.H}` " alt=''
         :onerror="`this.src='${errorGoodsImgUrl}?imageView2/2/w/${this.W}/h/${this.H}'`">
       </span>
       <div class="big" v-show="showBigImg" @click="showBigImg=false">
         <div class="wrap">
           <i class="el-icon-close fr close" @click="showBigImg=false"></i>
-          <img  :src="`${ src ? src : 'errorGoodsImgUrl'}` " alt=''
+          <img  :src="`${ src ? src : errorGoodsImgUrl}` " alt=''
           :onerror="`this.src='${errorGoodsImgUrl}'`">
         </div>
       </div>
@@ -36,7 +36,7 @@ export default {
   data(){
     return {
      // errorGoodsImgUrl:require("../../assets/image/public/errorImg.png")
-       errorGoodsImgUrl:baseURL3+"/275a03c28c9f400aafc211b59037c3a6.jpg",
+       errorGoodsImgUrl:baseURL3+"/dfdea895130640e790e87c7390014ca8.jpg",
        showBigImg:false
     }
   },

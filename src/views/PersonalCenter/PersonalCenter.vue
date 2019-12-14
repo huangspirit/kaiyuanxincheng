@@ -1,20 +1,22 @@
 <template>
   <div class="PersonalCenter" id="PersonalCenter">
-    <div class="sideMenu">
+    <div class="sideMenu noprint">
       <sideMenu :list="list"></sideMenu>
     </div>
     <div class="content">
       <div>
         <router-view></router-view>
       </div>
+      <deliverCar v-if="showDeliverCar"></deliverCar>
     </div>
+     
   </div>
 </template>
 <style lang="less" scoped>
 @import "./PersonalCenter.less";
 </style>
 <script>
-// import SideMenu from "_c/SideMenu";
+import deliverCar from "_c/deliverCar";
 import sideMenu from "../sideMenu";
 import { mapState } from "vuex";
 import { stat } from "fs";
@@ -204,31 +206,6 @@ export default {
               path: "/PersonalCenter/GetVipApplyDetail",
               icon: require("@/assets/image/sidemenuicon/GetVipApplyDetail.png")
             }
-            // {
-            //   title: "个人发票",
-            //   index: "3-5",
-            //   path: "/PersonalCenter/PersonalInvoice",
-            //   icon: require("@/assets/image/PersonalCenter/u38134.png")
-            // },
-            // {
-            //   title: "账号绑定",
-            //   index: "3-6",
-            //   path: "/PersonalCenter/AccountBind",
-            //   icon: require("@/assets/image/PersonalCenter/u6221.png")
-            // },
-
-            // {
-            //   title: "更改密码",
-            //   index: "3-7",
-            //   path: "/PersonalCenter/ChangePassword",
-            //   icon: require("@/assets/image/PersonalCenter/u37968.png")
-            // },
-            // {
-            //   title: "提醒设置",
-            //   index: "3-8",
-            //   path: "/PersonalCenter/RemindSet",
-            //   icon: require("@/assets/image/PersonalCenter/u37972.png")
-            // }
           ]
         }
       ]
@@ -236,19 +213,26 @@ export default {
   },
 
   components: {
-    sideMenu
+    sideMenu,
+    deliverCar
+  },
+  computed:{
+     ...mapState({
+      UserInforma:state => state.Login.UserInforma,
+     showDeliverCar:state =>state.showDeliverCar
+    })
   },
   mounted() {
-    var UserInforma = JSON.parse(sessionStorage.getItem("UserInforma"));
+  
     this.list = this.list.map(item => {
       if (item.index == 0) {
-        item.messageCount = UserInforma.messageCount;
+        item.messageCount = this.UserInforma.messageCount;
       } else if (item.index == 1) {
-        if (UserInforma.userTagMap) {
-          item.isShow = UserInforma.userTagMap.seller;
-          item.diabled = !UserInforma.userTagMap.seller;
-          if (UserInforma.userTagMap.seller == true) {
-            if (UserInforma.userTagMap.tag != 1) {
+        if (this.UserInforma.userTagMap) {
+          item.isShow = this.UserInforma.userTagMap.seller;
+          item.diabled = !this.UserInforma.userTagMap.seller;
+          if (this.UserInforma.userTagMap.seller == true) {
+            if (this.UserInforma.userTagMap.tag != 1) {
               item.children = item.children.map(item0 => {
                 if (item0.name == "inquiryList" || item0.name=="sellerPushProduct") {
                   item0.show = "hidden";
@@ -269,14 +253,14 @@ export default {
           }
         }
       } else if (item.index == 2) {
-        if (!UserInforma.userTagMap.vip) {
+        if (!this.UserInforma.userTagMap.vip) {
           item.children = item.children.map(item0 => {
             if (item0.name == "BuyerBillCenter") {
               item0.show = "hidden";
             }
             return item0;
           });
-        } else if (UserInforma.userTagMap.vip) {
+        } else if (this.UserInforma.userTagMap.vip) {
           item.children = item.children.map(item0 => {
             if (item0.name == "UpgradeLevel") {
               item0.show = "hidden";
@@ -289,12 +273,12 @@ export default {
         }
       } else if (item.index == 3) {
         item.children = item.children.map(item0 => {
-          if (!UserInforma.userTagMap.seller) {
+          if (!this.UserInforma.userTagMap.seller) {
             if (item0.name == "AgencyQualification") {
               item0.show = "hidden";
             }
           }
-          if (UserInforma.userTagMap.vipStatus == 0) {
+          if (this.UserInforma.userTagMap.vipStatus == 0) {
             //月结待审核
             if (
               item0.name == "UpgradeLevel" ||
@@ -306,8 +290,8 @@ export default {
               item0.show = true;
             }
           } else if (
-            UserInforma.userTagMap.vipStatus == 2 ||
-            UserInforma.userTagMap.vipStatus == 1
+            this.UserInforma.userTagMap.vipStatus == 2 ||
+            this.UserInforma.userTagMap.vipStatus == 1
           ) {
             //拒绝月结提升或 已经是月结
             if (item0.name == "UpgradeLevelRes") {
@@ -319,7 +303,7 @@ export default {
             ) {
               item0.show = "hidden";
             }
-          } else if (UserInforma.userTagMap.vipStatus == 3) {
+          } else if (this.UserInforma.userTagMap.vipStatus == 3) {
             //拒绝月结提升
             if (item0.name == "UpgradeLevel") {
               item0.show = true;

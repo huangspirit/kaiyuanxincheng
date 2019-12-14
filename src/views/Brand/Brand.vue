@@ -19,7 +19,7 @@
             name:item.brand
             }
             }">
-                <ImgE :src="item.imgurl" :W="300" :H="100" ></ImgE>
+                <ImgE :src="item.imgurl" :W="200" :H="75" ></ImgE>
             </router-link>
         </ul>
       </div>
@@ -82,7 +82,7 @@
 </style>
 
 <script>
-// import { mapState, mapGetters, mapActions } from "vuex";
+import {mapMutations} from "vuex";
 // import Swiper from "swiper";
 import { axios, home } from "@/api/apiObj";
 import "../../../node_modules/swiper/dist/css/swiper.css";
@@ -113,6 +113,7 @@ export default {
       clearInterval(this.interval)
   },
   methods: {
+    ...mapMutations(['setshowlogin']),
       joinOriginFactory(){
           //入驻原厂
           let UserInforma=sessionStorage.getItem("UserInforma")
@@ -124,7 +125,8 @@ export default {
                   this.$router.push("/OriginalFactoryEntry")
               }
           }else{
-              this.$router.push("/Login")
+              //this.$router.push("/Login")
+              this.setshowlogin(true)
           }
       },
       handleScroll() {

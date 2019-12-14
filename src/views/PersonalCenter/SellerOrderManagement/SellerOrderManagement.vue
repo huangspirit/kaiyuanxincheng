@@ -194,7 +194,7 @@
 
       <!-- 确认开票 -->
       <SetTankuang
-        class="settankuang"
+        class="settankuang openbill"
         :title="'确认开具发票'"
         v-if="centerDialogVisibleInvoice"
         @closeDialogCallBack="centerDialogVisibleInvoice = false"

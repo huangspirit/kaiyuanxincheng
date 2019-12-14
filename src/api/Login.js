@@ -43,10 +43,10 @@ export const QqBindPhone = ({
   state,
   type = 'web',
   flag = false,
-  wxSrc
+  isWX
 }) => {
   return axios.request({
-    url: `/api-u/users-anon/binding${wxSrc ? 'w' : 'q'}phone`,
+    url: `/api-u/users-anon/binding${isWX ? 'w' : 'q'}phone`,
     method: 'post',
     data: {},
     params: {
@@ -59,13 +59,13 @@ export const QqBindPhone = ({
     }
   })
 }
-export const QqSignIn = ({
-  wxSrc,
+export const SignIn = ({
+  isWX,
   openid,
   state
 }) => {
   return axios.request({
-    url: `/sys/login-${wxSrc ? 'wechat' : 'qq'}`,
+    url: `/sys/login-${isWX ? 'wechat' : 'qq'}`,
     method: 'post',
     data: {},
     params: {
@@ -142,12 +142,14 @@ export const UserInforma = (
 }
 
 // 微信登陆
-export const WxLogin = () => {
+export const WxLogin = (data) => {
   return axios.request({
     url: `api-u/wechat/web/getScanCode`,
     method: 'get',
     data: {},
-    params: {}
+    params: {
+      
+    }
   })
 }
 

@@ -10,6 +10,8 @@ const state = {
   loginState: (sessionStorage.getItem("loginState")=='false' || sessionStorage.getItem("loginState")=='true')?Boolean(sessionStorage.getItem("loginState")):false,
   // 滚动
   headerFxed: true,
+  showlogin:false,
+  showDeliverCar:false,
   proInformation:{},
   applyDetailEdit:{},
   title:'水木晶城',

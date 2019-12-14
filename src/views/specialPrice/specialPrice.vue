@@ -322,7 +322,7 @@
             this.getSpecialList(-1)
         },
         methods:{
-            ...mapMutations(['setloginState']),
+            ...mapMutations(['setloginState',"setshowlogin"]),
          
             currentChange(x){
                 this.currentPage=x;
@@ -350,7 +350,8 @@
             },
             addFocus(index){
                  if(!this.loginState){
-                    this.$router.push('/Login')
+                    //this.$router.push('/Login')
+                      this.setshowlogin(true)
                     return;
                 }
                 let obj={

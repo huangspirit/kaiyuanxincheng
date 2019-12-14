@@ -257,6 +257,7 @@ export default {
   },
   methods: {
     ...mapMutations("MerchantList",["setBuyOneGoodsDetail"]),
+       ...mapActions("Login", ["GetUserInforma"]),
       //加入购物车
       addCar(){
         let obj={
@@ -266,10 +267,17 @@ export default {
             goodsName:this.item.goods_name,
             goodsId:this.item.goods_id
         }
-        console.log(this.item)
+       
         axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
-            console.log(res)
-            this.$message.success("已加入购物车")
+          
+            if(res){
+              this.$message.success("已加入购物车");
+               var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+            }
+            
         })
       },
     // 提交结算

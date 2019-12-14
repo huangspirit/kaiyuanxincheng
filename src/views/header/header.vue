@@ -36,10 +36,12 @@
                         <span v-if="UserInforma.messageCount" class="mess">{{UserInforma.messageCount}}</span>
                     </router-link>
                 </div> -->
-                <router-link class="login" tag="div" to="/Login" v-if="!loginState">
+                <div class="login" v-if="!loginState" @click="uplogin">
                     快速登录
-                    <!--                <img src="@/assets/image/home/u1874.png" alt>-->
-                </router-link>
+                </div>
+                <!-- <router-link class="login" tag="div" to="/Login" v-if="!loginState">
+                    快速登录
+                </router-link> -->
                 <div class="person-center " @click="PersonalCenter" v-if="loginState">
                     <img :src="UserInforma.headImgUrl" alt class="userImg">
                     <div class="PersonalCenter-con bgGray" >
@@ -94,11 +96,15 @@
         },
         methods:{
             ...mapMutations([
-                "setloginState"
+                "setloginState",
+                "setshowlogin"
             ]),
             ...mapMutations("Login",[
                 "GetUserInforma"
             ]),
+            uplogin(){
+                this.setshowlogin(true)
+            },
             // 退出登录
             signOut() {
                 sessionStorage.removeItem("access_token");

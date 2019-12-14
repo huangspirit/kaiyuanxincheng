@@ -94,60 +94,65 @@
 
                             }
                             &:hover{
-                                .content{
+                                .wrapInfo{
                                     display: block;
                                 }
                             }
-                            .content{
-                                display:none;
-                                z-index:2;
+                            .wrapInfo{
                                 position: absolute;
-                                background: #fff;
-                                box-shadow: 0 0 2px 5px #f2f2f2;
-                                left:0;
-                                top:80%;
-                                padding:18px;
-                                .top{
-                                    display: flex;
+                                background:#fff;
+                                top:60%;
+                                box-shadow: 0 0 5px 2px #ddd;
+                                z-index:100;
+                                left:-20px;
+                                min-width:200px;
+                                text-align:center;
+                                padding:15px;
+                                display: none;
+                                  .wrap{
+                                   text-align: center;
+                                   border-bottom:1px solid #dddd;
+                                  padding:10px 15px;
+                                    p{
+                                      text-overflow: ellipsis;
+                                      overflow: hidden;
+                                    }
                                     img{
-                                        width:46px;
-                                        height:46px;
-                                        border-radius: 100%;
+                                      width:45px;
+                                      height:45px;
+                                      border-radius: 100%;
+                                      margin-right:15px;
+                                      border:1px solid #e3e3e3;
                                     }
+                                    .tag{
+                                      font-size:12px;
+                                      padding:1px 3px;
+                                      border-radius: 3px;
+                                      margin-right:5px;
+                                    }
+                                  }
+                                  .score{
+                                    padding:10px;
+                                    font-size:12px;
                                     div{
-                                        margin-left:12px;
-                                        .name{
-                                            font-size: 14px;
-                                            color:#999;
-                                            line-height: 1;
-                                        }
-                                        .tag{
-                                            border:1px solid #F45618;
-                                            color:#F45618;
-                                            padding:0 10px;
-                                            line-height: 22px;
-                                            white-space: nowrap;
-                                            font-size:12px;
-                                            margin-top:8px;
-                                        }
+                                      margin-bottom:7px;
+                                      text-align: left;
                                     }
-                                }
-                                .btn{
-                                    text-align: center;
-                                    line-height: 32px;
-                                    border-radius: 32px;
-                                    background:#FA363D;
-                                    color:#fff;
-                                    margin-top:20px;
-                                    cursor: pointer;
-                                    font-size:16px;
-                                    &.unactive{
-                                        background:#d5d5d5;
+                                    .scoreitem{
+                                      white-space: nowrap;
+                                      &>span{
+                                        margin-right:6px;
+                                        &>span{
+                                          margin-right:10px;
+                                          &:first-of-type{
+                                            font-size:16px;
+                                          }
+                                        }
+                                      }
                                     }
-                                }
-
-                                //display:none;
-                            }
+                                  }
+                                
+                              }
                         }
 
                     }

@@ -54,17 +54,7 @@
           label-width="200px"
           class="demo-ruleForm"
         >
-          <!-- <el-form-item label="头像：" prop="headImgUrl">
-            <uploadImg
-              @successUpload="successUpload"
-              :imageUrl.sync="ruleForm.headImgUrl"
-              :tip="'图片横宽比例1：1，文件大小在1MB以内，支持png、jpg、gif格式'"
-            ></uploadImg>
-
-          </el-form-item>
-          <el-form-item label="昵称：" prop="nickname">
-            <el-input v-model="ruleForm.nickname"></el-input>
-          </el-form-item>-->
+         
             <ul>
               <li>
                 <img src="@/assets/image/PersonalCenter/u133711.png" alt>

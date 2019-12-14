@@ -378,7 +378,6 @@ import { baseURL, baseURL2 } from "@/config";
                 });
             },
             getDiliverInfo(orderId) {
-    
                 this.queryExpress({ orderId }).then(res => {
                 
                     this.expressList = res.data;

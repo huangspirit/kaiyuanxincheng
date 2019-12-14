@@ -1,5 +1,5 @@
 <template>
-  <div class="cont">
+  <div class="cont" :class="isPersonalCenter?'percenter':''">
     <router-link to="/PersonalCenter/Message" class="messageCountWrap" tag="div">
       <span></span>
       <p>消息</p>
@@ -21,14 +21,13 @@
     <router-link to="/InquiryBasket" class="busket" tag="div">
       <span></span>
       <p>询价篮</p>
-        <div v-if="UserInforma.shoppingCarMap" class="mess">{{UserInforma.shoppingCarMap[2]}}</div>
+        <div v-if="UserInforma.shoppingCarMap && UserInforma.shoppingCarMap[2]" class="mess">{{UserInforma.shoppingCarMap[2]}}</div>
     </router-link>
     <router-link to="/ShoppingCart" class="shoppingCar" tag="div">
       <span></span>
       <p>购物车</p>
-        <div v-if="UserInforma.shoppingCarMap" class="mess">{{UserInforma.shoppingCarMap[1]}}</div>
+        <div v-if="UserInforma.shoppingCarMap && UserInforma.shoppingCarMap[1]" class="mess">{{UserInforma.shoppingCarMap[1]}}</div>
     </router-link>
-
     <div class="feedback" @click="showModal=true">
       <span></span>
       <p>反馈</p>
@@ -40,23 +39,6 @@
         <img src="@/assets/image/footer/u1697.png" alt="">
       </div>
     </div>
-    <!-- <el-dialog title="问题反馈" :visible.sync="showModal" style="position:fixed;">
-      <el-form :model="form">
-        <el-form-item label="反馈内容">
-          <el-input type="textarea" v-model="form.desc"></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog> -->
     <feed-back v-if="showModal" :showfeedback="showModal" @submitSuc="showModal=false"></feed-back>
 
   </div>
@@ -68,7 +50,15 @@ export default {
   data() {
     return {
       showModal: false,
+      isPersonalCenter:false
     };
+  },
+  watch:{
+    "$route":'fetchDate'
+
+  },
+  created(){
+    this.fetchDate()
   },
   mounted() {},
   components:{
@@ -80,6 +70,15 @@ export default {
     })
   },
   methods: {
+    fetchDate(){
+ 
+      if(this.$route.path.indexOf("PersonalCenter")!=-1){
+//标识进入了个人中心
+          this.isPersonalCenter=true;
+      }else{
+        this.isPersonalCenter=false
+      }
+    },
     feedBack() {
       this.showModal = true;
     }
@@ -90,48 +89,54 @@ export default {
 .cont {
   position: fixed;
   right: 0;
-  top: 30vh;
+  top: 20vh;
   z-index: 9;
   color: #fff;
   background: #5c5f63;
   border: 1px solid #fff;
   border-right: none;
-
-  &:hover {
-    & > div {
-     
-      transition: all 0.3s;
+  &.percenter{
+     &:hover {
+        & > div {
+          width:70px;
+          transition: all 0.3s;
+          p{
+            display:block;
+          }
+        }
+      }
+    &>div{
+      width:25px;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      p {
+        display: none;
+    }
     }
   }
+ 
   & > div {
     color: #fff;
     font-size: 12px;
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 8px;
+    padding: 8px 0;
     border-top: 1px solid #fff;
     cursor: pointer;
     height: 70px;
     width:60px;
     box-sizing: border-box;
     transition: all 0.3s;
-    p {
-      // position: absolute;
-      // width:100%;
-      // height:100%;
-      // line-height:50px;
-      // top:0;
-      // left:0;
-      // background:rgba(0,0,0,0.5);
-      // opacity: 0;
-      // font-size:12px;
-    }
+    
     span {
       width: 25px;
       padding-top: 20px;
       margin-right: 2px;
       margin-bottom: 5px;
+      opacity: 1;
     }
     &.miniparams {
       .img {

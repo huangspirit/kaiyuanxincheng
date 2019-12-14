@@ -2,21 +2,20 @@
   <!-- 商家列表 -->
   <div class="MerchantList" ref="searchBar" v-if="total">
     <ul class="title bgGray clear">
-      <li style="width:10%">实物图</li>
-      <li style="width:30%">商家</li>
+      <li style="width:7%">实物图</li>
+      <li style="width:20%">商家</li>
       <!-- <li>器件与订购描述</li> -->
-      <li>交货周期</li>
-      <li>订购条件</li>
-      <li>剩余数量</li>
-      <li>跟单价</li>
-      <li>操作</li>
+      <li class="itemone">交货周期</li>
+      <li class="itemone">订购条件</li>
+      <li class="itemone">剩余数量</li>
+      <li class="itemone">跟单价</li>
+      <li class="itemone">操作</li>
     </ul>
     <div>
       <template v-for="(item,index) in MerchantList">
         <div v-if="item.tag==1" class="item originFactory clear" :key="index">
           <div class="flexitemwrap">
-            <div class="infoimg flexitem clear" style="width:10%">
-         
+            <div class="infoimg clear" style="width:7%">
                 <div  >
                   <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
                     <i class="el-icon-zoom-in"></i>
@@ -25,11 +24,11 @@
                 </div>
              
             </div>
-            <div class="info flexitem" style="width:30%">
+            <div class="info" style="width:20%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;max-width:140px;overflow:hidden;text-overflow:ellipsis;
+                  <p style="font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
                   white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
                   <p>
                     <span
@@ -39,18 +38,13 @@
                     >{{item.tag | tagFilter}}</span>
                     <span class="bgColor tag" v-if="!item.focus" @click="focus(index)" style="cursor:pointer;">关注此卖家</span>
                       <span class="bgd5 tag" v-if="item.focus" >已关注</span>
-                    <!-- <span class="btn tag" v-if="!item.focus" @click="focus(index)">
-                      <img src="@/assets/image/icon/unfocus.png" alt />关注此卖家
-                    </span>
-                    <span class="tag" v-if="item.focus">
-                      <img src="@/assets/image/icon/focus.png" alt />已关注
-                    </span> -->
+                  
                   </p>
                 </div>
               </div>
             </div>
             <div class="timer flexitem">
-              <div>
+              <div style="text-align:center;">
                 <p>
                   <label class="blue">{{item.goods_type ? '现货' : '订货'}}</label>
                 </p>
@@ -130,11 +124,7 @@
               <p class="bgColor" @click="purchase(index)">立即跟单</p>
               <p class="specialPrice" @click="specialPrice">申请特价</p>
               <p class="addCark" @click="addCar(index)">加入购物车</p>
-              <Purchase
-                :item="item.purchaseObj"
-                v-if="item.showPurchase"
-                @closeCallBack="item.showPurchase=false"
-              ></Purchase>
+           
             </div>
           </div>
           <div v-if="!item.seller_always" class="countTime blue">
@@ -155,7 +145,7 @@
         </div>
         <div v-else class="item clear" :key="index">
           <div class="flexitemwrap">
-            <div class="infoimg flexitem" style="width:10%">
+            <div class="infoimg" style="width:7%">
            
                 <div  >
                   <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
@@ -165,11 +155,11 @@
                 </div>
           
             </div>
-            <div class="info flexitem" style="width:30%">
+            <div class="info" style="width:20%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;font-size:15px;cursor:pointer;max-width:140px;overflow:hidden;text-overflow:ellipsis;
+                  <p style="font-size:15px;cursor:pointer;font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
                   white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
                   <p>
                     <span
@@ -267,20 +257,15 @@
               <p class="addCark" @click="addCar(index)">加入购物车</p>
             </div>
           </div>
-          <Purchase
-            :item="item.purchaseObj"
-            v-if="item.showPurchase"
-            @closeCallBack="item.showPurchase=false"
-          ></Purchase>
+        
           <div v-if="!item.seller_always" class="countTime blue">
             <CountTime
-              class="color"
               v-on:end_callback="countDownE_cb()"
               :currentTime="item.currentTime"
               :startTime="item.currentTime"
               :endTime="item.expireTime"
               :tipText="''"
-              :tipTextEnd="'距离此特价结束跟单：'"
+              :tipTextEnd="'距特价结束：'"
               :endText="'活动已结束'"
               :dayTxt="'天'"
               :hourTxt="'小时'"
@@ -320,6 +305,12 @@
         </ul>-->
       </div>
     </el-dialog>
+      <Purchase
+            :item="purchaseObj"
+            v-if="showPurchase"
+            :showPurchase="showPurchase"
+            @closeCallBack="showPurchase=false"
+          ></Purchase>
   </div>
 </template>
 <style scoped lang="less">
@@ -329,6 +320,7 @@
 import { TimeForma2, ladderPrice, TimeForma } from "../../lib/utils";
 import { baseURL3 } from "@/config";
 import { axios, home, shoppingCar } from "../../api/apiObj";
+import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "MerchantList",
   props: {
@@ -351,9 +343,9 @@ export default {
       MerchantList: [],
       pageSize: 10,
       getMore: false,
-      showOriginFactory: false
-      // purchaseObj:{},
-      // showPurchase:false
+      showOriginFactory: false,
+       purchaseObj:{},
+       showPurchase:false
     };
   },
   computed: {
@@ -370,6 +362,8 @@ export default {
   },
 
   methods: {
+     ...mapActions("Login", ["GetUserInforma"]),
+     ...mapMutations(['setshowlogin']),
     chipShop(item){
        if(item.tag==1){
                     this.$router.push({
@@ -411,13 +405,18 @@ export default {
         .then(res => {
           if (res) {
             this.$message.success(res.message);
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
             this.$set(this.MerchantList[k], "focus", true);
           }
         });
     },
     specialPrice() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       this.$emit("specialPrice");
@@ -480,7 +479,8 @@ export default {
     },
     purchase(k) {
       if (!this.loginState) {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
         return;
       }
       let res = this.MerchantList[k];
@@ -508,13 +508,15 @@ export default {
         diliver_date: res.deliverTime,
         end_date: res.expireTime
       };
-      this.MerchantList[k].purchaseObj = purchaseObj;
-      this.$set(this.MerchantList[k], "showPurchase", true);
-      // this.showPurchase=true;
+      // this.MerchantList[k].purchaseObj = purchaseObj;
+      // this.$set(this.MerchantList[k], "showPurchase", true);
+      this.purchaseObj=purchaseObj
+       this.showPurchase=true;
     },
     addCar(k) {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
 
@@ -528,7 +530,15 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("添加成功");
+          if(res){
+            this.$message.success("添加成功");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+          }
+          
+
         });
     }
   },

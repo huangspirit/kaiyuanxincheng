@@ -1,6 +1,9 @@
 import HttpRequest from '@/lib/axios'
 const axios = new HttpRequest()
 const common = {
+    getDeliveryCompanyDefault:{
+        url:"api-order/goods-order/queryKuaidi"
+    },
     getDeliveryCompany: {
         url: "api-order/goods-order/queryKuaiDi"
     },
@@ -25,17 +28,23 @@ const common = {
     },
     //反馈
     queryItem: {
-        url:"api-b/feed/queryItem"
+        url: "api-b/feed/queryItem"
     },
     //保存反馈
-    save:{
-        url:"api-b/feed/save"
+    save: {
+        url: "api-b/feed/save"
     },
     //获取反馈的内容
-    queryFeedList:{
-        url:"api-b/feed/queryFeedList"
+    queryFeedList: {
+        url: "api-b/feed/queryFeedList"
     }
 
+}
+const login = {
+    //获取微信二维码链接
+    getScanCode:{
+        url:"/api-u/wechat/web/getScanCode"
+    }
 }
 const home = {
     SearchData: {
@@ -127,11 +136,38 @@ const buyerOrderCenter = {
         url: "api-order/customerCenter/vipOrderBillForPay"
     },
     //月结改普通订单
-    changePayMent:{
-        url:"/api-order/customerCenter/changePayMent"
+    changePayMent: {
+        url: "/api-order/customerCenter/changePayMent"
     }
 }
 const sellerOrderCenter = {
+    queryPublishGoodsList: { 
+        url: "api-g/goods-b/queryPublishGoodsList" 
+    },
+    queryDeliverCar:{
+        url:"api-order/sellerCenter/queryDeliverCar"
+    },
+    deleteDeliverCar:{
+        url:"api-order/sellerCenter/deleteDeliverCar"
+    },
+    //发货箱发货
+    diliverGoods:
+    {
+        url:"api-order/sellerCenter/diliverGoods"
+    },
+    //查看物料的订单明细
+    queryOrderInfoListForSeller:{
+        url:"api-order/sellerCenter/queryOrderInfoListForSeller"
+    },
+    //加入发货车
+    addDeliverCar:{
+        url:"api-order/sellerCenter/addDeliverCar"
+    },
+    addSingleDeliverCar:{
+        url:"api-order/sellerCenter/addSingleDeliverCar"
+    },
+    //更改交期
+    updateSellerGoodsDiliverTime:{url:"/api-order/sellerCenter/updateSellerGoodsDiliverTime"},
     //批量国内发货
     diliverBatchGoods: {
         url: "api-order/sellerCenter/diliverBatchGoods"
@@ -158,11 +194,22 @@ const sellerOrderCenter = {
     openBill: {
         url: "/api-order/sellerCenter/openBill"
     },
+    openBatchBill:{
+        url: "/api-order/sellerCenter/openBatchBill"
+    },
     queryExpress: {
         url: "/api-order/selllerCenter/queryExpress"
     },
     queryBillListBySeller: {
         url: "/api-order/sellerCenter/queryBillListBySeller"
+    },
+    //订单中心查询物流
+    queryExpreForOrder:{
+        url: "/api-order/selllerCenter/queryExpreForOrder"
+    },
+    //发货车查询数字
+    queryDeliverCarNumber:{
+        url:"api-order/sellerCenter/queryDeliverCarNumber"
     }
 }
 const sellerCenter = {
@@ -374,17 +421,17 @@ const BrandDetail = {
 }
 const sellerShop = {
     //回复评论
-    replyOrderComment:{url:"api-order/order/replyOrderComment"},
+    replyOrderComment: { url: "api-order/order/replyOrderComment" },
     //获取评论
-    orderCommentList:{
-        url:"api-order/order-anon/orderCommentList"
+    orderCommentList: {
+        url: "api-order/order-anon/orderCommentList"
     },
     //获取商家详情
-    querySellerShop:{
-        url:"api-g/gods-anon/querySellerShop"
+    querySellerShop: {
+        url: "api-g/gods-anon/querySellerShop"
     },
-    queryUserInfo:{
-        url:"api-u/users-anon/queryUserInfo"
+    queryUserInfo: {
+        url: "api-u/users-anon/queryUserInfo"
     }
 }
 const FactoryEntry = {
@@ -463,6 +510,7 @@ const agentFication = {
 export {
     axios,
     common,
+    login,
     home,
     footer,
     buyerOrderCenter,

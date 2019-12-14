@@ -1,23 +1,25 @@
 <template>
   <div id="app">
     <div id="container" class="clear">
-    <headTop id="HeaderBar" ></headTop>
+    <headTop id="HeaderBar" class="noprint"></headTop>
       <div id="content" class="clear" :class="headerFxed?'headerFxed':''">
           <keep-alive>
               <router-view v-if="$route.meta.keepAlive"></router-view>
           </keep-alive>
           <router-view v-if="!$route.meta.keepAlive"></router-view>
       </div>
-      <Footer></Footer>
-      <side></side>
+      <Footer class="noprint"></Footer>
+      <side class="noprint"></side>
+      <login v-if="showlogin"></login>
     </div>
   </div>
 </template>
 <script>
+import login from "_c/login";
 import side from "_c/side";
 import Footer from "_c/Footer";
 import headTop from "@/views/header"
-import { mapActions,mapState,mapMutations} from "vuex";
+import { mapActions,mapState,mapMutations,mapGetters} from "vuex";
 export default {
   name: "app",
   data() {
@@ -35,7 +37,8 @@ export default {
     Footer,
     // Sidebar,
     headTop,
-    side
+    side,
+    login
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
@@ -48,9 +51,14 @@ export default {
     },
   },
   computed:{
+    ...mapGetters([
+      "showlogin"
+      // ...
+    ]),
     ...mapState({
       UserInforma:state => state.Login.UserInforma,
       headerFxed: state => state.headerFxed,
+     // showlogin:state => state.showlogin
     })
   },
   mounted() {
@@ -276,7 +284,6 @@ export default {
             font-size: 14px;
             border-radius: 3px;
             background: #409eff;
-
             &:hover {
                 border-color: #409eff;
                 font-weight: bolder;

@@ -183,14 +183,16 @@
             this.getSpecialList(-1)
         },
         methods:{
-              ...mapMutations(['setloginState']),
+            ...mapActions("Login", ["GetUserInforma"]),
+              ...mapMutations(['setloginState','setshowlogin']),
               bigImg(url){
                   this.showbigImg=true;
                   this.bigimg=url
               },
             addFocus(index){
                  if(!this.loginState){
-                    this.$router.push('/Login')
+                   // this.$router.push('/Login')
+                     this.setshowlogin(true)
                     return;
                 }
                 let obj={
@@ -313,7 +315,14 @@
                     goodsId:item.goods_id
                 }
                 axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
-                    this.$message.success("已加入购物车")
+                    if(res){
+                         this.$message.success("已加入购物车")
+                         var _this=this;
+                        setTimeout(()=>{
+                            _this.GetUserInforma();
+                        },2000)
+                    }
+                   
                 })
             },
         }

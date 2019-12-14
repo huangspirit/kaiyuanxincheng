@@ -95,9 +95,9 @@
 </style>
 <script>
 import SubstituModelList from "_c/SubstituModelList";
-//import HotSearch from "_c/HotSearch";
+
 import { mapMutations} from "vuex";
-//import { stat } from "fs";
+
 import {axios,BrandDetail} from "../../../api/apiObj";
 
 export default {
@@ -130,6 +130,7 @@ export default {
   },
   methods: {
       ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
+      ...mapMutations(['setshowlogin']),
     chipOriginalFactoryEntry(){
       if (this.loginState) {
        
@@ -143,7 +144,8 @@ export default {
      this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.name],residencetype:1});
       this.$router.push("/OriginalFactoryEntry/BasicInforma")
       } else {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
       }
     },
       init(){

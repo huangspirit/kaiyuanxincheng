@@ -13,7 +13,6 @@ import GoodsDetails from './modules/GoodsDetails'
 import ShippingAddress from './modules/ShippingAddress'
 import PersonalInvoice from './modules/PersonalInvoice'
 import shoppingCart from './modules/shoppingCart'
-import RemindSet from './modules/RemindSet'
 import BuyerOrderManagement from './modules/BuyerOrderManagement'
 import SellerOrderManagement from './modules/SellerOrderManagement'
 import OriginalFactoryEntry from './modules/OriginalFactoryEntry'
@@ -44,7 +43,6 @@ export default new Vuex.Store({
         Login,
         PersonalInvoice,
         shoppingCart,
-        RemindSet,
         BuyerOrderManagement,
         SellerOrderManagement,
         PersonalData,

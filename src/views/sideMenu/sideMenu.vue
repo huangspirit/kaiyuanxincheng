@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      class="sidemenu"
+      class="sidemenu noprint"
       id="sidemenu"
       :collapse="false"
       :unique-opened="true"
@@ -301,7 +301,7 @@ export default {
           data: { password: this.inputpassword }
         })
         .then(res => {
-          console.log(res);
+         
           if (res) {
             this.showinputPassword = false;
             this.$router.push({

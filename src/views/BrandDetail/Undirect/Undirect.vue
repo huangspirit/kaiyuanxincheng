@@ -36,7 +36,7 @@
         </div>
         <ul class="list">
           <li @click="AllSend" :class="{avtive:listFlag = -1}">
-            <!-- <img src="@/assets/image/brandDetail/u1086.png" alt> -->
+        
             <p>全部品类({{titleObj.productTotal | toFixed(0)}})</p>
             <!-- <p class="num">({{titleObj.productTotal | toFixed(0)}})</p> -->
           </li>
@@ -130,16 +130,7 @@ export default {
     }
   },
   computed: {
-    //  ...mapGetters("Undirect", ["ProductnformaList", "total"]),
-    //   ...mapState({
-    //     parentName: state => state.Undirect.parentName,
-    //     parentId: state => state.Undirect.parentId,
-    //     productTotal: state => state.Undirect.productTotal,
-    //     parentList: state => state.Undirect.parentList
-    //   }),
-    //   brandName() {
-    //     return this.$route.query.brandName;
-    //   },
+  
     start() {
       return (this.currentPage - 1) * this.pageSize;
     },
@@ -150,11 +141,7 @@ export default {
       return this.$route.query;
     }
   },
-  // watch: {
-  //   currentPage() {
-  //     this.AllSend();
-  //   }
-  // },
+
   components: {
     SubstituModelList
   },
@@ -174,15 +161,7 @@ export default {
             this.titleObj = res;
             this.AllSend();
           });
-        // this.$store
-        //   .dispatch("Undirect/GetUndirect", {
-        //     firstCatergoryId: this.query.catergoryId,
-        //     brandId: this.query.brandId
-        //   })
-        //   .then(res => {
-        //       this.titleObj=res;
-        //       this.AllSend();
-        //   });
+     
       } else {
         let obj = {
           tag: this.query.tag,
@@ -195,17 +174,7 @@ export default {
             this.titleObj = res.data.undirect;
             this.AllSend();
           });
-        // this.$store
-        //   .dispatch("Undirect/GetSearchDirect", {
-        //     tag: this.query.tag,
-        //     documentid: this.query.documentid,
-        //     name: this.query.name,
-        //     start: this.start
-        //   })
-        //   .then(res => {
-        //     this.listFlag = this.query.documentid;
-        //     this.AllSend();
-        //   });
+      
       }
     },
     AllSend() {
@@ -230,18 +199,7 @@ export default {
           this.ProductnformaList = res.data.data;
           this.$loading(this.$store.state.loading).close();
         });
-      // this.$store
-      //   .dispatch("Undirect/GetDirectList", {
-      //     brandId: this.$route.query.brnadId,
-      //     name: "",
-      //     sort_filds: 0,
-      //     first_id: this.$route.query.catergoryId,
-      //     start: this.start,
-      //     sort_type: this.sort_type,
-      //   })
-      //   .then(() => {
-      //     this.$loading(this.$store.state.loading).close();
-      //   });
+    
     },
     // 获取热搜的值
     hotSearchValue(val) {

@@ -3,7 +3,7 @@ import {
   QqSuccess,
   QqSendCode,
   QqBindPhone,
-  QqSignIn,
+  SignIn,
   PhoneLoginCode,
   PhoneLogin,
   PhoneSignIn,
@@ -81,11 +81,11 @@ const actions = {
     })
   },
   // qq登录
-  GetQqSignIn ({
+  GetSignIn ({
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      QqSignIn(data).then(res => {
+      SignIn(data).then(res => {
         resolve(res)
       }).then(err => {
         reject(err)
@@ -145,7 +145,7 @@ const actions = {
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      WxLogin().then(res => {
+      WxLogin(data).then(res => {
         if (res.resultCode === '200') {
           resolve(res.data)
         } else {

@@ -113,6 +113,8 @@ import {ladderPrice} from "../../lib/utils";
 //import pdf from "vue-pdf";
 import MerchantList from "_c/MerchantList";
 import { axios, shoppingCar } from "@/api/apiObj";
+
+import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "SubstituModelList",
   data() {
@@ -144,6 +146,8 @@ export default {
       this.titleList=this.list[0].list
     },
   methods: {
+         ...mapActions("Login", ["GetUserInforma"]),
+         ...mapMutations(["setshowlogin"]),
     viewDocument() {
       this.loading = true;
       this.dialogTableVisible2 = true;
@@ -153,7 +157,8 @@ export default {
     },
     addInquiry(k) {
         if(!this.loginState){
-            this.$router.push('/Login')
+           // this.$router.push('/Login')
+             this.setshowlogin(true)
             return;
         }
       let val=this.modelList[k]
@@ -167,15 +172,21 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          console.log(res);
+    
           if(res.resultCode == "200"){
             this.$message.success("添加成功")
+              var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+            
           }
         });
     },
       focus(k){
           if(!this.loginState){
-              this.$router.push('/Login')
+             // this.$router.push('/Login')
+               this.setshowlogin(true)
               return;
           }
           let obj={
@@ -188,12 +199,17 @@ export default {
               .then(res => {
                   this.$set(this.modelList[k],"focus",true)
                   this.$message.success("已关注");
+                  var _this=this;
+                    setTimeout(()=>{
+                      _this.GetUserInforma();
+                    },2000)
               });
       },
        pushlishspecialPrice(k){
             //发布特价
                 if(!this.loginState){
-                        this.$router.push('/Login')
+                       // this.$router.push('/Login')
+                         this.setshowlogin(true)
                         return;
                     } 
                 if(this.UserInforma){

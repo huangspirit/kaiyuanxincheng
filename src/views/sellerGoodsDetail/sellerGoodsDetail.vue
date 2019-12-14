@@ -23,6 +23,11 @@
       <div class="title">商品详情</div>
       <div class="cont clear">
         <div class="fl left">
+          <div
+            class="mark"
+            :class="sellerGoodsInfo.goods_type?'greenColor':'bgColor'"
+            :title="sellerGoodsInfo.goods_type?'现货':'订货'"
+          >{{sellerGoodsInfo.goods_type?'现':'订'}}</div>
           <div class="bigImg">
             <ImgE :src="bigImgstr" :W="200" :H="200"></ImgE>
           </div>
@@ -52,7 +57,9 @@
             <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn">
               <i class="el-icon-star-off"></i>&nbsp;关注此器件
             </span>
-            <span @click="addInquiry"  v-if="sellerGoodsInfo.tag == 1" class="btn"><i class="el-icon-circle-plus-outline" ></i>&nbsp;询价蓝</span>
+            <span @click="addInquiry" v-if="sellerGoodsInfo.tag == 1" class="btn">
+              <i class="el-icon-circle-plus-outline"></i>&nbsp;询价蓝
+            </span>
             <!-- <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span> -->
             <!-- <span class="btn" @click="pushlishspecialPrice"><i class="el-icon-plus "></i>&nbsp;我有特价</span> -->
           </div>
@@ -156,8 +163,17 @@
           </div>
           <div class="seller fl">
             此器件由以下供应商提供：
-            <img :src="sellerGoodsInfo.userImgeUrl" alt @click="chipShop" style="cursor:pointer;"/>
-            <span class="sellerName"  style="cursor:pointer;"  @click="chipShop">{{sellerGoodsInfo.sellerName}}</span>
+            <img
+              :src="sellerGoodsInfo.userImgeUrl"
+              alt
+              @click="chipShop"
+              style="cursor:pointer;"
+            />
+            <span
+              class="sellerName"
+              style="cursor:pointer;"
+              @click="chipShop"
+            >{{sellerGoodsInfo.sellerName}}</span>
             <span
               class="color"
               v-if="sellerGoodsInfo.tag == 1"
@@ -183,8 +199,12 @@
           </div>
           <div class="btnwrap fl" style="width:100%">
             <span class="btn bgColor" @click="submitPurchase">立即跟单</span>
-            <span class="btn bgOrange" @click="pushlishspecialPrice" v-if="sellerGoodsInfo.tag != 1">我有特价</span>
-              <span class="btn bgOrange" @click="specialPrice" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
+            <span
+              class="btn bgOrange"
+              @click="pushlishspecialPrice"
+              v-if="sellerGoodsInfo.tag != 1"
+            >我有特价</span>
+            <span class="btn bgOrange" @click="specialPrice" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
             <span class="btn bgGray" @click="addShopingCar">加入购物车</span>
             <router-link
               style="font-size:14px;margin-left:10px;"
@@ -209,6 +229,61 @@
                         * 标注现货字样的商品需要付全款购买，发货日期大于当前购买日期七天的按照用户信用额度进行百分比预付款，以订单支付日期为准
           </div>-->
         </div>
+      </div>
+      <div class="step">
+        <p>交易流程</p>
+        <ul>
+          <li class="item">
+            <span class="imgwrap">
+              <img src="@/assets/image/step/1.png" alt />
+            </span>
+            <span>下单成功</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+          <li class="item">
+            <span class="imgwrap">
+              <img src="@/assets/image/step/2.png" alt />
+            </span>
+
+            <span>卖家发货</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+          <li class="item">
+            <span class="imgwrap">
+              <img src="@/assets/image/step/5.png" alt />
+            </span>
+
+            <span>平台指定仓</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+          <li class="item">
+            <span class="imgwrap">
+              <img src="@/assets/image/step/6.png" alt />
+            </span>
+
+            <span>报关/目测检验</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+          <li>
+            <span class="imgwrap">
+              <img src="@/assets/image/step/4.png" alt />
+            </span>
+
+            <span>国内快递</span>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="detail">
@@ -272,10 +347,11 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import { baseURL, baseURL2, baseURL3 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
 import { TimeForma2, TimeForma } from "../../lib/utils";
+import { setTimeout } from 'timers';
 export default {
   data() {
     return {
@@ -347,27 +423,27 @@ export default {
   },
   methods: {
     ...mapMutations("MerchantList", ["setBuyOneGoodsDetail"]),
+    ...mapMutations(["setshowlogin"]),
+    ...mapActions("Login", ["GetUserInforma"]),
     getsellerGoodsDetail() {},
-    chipShop(){
-     
-      if(this.sellerGoodsInfo.tag==1){
-                    this.$router.push({
-                        path:"/BrandDetail",
-                        query:{
-                            tag:'brand',
-                            documentid:this.sellerGoodsInfo.brandId,
-                            name:this.sellerGoodsInfo.brandName
-                        }
-                    })
-                }else{
-                    this.$router.push({
-                        path:"/sellerShopDetail",
-                        query:{
-                          
-                            sellerId:this.sellerGoodsInfo.sellerId
-                        }
-                    })
-                }
+    chipShop() {
+      if (this.sellerGoodsInfo.tag == 1) {
+        this.$router.push({
+          path: "/BrandDetail",
+          query: {
+            tag: "brand",
+            documentid: this.sellerGoodsInfo.brandId,
+            name: this.sellerGoodsInfo.brandName
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/sellerShopDetail",
+          query: {
+            sellerId: this.sellerGoodsInfo.sellerId
+          }
+        });
+      }
     },
     init() {
       this.getDetail();
@@ -397,7 +473,12 @@ export default {
         this.sellerGoodsInfo.goodsStockCount >
         this.sellerGoodsInfo.mpq + this.sellerGoodsInfo.moq
       ) {
-        this.count = this.sellerGoodsInfo.moq + Math.round((e - this.sellerGoodsInfo.moq) / this.sellerGoodsInfo.mpq) * this.sellerGoodsInfo.mpq;
+        this.count =
+          this.sellerGoodsInfo.moq +
+          Math.round(
+            (e - this.sellerGoodsInfo.moq) / this.sellerGoodsInfo.mpq
+          ) *
+            this.sellerGoodsInfo.mpq;
       } else {
         this.count = e;
       }
@@ -431,6 +512,11 @@ export default {
       this.money = this.count * currentPrice;
     },
     submitPurchase() {
+      if (!this.loginState) {
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
+        return;
+      }
       let item = this.purchaseObj;
       let orderJson = [];
       let obj = {
@@ -560,7 +646,8 @@ export default {
     },
     addInquiry() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        // this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       var obj = {
@@ -574,11 +661,16 @@ export default {
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
           this.$message.success("添加成功");
+          var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
         });
     },
     addFocus() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       let obj = {
@@ -596,7 +688,8 @@ export default {
     },
     addShopingCar() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       var obj = {
@@ -609,35 +702,47 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("添加成功");
+          if (res) {
+            this.$message.success("添加成功");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+            
+          }
         });
     },
     purchase() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       this.showPurchase = true;
     },
     specialPrice() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       let factorySellerInfo = this.goodsinfo.factorySellerInfo;
       factorySellerInfo.priceType = factorySellerInfo.price_type;
       factorySellerInfo.priceLevel = factorySellerInfo.price_level;
       factorySellerInfo.seckilPrice = factorySellerInfo.seckil_price;
-      this.$store.dispatch("promation", [{
-        ...this.goodsinfo,
-        factorySellerInfo: factorySellerInfo
-      }]);
+      this.$store.dispatch("promation", [
+        {
+          ...this.goodsinfo,
+          factorySellerInfo: factorySellerInfo
+        }
+      ]);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
     pushlishspecialPrice() {
       //发布特价
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       if (this.UserInforma) {

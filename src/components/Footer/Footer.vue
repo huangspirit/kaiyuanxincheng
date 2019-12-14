@@ -139,6 +139,7 @@
 <script>
 import "./Footer.less";
 import { mapState, mapActions, mapMutations } from "vuex";
+
 export default {
   name: "Footer",
   data() {
@@ -172,7 +173,7 @@ export default {
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma", "getfooterNav"]),
-    ...mapMutations(["setloginState"]),
+    ...mapMutations(["setloginState","setshowlogin"]),
 
     chipAll() {
       this.$router.push("/");
@@ -181,7 +182,8 @@ export default {
       if (this.loginState) {
         this.$router.push("/PersonalCenter");
       } else {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
       }
     },
     settle() {
@@ -196,7 +198,8 @@ export default {
         }
         this.$router.push("/OriginalFactoryEntry");
       } else {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
       }
     },
     publish() {
@@ -208,7 +211,8 @@ export default {
           this.$router.push("/OriginalFactoryEntry");
         }
       } else {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
       }
     },
     inquery() {
@@ -216,7 +220,8 @@ export default {
       if (this.loginState) {
         this.$router.push("/PersonalCenter/myInquire");
       } else {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
       }
     }
   }

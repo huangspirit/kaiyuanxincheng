@@ -155,7 +155,7 @@ export default {
         goods_seller_id: this.goods_seller_id,
         start: this.startNum,
         length: this.pageSize,
-         type:this.state
+        type:this.state 
       };
       var _this = this;
       this.GetSellerOrderDetailList(obj).then(res => {

@@ -3,18 +3,6 @@
     <ul class="substitu-model-list clear clear" v-if="modelList.length">
       <li v-for="(item,k) in modelList" :key="`list_${item.id}`" >
         <div class="product clear">
-<!--            <div class="model-list-b fr">-->
-<!--                <ButtonIcon :width="100" :height="40" @click="specialPrice(k)">-->
-<!--                    <img src="@/assets/image/brandDetail/u4504.png" alt />-->
-<!--                    申请特价-->
-<!--                </ButtonIcon>-->
-<!--                <span @click="addInquiry(k)">-->
-<!--                  <img src="@/assets/image/brandDetail/_u4518.png" alt />-->
-<!--                </span>-->
-<!--                <span @click="focus(k)" v-if="!item.focus">-->
-<!--                  <img src="@/assets/image/brandDetail/_u4510.png" alt />-->
-<!--                </span>-->
-<!--            </div>-->
           <div class="model-list-t clear">
             <div class="TabImage">
               <ImgE :src="item.imageUrl" :W="160" :H="160"></ImgE>
@@ -88,6 +76,8 @@ import {ladderPrice} from "../../lib/utils";
 //import pdf from "vue-pdf";
 import MerchantList from "_c/MerchantList";
 import { axios, shoppingCar } from "@/api/apiObj";
+
+import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "SubstituModelList",
   data() {
@@ -118,10 +108,13 @@ export default {
       this.modelList=this.list
     },
   methods: {
+     ...mapActions("Login", ["GetUserInforma"]),
+     ...mapMutations(["setshowlogin"]),
     pushlishspecialPrice(k){
             //发布特价
                 if(!this.loginState){
-                        this.$router.push('/Login')
+                      //  this.$router.push('/Login')
+                        this.setshowlogin(true)
                         return;
                     } 
                 if(this.UserInforma){
@@ -148,7 +141,8 @@ export default {
     },
     addInquiry(k) {
         if(!this.loginState){
-            this.$router.push('/Login')
+            //this.$router.push('/Login')
+              this.setshowlogin(true)
             return;
         }
       let val=this.modelList[k]
@@ -162,15 +156,19 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          console.log(res);
           if(res.resultCode == "200"){
             this.$message.success("添加成功")
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
           }
         });
     },
       focus(k){
           if(!this.loginState){
-              this.$router.push('/Login')
+            //  this.$router.push('/Login')
+              this.setshowlogin(true)
               return;
           }
           let obj={

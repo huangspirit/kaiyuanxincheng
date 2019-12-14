@@ -7,6 +7,9 @@ const actions = {
       },
       applyEdit({commit},val) {
         commit("EDITAPPLY", val)
+      },
+      setshowlogin({commit},val){
+        commit("setshowlogin", val)
       }
 }
 export default actions

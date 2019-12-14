@@ -1,0 +1,293 @@
+.sellerDeliveryCar{
+    position: fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:rgba(0,0,0,0.5);
+    z-index:100;
+    /deep/.el-dialog__body{
+        padding:10px 20px;
+    }
+   
+    .cont{
+        padding:10px;
+        background:#fff;
+        color:#333;
+        width:80%;
+        margin-top:90px;
+        margin-left:200px;
+        height:80%;
+        .tit{
+            display: flex;
+            line-height: 30px;
+            margin-bottom:10px;
+            padding:0 ;
+            margin-top:10px;
+            &>p{
+                margin-right:10px;
+                &.close{
+                    flex:1;
+                    text-align: right;
+                    i{
+                        font-size:30px;
+                        cursor: pointer;
+                        color:#ddd;
+                        &:hover{
+                            color:#007efe
+                        }
+                    }
+                }
+                .imgwrap{
+                    border-radius: 50px;
+                    height:30px;
+                    width:30px;
+                    text-align: center;
+                    line-height: 30px;
+                    img{
+                        width:20px;
+                        height:20px;
+    
+                    }
+                }
+            }
+            
+            &>div{
+                padding-right:30px;
+                padding-left:10px;
+                margin-left:2px;
+                position: relative;
+                cursor: pointer;
+                background:#f3f3f3;
+                width:80px;
+                text-align: center;
+                
+                .count{
+                    position: absolute;
+                    top:3px;
+                    height:18px;
+                    line-height:18px;
+                    min-width:18px;
+                    text-align: center;
+                    border-radius: 18px;
+                    padding:0 5px;
+                    box-sizing: border-box;
+                    font-size:12px;
+                }
+            }
+        }
+        .wrapTable{
+            height:70%;
+            overflow-y: auto;
+            table{
+                width:100%;
+                border-left:1px solid #ddd;
+                border-right:1px solid #ddd;
+                font-size:12px;
+                th{
+                    background:#ddd;
+                    line-height: 30px;
+                    font-weight: normal;
+                    font-weight: bold;
+                }
+                td{
+                    padding:4px 8px;
+                    text-align: center;
+                    border-bottom: 1px solid #ddd;
+                    font-size:14px;
+                    .el-icon-delete{
+                        cursor: pointer;
+                        font-weight: bold;
+                        &:hover{
+                            color:#df3f2f;
+                        }
+                    }
+                    &.borderRight{
+                        border-right:1px solid #ddd;
+                        width:250px;
+                    }
+                    .goodsinfo{
+                        margin-left:10px;
+                        text-align: left;
+                        p{
+                            line-height: 20px;
+                            .print{
+                                font-size:12px;
+                                padding:2px 8px;
+                                cursor: pointer;
+                                border-radius: 5px;
+                                margin-top:5px;
+                                line-height: 1.4;
+                                
+                            }
+                        }
+                        
+                        .goodsname{
+                            font-size:16px;
+                            .el-icon-delete{
+                                font-weight: bold;
+                                cursor: pointer;
+                            
+                                margin-left:15px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .btnwrap{
+            text-align: center;
+            margin-top:20px;
+            /deep/.el-button+.el-button{
+                margin-left:50px;
+            }
+        }
+    }
+}
+.delivery{
+    .item{
+        margin-bottom:15px;
+        .title{
+            background: #f3f3f3;
+            text-align: left;
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom:0;
+            line-height: 40px;
+            padding:0 10px;
+        }
+        .list{
+            border:1px solid #ddd;
+            display: flex;
+            border-bottom:none;
+            &>.wuliu{
+                width:250px;
+                border-left:1px solid #ddd;
+                padding:10px 20px;
+                box-sizing: border-box;
+                text-align: left;
+                border-bottom:1px solid #ddd;
+                p{
+                    font-size:12px;
+                    line-height:1.7;
+                 }
+                 /deep/.avatar-uploader{
+                   .el-upload--picture-card {
+                      
+                        height: 80px;
+                        width: 80px;
+                        line-height: 80px;
+                      }
+                      .el-upload-list--picture-card {
+                        .el-upload-list__item {
+                          height: 80px;
+                          width: 80px;
+                          line-height: 80px;
+                        }
+                      }
+                 }
+            }
+        }
+        ul{
+            flex:1;
+            border-bottom:1px solid #ddd;
+            li{
+                display: flex;
+                
+                .wuliuwrap{
+                    // border-bottom:1px solid #ddd;
+                    display: flex;
+                    flex:1;
+
+                    .goodsname{
+                        padding:15px 8px;
+                        line-height: 40px;
+                        box-sizing: border-box;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        margin-top:-1px;
+                        overflow: hidden;
+                        text-align: left;
+                        flex:1;                     
+                         border-top:1px solid #ddd;
+
+                    }
+                    .wuliu{
+                        padding:10px 20px;
+                        box-sizing: border-box;
+                        text-align: left;
+                        border-left:1px solid #ddd;
+                        width:250px;
+                        border-top:1px solid #ddd;
+                        margin-top:-1px;
+                        p{
+                            font-size:12px;
+                            line-height:1.7;
+                         }
+                         /deep/.avatar-uploader{
+                           .el-upload--picture-card {
+                                height: 80px;
+                                width: 80px;
+                                line-height: 80px;
+                              }
+                              .el-upload-list--picture-card {
+                                .el-upload-list__item {
+                                  height: 80px;
+                                  width: 80px;
+                                  line-height: 80px;
+                                }
+                              }
+                         }
+                    }
+                } 
+            }
+            
+        }
+        .cangku{
+            border-left:1px solid #ddd;
+            padding:10px 20px;
+            box-sizing: border-box;
+            text-align: left;
+            width:300px;
+            border-bottom:1px solid #ddd;
+            p{
+               font-size:12px;
+               line-height:1.7;
+            }
+        }
+       
+        .selectDelivery{
+            display:flex;
+            text-align:left;
+            align-items: center;
+            width:300px;
+            &>div{
+                height:100%;
+                padding:10px;
+                box-sizing: border-box;
+                p{
+                    font-size:12px;
+                    line-height:1.7;
+                 }
+                &.wuliu{
+                    border-left:1px solid #ddd;
+                    /deep/.avatar-uploader{
+                        .el-upload--picture-card {
+                             height: 80px;
+                             width: 80px;
+                             line-height: 80px;
+                           }
+                           .el-upload-list--picture-card {
+                             .el-upload-list__item {
+                               height: 80px;
+                               width: 80px;
+                               line-height: 80px;
+                             }
+                           }
+                      }
+                }
+            }
+        }
+    }
+}

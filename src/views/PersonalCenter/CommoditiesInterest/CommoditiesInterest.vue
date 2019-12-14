@@ -19,7 +19,7 @@
         <p v-if="goodsList.length==0" class="nocontent">您还没有关注的商品</p>
       <ul class="interes-list">
         <li v-for="(item,index) in goodsList" class="clear" :key="index">
-<!--          <TabImage :width="146"></TabImage>-->
+
             <div class="left" style="flex:1;display:flex;align-items:center;">
                 <div class="imgwrap fl" >
                     <router-link
@@ -123,7 +123,7 @@
 </template>
 <script>
 import {axios,buyerOrderCenter,shoppingCar} from "../../../api/apiObj";
-
+  import {mapState,mapActions,mapMutations} from 'vuex';
 export default {
   name: "CommoditiesInterest",
   data() {
@@ -136,7 +136,7 @@ export default {
       tabList: [
         {
             catergoryName: "全部",
-            catergoryUrl: require("@/assets/image/index/u1086.png"),
+         
             summaryTotal: 1,
             catergoryId:-1
         },
@@ -154,6 +154,7 @@ export default {
       this.init()
     },
   methods: {
+      ...mapActions("Login", ["GetUserInforma"]),
       specialPrice(){
           this.$message.success("开发中。。。")
       },
@@ -196,7 +197,14 @@ export default {
             goodsId:this.goodsList[index].goods_id
         }
           axios.request({...shoppingCar.insertShoppingCar,params:obj}).then(res=>{
-                this.$message.success("已加入询价篮")
+            if(res){
+               this.$message.success("已加入询价篮");
+               var _this=this;
+              setTimeout(()=>{
+                _this.GetUserInforma();
+              },2000)
+              }
+               
           })
       },
       canclePub(index){

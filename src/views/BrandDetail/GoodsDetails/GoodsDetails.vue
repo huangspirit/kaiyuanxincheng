@@ -166,6 +166,7 @@ import SubstituModelList from "_c/SubstituModelList";
 import { baseURL, baseURL2 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
 import { parse } from "path";
+import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 
 export default {
   name: "GoodsDetails",
@@ -191,10 +192,13 @@ export default {
     SubstituModelList
   },
   methods: {
+    ...mapActions("Login", ["GetUserInforma"]),
+    ...mapMutations(['setshowlogin']),
     pushlishspecialPrice() {
       //发布特价
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       if (this.UserInforma) {
@@ -248,7 +252,8 @@ export default {
     },
     addInquiry() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       var obj = {
@@ -261,12 +266,20 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("添加成功");
+          if(res){
+            this.$message.success("添加成功");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+          }
+          
         });
     },
     addFocus() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       let obj = {
@@ -277,13 +290,16 @@ export default {
       axios
         .request({ ...shoppingCar.insertGoodsFavourite, params: obj })
         .then(res => {
-          this.$set(this.goodsinfo, "focus", true);
+          if(res){
+             this.$set(this.goodsinfo, "focus", true);
+          }
           // this.$message.success("已关注");
         });
     },
     addShopingCar() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       var obj = {
@@ -296,19 +312,28 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("添加成功");
+          if(res){
+            this.$message.success("添加成功");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+          }
+          
         });
     },
     purchase() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       this.showPurchase = true;
     },
     specialPrice() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       let factorySellerInfo = this.goodsinfo.factorySellerInfo;

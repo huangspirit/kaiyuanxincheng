@@ -363,7 +363,7 @@
   </div>
 </template>
 .<script>
-import { mapState } from "vuex";
+import { mapState , mapMutations} from "vuex";
 import { TimeForma } from "@/lib/utils";
 import { axios, sellerShop, home, shoppingCar } from "@/api/apiObj";
 import { ladderPrice } from '../../lib/utils';
@@ -419,6 +419,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setshowlogin']),
     scrollComment() {
       //滚动到查看品论
 
@@ -502,7 +503,8 @@ export default {
     },
     addFocus() {
       if (!this.loginState) {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
         return;
       }
       let obj = {

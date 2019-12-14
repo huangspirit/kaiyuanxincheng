@@ -1,5 +1,12 @@
 <template>
     <div class="DeliveryCompany">
+        <div style="display:flex;" class="orange">
+            <p>优先选择：</p><ul class="list" v-if="defaultList.length" style="margin-top:0;">
+                <template v-for="(item,k) in defaultList" >
+                    <li :class="currentCode==item.code?'active':''" :key="k" @click="setItem(item)">{{item.name}}</li>
+                </template>
+            </ul>
+        </div>
         <div class="alphabet clear">
             <p v-for="(item,k) in alphabet" :key="k" :class="{'active':currentAlphabet==item}" @click="currentAlphabet=item">{{item}}</p>
         </div>
@@ -67,7 +74,8 @@
                 alphabet:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
                 currentAlphabet:"",
                 currentList:[],
-                currentCode:""
+                currentCode:"",
+                defaultList:[],
             }
         },
         computed:{
@@ -80,11 +88,19 @@
         },
         mounted(){
             this.currentAlphabet="A";
+            this.getdefault();
         },
         methods:{
             ...mapActions("Common",[
-                "GetDeliveryCompany"
+                "GetDeliveryCompany",
+                "getDeliveryCompanyDefault"
             ]),
+            getdefault(){
+                this.getDeliveryCompanyDefault({start:0,length:10,is_default:true}).then(res=>{
+                    console.log(res)
+                    this.defaultList=res.data;
+                })
+            },
             setItem(item){
                 console.log(item)
                 this.currentCode=item.code

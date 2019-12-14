@@ -1,0 +1,164 @@
+.loginCont{
+    /deep/.el-dialog__header{
+        display:none;
+    }
+    /deep/.el-dialog__body{
+         padding:0;
+         border:1px solid #ddd;
+        box-shadow: 0 0 10px 2px #ddd;
+        background:#333;
+       // background:url(../../assets/image/Login/loginbg.jpg) left top no-repeat;
+        background-size: 100% 100%;
+        
+    }
+    #wechat_redirect{
+        /deep/iframe{
+            width:250px!important;
+            height:250px!important;
+        }
+    }
+    .item{
+        display:flex;
+        height:460px;
+        align-items: center;
+        .left{
+            width:350px;
+            color:#fff;
+            padding:20px;
+            box-sizing: border-box;
+            padding-top:0;
+            img{
+                width:70px;
+                height:70px;
+            }
+            .title{
+                font-size:30px;
+                color:#fff;
+                font-weight: bold;
+                text-align: left;
+                
+                .desc{
+                    font-size:16px;
+                    margin-bottom:10px;
+                }
+                .intro{
+                    text-align: right;
+                    margin-top:15px;
+                }
+                .line{
+                    font-size:18px;
+                    margin-left:30px;
+                    height: 100%;
+                    margin-right: 10px;
+                    font-family: 仿宋,仿宋_GB2312;
+                }
+                .little{
+                    font-size:20px;
+                    height: 100%;
+                    font-family: 仿宋,仿宋_GB2312;
+                }
+                .de{
+                    font-size:20px;
+                    margin-top:20px;
+                }
+            }
+        }
+        .right{
+            flex:1;
+            height:100%;
+            display:flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.5);
+            color:#fff;
+            .wrap{
+                flex:1;
+                #wechat_redirect{
+                    text-align: center;
+                    margin-top:50px;
+                }
+            }
+            .logintypeSel{
+                height:80px;
+                &.qq{
+                    background:#fff;
+                    margin-top:-5px;
+                    color:#ddd;
+                }
+            }
+            .form-con-list {
+                width:300px;
+                margin: 30px auto;
+                .type {
+                    border-bottom: 1px solid #DDD;
+                    padding-bottom:10px;
+                }
+                &>div{
+                    margin-top:35px;
+                    /deep/.el-input{
+                        margin:0;
+                        input{
+                            //border-radius: 0;
+                            height:40px;
+                            //border:1px solid #df3f2f;
+                        }
+                    }
+                    &.code{
+                        display:flex;
+                  
+                        .spa{
+                            white-space: nowrap;
+                            line-height: 40px;
+                            padding:0 10px;
+                            font-size:14px;
+                            display:block;
+                            position: relative;
+                            left:-1px;
+                            cursor: pointer;
+                        }
+                        .spb{
+                            cursor: not-allowed;
+                            white-space: nowrap;
+                            line-height: 40px;
+                            padding:0 10px;
+                            font-size:14px;
+                            display:block;
+                            position: relative;
+                            left:-1px;
+                            color:#fff;
+                        }
+                    }
+                }
+                .submit-login{
+                    text-align: center;
+                    line-height:40px;
+                    cursor: pointer;
+                    background-image: linear-gradient(90deg, #fe7c5d 20%,#df3f2f 80%);
+                    border-radius: 3px;
+                    &:hover{
+                        font-weight: bold;
+                    }
+
+                }
+            }
+        }
+    }
+    .logintypeSel{
+        text-align: center;
+        .desc{
+            font-size:12px;
+            margin-bottom:10px;
+        }
+        img{
+            height:25px;
+            width:25px;
+            border-radius:100%;
+            cursor: pointer;
+            margin-right:10px;
+            &:hover{
+                box-shadow: 0 0 2px 2px #ddd;
+            }
+        }
+        
+    }
+}

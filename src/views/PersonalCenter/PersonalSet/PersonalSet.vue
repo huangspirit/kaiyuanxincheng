@@ -583,9 +583,7 @@ export default {
       this.showsetpassword = true;
       this.setform = {};
     },
-    feedback(){
-      
-    },
+    
     submitSetpassword() {
       if (
         this.setform.password &&

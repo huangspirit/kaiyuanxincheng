@@ -1,9 +1,10 @@
-//import Home from '@/views/Home'
 import Index from "@/views/Index"
 export default [
+   
     {
         path: '/',
         name: 'index',
+  
         component: Index,
         meta: {
             title: '',
@@ -74,15 +75,15 @@ export default [
         }
     },
     //问题反馈
-    {
-        path: '/feedback',
-        name: 'feedback',
-        component: () => import('@/views/feedback'),
-        meta: {
-            requireAuth: true,
-            title: '问题反馈'
-        }
-    },
+    // {
+    //     path: '/feedback',
+    //     name: 'feedback',
+    //     component: () => import('@/views/feedback'),
+    //     meta: {
+    //         requireAuth: true,
+    //         title: '问题反馈'
+    //     }
+    // },
     // 询价篮
     {
         path: '/InquiryBasket',
@@ -409,15 +410,15 @@ export default [
                 }
             },
             // 大搜索内容页面
-            {
-                path: 'SearchPage',
-                name: 'SearchPage',
-                component: () => import('@/views/BrandDetail/SearchPage'),
-                meta: {
+            // {
+            //     path: 'SearchPage',
+            //     name: 'SearchPage',
+            //     component: () => import('@/views/BrandDetail/SearchPage'),
+            //     meta: {
 
-                    title: '搜索'
-                }
-            }
+            //         title: '搜索'
+            //     }
+            // }
         ]
     },
     // 个人中心
@@ -575,21 +576,54 @@ export default [
             {
                 path: 'SellerOrderManagement',
                 name: 'SellerOrderManagement',
-                component: () => import('@/views/PersonalCenter/SellerOrderManagement'),
+                component: () => import('@/views/PersonalCenter/SellerOrderManagement0'),
+               //component: () => import('@/views/PersonalCenter/sellerOrder'),
                 meta: {
                     requireAuth: true,
                     title: '订单管理',
                     parentname:"SellerCenter"
                 },
-                children: [{
+                children: [
+                    {
+                        path: '/',
+                        name: '/',
+                        component: () => import('@/views/PersonalCenter/sellerOrderAll'),
+                            meta: {
+                                requireAuth: true,
+                                title: '全订单管理'
+                            }
+                    },
+                    {
+                        path: 'sellerOrder',
+                        name: 'sellerOrder',
+                        component: () => import('@/views/PersonalCenter/sellerOrder'),
+                            meta: {
+                                requireAuth: true,
+                                title: '订单管理'
+                            }
+                    }, 
+                   
+                    {
                     path: 'SellerOrderDetail',
                     name: 'SellerOrderDetail',
-                    component: () => import('@/views/PersonalCenter/sellerOrderDetail'),
-                    meta: {
-                        requireAuth: true,
-                        title: '卖家中心'
-                    }
-                }, ]
+                    component: () => import('@/views/PersonalCenter/sellerOrderoneDetail'),
+                        meta: {
+                            requireAuth: true,
+                            title: '订单明细'
+                        }
+                    }, 
+            ]
+            },
+            {
+                path: 'sellerDeliveryCar',
+                name: 'sellerDeliveryCar',
+               // component: () => import('@/views/PersonalCenter/SellerOrderManagement'),
+               component: () => import('@/views/PersonalCenter/sellerDeliveryCar'),
+                meta: {
+                    requireAuth: true,
+                    title: '发货框管理',
+                    parentname:"SellerCenter"
+                },
             },
             // 卖家商品管理
             {
@@ -674,7 +708,6 @@ export default [
             {
                 path: 'inquiryList',
                 name: 'inquiryList',
-           // redirect:"/personalallApply",
                 component: () => import('@/views/PersonalCenter/sellerInquiry'),
                 meta: {
                     requireAuth: true,
@@ -748,16 +781,7 @@ export default [
                     title: '新增资质'
                 }
             },
-            // 添加代理资质成功
-            {
-                path: 'SuccessfulAddiQualifica',
-                name: 'SuccessfulAddiQualifica',
-                component: () => import('@/views/PersonalCenter/SuccessfulAddiQualifica'),
-                meta: {
-                    requireAuth: true,
-                    title: '添加代理资质成功'
-                }
-            },
+            
             // 新增品牌
             {
                 path: 'NewsBrandQualifica',
@@ -994,15 +1018,15 @@ export default [
                 }
             },
             // 提醒设置
-            {
-                path: 'RemindSet',
-                name: 'RemindSet',
-                component: () => import('@/views/PersonalCenter/RemindSet'),
-                meta: {
-                    requireAuth: true,
-                    title: '提醒设置'
-                }
-            }
+            // {
+            //     path: 'RemindSet',
+            //     name: 'RemindSet',
+            //     component: () => import('@/views/PersonalCenter/RemindSet'),
+            //     meta: {
+            //         requireAuth: true,
+            //         title: '提醒设置'
+            //     }
+            // }
         ]
     }
 

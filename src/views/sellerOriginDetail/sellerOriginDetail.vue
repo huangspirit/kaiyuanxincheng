@@ -319,6 +319,7 @@ export default {
   methods: {
      ...mapMutations("OriginalFactoryEntry", ["setJoinForm"]),
     ...mapMutations("Direct", ["savedirectJOSN"]),
+    ...mapMutations(['setshowlogin']),
     chipOriginalFactoryEntry(){
       if (this.loginState) {
        
@@ -333,7 +334,8 @@ export default {
        this.setJoinForm({brandIds:this.brandInfo.id,brandName:[this.brandInfo.brandName],residencetype:1});
       this.$router.push("/OriginalFactoryEntry/BasicInforma")
       } else {
-        this.$router.push("/Login");
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
       }
       
     },

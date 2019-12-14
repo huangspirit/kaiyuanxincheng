@@ -27,17 +27,6 @@
         </div>
       </div>
       <div class="SellerBillCenter-detail">
-        <!-- <div class="search">
-              <el-date-picker
-                  v-model="value2"
-                  type="datetimerange"
-                  :picker-options="pickerOptions"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  align="right">
-              </el-date-picker>
-        </div>-->
         <div class="tit clear">
           <el-date-picker
             class="fl"
@@ -62,13 +51,43 @@
             </p>
           </div>
         </div>
-        <el-table :data="tableData" border width="100%">
-          <el-table-column label="商品详情" align="center" width="400">
-            <template slot-scope="scope">
-              <div class="infoWrap">
-                <div class="color goods_seller_no">批次号：{{scope.row.goods_seller_no}}</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>批次号</th>
+              <th>商品详情</th>
+              <th>金额/数量</th>
+              <th>平台服务费</th>
+              <th>增值服务费</th>
+              <th>实际结算金额</th>
+              <th>结算状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(item0,k) in tableData">
+            <tr v-for="(item,index) in item0.list" :key="item.id" v-if="item0.list">
+              <td v-if="index==0" :rowspan="item0.list.length">
+                <div class="color goods_seller_no">
+                 {{item.goods_seller_no}}
+                  </div>
+                  <div style="line-height:30px;">
+                    <label v-if="item0.billButton">
+                      <input
+                        type="checkbox"
+                        name="checking"
+                        :value="k"
+                        v-model="checklist"
+                        ref="input"
+                      />
+                    </label> <a href="javascript:;" @click="getonedetailbill(item)" style="padding-right:10px;" v-if="item0.billButton"> 开发票</a>
+                  <a :href="`${downUrl}${item.goods_seller_no}`" :download="item.goods_seller_no+'发货单'" >下载发货单</a>
+                  </div>
+              </td>
+              <td>
+                 <div class="infoWrap">
                 <div class="info">
-                  <ImgE :src="scope.row.goods_image" :W="50" :H="50" style="width:50px;"></ImgE>
+                  <ImgE :src="item.goods_image" :W="50" :H="50" style="width:50px;"></ImgE>
                   <div class="cont">
                     <p class="color name">
                       <router-link
@@ -77,11 +96,11 @@
                           path:'/BrandDetail/GoodsDetails',
                           query:{
                             tag:'goodsinfo',
-                            documentid:scope.row.goods_id,
-                            name:scope.row.goods_name
+                            documentid:item.goods_id,
+                            name:item.goods_name
                           }
                         }"
-                      >{{scope.row.goods_name}}</router-link>
+                      >{{item.goods_name}}</router-link>
                     </p>
                     <p>
                       <router-link
@@ -89,104 +108,91 @@
                           path:'/BrandDetail',
                           query:{
                             tag:'brand',
-                            documentid:scope.row.goods_brand_id,
-                            name:scope.row.goods_brand
+                            documentid:item.goods_brand_id,
+                            name:item.goods_brand
                           }
                         }"
-                      >{{scope.row.goods_branda}}</router-link>
+                      >{{item.goods_branda}}</router-link>
                     </p>
-                    <p class="gray">{{scope.row.goods_desc}}</p>
+                    <p class="gray">{{item.goods_desc}}</p>
                   </div>
                 </div>
               </div>
-            </template>
-          </el-table-column>
-          <!--              <el-table-column-->
-          <!--                  prop="support_bill"-->
-          <!--                  label="支持开票"-->
-          <!--                  align="center"-->
-          <!--              >-->
-          <!--                  <template slot-scope="scope">-->
-          <!--                      <span>{{scope.row.support_bill?'支持':'不支持'}}</span>-->
-          <!--                  </template>-->
-          <!--              </el-table-column>-->
-          <el-table-column prop="totalPay" label="金额/数量" align="center" width="180">
-            <template slot-scope="scope">
-              <p>
-                <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.totalPay}}</span> &nbsp;&nbsp;
-                <span>/ &nbsp;&nbsp;{{scope.row.totalPayCount}}只</span>
+              </td>
+              <td>
+                <p>
+                <span class="color">{{item.priceunit ? '$':'￥'}}{{item.totalPay}}</span> &nbsp;&nbsp;
+                <span>/ &nbsp;&nbsp;{{item.totalPayCount}}只</span>
               </p>
               <p
                 class="color"
-              >{{scope.row.clude_bill?'含13%增值税':'不含税'}} ，{{scope.row.support_bill?'卖家开发票':'系统开发票'}}</p>
-            </template>
-          </el-table-column>
-          <!-- <el-table-column
-                  prop="taxAmount"
-                  label="发票税额"
-                  align="center">
-                  <template slot-scope="scope">
-                      <span class="color">{{scope.row.priceunit ? '$':'￥'}}{{scope.row.taxAmount}}</span>
-                  </template>
-          </el-table-column>-->
-          <el-table-column label="违约金/违约天数" align="center">
-            <template slot-scope="scope">
-              <span
+              >{{item.clude_bill?'含13%增值税':'不含税'}} ，{{item.support_bill?'卖家开发票':'系统开发票'}}</p>
+              </td>
+              <td>
+                 <span
                 class="color"
-                v-if="scope.row.violate_count"
-              >{{scope.row.priceunit ? '$':'￥'}}{{scope.row.violate_monney | toFixed(scope.row.priceunit ? 3:2)}}</span>
-              <span v-if="scope.row.violate_count">/{{scope.row.violate_count}}</span>
-              <p v-if="scope.row.violate_count">违约开始日期{{scope.row.expireTime | formatDate}}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="bonusServiceAmout" label="平台服务费" align="center">
-            <template slot-scope="scope">
-              <span
+              >{{item.priceunit ? '$':'￥'}}{{item.bonusServiceAmout | toFixed(item.priceunit ? 3:2)}}</span>
+              </td>
+              <td>
+                <span
                 class="color"
-              >{{scope.row.priceunit ? '$':'￥'}}{{scope.row.bonusServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="billServiceAmout" label="增值服务费" align="center">
-            <template slot-scope="scope">
-              <span
+              >{{item.priceunit ? '$':'￥'}}{{item.billServiceAmout | toFixed(item.priceunit ? 3:2)}}</span>
+              </td>
+              <td>
+                 <span
                 class="color"
-              >{{scope.row.priceunit ? '$':'￥'}}{{scope.row.billServiceAmout | toFixed(scope.row.priceunit ? 3:2)}}</span>
+              >{{item.priceunit ? '$':'￥'}}{{item.realPayTotal | toFixed(item.priceunit ? 3:2)}}</span>
+              </td>
+              <td>
+                 <span>{{item.is_checkout | checkoutFilter}}</span>
+              </td>
+              
+              <td>
+                 <ImgE :src="item.biurl" :isBig="true" v-if="item.biurl" :W="50" :H="50"></ImgE>
+                       <el-popover
+                       v-if="!item.biurl"
+                        placement="top-start"
+                        width="500"
+                        trigger="click"
+                        @show="recordDeilery(item.deliverNo)"
+                      >
+                        <div class="orderpress" style="max-height:600px;overflow-y:auto;">
+                         
+                          <p style="margin-bottom:15px;font-size:20px">当前物流状态</p>
+                          <el-timeline>
+                            <el-timeline-item
+                              :timestamp="val.datetime"
+                              placement="top"
+                              v-for="(val, k) in expressList"
+                              :key="k"
+                              type="success"
+                              :class="k === val.length - 1 ? 'lastfood' : '' "
+                            >
+                              <el-card>
+                                <h4>{{val.remark}}</h4>
+                              </el-card>
+                            </el-timeline-item>
+                          </el-timeline>
+                        </div>
+                        <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-left:15px;">查询物流</span>
+                      </el-popover>
+              </td>
+            </tr>
             </template>
-          </el-table-column>
-          <el-table-column label="实际结算金额" align="center">
-            <template slot-scope="scope">
-              <span
-                class="color"
-              >{{scope.row.priceunit ? '$':'￥'}}{{scope.row.realPayTotal | toFixed(scope.row.priceunit ? 3:2)}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="状态" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.row.status | statusFilter}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="is_checkout" label="结算状态" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.row.is_checkout | checkoutFilter}}</span>
-            </template>
-          </el-table-column>
-          <!-- <el-table-column
-                  label="操作"
-              align="center">
-                  <template slot-scope="scope" v-if="!scope.row.is_checkout">
+          </tbody>
+        </table>
+      <div>
+       <label><input type="checkbox" @change="allCheck" ref="allcheckmark" />
+                      全选</label> 
                       <el-button
-                          @click.native.prevent="despost(scope.$index)"
-                          type="text"
-                          size="small"
-                      class="bgColor"
-                      v-if="!scope.row.is_checkout">
-                          提现
-                      </el-button>
-                  </template>
-          </el-table-column>-->
-        </el-table>
+                        v-if="checklist.length"
+                        size="mini"
+                        class="bgColor"
+                        @click="beforebatchOpenBill"
+                      >批量开票</el-button>
+                      </div>
         <Pagination
-          v-if="total>pageSize"
+          v-if="total"
           @current-change="handleCurrentChange"
           :pageIndex.sync="currentPage"
           :pageSize="pageSize"
@@ -220,6 +226,72 @@
         <el-button type="primary" @click="saveDraw">确 定</el-button>
       </span>
     </el-dialog>
+     <SetTankuang
+        class="settankuang openbill"
+        :title="'确认开具发票'"
+        v-if="centerDialogVisibleInvoice"
+        @closeDialogCallBack="centerDialogVisibleInvoice = false"
+      >
+        <div class="dialog-body" slot="dialog-body">
+          <el-form ref="ruleFormChangeDue" label-width="150px" class="demo-ruleForm">
+            <el-form-item label="发票类型:">
+              <p class="text">增值税发票</p>
+            </el-form-item>
+            <el-form-item label="发票抬头:">
+              <p class="text">{{sysBillDefault.corporatename}}</p>
+            </el-form-item>
+            <el-form-item label="开户银行:">
+              <p class="text">{{sysBillDefault.openingbank}}</p>
+            </el-form-item>
+
+            <el-form-item label="发票代码:">
+              <p class="text">{{sysBillDefault.billno}}</p>
+            </el-form-item>
+            <el-form-item label="地  址:">
+              <p class="text">{{sysBillDefault.registeredaddress}}</p>
+            </el-form-item>
+            <el-form-item label="电  话:">
+              <p class="text">{{sysBillDefault.registeredphone}}</p>
+            </el-form-item>
+            <el-form-item label="图  片:">
+               <el-upload
+                      class="avatar-uploader"
+                      :action="upbillImage"
+                      :auto-upload="true"
+                      list-type="picture-card"
+                      :on-preview="(file)=>{return onpreview(file)}"
+                      :on-success="(response, file, fileList)=>{return handleAvatarSuccess(response, file, fileList)}"
+                      :before-upload="beforeAvatarUpload"
+                      multiple
+                    >
+                      <i
+                        class="el-icon-plus"
+                      ></i>
+                      <div slot="tip" class="el-upload__tip">支持png、jpg、gif格式</div>
+                    </el-upload>
+            </el-form-item>
+            <el-form-item label="发票邮寄:">
+              <el-radio-group v-model="bill_tran_type" class="defaultradioSquare">
+                <el-radio :label="0" :value="0">随货物发出</el-radio>
+                <el-radio :label="1" :value="1">单独邮寄</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div slot="footer" class="dialog-footer fr" style="display:flex;">
+          <el-button class="cancle" @click="centerDialogVisibleInvoice = false">取消</el-button>
+          <el-button
+            class="default"
+            @click="batchOpenBill"
+            style="width:auto;margin-left:10px;"
+          >确认</el-button>
+        </div>
+      </SetTankuang>
+         <el-dialog  :visible.sync="showbigimg" width="600px">
+            <div style="line-height:400px;text-align:center;">
+                <img :src="bigmigurl" alt="" style="max-height:500px;max-height:400px;">
+            </div>
+        </el-dialog>
   </div>
 </template>
 <style lang="less" scoped>
@@ -227,17 +299,27 @@
 </style>
 
 <script>
+import { baseURL } from "@/config";
 import { TimeForma2 } from "../../../lib/utils";
-import { axios, sellerCenter, personCenter } from "../../../api/apiObj";
+import { axios, sellerCenter, personCenter,sellerOrderCenter  } from "../../../api/apiObj";
 export default {
   name: "SellerBillCenter",
   data() {
     return {
+      checklist:[],
+      centerDialogVisibleInvoice:false,
+      showbigimg:false,
+      bigmigurl:'',
+      bill_tran_type:0,
+      sysBillDefault:{},
+      billImage:'',
+      currentItem:{},
+      expressList:[],
       pageSize: 10,
       currentPage: 1,
       total: 0,
       modules: 0,
-      tableData: [],
+      tableData: {},
       obj: {},
       pickerOptions: {
         shortcuts: [
@@ -282,6 +364,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.DeliverGoodsInvoice();
     axios
       .request({
         ...personCenter.getBankList,
@@ -295,6 +378,19 @@ export default {
       });
   },
   watch: {
+    checklist(val) {
+      if (
+        !this.$refs.input ||
+        this.checklist.length < this.$refs.input.length ||
+        this.$refs.input.length == 0
+      ) {
+        if (this.$refs.allcheckmark) {
+          this.$refs.allcheckmark.checked = false;
+        }
+      } else {
+        this.$refs.allcheckmark.checked = true;
+      }
+    },
     value2(val) {
       this.startTime = TimeForma2(val[0]);
       this.endTime = TimeForma2(val[1]);
@@ -307,6 +403,7 @@ export default {
   },
   methods: {
     init() {
+      this.checklist=[]
       let obj = {
         start: this.start,
         length: this.pageSize,
@@ -320,15 +417,32 @@ export default {
           if (res) {
             this.obj = res.data;
             if (res.data.list) {
-              this.tableData = res.data.list.data;
+           
+              let obj={}
+              res.data.list.data.forEach((el,index) => {
+                if(obj[el.goods_seller_no]){
+                  obj[el.goods_seller_no].list.push(el)
+                  if(el.billButton){
+                      obj[el.goods_seller_no].billButton=el.billButton
+                  }
+                }else{
+                  obj[el.goods_seller_no]={
+                    billButton:el.billButton,
+                    list:[el]
+                  }
+                }
+              });
+              this.tableData =obj
+             
               this.total = res.data.list.total;
             } else {
-              this.tableData = [];
+              this.tableData = {};
               this.total = 0;
             }
           }
         });
     },
+    
     jiezhang() {
       this.$confirm("确定结账?", "提示", {
         confirmButtonText: "确定",
@@ -345,6 +459,7 @@ export default {
         })
         .catch(() => {});
     },
+
     handleChangeAll() {
       this.is_checkout = null;
 
@@ -426,7 +541,6 @@ export default {
                 }
               })
               .then(res => {
-                console.log(res);
                 this.bankList = res.data.data;
               });
           }
@@ -445,11 +559,136 @@ export default {
             this.showinputwithdrawTotal = false;
           }
         });
+    },
+    recordDeilery(seller_no){
+      axios
+        .request({
+          ...sellerOrderCenter.queryExpress,
+          params: { seller_no: seller_no }
+        })
+        .then(res => {
+          if(res){
+            this.expressList = res.data;
+          }else{
+            this.expressList=[]
+          }
+          
+        });
+    },
+    getonedetailbill(item){
+      this.currentItem = item;
+      this.centerDialogVisibleInvoice = true;
+      this.checklist=[item.goods_seller_no]
+    },
+    DeliverGoodsInvoice(item) {
+      
+      axios.request(sellerOrderCenter.querySysBill).then(res => {
+        this.sysBillDefault = res.data;
+      });
+    },
+    submitFormInvoice() {
+      let obj = {
+        transType: this.bill_tran_type,
+        billId: this.sysBillDefault.id,
+        sendNo: this.currentItem.goods_seller_no,
+        billImage:this.billImage,
+      };
+      axios
+        .request({ ...sellerOrderCenter.openBill, params: obj })
+        .then(res => {
+          if(res.resultCode==200){
+            this.centerDialogVisibleInvoice = false;
+            this.init();
+            this.$message({
+              message:'提交成功',
+              type:"success"
+            })
+          }else{
+            this.$message({
+              message:res.message,
+              type:"warning"
+            })
+          }
+        });
+    },
+    allCheck(val) {
+      this.checklist = [];
+      Array.from(this.$refs.input).forEach(el => {
+        if (val.target.checked) {
+          this.checklist.push(el.value);
+        }
+        el.checked = val.target.checked;
+      });
+    },
+    beforebatchOpenBill(){
+      this.centerDialogVisibleInvoice=true;
+    },
+    batchOpenBill(){
+      let arr=this.checklist.map(item=>{
+        return {
+          transType: this.bill_tran_type,
+          billId: this.sysBillDefault.id,
+          sendNo: item,
+          billImage:this.billImage,
+        }
+      })
+      axios
+        .request({...sellerOrderCenter.openBatchBill, data: arr,method:'post' })
+        .then(res => {
+          if(res.resultCode==200){
+            this.centerDialogVisibleInvoice = false;
+            this.init();
+            this.$message({
+              message:'提交成功',
+              type:"success"
+            })
+          }else{
+            this.$message({
+              message:res.message,
+              type:"warning"
+            })
+          }
+          
+          
+        });
+
+    },
+    beforeAvatarUpload(){
+
+    },
+    handleAvatarSuccess(response, file, fileList){
+      let str="";
+      fileList.forEach((el,index) => {
+        if(index==0){
+          str=el.response.data.name
+        }else{
+          str=str+'@'+el.response.data.name;
+        }
+      });
+      this.billImage=str;
+    },
+    onpreview(file){
+        this.showbigimg=true;
+        this.bigmigurl=file.url;
     }
   },
   computed: {
     start() {
       return this.pageSize * (this.currentPage - 1);
+    },
+    downUrl() {
+      let access_token = sessionStorage.getItem("access_token");
+      return (
+        baseURL +
+        `api-order/sellerCenter/queryDeliverySheet?access_token=${access_token}&deliveryNo=`
+      );
+    },
+    upbillImage(){
+      let access_token = sessionStorage.getItem("access_token");
+      return (
+        baseURL+
+        `api-order/sellerCenter/uploadSellerBillImage?access_token=${access_token}`
+      )
     }
   },
   filters: {

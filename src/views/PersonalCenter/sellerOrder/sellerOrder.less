@@ -1,0 +1,168 @@
+.goodslist{
+    color:#333;
+    .uppi{
+        /deep/.el-dialog__body{
+            padding:0;
+            .upcont{
+                .title{
+                    background:#ffdbd7;
+                    line-height:40px;
+                    display:flex;
+                    padding:0 20px;
+                    span{
+                        flex:1;
+                        white-space: nowrap;
+                    }
+                }
+                .cont{
+                    padding:15px;
+                    .desc{
+                        p{
+                            margin-top:6px;
+                        }
+                    }
+                    .deliverCompany{
+                        padding:10px 15px 0;
+                        &>div{
+                            margin-bottom:15px;
+                            label{
+                                width:100px;
+                                display: inline-block;
+                                text-align: right;
+                            }
+                        }
+                    }
+                    .pilist{
+                        padding:10px 15px;
+                        display: flex;
+                        .symbol{
+                            width:100px;
+                            position: relative;
+                            height:100px;
+                            img{
+                                width:100%;
+                            }
+                            span{
+                                position: absolute;
+                                top:0;
+                                bottom:0;
+                                left:0;
+                                right:0;
+                                line-height:100px;
+                                background:rgba(0,0,0,0.5);
+                                color:#fff;
+                            }
+                        }
+                        .avatar-uploader{
+                            display:flex;
+                            flex-wrap: wrap;
+                            flex:1;
+                            /deep/.el-upload--picture-card{
+                                width:100px;
+                                height:100px;
+                                line-height: 100px;
+                            }
+                            /deep/.el-upload-list--picture-card .el-upload-list__item{
+                                height:100px;
+                                width:100px;
+                                line-height: 100px;
+                            }
+                            .tip{
+                                width:100%;
+                                margin-top:15px;
+                            }
+
+                        }
+                        
+
+                    }
+                }
+            }
+        }
+    }
+    
+    &>.title{
+        line-height: 60px;
+        background:#fff;
+        margin-bottom:10px;
+        display: flex;
+        padding:0 20px;
+        position: relative;
+        &>div{
+            flex: 1;
+            text-align: right;
+        }
+        .input{
+            width:100%;
+            position: absolute;
+            height:100%;
+            top:0;
+            left:0;
+            text-align: center;
+            .inputSearch {
+                margin:0 auto;
+                text-align: center;
+            }
+        }
+        
+    }
+    .tit{
+        padding:10px 20px;
+        display:flex;
+        background:#fff;
+        ul{
+            display:flex;
+            margin-left:20px;
+            li{
+                margin-right:20px;
+                cursor: pointer;
+                line-height: 40px;
+                &:hover{
+                    color:#df3f2f;
+                }
+               
+            }
+        }
+        .input{
+            margin-left: 15px;
+        }
+        .models{
+            flex:1;
+            text-align: right;
+            font-size:14px;
+            img{
+                width:20px;
+                margin:0 15px;
+            }
+        }
+    }
+    .table{
+        width:100%;
+        border-top:1px solid #ddd;
+        border-left:1px solid #ddd;
+        background:#fff;
+      
+        th{
+            line-height: 45px;
+            background:#e3e3e3;
+            border-bottom:1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size:14px;
+            font-weight: normal;
+        }
+        td{
+            border-bottom:1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding:8px;
+            font-size:12px;
+            text-align: center;
+           
+            p{
+               margin-top:5px;
+            }
+            &.goodsinfo{
+                text-align:left;
+            }
+        }
+    }
+}

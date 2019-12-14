@@ -1,0 +1,157 @@
+.sellerOrderAll{
+    .goodslist{
+        color:#333;
+        &>.title{
+            line-height: 60px;
+            background:#fff;
+            margin-bottom:10px;
+            display: flex;
+            padding:0 20px;
+            position: relative;
+            &>div{
+                flex: 1;
+                text-align: right;
+            }
+            .input{
+                width:80%;
+                position: absolute;
+                height:100%;
+                top:0;
+                left:10%;
+                text-align: center;
+                .inputSearch {
+                    margin:0 auto;
+                    text-align: center;
+                }
+            }
+            
+        }
+        &>.tit{
+            padding:10px 20px 10px 10px;
+            display:flex;
+            background:#fff;
+            .deliver_states{
+                flex:1;
+                display: flex;
+                font-size:14px;
+                line-height:30px;
+                white-space: nowrap;
+                p{
+                    margin-right: 10px;
+                    
+                    
+                    label{
+                        font-weight: normal!important;
+                        cursor: pointer;
+                        font-size:14px;
+                        &:hover{
+                            color:#df3f2f;
+                        }
+                    }
+                    input{
+                        width:0;
+                        height:0;
+                        opacity: 0;
+                    }
+                }
+            }
+            .models{
+                flex:1;
+                text-align: right;
+                font-size:14px;
+                line-height:30px;
+                img{
+                    width:20px;
+                    margin:0 15px;
+                }
+            }
+        }
+        .cont{
+            background:#fff;
+            .tit{
+                display:flex;
+                text-align:center;
+                background:#ddd;
+                line-height:40px;
+                padding:0 15px;
+                .oneitem{
+                    flex:1;
+                }
+                .goodsinfo{
+                    width:300px;
+                }
+            }
+            .biglist{
+                border:1px solid #01a3f03b;
+                .userinfo{
+                    background:#01a3f03b;
+                    line-height: 50px;
+                    font-size:14px;
+                    display: flex;
+                    padding:0 15px;
+                    p{
+                        margin-right:20px;
+                    }
+                    img{
+                        height:30px;
+                        width:30px;
+                        border-radius: 30px;
+                        margin-left:10px;
+                    }
+                    .detail{
+                        font-size:12px;
+                        display:none;
+                    }
+                }
+                .list{
+                    .title{
+                        margin-bottom:6px;
+                        background:#f06b6b14;
+                        display:flex;
+                        line-height:35px;
+                        padding:0 15px;
+                        font-size:14px;
+                        p{
+                            margin-right:20px;
+                        }
+                    }
+                    .onecont{
+                        display: flex;
+                        font-size:14px;
+                        border-bottom:1px solid #ddd;
+                        border-top:1px solid #ddd;;
+                        .goodsinfo{
+                            width:300px;
+                            display:flex;
+                            padding:8px;
+                            box-sizing: border-box;
+                            font-size:12px;
+                            img{
+                                width:60px;
+                                margin-right:10px;
+                            }
+                            p{
+                                margin-bottom:5px;
+                                min-height: 0;
+                                &.desc{
+                                    white-space: nowrap;
+                                    width:100%;
+                                    overflow: hidden;
+                                    width:230px;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+                        }
+                        .oneitem{
+                            flex:1;
+                            text-align: center;
+                            padding:8px;
+                            font-size:12px;
+                        }
+                    }
+                }
+            }
+           
+        }
+    }
+}

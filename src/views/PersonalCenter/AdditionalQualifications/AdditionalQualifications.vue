@@ -40,16 +40,12 @@
                 <span class="red-sp">*</span>
                 资质类型
               </h4>
-              <!-- <p class="small">1.请下载模板填写并加盖公章及商标权人公司红章后，拍照或彩色扫描后上传</p>
-              <p class="small">2.若商标授权人为自然人，须同时提交商标授权人亲笔签名的身份证复印件，并加盖开店公司红章</p>
-              <p class="small">3.经营自有品牌，无需提交独占协议书，此处请上传商标注册证</p> -->
+              
               <p class="small">1.品牌商给贵司的授权代理证书、代理协议均可；</p>
               <p class="small">2.品牌商官方网站的截图，请务必将地址栏截图进去；</p>
               <p class="small">3.经营自有品牌请上传国内的商标注册证书；</p>
               <p class="small">以上两项提供任一文件即可！</p>
-              <!-- <p class="download-template">
-                <a>下载模板</a>
-              </p> -->
+            
             </div>
             <el-form-item label="有效期：" prop="timeStart">
               <el-date-picker
@@ -77,7 +73,7 @@
                 <div
                   slot="tip"
                   class="el-upload__tip"
-                >图片迟训请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                >图片尺寸请确保清新，支持png、jpg、gif格式</div>
               </el-upload>
               <div class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                 <img :src="exampleDiagram" alt />
@@ -201,15 +197,14 @@ export default {
     },
     // 上传之前图片的大小
     beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 1;
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 1MB!");
-      }
-      return isLt2M;
+      // const isLt2M = file.size / 1024 / 1024 < 1;
+      // if (!isLt2M) {
+      //   this.$message.error("上传头像图片大小不能超过 1MB!");
+      // }
+      // return isLt2M;
     },
     // 资质上传图
     successUpload(response) {
-      console.log(response);
       this.ruleForm.qualificationMap = response.data;
       this.$message({
         message: "上传成功!",

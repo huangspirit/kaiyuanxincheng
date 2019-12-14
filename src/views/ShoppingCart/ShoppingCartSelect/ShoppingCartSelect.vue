@@ -47,7 +47,7 @@
                 <div class="ImgE">
                   <img :src="item.sellerUrl" alt  style="cursor:pointer;" @click="chipShop(item)"/>
                   <span style="margin-left:10px;font-size:14px;cursor:pointer;"  @click="chipShop(item)">{{item.sellerName}}</span>
-                  <div class="content">
+                  <!-- <div class="content">
                     <div class="top">
                       <img :src="item.sellerUrl" alt style="cursor:pointer;" @click="chipShop(item)"/>
                       <div>
@@ -57,7 +57,82 @@
                     </div>
                     <div class="btn unactive" v-if="item.focus">已关注</div>
                     <div class="btn" @click="guanzhu(2,k)" v-else>关注</div>
-                  </div>
+                  </div> -->
+                   <div class="wrapInfo clear content">
+                    <div class="wrap" @click="chipShop(item)">
+                      <img :src="item.sellerUrl" alt />
+                      <div :title="item.sellerName" >
+                        <p style="margin:10px 0;">{{item.sellerName}}</p>
+                      
+                        <span class="tag bgColor" v-if="item.sellerTag==1">{{item.sellerTag | tagFilter}}</span>
+                        <span class="tag bgBlu" v-if="item.sellerTag==2">{{item.sellerTag | tagFilter}}</span>
+                        <span class="tag bgOrange" v-if="item.sellerTag==18">{{item.sellerTag | tagFilter}}</span>
+                         <span class="tag bgOrange">保</span>
+                      </div>
+                    </div>
+                    <div class="score">
+                        <div >入驻时间：{{item.settleTime | formatDate}}</div>
+                        <div style="margin-bottom:20px;">企业资质：已认证</div>
+                        <div class="scoreitem">
+                            <span>产品质量：</span>
+                            <span class="color" v-if="item.mapComment.profileA>item.mapComment.profileB">
+                                <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                                <span>高于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                                <span class="el-icon-top"></span>
+                            </span>
+                            <span class="green" v-if="item.mapComment.profileA<item.mapComment.profileB">
+                                <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                                <span>低于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                                <span class="el-icon-bottom"></span>
+                            </span>
+                            <span v-if="item.mapComment.profileA==item.mapComment.profileB">
+                                <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                                <span>等于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                            </span>
+                        </div>
+                        <div class="scoreitem">
+                            <span>发货速度：</span>
+                            <span class="color" v-if="item.mapComment.deliverA>item.mapComment.deliverB">
+                            <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                            
+                            <span>高于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                            <span class="el-icon-top"></span>
+                            </span>
+                            <span class="green" v-if="item.mapComment.deliverA<item.mapComment.deliverB">
+                            <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                            <span>低于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                            <span class="el-icon-bottom"></span>
+                            </span>
+                            <span v-if="item.mapComment.deliverA==item.mapComment.deliverB">
+                            <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
+                            <span>等于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
+                            </span>
+                        </div>
+                        <div class="scoreitem">
+                            <span>服务支持：</span>
+                            <span class="color" v-if="item.mapComment.serviceA>item.mapComment.serviceB">
+                            <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+                            
+                            <span>高于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                            <span class="el-icon-top"></span>
+                            </span>
+                            <span class="green" v-if="item.mapComment.serviceA<item.mapComment.serviceB">
+                            <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+
+                            
+                            <span>低于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                            <span class="el-icon-bottom"></span>
+                            </span>
+                            <span v-if="item.mapComment.serviceA==item.mapComment.serviceB">
+                            <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+                            <span>等于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                            </span>
+                        </div>
+                    </div>
+                  <p style="center">
+                    <span class="borderColor" style="padding:2px 5px;border-radius:4px;cursor:pointer;font-size:14px;"  @click="chipShop(item)">进入店铺</span>
+                  </p>
+                </div>
                 </div>
               </div>
               <template v-for="(item1,index) in item.list">
@@ -259,7 +334,7 @@
 @import "./ShoppingCartSelect.less";
 </style>
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations,mapActions } from "vuex";
 
 import { axios, shoppingCar } from "../../../api/apiObj";
 import { TimeForma2, ladderPrice,TimeForma} from "@/lib/utils";
@@ -283,9 +358,29 @@ export default {
   methods: {
     ...mapMutations("MerchantList", ["setBuyOneGoodsDetail"]),
     // ...mapActions("shoppingCart", ["GetAllShoppingCartList"]),
+     ...mapActions("Login", ["GetUserInforma"]),
+     chipShop(item) {
+      if (item.tag == 1) {
+        this.$router.push({
+          path: "/BrandDetail",
+          query: {
+            tag: "brand",
+            documentid: item.brandId,
+            name: item.brandName
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/sellerShopDetail",
+          query: {
+            sellerId: item.sellerId
+          }
+        });
+      }
+    },
     delbatch(){
       //批量删除无效的商品
-      console.log(this.goodsList)
+     
       let arr=[]
       this.goodsList.forEach(item => {
           item.list.map(item0 => {
@@ -294,7 +389,6 @@ export default {
             }
           });
         });
-        console.log(arr)
         let obj={
           ids:arr.join('@')
         }
@@ -306,7 +400,6 @@ export default {
         });
     },
      chipShop(item){
-              
                 if(item.sellerTag==1){
                     this.$router.push({
                         path:"/BrandDetail",
@@ -438,7 +531,14 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("已加入询价蓝");
+          if(res){
+            this.$message.success("已加入询价蓝");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+          }
+          
         });
     },
     //从购物车删除商品
@@ -554,7 +654,8 @@ export default {
         order: JSON.stringify(orderJson),
         add_id: 1,
         type: 0,
-        orderSource: 1
+        orderSource: 1,
+        fromCar:1
       };
       if(count>1){
           //用户确认报关方式

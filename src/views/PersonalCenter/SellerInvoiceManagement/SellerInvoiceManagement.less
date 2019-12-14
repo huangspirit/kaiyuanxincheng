@@ -1,4 +1,14 @@
 .SellerInvoiceManagement {
+  .openbill{
+    /deep/.el-dialog__body{
+      padding-top:0;
+    }
+    .demo-ruleForm{
+      /deep/.el-form-item{
+        margin-bottom:0;
+      }
+    }
+  }
   .OrderManagement{
     //max-width:1350px;
     background:#fff;
@@ -6,7 +16,64 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    .table{
+      width:100%;
+      background:#fff;
+      border-top:1px solid #ddd;
+      border-left: 1px solid #ddd;
+      font-size:12px;
+      color:#333;
+      /deep/button{
+         span{
+           padding:0 12px;
+         }
+       }
+       .infoWrap{
+         padding:5px;
+         overflow: hidden;
+         box-sizing: border-box;
+         &>div{
+           white-space: nowrap;
+         }
+         .goods_seller_no{
+           font-weight: bold;
+           margin-bottom:5px;
+           font-size:15px;
+           text-align: left;
+         }
+         .info{
+           display: flex;
+           text-align: left;
+           font-size:12px;
+           width:100%;
+           align-items: center;
+          
+           .cont{
+             flex:1;
+             margin-left:5px;
+             p{
+               width:100%;
+               white-space: normal;
+             }
+           }
+         }
+       }
+      th{
+        background:#f3f3f3;
+        line-height:40px;
+        text-align: center;
+      }
+      td{
+          padding:8px;
+          border-bottom:1px solid #ddd;
+          border-right:1px solid #ddd;
+          text-align: center;
+    
+      }
+    
+    }
   }
+  
 .tab-list-t{
   margin-bottom:20px;
   .el-input{
@@ -29,82 +96,7 @@
    }
   }
 }
-  .tab-list-con{
-    .nocontent{
-      text-align: center;
-      margin:50px auto;
-    }
-    .tab-list-con-tit{
-      background:#e4e4e4;
-      line-height: 40px;
-      text-align: center;
-    }
-    .list-item{
-      .list-item-tit{
-        margin-top:15px;
-        height:50px;
-        line-height:50px;
-        background:#f2f2f2;
-        padding:0 15px;
-        font-size:12px;
-        .inform{
-          img{
-            height:35px;
-            vertical-align: middle;
-          }
-        }
-
-      span{
-          margin-right:15px;
-          &.time{
-            color:#999;
-          }
-
-        }
-      }
-      table{
-        tr{
-          border:1px solid #e3e3e3;
-          border-right:none;
-          td{
-            border-right:1px solid #e3e3e3;
-            text-align: center;
-            font-size:13px;
-          }
-          .goodsInfo{
-              &>div{
-                padding:10px;
-                display:flex;
-                justify-items: center;
-                img{
-                  height:45px;
-                  margin-right:10px;
-                  vertical-align: middle;
-                  border:1px solid #f3f3f3;
-                }
-                &>div{
-                  flex:1;
-                  display:flex;
-                  flex-direction: column;
-                  justify-content: space-around;
-                  p{
-                    margin-bottom:10px;
-                    text-align:left;
-                    .num{
-                      color:#f40;
-                    }
-                  }
-                }
-              }
-          }
-          .invoceInfo{
-            text-align: left;
-            padding: 10px;
-          }
-        }
-      }
-    }
-  }
+ 
   .demo-ruleForm{
     /deep/.el-upload--picture-card {
       width: 80px;
@@ -131,9 +123,9 @@
   .billdetail{
     /deep/.el-carousel__item{
       text-align: center;
-      line-height: 500px;
+      line-height: 400px;
       img{
-        max-height:500px;
+        max-height:400px;
         max-width:100%;
       }
      

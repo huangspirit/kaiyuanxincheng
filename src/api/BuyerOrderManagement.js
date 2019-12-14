@@ -2,7 +2,6 @@
 import axios from './index'
 //查询物流信息
 export const queryExpress = (data)=>{
-  console.log(data)
   return axios.request({
     url: `api-order/customerCenter/queryExpress`,
     method: 'get',

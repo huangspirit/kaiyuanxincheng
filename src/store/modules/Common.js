@@ -12,6 +12,19 @@ const getters = {
 }
 
 const actions = {
+    //获取优先选的快递
+    getDeliveryCompanyDefault (context,data){
+
+        return new Promise((resolve, reject) => {
+                axios.request({...common.getDeliveryCompanyDefault,params:data}).then(
+                    res=>{
+                        resolve(res.data)
+                    }
+                )
+            
+
+        })
+    },
     // 获取快递公司
     GetDeliveryCompany (context,data){
         return new Promise((resolve, reject) => {
@@ -67,7 +80,6 @@ const actions = {
 const mutations = {
     SetDeliveryCompany(state, data) {
         state.DeliveryCompany[data.data.pfrixName.toUpperCase()] = data.list.data;
-        console.log("DeliveryCompany0:",state.DeliveryCompany)
     },
     SetCenterChangeAddress(state,data){
         state.CenterChangeAddress=data

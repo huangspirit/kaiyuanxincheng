@@ -405,7 +405,8 @@ export default {
             this.init()
         },
         checklist(val){
-                if(this.checklist.length<this.$refs.input.length || this.$refs.input.length==0){
+            
+                if((this.$refs.input && (this.checklist.length<this.$refs.input.length )) || !this.$refs.input){
                  this.$refs.allcheckmark.checked=false
                 }else{
                   this.$refs.allcheckmark.checked=true;

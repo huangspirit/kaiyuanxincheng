@@ -27,6 +27,12 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requireAuth)) {
         // 判断token是否存在
         // eslint-disable-next-line camelcase
+        if(!access_token){
+            next('/')
+        }else{
+            next()
+        }
+        return;
         if (access_token) {
             // 如果不是登录页直接跳转
             if (to.name !== 'Login') {

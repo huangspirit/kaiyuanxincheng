@@ -11,6 +11,13 @@ const mutations = {
     EDITAPPLY(state,data) {
         localStorage.setItem("applyDetailEdit",JSON.stringify(data))
         state.applyDetailEdit = data
+    },
+    setshowlogin(state,data){
+       
+        state.showlogin = data;
+    },
+    setshowDeliverCar(state,data){
+        state.showDeliverCar = data;
     }
 }
 export default mutations

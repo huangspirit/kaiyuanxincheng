@@ -2,7 +2,7 @@
   <div class="HeaderSearch" @click="noSearch()" :class="mini?'mini':''">
     <div class="search">
       <div class="ipt" >
-        <input type="text" placeholder="请输入你要查找的器件型号/类别/品牌关键字" @focus.stop="focus" v-model="searchValue">
+        <input type="text" placeholder="请输入你要查找的器件型号/类别/品牌关键字" @focus.stop="focus" v-model="searchValue" autocomplete="off">
         <div class="btn" @click="search" style="cursor:pointer;">
           <i class="el-icon-search"></i>
         </div>

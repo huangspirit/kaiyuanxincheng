@@ -116,7 +116,7 @@
                           >{{item.goods_name}}</router-link>
                         </p>
                         <p>
-                          <router-link
+                         品牌：<router-link
                             :to="{
                           path:'/BrandDetail',
                           query:{

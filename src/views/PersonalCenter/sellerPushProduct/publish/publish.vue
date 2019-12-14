@@ -5,6 +5,63 @@
       <el-breadcrumb-item>发布产品</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="publishWrap">
+      <div class="step">
+        <ul>
+          <li class="item">
+            <i class="el-icon-s-grid"></i>
+            <span>选择类目</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item">
+            <i class="el-icon-circle-plus-outline"></i>
+            <span>添加型号并校验</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item">
+            <i class="el-icon-set-up"></i>
+            <span>填写参数</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item">
+            <i class="el-icon-finished"></i>
+            <span>提交</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item">
+            <i class="el-icon-alarm-clock"></i>
+            <span>平台审核</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li >
+            <i class="el-icon-position"></i>
+            <span>发布特价</span>
+            
+          </li>
+          
+        </ul>
+        <div style="display:flex;">
+          <p>提示：</p>
+          <div>
+            <p>1、重复型号不需要重复添加，直接选用即可;</p>
+            <p>2、为了快速审核通过，请配合上传数据手册和官方网址;</p>
+          </div>
+        </div>
+      </div>
       <div class="publish">
         <el-form
           :model="ruleForm"
@@ -131,7 +188,7 @@
             >
               <i class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <p>图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</p>
+            <p>图片清晰，支持png、jpg、gif格式</p>
           </el-form-item>
           <!-- <el-form-item label="零件状态：" prop="resource">
             <el-radio-group v-model="ruleForm.resource">
@@ -400,7 +457,7 @@ export default {
       this.loading = true;
       let obj = {
         start: 0,
-        length: 10,
+        length: 100,
         parent_id: 0
       };
       if (query) {
@@ -423,7 +480,7 @@ export default {
       }
       let obj = {
         start: 0,
-        length: 10,
+        length: 100,
         parent_id: this.selectedOneClass
       };
       if (query) {
@@ -529,11 +586,57 @@ export default {
 </script>
 <style lang="less" scoped>
 .publishWrap {
+  .step{
+    width: 1000px;
+    margin:0 auto;
+    background:#ffebef;
+    padding:20px 70px;
+    font-size:12px;
+    ul{
+      display:flex;
+      margin-bottom:10px;
+      li{
+        text-align: center;
+          font-size:14px;
+          white-space: nowrap;
+          display:flex;
+          align-items: center;
+          color:#333;
+          &>i{
+            font-size:20px;
+            margin-right:10px;
+            color:orange;
+            font-weight: bold;
+          }
+          &.item{
+            flex:1;
+          }
+          .linewrap{
+              color:#ddd;
+              margin:5px;
+              flex:1;
+              text-align: center;
+              .line{
+                height:2px;
+                width:45px;
+                background:#ddd;
+                margin-top:-6px;
+              }
+              i{
+                font-size:16px;
+                margin-left:-7px;
+              
+              }
+          }
+        }
+    }
+  }
   .publish {
     padding: 70px;
+    padding-top:0;
     width: 1000px;
     margin: 0px auto;
-    border: 1px solid #e3e3e3;
+    // border: 1px solid #e3e3e3;
     background: #fff;
     color: #333;
     .el-form {

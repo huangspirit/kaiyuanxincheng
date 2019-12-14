@@ -167,7 +167,7 @@
                           <a href="javascript:;" @click="confirmChangeDiliverTime(item1)">交期确认</a>
                         </p>
                         <p class v-if="item1.cancleButton">
-                          <a href="javascript:;" @click="cancleOrder(2,item1)">取消此器件</a>
+                          <a href="javascript:;" @click="cancleOrder(2,item1)" class="gray">取消此器件</a>
                         </p>
                         <p v-if="item1.receivingGoodsButton">
                           <a href="javascript:;" @click="confirmRecieveGoods(item1.id)">确认收货</a>
@@ -180,7 +180,7 @@
                         >去付尾款</a>
                       </div>
                     </div>
-                    <div v-if="item1.expireTime && !item1.goods_type" class="counttimewrap">
+                    <!-- <div v-if="item1.expireTime && !item1.goods_type" class="counttimewrap">
                       <CountTime
                         class="CountTime"
                         v-on:end_callback="countDownE_cb()"
@@ -195,7 +195,7 @@
                         :minutesTxt="'分'"
                         :secondsTxt="'秒'"
                       ></CountTime>
-                    </div>
+                    </div> -->
                   </td>
                   <template v-if="index==0">
                     <td
@@ -299,10 +299,12 @@
                           </template>
                           <template v-if="item.orderVo.prePayChannel">
                             <p class="green" v-if="!item.orderVo.need_pre_pay">
-                              <label>已付金额：</label>￥{{item.orderVo.order_amount | toFixed(2)}}(待到账确认)
+                              <label>已付金额：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
+                              <!-- (待到账确认) -->
                             </p>
                             <p v-if="item.orderVo.need_pre_pay" class="green">
-                              <label>已付金额：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}(待到账确认)
+                              <label>已付金额：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}
+                              <!-- (待到账确认) -->
                             </p>
                             <p class="color" v-if="!item.orderVo.need_pre_pay">
                               <label>当前应付：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
@@ -420,13 +422,13 @@
                       </el-upload>
                       <div style="margin-top:10px;">
                         <a
-                          href="javascript:;"
-                          @click="downLoadOrderContract(item.orderVo.contractUrl)"
-                          class="blu"
+                          :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.contractUrl}&access_token=${access_token}`"
                           style="text-decoration: underline;"
                         >下载最新合同</a>
                       </div>
-
+                      <div>
+                           <a style="text-decoration: underline;" @click="showBillDetail(item)">查看发票详情</a>
+                      </div>
                       <a
                         href="javascript:;"
                         @click="cancleOrder(1,item.orderVo.id)"
@@ -577,6 +579,20 @@
         <el-button type="primary" @click="confirmtransPayment">确定转换</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="发票详情" :visible.sync="showBillDetailStatus" width="30%" align="center">
+      <div v-if="billdetail.orderVo" style="line-height:40px;text-align:left;">
+        <div>发票类型：{{billdetail.orderVo.billType}}</div>
+        <div>单位名称：{{billdetail.orderVo.danweiName}}</div>
+        <div>纳税人识别号：{{billdetail.orderVo.nashuirenNo}}</div>
+        <div>开户行：{{billdetail.orderVo.bandType}}</div>
+        <div>账号：{{billdetail.orderVo.bandNum}}</div>
+        <div>地址（电话）：{{billdetail.orderVo.billAdress}}  {{billdetail.orderVo.billPhone}}</div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showBillDetailStatus = false">关  闭</el-button>
+    
+      </span>
+    </el-dialog>
     <div v-html="formhtml" ref="formwrap"></div>
   </div>
 </template>
@@ -591,6 +607,8 @@ export default {
   name: "BuyerOrderManagement",
   data() {
     return {
+      
+      baseURL:baseURL,
       transPaymentshow: false,
       transPaymentobj: {},
       formhtml: "",
@@ -806,7 +824,9 @@ export default {
         paytype: 0, //在线支付
         type: 0 //微信
       },
-      timep: null //微信支付后的轮训计时器
+      timep: null ,//微信支付后的轮训计时器
+      billdetail:{},
+      showBillDetailStatus:false
     };
   },
   components: {
@@ -815,9 +835,6 @@ export default {
   },
 
   watch: {
-    currentPage() {
-      // this.all();
-    },
     canclereason(reason) {
       this.$set(this.cancleOrderForm, "reason", reason);
     },
@@ -862,6 +879,11 @@ export default {
       "CancleOrderSubmit",
       "queryExpress"
     ]),
+    //查看发票详情
+    showBillDetail(item){
+      this.billdetail=item;
+      this.showBillDetailStatus=true;
+    },
     // 获取订单进程
     showPopover(item) {
       this.GetBuyerOrderOrderProcess({

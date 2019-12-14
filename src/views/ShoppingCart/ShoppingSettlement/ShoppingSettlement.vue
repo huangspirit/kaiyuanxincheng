@@ -203,14 +203,46 @@
           <p class="fr">应付人民币总额：￥{{priceTotalDetail.totalPrice | toFixed(2)}}</p>
         </div>
 
-        <p class="clear">
-          <span class="fl" style="margin-top:20px;">
+        <div class="clear">
+         
+            <span  class="fl" style="margin-top:20px;">
             <label><input type="checkbox" :checked="isAccept" v-model="isAccept" />本人已阅读并同意接受</label>
             <!-- 《<span class="blue" @click="showxieyi=true">{{title}}用户协议</span>》和 -->
             《<a class="blue" @click="showhetong=true">{{title}}销售合同</a>》
           </span>
+          <!-- <p><a href="javascript:;" @click="showTishi=true">交易提示</a> </p> -->
+      
+          
           <span class="submit bgColor fr" @click="submit">提交订单</span>
-        </p>
+        </div>
+         <div style="font-size:14px;line-height:1.8;">
+           <h4 class="color">交易提示：</h4>
+          <p>平台目前提供人民币与美元两种报价，取决于卖家的交货地址；但买家目前只能使用人民币付款；</p>
+          <div>
+              <p>1、关于海关增值税</p>
+              此部分只针对美元交易的产品，此部分随国家政策做相应调整；
+          </div>
+          <div>
+            <p>2.关税与费用多退少补</p>
+              根据国家海关规定：集成电路类的进口免关税，部分非集成电路类的元器件将收取关税。如果您所提交的订单中包含需要缴纳关税的型号，我们在后台做了初步的设置，我们会根据实际发生情况进行多退少补;
+          </div>
+          <div>
+              <p>3、香港交货报关费补差价情况</p>
+              由于部分型号体积较大或重量较重等原因出现超重情况时，视供应商不同可能需要客户补交超出部分的运费；出现超重情况时，我们客服人员会第一时间与您取得联系，提醒您补交运费事项。  
+          </div>
+          <div>
+              <p>4、国内运费</p>
+              从单一供应商购买金额超过500元以上为国内包邮，500元以下为顺丰到付；
+          </div>
+          <div>
+              <p>5、清关服务费</p>
+               针对美元交易的部分，平台将按总货值的万分之五收到，不足300元时按300收到；合并报关癔味者你此订单所有香港交换会等所有货物收齐后统一报关收一次清关服务费；单独清关，我们将单独为每一个型号报关，将分多次收取清关服务费；
+          </div>
+          <div>
+              <p>6、关于付款问题</p>
+              对公转帐用户将于订单生成后24小时完成支付，月结用户需要收24小时内完成合同回签并使用月结白条支付，逾期未支付订单将被自动取消，库存补自释放；
+          </div>
+      </div>
       </div>
     </div>
     <!-- 编辑收货地址 -->
@@ -384,11 +416,11 @@
             2、月结“白条用户” 请到对应订单中下载《购销合同》，在完成签字和盖章上传后订单方可使用白条进行全额支付！谢谢您的配合！
             谢谢您的配合！
           </p>
-          <!-- 尊敬的用户,为了不影响贵公司的正常交期，请务必于24小时内完成支付，否则系统将会自动取消您的订单；同时，对应的购销合同可在订单中心下载、盖章、上传；谢谢您的配合！ -->
+      
         </div>
       </div>
       <div slot="footer" class="dialog-footer" style="text-align:center;">
-        <el-button type="primary" @click="payMount" class="bgColor">立即支付</el-button>
+        <el-button @click="payMount" class="bgColor">立即支付</el-button>
         <el-button type="info">
           <span @click="chipCenterOrder">前往用户中心</span>
         </el-button>
@@ -448,8 +480,8 @@
         <el-button type="primary" @click="showResetVoice = false">关闭</el-button>
       </span>
     </el-dialog>
-    <el-dialog :title="`${title}用户协议`" :visible.sync="showxieyi" width="70%">
-      <div>暂无内容</div>
+    <el-dialog :title="`${title}交易说明`" :visible.sync="showTishi" width="70%">
+     
     </el-dialog>
     <el-dialog :title="`${title}销售合同`" :visible.sync="showhetong" width="70%">
       <div>暂无内容</div>
@@ -494,13 +526,14 @@ import {
   axios,
   presonalAdress,
   shoppingCar,
-  buyerOrderCenter
+  buyerOrderCenter,
 } from "../../../api/apiObj";
 //import { constants } from "crypto";
 export default {
   name: "ShoppingSettlement",
   data() {
     return {
+      showTishi:false,
       isAccept: false,
       showxieyi: false,
       showhetong: false,
@@ -671,7 +704,8 @@ export default {
       isVIP: false,
       unuscount: 0,
       UScount: 0,
-      bankTransferObj: {} //公对公转账
+      bankTransferObj: {} ,//公对公转账
+    
     };
   },
   destroyed() {
@@ -740,7 +774,7 @@ export default {
       "GetAllPersonalInvoice",
       "GetOrderCreater"
     ]),
-
+    ...mapActions("Login", ["GetUserInforma"]),
     submitUplevel(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -848,10 +882,7 @@ export default {
       } else if (this.paytype == 1) {
         //对公转账
         this.getOrderType();
-        //   this.GetOrderCreater(this.OrderInformation).then(res=>{
-        //      this.orderNumber=res.data;
-        //       this.getOrderType()
-        // })
+       
       }
     },
     // 提交订单
@@ -874,6 +905,11 @@ export default {
       this.OrderInformation.add_id = this.defaultAddress.id;
       this.OrderInformation.dilivertype = this.dilivertype;
       this.OrderInformation.type = "1";
+      if(this.OrderInformation.fromCar==1){
+        //标志来源于于购物车
+          this.OrderInformation.fromCar = this.OrderInformation.fromCar
+      }
+     
       this.OrderInformation.bill = JSON.stringify(bill);
       // 进行下单,三种情况
       if (this.paytype == 0) {
@@ -888,31 +924,18 @@ export default {
             _this.count--;
           }
         }, 1000);
-
         this.GetOrderCreater(this.OrderInformation).then(res => {
           this.orderNumber = res.data;
+         var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },1000)
           this.$router.push({
             path: "/ShoppingCart/PaymentOrders",
             query: {
               orderNumber: res.data
             }
           });
-          //     return;
-          //  this.$confirm('立即支付订单吗?', '提示', {
-          //         confirmButtonText: '立即支付',
-          //         cancelButtonText: '进入订单中心',
-          //         type: 'warning'
-          //       }).then(() => {
-          //        this.orderNumber=res.data;
-          //         this.$router.push({
-          //             path: "/ShoppingCart/PaymentOrders",
-          //             query: {
-          //                 orderNumber:res.data,
-          //             }
-          //         });
-          //       }).catch(() => {
-          //         this.$router.push("/PersonalCenter/BuyerOrderManagement")
-          //       });
         });
       } else if (this.paytype == 1) {
         //对公转账
@@ -926,24 +949,22 @@ export default {
           }
         }, 1000);
         this.GetOrderCreater(this.OrderInformation).then(res => {
+          console.log("duigong")
+          var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },1000)
           this.orderNumber = res.data;
           this.showGoIndex1 = true;
-          // return;
-          //  this.$confirm('立即支付订单吗?', '提示', {
-          //   confirmButtonText: '立即支付',
-          //   cancelButtonText: '进入订单中心',
-          //   type: 'warning'
-          // }).then(() => {
-          //   this.orderNumber=res.data;
-          //   this.getOrderType()
-          // }).catch(() => {
-          //   this.$router.push("/PersonalCenter/BuyerOrderManagement")
-          // });
         });
       } else if (this.paytype == 2) {
         //白条支付
         this.OrderInformation.payWay = true;
         this.GetOrderCreater(this.OrderInformation).then(res => {
+          var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },1000)
           this.showGoIndex = true;
           var _this = this;
           this.chipCenterOrderCount = setInterval(function() {
@@ -955,63 +976,6 @@ export default {
           }, 1000);
         });
       }
-      // return;
-      // if(this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough){
-      //   //月结用户直接生成订单，去往个人中心
-      //   this.GetOrderCreater(this.OrderInformation).then(res=>{
-      //     this.showGoIndex=true;
-      //     var _this=this;
-      //     this.chipCenterOrderCount=setInterval(function(){
-      //       if(_this.count==0){
-      //           _this.chipCenterOrder()
-      //       }else{
-      //         _this.count--
-      //       }
-      //     },1000)
-      //   })
-      // }else if(this.priceTotalDetail.isVIP && !this.priceTotalDetail.isEnough){
-      //   //月结用户是否愿意生成普通订单，直接去付款
-      //    this.$confirm('尊敬的月结用户，由于您的余额不足，此订单将转为普通订单，继续提交?', '提示', {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     this.GetOrderCreater(this.OrderInformation).then(res=>{
-      //         this.orderNumber=res.data;
-      //         if(this.paytype==0){
-      //             this.$router.push({
-      //                 path: "/ShoppingCart/PaymentOrders",
-      //                 query: {
-      //                     orderNumber:res.data,
-      //                     // payType: 2,
-      //                     // totalPrice: this.totalPrice
-      //                 }
-      //             });
-      //         }else{
-      //             this.getOrderType()
-      //         }
-      //       })
-      //   }).catch(() => {
-
-      //   });
-      // }else{
-      //   //普通用户，直接去付款
-      //     this.GetOrderCreater(this.OrderInformation).then(res=>{
-      //         this.orderNumber=res.data;
-      //         if(this.paytype==0){
-      //             this.$router.push({
-      //                 path: "/ShoppingCart/PaymentOrders",
-      //                 query: {
-      //                     orderNumber:res.data,
-      //                     // payType: 2,
-      //                     // totalPrice: this.totalPrice
-      //                 }
-      //             });
-      //         }else{
-      //             this.getOrderType()
-      //         }
-      //     })
-      // }
     },
 
     // 请求所有的发票信息
@@ -1253,9 +1217,7 @@ export default {
       // }
       // return isJPG && isLt2M;
     },
-    // handlePictureCardPreview(file) {
-    //     console.log(file);
-    // },
+   
     bankSuccess() {
       this.showGoIndex1 = false;
       this.showGoIndex = false;
@@ -1360,9 +1322,11 @@ export default {
     // 获取全部的发票
     // 将运费方式改为到付
     this.dilivertype = "0";
+  
     let DetailData = JSON.parse(this.buyOneGoodsDetail.data).deatil;
     this.OrderInformation = JSON.parse(this.buyOneGoodsDetail.obj2);
     this.priceTotalDetail = JSON.parse(this.buyOneGoodsDetail.data);
+     console.log( this.OrderInformation)
     this.isVIP = JSON.parse(this.buyOneGoodsDetail.data).isVIP;
     let UScount = 0;
     let unuscount = 0;

@@ -2,6 +2,16 @@
 .top{
   display:flex;
   margin-bottom:10px;
+  .openbill{
+    /deep/.el-dialog__body{
+      padding-top:0;
+    }
+    .demo-ruleForm{
+      /deep/.el-form-item{
+        margin-bottom:0;
+      }
+    }
+  }
   &>div{
       flex:1;
       text-align: center;
@@ -131,60 +141,61 @@
         }
     }
 }
-
-  .el-table{
-    font-size:12px;
-   /deep/button{
-      span{
-        padding:0 12px;
-      }
-    }
-    .infoWrap{
-      padding:5px;
-      overflow: hidden;
-      box-sizing: border-box;
-      &>div{
-        white-space: nowrap;
-      }
-      .goods_seller_no{
-        font-weight: bold;
-        margin-bottom:5px;
-        font-size:15px;
-        text-align: left;
-      }
-      .info{
-        display: flex;
-        text-align: left;
-        font-size:12px;
-        width:100%;
-        align-items: center;
-        // /deep/.ImgE{
-        //   position: relative;
-        //   margin-right:5px;
-        //   display: flex;
-        //   align-items: center;
-        //  padding:0 10px;
-        //   &:after{
-        //     content: "";
-        //     width:100%;
-        //     height:100%;
-        //     position:absolute;
-        //     background: rgba(0,0,0,0.02);
-        //     z-index:1;
-        //     left:0;
-        //     top:0;
-        //   }
-        // }
-        .cont{
-          flex:1;
-          margin-left:5px;
-          p{
-            width:100%;
-            white-space: normal;
-          }
-        }
-      }
-    }
+.table{
+  width:100%;
+  background:#fff;
+  border-top:1px solid #ddd;
+  border-left: 1px solid #ddd;
+  font-size:12px;
+  /deep/button{
+     span{
+       padding:0 12px;
+     }
+   }
+   .infoWrap{
+     padding:5px;
+     overflow: hidden;
+     box-sizing: border-box;
+     &>div{
+       white-space: nowrap;
+     }
+     .goods_seller_no{
+       font-weight: bold;
+       margin-bottom:5px;
+       font-size:15px;
+       text-align: left;
+     }
+     .info{
+       display: flex;
+       text-align: left;
+       font-size:12px;
+       width:100%;
+       align-items: center;
+      
+       .cont{
+         flex:1;
+         margin-left:5px;
+         p{
+           width:100%;
+           white-space: normal;
+         }
+       }
+     }
+   }
+  th{
+    background:#f3f3f3;
+    line-height:40px;
+    text-align: center;
   }
+  td{
+      padding:8px;
+      border-bottom:1px solid #ddd;
+      border-right:1px solid #ddd;
+      text-align: center;
+
+  }
+
+}
+ 
 
 }

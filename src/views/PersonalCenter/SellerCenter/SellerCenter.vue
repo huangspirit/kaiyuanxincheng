@@ -116,7 +116,7 @@
                         结算金额以卖家发货为准，立即查看
                       </p>
 
-                      <p class="num">￥{{obj.uncheck | toFixed(2)}} <i class="el-icon-arrow-right fr"></i>    </p>
+                      <p class="num" style="display:flex;font-size:30px;line-height:48px;"><span style="flex:1;overflow:hidden; text-overflow: ellipsis;" >￥{{obj.uncheck | toFixed(2)}}</span> <i class="el-icon-arrow-right"></i>    </p>
                   </div>
               </router-link>
       </ul>

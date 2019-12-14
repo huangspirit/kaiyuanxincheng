@@ -57,7 +57,8 @@
           </div>
         </div>
         <div class="oneitem">
-          <strong>{{value.seller_always?'现货':'订货'}}</strong>
+          <span :class="value.goods_type?'green':'color'">{{value.goods_type?'现货':'订货'}}</span>
+          <!-- <strong >{{value.goods_type?'现货':'订货'}}</strong> -->
         </div>
         <div class="oneitem">
           <span class="color">

@@ -32,7 +32,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="orderAmount" label="订单金额" align="center"></el-table-column>
+        <el-table-column prop="orderAmount" label="订单金额" align="center">
+          <template  slot-scope="scoped">
+            ￥{{scoped.row.orderAmount | toFixed(2)}}
+          </template>
+        </el-table-column>
         <el-table-column prop="billType" align="center" label="发票类型"></el-table-column>
         <el-table-column prop="billTitle" align="center" label="发票信息">
           <template slot-scope="scope">

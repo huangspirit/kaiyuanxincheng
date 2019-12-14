@@ -151,7 +151,7 @@ export default {
       "GetQqSuccess",
       "GetQqSendCode",
       "GetQqBindPhone",
-      "GetQqSignIn",
+      "GetSignIn",
       "GetPhoneLoginCode",
       "GetPhoneLogin",
       "GetPhoneSignIn",
@@ -177,7 +177,7 @@ export default {
         wxSrc: this.code
       }).then(res => {
         if (res.resultCode === "200") {
-          this.GetQqSignIn({
+          this.GetSignIn({
             wxSrc: this.code,
             openid: this.openid,
             state: this.qqState
@@ -187,6 +187,7 @@ export default {
             this.$router.push({
               path: "/"
             });
+            // this.$router.go(-1)
             this.setloginState(true);
             // this.$store.state.loginState = true;
           });
@@ -206,6 +207,7 @@ export default {
       this.$router.push({
         path: "/"
       });
+      //  this.$router.go(-1)
       this.setloginState(false);
       //this.$store.state.loginState = false;
     },
@@ -236,7 +238,7 @@ export default {
         state: this.qqState
       }).then(res => {
         if (res.resultCode === "200") {
-          this.GetQqSignIn({
+          this.GetSignIn({
             wxSrc: this.code,
             openid: this.openid,
             state: this.qqState
@@ -246,6 +248,7 @@ export default {
             this.$router.push({
               path: "/"
             });
+            //  this.$router.go(-1)
             this.setloginState(true);
             // this.$store.state.loginState = true;
           });
@@ -293,7 +296,7 @@ export default {
                 clearInterval(_this.qqTime);
                 _this.qqTime = null;
                 _this
-                  .GetQqSignIn({
+                  .GetSignIn({
                     wxSrc: _this.code,
                     openid: _this.openid,
                     state: _this.qqState
@@ -304,6 +307,7 @@ export default {
                     _this.$router.push({
                       path: "/"
                     });
+                    //  this.$router.go(-1)
                     _this.setloginState(true);
                     //this.$store.state.loginState = true;
                   });
@@ -368,8 +372,6 @@ export default {
         }).then(res => {
                 this.phoneKey = res.key;
         });
-
-
     },
     // 手机登录
     LoginPhone() {
@@ -384,12 +386,12 @@ export default {
             key: this.phoneKey,
             code: this.phoneCode
           }).then(res => {
-            console.log(res)
             sessionStorage.setItem("access_token", res.access_token);
             sessionStorage.setItem("refresh_token", res.refresh_token);
             this.$router.push({
               path: "/"
             });
+            //  this.$router.go(-1)
             this.setloginState(true);
             //this.$store.state.loginState = true;
           });
@@ -421,6 +423,7 @@ export default {
   // 监听路由参数的变化
   watch: {
     $route() {
+      console.log("dddddd")
       const code = this.$route.query.code;
       if (code) {
         this.loginFlag = false;
@@ -445,7 +448,7 @@ export default {
               } else if (res.type === 2) {
                 clearInterval(this.wxTime);
                 this.wxTime = null;
-                this.GetQqSignIn({
+                this.GetSignIn({
                   wxSrc: this.code,
                   openid: this.openid,
                   state: this.qqState
@@ -455,6 +458,7 @@ export default {
                   this.$router.push({
                     path: "/"
                   });
+                  // this.$router.go(-1)
                   this.setloginState(true);
                   //this.$store.state.loginState = true;
                 });
@@ -480,6 +484,7 @@ export default {
       this.contHeight=window.screen.height-180
     },
   mounted() {
+    console.log(this.$route)
     this.qqState = this.$route.query.state;
     this.setloginState(false);
     //this.$store.state.loginState = false;

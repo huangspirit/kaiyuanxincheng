@@ -42,7 +42,8 @@
           >{{item.name}}</li>
         </ul>
       </div>
-      <span @click="settle" class="topRuzhu bgColor" v-if="!isSeller">立即入驻</span>
+      
+      <span @click="settle" class="topRuzhu bgColor" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">立即入驻</span>
     </div>
     <div class="specialGoods allWidth">
       <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
@@ -90,7 +91,6 @@
                   <img :src="item.userImgeUrl" alt @click="chipShop(item)" />
                 </p>
                 <div class="wrapInfo clear">
-    
                     <div class="wrap" @click="chipShop(item)">
                       <img :src="item.userImgeUrl" alt />
                       <div :title="item.sellerName" >
@@ -206,97 +206,6 @@
             <!-- <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div> -->
           </div>
         </li>
-        <!-- <li v-for="(item,k) in specialList" class="item" :class="(k+1)%3==0?'noMargin':''" :key="k" >
-                    <span class="mark" v-if="item.tag==1">
-                        <img src="@/assets/image/index/tag.png" alt="">
-                    </span>
-                     <span class="mark" v-if="item.tag==2">
-                        <img src="@/assets/image/index/tag1.png" alt="">
-                    </span>
-                    <span class="goodsType" :class="item.goods_type?'greenColor':'bgColor'" :title="item.goods_type?'现货':'订货'">{{item.goods_type?'现':'订'}}</span>
-                    <div class="wrapImg" @click="chipSellerGoodsDetal(item)">
-                        <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="350" :H="200" v-if="item.sellerGoodsImageUrl"></ImgE>
-                        <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl">
-                        </ImgE>
-                        <div class="desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
-                    </div>
-                    <div class="info">
-                        <div class="time clear" v-if="!item.seller_always && item.expireTime">
-                            <span class="fl">
-                                <img src="@/assets/image/index/timer.png" alt="">
-                                距离特价结束：
-                            </span>
-                            <CountTime
-                                class="fl"
-                                v-on:end_callback="countDownE_cb()"
-                                :currentTime="item.currentTime"
-                                :startTime="item.currentTime"
-                                :endTime="item.expireTime"
-                                :tipText="'距离活动开始'"
-                                :tipTextEnd="''"
-                                :endText="'活动已失效'"
-                                :dayTxt="'天'"
-                                :hourTxt="'小时'"
-                                :minutesTxt="'分'"
-                                :secondsTxt="'秒'"></CountTime>
-                        </div>
-                        <div v-if="item.seller_always" class="time">长期售卖</div>
-                        <div  @click="chipSellerGoodsDetal(item)" class="goodsName">{{item.goods_name}}</div>
-                        <div>
-                            <div class="sellerInfo fr">
-                                <p class="img"><img :src="item.userImgeUrl" alt=""  @click="chipShop(item)"></p>
-                                <p class="sellerName">{{item.sellerName}}</p>
-                                <div class="wrapInfo clear">
-                                    <div class="clear">
-                                        <div class="wrap" @click="chipShop(item)">
-                                            <img :src="item.userImgeUrl" alt="">
-                                            <p :title="item.sellerName">
-                                                {{item.sellerName}}<br>
-                                               <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span> 
-                                               <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span> 
-                                               <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> 
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p>发布商品量：{{item.publisCount}}</p>
-                                    <p>历史成交量：{{item.historyCount}} </p>
-                                    <p>
-                                        <el-button class="btn0 bgColor" size="mini" v-if="!item.focus" @click.stop="addFocus(k,'special')">关注</el-button>
-                                        <el-button class="bgLightGray btn0" size="mini" v-if="item.focus">已关注</el-button>
-                                        </p>
-                                </div>
-                            </div>
-                            <div  class="brand" >
-                                <router-link :to="{
-                                    path:'/BrandDetail',
-                                    query:{
-                                        tag:'brand',
-                                        documentid:item.brandId,
-                                        name:item.brandName
-                                    }
-                                }">
-                                    {{item.brandName}}
-                                </router-link>
-                            </div>
-                        <div class="count" style="white-space:nowrap;">
-                            <span>起订量：&nbsp;{{item.moq}}只</span>
-                            <span>最小增量：&nbsp;{{item.mpq}}只</span> 
-                        </div>
-                        <div class="place" style="margin-top:3px;">
-                            <span v-if="item.deliverTime">预计于 {{item.deliverTime | formatDate}}</span>
-                            <span v-if="item.goods_type">现货</span>
-                           <span v-if="item.day_interval">{{item.day_interval | filterHours}}小时内</span>
-                            &nbsp;<span>{{item.diliverPlace}}交货</span>
-                        </div>
-                        </div>
-                        <div class="stockCount">
-                            <span>剩余{{item.goodsStockCount}}</span>
-                            <strong class="color fr" v-if="!item.priceType">一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
-                             <strong class="color fr" v-if="item.priceType">起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
-                        </div>
-                        <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div>
-                    </div>
-        </li>-->
       </ul>
       <router-link
         tag="div"
@@ -472,7 +381,8 @@
     <!-- 已入驻原厂 -->
     <div class="settledIn">
       <div class="title allWidth clear">
-        <div class="fr ruzhu" v-if="!isSeller">
+    
+        <div class="fr ruzhu" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">
           <span class="bgColor" @click="settle">立即入驻</span>
         </div>
         <div class="fl left clear">
@@ -620,7 +530,7 @@ export default {
       productTotal: 0,
       screenHeight: 0,
       screenWidth: 0,
-      isSeller: false
+      //isSeller: false
     };
   },
   computed: {
@@ -628,7 +538,7 @@ export default {
       title: state => state.title,
       headerFxed: state => state.headerFxed,
       loginState: state => state.loginState,
-      // UserInforma:state => state.Login.UserInforma,
+      UserInforma:state => state.Login.UserInforma,
     })
   },
   watch: {
@@ -649,7 +559,7 @@ export default {
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
-    ...mapMutations(["setloginState"]),
+    ...mapMutations(["setloginState","setshowlogin"]),
     async init() {
       await this.querySysMessage();
       await this.getHotSearchList();
@@ -862,7 +772,14 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          this.$message.success("已加入购物车");
+          if(res){
+            this.$message.success("已加入购物车");
+            var _this=this;
+            setTimeout(()=>{
+              _this.GetUserInforma();
+            },2000)
+          }
+          
         });
     },
     countDownE_cb() {
@@ -873,33 +790,35 @@ export default {
     pulish() {
       //发布呆料
       if (this.loginState) {
-        if (this.isSeller) {
+        if (this.UserInforma.userTagMap.seller) {
           this.$router.push("/PersonalCenter/SellerIssuesProduct");
         } else {
           this.$router.push("/OriginalFactoryEntry");
         }
       } else {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
       }
     },
     settle() {
       //商家入驻
       if (this.loginState) {
-         if(this.UserInforma.userTagMap.seller){
-          this.$message({
-            message:'您已是'+this.title+'的商家，不能再次入驻！',
-            type:'warning'
-          })
-            return;
-        }
+        //  if(this.UserInforma.userTagMap.seller){
+        //   this.$message({
+        //     message:'您已是'+this.title+'的商家，不能再次入驻！',
+        //     type:'warning'
+        //   })
+        //     return;
+        // }
     
         this.$router.push("/OriginalFactoryEntry");
       } else {
-        this.$router.push("/Login");
+
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
       }
     },
     chipShop(item) {
-      console.log(item);
       if (item.tag == 1) {
         this.$router.push({
           path: "/BrandDetail",
@@ -925,7 +844,8 @@ export default {
     },
     addFocus(index, mark) {
       if (!this.loginState) {
-        this.$router.push("/Login");
+       // this.$router.push("/Login");
+       this.setshowlogin(true)
         return;
       }
       let obj = {};
@@ -958,17 +878,17 @@ export default {
   },
   mounted() {
     this.bannerHeight = window.innerHeight + "px";
-    if (sessionStorage.getItem("access_token")) {
-      this.setloginState(true);
-      this.GetUserInforma({
-        access_token: sessionStorage.getItem("access_token")
-      }).then(res => {
-         this.UserInforma = res;
-        this.isSeller = this.UserInforma.userTagMap.seller;
-      });
-    } else {
-      this.setloginState(false);
-    }
+    // if (sessionStorage.getItem("access_token")) {
+    //   this.setloginState(true);
+    //   this.GetUserInforma({
+    //     access_token: sessionStorage.getItem("access_token")
+    //   }).then(res => {
+    //      this.UserInforma = res;
+    //     this.isSeller = this.UserInforma.userTagMap.seller;
+    //   });
+    // } else {
+    //   this.setloginState(false);
+    // }
     this.screenHeight = window.screen.height;
     this.screenWidth = window.screen.width;
     this.$store.state.headerFxed = false;
