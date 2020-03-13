@@ -27,7 +27,7 @@
               <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.price | toFixed(currentItem.priceUnit?3:2)}}</strong>
             </div>
             <div>
-              总计:
+              金额:
               <strong>{{currentItem.priceUnit?"$":"￥"}}{{currentItem.money | toFixed(currentItem.priceUnit?3:2)}}</strong>
             </div>
             <div class="btnWrap">

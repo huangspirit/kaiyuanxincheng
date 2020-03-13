@@ -108,11 +108,11 @@
             <div v-if="item.status==3">
               <p>
                 已逾期:
-                <span style="color:#f40;">{{item.violate_count}}天</span>
+                <span class="color">{{item.violate_count}}天</span>
               </p>
               <p>
                 滞纳金：
-                <span style="color:#f40;">¥ {{item.violate_monney}}</span>
+                <span class="color">¥ {{item.violate_monney}}</span>
               </p>
             </div>
           </td>

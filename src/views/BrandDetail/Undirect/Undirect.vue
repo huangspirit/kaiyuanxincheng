@@ -157,7 +157,6 @@ export default {
         axios
           .request({ ...BrandDetail.queryCatergoryByParentId, params: obj })
           .then(res => {
-            console.log(res);
             this.titleObj = res;
             this.AllSend();
           });
@@ -174,7 +173,6 @@ export default {
             this.titleObj = res.data.undirect;
             this.AllSend();
           });
-      
       }
     },
     AllSend() {

@@ -36,7 +36,7 @@
             </li>
             <li>
               量产时间：
-              <span>{{item.projectBeginTime | formatDate}}</span>
+              <span>{{item.projectBeginTime | formatDate3}}</span>
             </li>
                 <li>
                   提交日期：
@@ -50,7 +50,7 @@
          <table border="1" style="width:100%;">
             <thead>
               <tr>
-                <th>器件</th>
+                <th>零件</th>
                 <th>竞争型号</th>
                 <th>年常用量EAU</th>
                 <th>接受价格T/P</th>
@@ -78,7 +78,9 @@
                   </div>
                   </td>
                   <td>
-                      <span v-if="item0.insteadNo && item0.insteadNo!='@'">{{item0.insteadNo.split('@')}}</span>
+                      <template  v-if="item0.insteadNo && item0.insteadNo!='@'">
+                    <p  v-for="item1 in item0.insteadNo.split('@')" :key="item1" style="margin-bottom:5px;">{{item1}}</p>
+                </template>
                   </td>
                   <td>
                     {{item0.projectEau}}
@@ -93,8 +95,10 @@
                       >批复请求</el-button>
                       <div v-if="item0.sheetEffective==true&&item0.replayStates==true">
                         <p>
-                          <span>交货地：</span>
-                          <span>{{item0.diliverPlace}}</span>
+                          <!-- <span>交货地：</span>
+                          <span>{{item0.diliverPlace}}</span> -->
+                          <span>起订量MOQ：</span>
+                    <span>{{item0.moq}}</span>
                         </p>
                         <p>
                           <span>批复价格：</span>
@@ -119,8 +123,10 @@
                       </div>
                       <div v-if="item0.sheetEffective==false&&item0.replayStates==true">
                         <p>
-                          <span>交货地：</span>
-                          <span>{{item0.diliverPlace}}</span>
+                          <!-- <span>交货地：</span>
+                          <span>{{item0.diliverPlace}}</span> -->
+                          <span>起订量MOQ：</span>
+                    <span>{{item0.moq}}</span>
                         </p>
                         <p>
                           <span>批复价格：</span>
@@ -156,49 +162,13 @@
                 </tr>
             </tbody>
         </table>
-        <!-- <el-table :data="item.list" border stripe style="width: 100%">
-          <el-table-column prop="goodsImage" label="图片" width="180">
-            <template slot-scope="scope">
-              <img v-if="scope.row.goodsImage!='-'" :src="scope.row.goodsImage" width="120" alt />
-              <img v-else src="http://brand.113ic.com/6cb875d1fc454665a3e78b5ac675e391.jpg" alt />
-            </template>
-          </el-table-column>
-          <el-table-column prop="goodsName" label="名称"></el-table-column>
-          <el-table-column prop="goodsDesc" label="功能描述"></el-table-column>
-          <el-table-column prop label="竞争型号">
-            <template slot-scope="scope">
-              <span>{{scope.row.insteadNo.split('@')}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="projectEau" label="年常用量EAU"></el-table-column>
-          <el-table-column prop="acceptPrice" label="接受价格T/P">
-            <template slot-scope="scope">
-              <span v-if="scope.row.acceptUnit">$</span>
-              <span v-else>￥</span>
-              <span>{{scope.row.acceptPrice}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop label="操作">
-            <template slot-scope="scope">
-              <el-button
-                @click.native.prevent="replyRequest(scope)"
-                type="primary"
-                size="small"
-              >批复请求</el-button>
-              <p
-                class="noApproved"
-                v-if="scope.row.sheetEffective == true&&scope.row.replayStates == false"
-              >未批复</p>
-            </template>
-          </el-table-column>
-        </el-table> -->
       </div>
     </div>
     <div class="Pagination" v-if="allInquiryData.length>0">
       <!-- 分页 -->
       <el-pagination
         layout="prev, pager, next, jumper"
-        :page-size="2"
+        :page-size="pageSize"
         :total="total"
         background
         @current-page="currentPage"
@@ -218,6 +188,7 @@
 <script>
 import { axios, siderInquiryList } from "@/api/apiObj";
 import "@/lib/filters";
+import { TimeForma,TimeForma2 ,TimeForma3} from "@/lib/utils";
 import allReplyDialog from "./replyDialog/replyDialog";
 import "./AlreadyInquiry.less";
 export default {
@@ -227,11 +198,17 @@ export default {
       allListData: [],
       replyDialogVisible: false,
       start: 0,
-      total: 0
+      total: 0,
+      pageSize:10
     };
   },
   components: {
     allReplyDialog
+  },
+  filters: {
+    formatDate3(val){
+      return TimeForma3(val);
+    }
   },
   mounted() {
     this.getAllReplyList();
@@ -259,7 +236,7 @@ export default {
     getAllReplyList() {
       var obj = {
         start: this.start,
-        length: 2,
+        length: this.pageSize,
         reply_status: false,
         type: false
       };
@@ -365,7 +342,7 @@ export default {
     .goodsDesc{
       display:flex;
       text-align: left;
-      width:80%;
+      width:90%;
       margin:0 auto;
     }
      .status {

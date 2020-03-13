@@ -65,9 +65,8 @@
           <table class="table">
             <thead>
               <tr>
-                <th colspan="4">采购器件明细</th>
+                <th colspan="3">采购零件明细</th>
                 <th>订单状态与进程</th>
-
                 <th>订单金额</th>
                 <th>操作</th>
               </tr>
@@ -78,30 +77,32 @@
               </tr>
               <template v-for="item in BuyerOrderList">
                 <tr :key="item.id" class="title">
-                  <td colspan="8">
+                  <td colspan="4">
                     <span v-if="item.orderVo.togetherPay==true" class="he bgColor">合并报关</span>
                     <span v-if="item.orderVo.togetherPay==false" class="fen">单独报关</span>
                     <span class>
-                      订单编号：
+                      订单编号:
                       <router-link
                         :to="{
-                                          path:'/PersonalCenter/buyerOrderDetail',
-                                          query:{orderNo:item.orderVo.order_no}
-                                          }"
+                              path:'/PersonalCenter/buyerOrderDetail',
+                              query:{orderNo:item.orderVo.order_no}
+                              }"
                       >{{item.orderVo.order_no}}</router-link>
                     </span>
-                    <span>下单日期：{{item.orderCreateTime | formatDate}}</span>
-                    <span>收货人：{{item.orderVo.receivingName}} {{item.orderVo.phone}}</span>
+                    <span>下单日期:{{item.orderCreateTime | formatDate}}</span>
+                    <span>收货人:{{item.orderVo.receivingName}} {{item.orderVo.phone}}</span>
                     <strong>{{item.orderVo.isMonth?'月结订单':'普通订单'}}</strong>
-                    <div v-if="item.expireTime" class="counttimewrap">
+                  </td>
+                  <td>
+                    <div v-if="item.orderVo.expireTime" class="counttimewrap">
                       <CountTime
-                        class="CountTime"
+                        class="CountTime color"
                         v-on:end_callback="countDownE_cb()"
-                        :currentTime="item1.currentTime"
-                        :startTime="item1.currentTime"
-                        :endTime="item1.expireTime"
-                        :tipText="'距离开始文字1'"
-                        :tipTextEnd="'离付款截止时间还剩：'"
+                        :currentTime="item.orderVo.currentTime"
+                        :startTime="item.orderVo.currentTime"
+                        :endTime="item.orderVo.expireTime"
+                        :tipText="'距离活动开始'"
+                        :tipTextEnd="'支付剩余时间：'"
                         :endText="'订单已失效'"
                         :dayTxt="'天'"
                         :hourTxt="'时'"
@@ -110,41 +111,26 @@
                       ></CountTime>
                     </div>
                   </td>
+                  <td></td>
                 </tr>
                 <tr v-for="(item1,index) in item.orderInfoList" :key="item1.id">
-                  <td class="goodsinfo">
+                  <td class="goodsinfo" @click="gotoDetail(item.orderVo.order_no)">
                     <div style="display:inline-flex;align-items:center;">
                       <ImgE :src="item1.goods_image" :W="60" :H="60"></ImgE>
                       <span
                         style="display:inline-flex;flex-direction: column;justify-content: space-around "
                       >
-                        <router-link
-                          class="color"
+                      <a class="color"
                           style="font-size:15px;"
-                          :to="{
-                                          path:'/BrandDetail/GoodsDetails',
-                                          query:{
-                                            tag:'goodsinfo',
-                                            name:item1.goods_name,
-                                            documentid:item1.goods_id
-                                          }
-                                        }"
-                        >{{item1.goods_name}}</router-link>
-                        <router-link
-                          :to="{
-                                          path:'/BrandDetail',
-                                          query:{
-                                            name:item1.goods_brand,
-                                            documentid:item1.goods_brand_id,
-                                            tag:'brand'
-                                          }
-                                        }"
-                        >{{item1.goods_branda}}</router-link>
+                          @click.stop="gotogoodsDetail(item1)">
+                        {{item1.goods_name}}
+                      </a> 
+                      <a @click.stop="gotobrand(item1)">{{item1.goods_branda}}</a>
                         <span class="desc">{{item1.goods_desc}}</span>
                       </span>
                     </div>
                   </td>
-                  <td class style="white-space:nowrap;">
+                  <td class style="white-space:nowrap;" @click="gotoDetail(item.orderVo.order_no)">
                     <strong
                       class
                     >{{item1.priceunit?'$':'￥'}}{{item1.good_price | toFixed(item1.priceunit?3:2)}}</strong>
@@ -155,47 +141,58 @@
                     <br />
                     <span>{{item1.diliver_place}}交货</span>
                   </td>
-                  <td>
-                    <!-- <span>{{item1.order_status | filterstatus}}</span><br> -->
-                    <strong v-if="item1.payFinalButton">待付尾款:￥{{item1.final_pay | toFixed(2)}}</strong>
-                  </td>
-                  <td class style="width:10%;">
+                  <td class style="width:10%;" @click="gotoDetail(item.orderVo.order_no)">
                     <div class="operaBtn">
+                      <p v-if="item1.order_mark">
+                        <el-popover
+                          placement="right"
+                          title="买家备注："
+                          width="200"
+                          trigger="hover"
+                          :content="item1.order_mark"
+                        >
+                          <a slot="reference">查看备注</a>
+                        </el-popover>
+                      </p>
+                      <!-- <i
+                        class="el-icon-delete"
+                        style="cursor:pointer;"
+                        title="删除订单"
+                        @click="deletOrder(item1.id,1)"
+                        v-if="item1.deleteButton"
+                      ></i> -->
+                      <p class="color">{{item1.priceunit?'$':'￥'}}{{item1.total_price | toFixed(item1.priceunit?2:3)}}</p>
+                      <p >
+                        <a @click.stop="aftermarket(item1.id)" v-if="item1.aftersalesButton">售后</a>
+                        <a v-if="item1.commentButton" @click.stop="rate(item1)">&nbsp;|&nbsp;评价</a> 
+                        &nbsp;<i
+                        class="el-icon-delete"
+                        style="cursor:pointer;"
+                        title="删除订单"
+                        @click.stop="deletOrder(item1.id,1)"
+                        v-if="item1.deleteButton"
+                      ></i>
+                      </p>
+                      <p v-if="item1.order_status==4">
+                        <a href="javascript:;" @click.stop="reBuy(item1)">再次购买</a>
+                      </p>
                       <div v-if="item1.reason" class="cancleReason">取消原因：{{item1.reason}}</div>
                       <div class="wrapbtn">
                         <p class v-if="item1.confirmChangeDiliverTimeButton">
-                          <a href="javascript:;" @click="confirmChangeDiliverTime(item1)">交期确认</a>
+                          <a href="javascript:;" @click.stop="confirmChangeDiliverTime(item1)">交期确认</a>
                         </p>
+                        <strong v-if="item1.payFinalButton">待付尾款:￥{{item1.final_pay | toFixed(2)}}</strong>
                         <p class v-if="item1.cancleButton">
-                          <a href="javascript:;" @click="cancleOrder(2,item1)" class="gray">取消此器件</a>
+                          <a href="javascript:;" @click.stop="cancleOrder(2,item1)" class="gray">取消此零件</a>
                         </p>
                         <p v-if="item1.receivingGoodsButton">
-                          <a href="javascript:;" @click="confirmRecieveGoods(item1.id)">确认收货</a>
+                          <a href="javascript:;" @click.stop="confirmRecieveGoods(item1.id)">确认收货</a>
                         </p>
-
-                        <a
-                          href="javascript:;"
-                          @click="payment(1,item1,item)"
-                          v-if="item1.payFinalButton"
-                        >去付尾款</a>
+                        <p v-if="item1.payFinalButton">
+                          <a href="javascript:;" @click.stop="payment(1,item1,item)">去付尾款</a>
+                        </p>
                       </div>
                     </div>
-                    <!-- <div v-if="item1.expireTime && !item1.goods_type" class="counttimewrap">
-                      <CountTime
-                        class="CountTime"
-                        v-on:end_callback="countDownE_cb()"
-                        :currentTime="item1.currentTime"
-                        :startTime="item1.currentTime"
-                        :endTime="item1.expireTime"
-                        :tipText="'距离活动开始'"
-                        :tipTextEnd="'售卖结束：'"
-                        :endText="'订单已失效'"
-                        :dayTxt="'天'"
-                        :hourTxt="'时'"
-                        :minutesTxt="'分'"
-                        :secondsTxt="'秒'"
-                      ></CountTime>
-                    </div> -->
                   </td>
                   <template v-if="index==0">
                     <td
@@ -203,8 +200,6 @@
                       class="border_right"
                       style="width:25%;vertical-align: top"
                     >
-                      <!-- {{item.orderVo.orderStatesDesc}}
-                      <br />-->
                       <ul>
                         <li
                           v-for="(itemx,indexx) in item.orderVo.opList"
@@ -253,117 +248,97 @@
                         </li>
                       </ul>
                     </td>
-                    <!-- <td :rowspan="item.orderInfoList.length" class="border_right hetong">
-                      <p>{{item.orderVo.download?'合同未上传':'合同已上传'}}</p>
-                      <a
-                        href="javascript:;"
-                        @click="downLoadOrderContract(item.orderVo.contractUrl)"
-                        class="green"
-                      >下载最新合同</a>
-                      <el-upload
-                        class="upload-demo-uploadContract"
-                        :action="uploadUrl"
-                        :limit="1"
-                        :data="{
-                                             orderno: item.orderVo.order_no,
-                                            access_token: access_token
-                                        }"
-                        :on-success="uploadSuccess"
-                        :before-upload="beforeAvatarUpload"
-                        style="margin-bottom:10px;position: relative"
-                        v-if="item.orderVo.order_status !== 11 && item.orderVo.download"
-                      >
-                        <a href="javascript:;" class="btnColor">上传合同</a>
-                      </el-upload>
-                    </td>-->
-                    <td :rowspan="item.orderInfoList.length" class="border_right" style="vertical-align: top">
+                    <td
+                      :rowspan="item.orderInfoList.length"
+                      class="border_right"
+                      style="vertical-align: top"
+                    >
                       <div
                         v-if="item.orderVo.order_status==3 && item.orderVo.orderStatesDesc"
                       >{{item.orderVo.orderStatesDesc}}</div>
-                      <div class="orderMoney" style="white-space:nowrap;">
-                        <p>
-                          <label>总金额：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
+                      <div class="orderMoney" style="white-space:nowrap;position:relative;">
+                        <img
+                          v-if="item.orderVo.order_status==3"
+                          src="@/assets/image/PersonalCenter/cancleMark.png"
+                          alt
+                          class="cancleMark"
+                          style="top:10px;left:30%;width:60px;position:absolute;"
+                        />
+                        <p v-if="item.orderVo.prePayChannel">
+                          <label>支付方式：</label>
+                          {{item.orderVo.prePayChannel | payTypeFilter}}
                         </p>
-                        <div v-if=" item.orderVo.order_status==0">
-                          <!-- 未支付或等待审核 开始-->
-                          <template v-if="!item.orderVo.prePayChannel">
-                            <p class="green">
-                              <label>已付金额：</label>￥0.00
-                            </p>
-                            <p class="color" v-if="!item.orderVo.need_pre_pay">
-                              <label>当前应付：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
-                            </p>
-                            <p v-if="item.orderVo.need_pre_pay" class="color">
-                              <label>当前应付：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}
-                            </p>
-                          </template>
-                          <template v-if="item.orderVo.prePayChannel">
-                            <p class="green" v-if="!item.orderVo.need_pre_pay">
-                              <label>已付金额：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
-                              <!-- (待到账确认) -->
-                            </p>
-                            <p v-if="item.orderVo.need_pre_pay" class="green">
-                              <label>已付金额：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}
-                              <!-- (待到账确认) -->
-                            </p>
-                            <p class="color" v-if="!item.orderVo.need_pre_pay">
-                              <label>当前应付：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
-                            </p>
-                            <p v-if="item.orderVo.need_pre_pay" class="color">
-                              <label>当前应付：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}
-                            </p>
-                          </template>
-                          <!-- 未支付或等待审核 结束-->
-                        </div>
-                        <div
-                          v-if="item.orderVo.order_status==1 || item.orderVo.order_status==4 || item.orderVo.order_status==6"
-                        >
-                          <p class="green">
-                            <label>已付金额：</label>￥{{item.orderVo.order_amount | toFixed(2)}}
-                          </p>
-                          <p class="color">
-                            <label>当前应付：</label>￥0.00
-                          </p>
-                        </div>
-                        <div v-if="item.orderVo.order_status==5">
-                          <p class="green">
-                            <label>已付金额：</label>￥{{item.orderVo.order_prepay | toFixed(2)}}
-                          </p>
-                          <p class="color">
-                            <label>当前应付：</label>￥{{item.orderVo.finalCount | toFixed(2)}}
-                          </p>
-                        </div>
+                        <p v-if="item.orderVo.today_exchange">
+                          <label>当前汇率：</label>
+                          {{item.orderVo.today_exchange}}
+                        </p>
+                        <p>
+                          <label>合计金额：</label>
+                          ￥{{item.orderVo.order_amount | toFixed(2)}}
+                        </p>
+                        <p class="green">
+                          <label>已付金额：</label>
+                          ￥{{item.orderVo.alreadyPay | toFixed(2)}}
+                        </p>
+                        <p class="green" v-if="item.orderVo.need_pre_pay">
+                          <label>预付比例：</label>
+                          30%
+                        </p>
+                         <!-- <p v-if="item.orderVo.counpMoney">
+                          <label>优惠金额：</label>
+                          ￥{{item.orderVo.counpMoney | toFixed(2)}}
+                        </p> -->
+                        <p class="color">
+                          <label>当前应付款：</label>
+                          <strong> ￥{{item.orderVo.shouldPay | toFixed(2)}}</strong>
+                        </p>
+                       
                       </div>
-                      <div class>
+                      <div class style="position:relative;">
                         <p style="white-space: nowrap;" v-if="item.orderVo.prePayButton">
                           <a href="javascript:;" @click="payment(0,item)" class="btnColor">去付款</a>
                           <i
                             class="el-icon-question color"
-                            title="预付款金额为订货产品金额的30%;"
+                            title="当前应付包含现货的全款和订货的预付款30%"
                             style="cursor:pointer;font-size:18px;margin-left:10px;"
                           ></i>
                         </p>
-
+                        <p class="gray" v-if="item.orderVo.prePayButton">逾期未支付，订单自动取消</p>
                         <a
                           href="javascript:;"
                           @click="vipPayment(item)"
                           v-if="item.orderVo.isMonth && item.orderVo.payButton"
                           class="btnColor"
-                          style="display:block;"
+                          style="display:block;width:60px;margin:5px auto 0;text-align:center;"
                         >白条支付</a>
-                        <span
-                          href="javascript:;"
+                        <p
+                          class="gray"
+                          v-if="item.orderVo.isMonth && item.orderVo.payButton"
+                        >逾期未支付，订单自动取消</p>
+                        <el-popover
+                          placement="left"
+                          title="交易提示"
+                          width="300"
+                          trigger="hover"
                           v-if="item.orderVo.isMonth && item.orderVo.order_status==0 && !item.orderVo.payButton"
-                          class="btnbgGray"
-                          style="display:block;"
-                        >白条支付</span>
-
-                        <a
-                          href="javascript:;"
-                          @click="transPayment(item)"
-                          v-if="item.orderVo.isMonth && item.orderVo.order_status==0 && !item.orderVo.payButton"
-                          class="btnColor"
-                        >转普通订单</a>
+                        >
+                          <div>
+                            <p  class="color">月结订单请先下载系统合同并按要求填写后上传PDF合同等待审核通过后再支付。</p> 
+                            </div>
+                          <span
+                            class="btnbgGray"
+                            style="display:block;display:block;width:60px;margin:5px auto 0;text-align:center;"
+                            slot="reference"
+                          >白条支付</span>
+                        </el-popover>
+                        <p>
+                          <a
+                            href="javascript:;"
+                            @click="transPayment(item)"
+                            v-if="item.orderVo.isMonth && item.orderVo.order_status==0 && !item.orderVo.payButton"
+                            class="btnColor"
+                          >转普通订单</a>
+                        </p>
 
                         <a
                           href="javascript:;"
@@ -371,27 +346,20 @@
                           v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
                           class="btnColor"
                         >全额付款</a>
+                        <p
+                          class="gray"
+                          v-if="!item.orderVo.isMonth && !item.orderVo.need_pre_pay && item.orderVo.payButton"
+                        >逾期未支付，订单自动取消</p>
                       </div>
-
-                      <div v-if="item.orderVo.expireTime" class="counttimewrap">
-                        <CountTime
-                          class="CountTime color"
-                          v-on:end_callback="countDownE_cb()"
-                          :currentTime="item.orderVo.currentTime"
-                          :startTime="item.orderVo.currentTime"
-                          :endTime="item.orderVo.expireTime"
-                          :tipText="'距离活动开始'"
-                          :tipTextEnd="'支付剩余时间：'"
-                          :endText="'订单已失效'"
-                          :dayTxt="'天'"
-                          :hourTxt="'时'"
-                          :minutesTxt="'分'"
-                          :secondsTxt="'秒'"
-                        ></CountTime>
-                        <p class="gray">此时间内未支付，订单自动取消</p>
-                      </div>
+                      <!-- <div v-if="item.orderVo.expireTime" class="counttimewrap">
+                        <p class="gray">逾期未支付，订单自动取消</p>
+                      </div>-->
                     </td>
-                    <td :rowspan="item.orderInfoList.length" class="border_right"  style="vertical-align: top">
+                    <td
+                      :rowspan="item.orderInfoList.length"
+                      class="border_right"
+                      style="vertical-align: top"
+                    >
                       <router-link
                         tag="div"
                         :to="{
@@ -403,7 +371,6 @@
                       </router-link>
 
                       <!-- <p>{{item.orderVo.download?'合同未上传':'合同已上传'}}</p> -->
-                      
 
                       <el-upload
                         class="upload-demo-uploadContract"
@@ -414,6 +381,7 @@
                                             access_token: access_token
                                         }"
                         :on-success="uploadSuccess"
+                        :on-error="onuploaderror"
                         :before-upload="beforeAvatarUpload"
                         style="margin-bottom:10px;position: relative;width:150px;margin:0 auto;"
                         v-if="item.orderVo.order_status !== 11 && item.orderVo.download"
@@ -424,10 +392,16 @@
                         <a
                           :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.contractUrl}&access_token=${access_token}`"
                           style="text-decoration: underline;"
-                        >下载最新合同</a>
+                        >下载合同(系统)</a>
                       </div>
-                      <div>
-                           <a style="text-decoration: underline;" @click="showBillDetail(item)">查看发票详情</a>
+                      <div style="margin-top:10px;" v-if="item.orderVo.customerContractUrl">
+                        <a
+                          :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.customerContractUrl}&access_token=${access_token}`"
+                          style="text-decoration: underline;"
+                        >下载合同(已上传)</a>
+                      </div>
+                      <div v-if="item.orderVo.billType">
+                        <a style="text-decoration: underline;" @click="showBillDetail(item)">查看发票详情</a>
                       </div>
                       <a
                         href="javascript:;"
@@ -435,6 +409,12 @@
                         v-if="item.orderVo.cancelButton"
                         class="gray"
                       >取消订单</a>
+                      <a
+                        href="javascript:;"
+                        @click="deletOrder(item.orderVo.id,0)"
+                        v-if="item.orderVo.deleteButton"
+                        class="gray"
+                      >删除订单</a>
                     </td>
                   </template>
                 </tr>
@@ -541,7 +521,7 @@
           <el-button @click="payType=4" :class="{bgColor:payType==4}" class="btn">支付宝支付</el-button>
         </div>
         <div v-if="cancleOrderPayShow" class="color" style="margin-top:20px;">
-          取消器件条件：合并报关下取消该订单需要支付对应的报关费
+          取消零件条件：合并报关下取消该订单需要支付对应的报关费
           <strong>￥{{item.amount}}</strong>
         </div>
       </div>
@@ -552,9 +532,9 @@
     </el-dialog>
     <el-dialog
       :visible.sync="dialogCode"
-      width="600px"
+      width="350px"
       :close-on-click-modal="false"
-      center
+      title="微信扫码支付"
       class="weichatCode"
     >
       <div class="weichatCodeCont">
@@ -586,29 +566,43 @@
         <div>纳税人识别号：{{billdetail.orderVo.nashuirenNo}}</div>
         <div>开户行：{{billdetail.orderVo.bandType}}</div>
         <div>账号：{{billdetail.orderVo.bandNum}}</div>
-        <div>地址（电话）：{{billdetail.orderVo.billAdress}}  {{billdetail.orderVo.billPhone}}</div>
+        <div>地址（电话）：{{billdetail.orderVo.billAdress}} {{billdetail.orderVo.billPhone}}</div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="showBillDetailStatus = false">关  闭</el-button>
-    
+        <el-button @click="showBillDetailStatus = false">关 闭</el-button>
       </span>
     </el-dialog>
     <div v-html="formhtml" ref="formwrap"></div>
+    <after-mark
+      v-if="showModalfeed"
+      :showfeedback="showModalfeed"
+      @submitSuc="showModalfeed=false"
+      :orderIds="orderIds"
+    ></after-mark>
+    <add-rate
+      :item="addRateItem"
+      @submitRateSuc="submitRateSuc"
+      v-if="showAddRate"
+      :showAddRate="showAddRate"
+    ></add-rate>
   </div>
 </template>
 <script>
+import afterMark from "_c/afterMark";
 import { mapActions, mapState } from "vuex";
 import BuyerOrderItem from "_c/BuyerOrderItem";
 import bankTransfer from "_c/bankTransfer";
 import { axios, buyerOrderCenter } from "../../../api/apiObj";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
 import { baseURL, baseURL2 } from "@/config";
+import AddRate from "_c/addRate";
 export default {
   name: "BuyerOrderManagement",
   data() {
     return {
-      
-      baseURL:baseURL,
+      orderIds: 0,
+      showModalfeed: false,
+      baseURL: baseURL,
       transPaymentshow: false,
       transPaymentobj: {},
       formhtml: "",
@@ -770,7 +764,7 @@ export default {
       tabFirstFlag: "",
       orderParams: {},
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 5,
       SearchInputValue: "",
       BuyerOrderList: [],
       BuyerOrderManagementTotal: 0,
@@ -824,14 +818,18 @@ export default {
         paytype: 0, //在线支付
         type: 0 //微信
       },
-      timep: null ,//微信支付后的轮训计时器
-      billdetail:{},
-      showBillDetailStatus:false
+      timep: null, //微信支付后的轮训计时器
+      billdetail: {},
+      showBillDetailStatus: false,
+      showAddRate: false,
+      addRateItem: {}
     };
   },
   components: {
     BuyerOrderItem,
-    bankTransfer
+    bankTransfer,
+    afterMark,
+    AddRate
   },
 
   watch: {
@@ -879,10 +877,51 @@ export default {
       "CancleOrderSubmit",
       "queryExpress"
     ]),
+    gotobrand(item1){
+      this.$router.push({
+        path:'/BrandDetail',
+        query:{
+          name:item1.goods_brand,
+          documentid:item1.goods_brand_id,
+          tag:'brand'
+        }
+      })
+    },
+    gotogoodsDetail(item1){
+      this.$router.push({
+         path:'/BrandDetail/GoodsDetails',
+        query:{
+          tag:'goodsinfo',
+          name:item1.goods_name,
+          documentid:item1.goods_id
+        }
+      })
+    },
+    gotoDetail(orderNo){
+      this.$router.push({
+        path:'/PersonalCenter/buyerOrderDetail',
+        query:{orderNo:orderNo}
+      })
+    },
+    rate(item) {
+      this.showAddRate = true;
+      this.addRateItem = item;
+    },
+    submitRateSuc() {
+      this.showAddRate = false;
+      this.all();
+    },
+
     //查看发票详情
-    showBillDetail(item){
-      this.billdetail=item;
-      this.showBillDetailStatus=true;
+    showBillDetail(item) {
+      console.log(item);
+      this.$router.push(
+        "/PersonalCenter/BuyerInvoiceManagement?orderNo=" +
+          item.orderVo.order_no
+      );
+      return;
+      this.billdetail = item;
+      this.showBillDetailStatus = true;
     },
     // 获取订单进程
     showPopover(item) {
@@ -1004,12 +1043,14 @@ export default {
       this.all();
     },
     all() {
+      this.$loading(this.$store.state.loading);
       axios
         .request({
           ...buyerOrderCenter.queryOrderPersonal,
           params: this.orderParams
         })
         .then(res => {
+          this.$loading(this.$store.state.loading).close();
           if (res && res.data) {
             console.log(res.data.data);
             this.BuyerOrderList = res.data.data.map(item => {
@@ -1168,8 +1209,7 @@ export default {
         });
     },
     // 点击付款
-    payment(x, item,item0) {
-   
+    payment(x, item, item0) {
       this.item = item;
       this.currentStatus = x;
       this.payType = 1;
@@ -1177,21 +1217,21 @@ export default {
       switch (x) {
         case 0:
           this.paymentType = 0; //标志付定金
-            this.danweiName = item.orderVo.danweiName
+          this.danweiName = item.orderVo.danweiName;
           totalPrice = this.item.orderVo.order_prepay;
           break;
         case 1:
           this.paymentType = 1; //标志付尾款
-          this.danweiName = item0.orderVo.danweiName
+          this.danweiName = item0.orderVo.danweiName;
           totalPrice = this.item.final_pay;
           break;
         case 2:
           this.paymentType = 2; //标志付全款
           totalPrice = this.item.orderVo.order_amount;
-          this.danweiName = item.orderVo.danweiName
+          this.danweiName = item.orderVo.danweiName;
           break;
       }
-  
+
       this.paymoney = totalPrice;
       this.selectedPayType = true;
       this.cancleOrderPayShow = false;
@@ -1253,7 +1293,7 @@ export default {
             url: this.requestUrllittle,
             money: this.item.final_pay,
             title: "订单尾款",
-            danweiName:this.danweiName
+            danweiName: this.danweiName
             // time:this.item.orderVo.expireTime
           };
         } else if (this.paymentType == 3) {
@@ -1262,7 +1302,7 @@ export default {
             url: this.requestUrlcancle,
             money: this.item.amount,
             title: "取消零件补交合并报关费",
-             danweiName:this.danweiName
+            danweiName: this.danweiName
             // time:this.item.orderVo.expireTime
           };
         } else if (this.paymentType == 0) {
@@ -1272,7 +1312,7 @@ export default {
             money: this.item.orderVo.order_prepay,
             time: this.item.orderVo.expireTime,
             title: this.paymentType == 0 ? "订单预付款" : "订单全额",
-             danweiName:this.danweiName
+            danweiName: this.danweiName
           };
         } else if (this.paymentType == 2) {
           //预付款
@@ -1281,7 +1321,7 @@ export default {
             money: this.item.orderVo.order_amount,
             time: this.item.orderVo.expireTime,
             title: this.paymentType == 0 ? "订单预付款" : "订单全额",
-             danweiName:this.danweiName
+            danweiName: this.danweiName
           };
         }
         this.bankTransferShow = true;
@@ -1375,6 +1415,9 @@ export default {
           });
       }
     },
+    onuploaderror() {
+      this.$loading(this.$store.state.loading).close();
+    },
     // 上传合同成功的函数
     uploadSuccess(response, file, fileList) {
       this.$loading(this.$store.state.loading).close();
@@ -1389,8 +1432,9 @@ export default {
       const isJPG = file.type === "application/pdf";
       if (!isJPG) {
         this.$message.error("上传合同只能是 pdf格式!");
+      } else {
+        this.$loading(this.$store.state.loading);
       }
-      this.$loading(this.$store.state.loading);
       return isJPG;
     },
     countDownS_cb: function(item) {
@@ -1402,6 +1446,18 @@ export default {
     // 确认接收交期
     comfirmaDelivery() {
       console.log("确认接收交期");
+    },
+    deletOrder(id, type) {
+      //type==0,标识大订单，type==1,标识小订单
+      axios
+        .request({
+          ...buyerOrderCenter.deleteOrder,
+          params: { flag: type == 0 ? true : false, orderId: id }
+        })
+        .then(res => {
+          this.all();
+          this.$message.success(type == 1 ? "物料已删除" : "订单已删除");
+        });
     },
     //取消订单
     cancleOrder(type, orderId) {
@@ -1425,7 +1481,7 @@ export default {
         flag: this.cancleOrderForm.flag
       }).then(res => {
         this.dialogVisible2 = false;
-        if (res.resultCode == "400") {
+        if (res && res.resultCode == "400") {
           this.cancleOrderPayShow = true;
           this.selectedPayType = true;
           this.paymentType = 3;
@@ -1438,6 +1494,33 @@ export default {
     confirmRecieveGoods(id) {
       this.confirmRecieveGoodsId = id;
       this.dialogVisible3 = true;
+    },
+    aftermarket(id) {
+      this.orderIds = id;
+      this.showModalfeed = true;
+    },
+    //再次购买
+    reBuy(item) {
+      axios
+        .request({
+          ...buyerOrderCenter.querySellerGoods,
+          params: { id: item.goods_id }
+        })
+        .then(res => {
+          if ((res.resultCode = 200 && res.data != 0)) {
+            this.$router.push({
+              path:
+                "/BrandDetail/GoodsDetails?tag=goodsinfo&documentid=3257&name=XC2C256-7PQG208C",
+              query: {
+                tag: "goodsinfo",
+                documentid: item.goods_id,
+                name: item.goods_name
+              }
+            });
+          } else {
+            this.$message.info("当前产品暂无卖家，不能购买");
+          }
+        });
     },
     // 确认收货
     ConfirmReceipt() {
@@ -1513,6 +1596,18 @@ export default {
     this.all();
   },
   filters: {
+    payTypeFilter(val) {
+      switch (val) {
+        case 1:
+          return "在线支付";
+        case 2:
+          return "在线支付";
+        case 3:
+          return "对公转账";
+        case 4:
+          return "月结白条";
+      }
+    },
     formatDate0(val) {
       return TimeForma(val);
     },

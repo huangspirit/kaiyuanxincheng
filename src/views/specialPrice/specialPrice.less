@@ -17,6 +17,7 @@
       padding:15px 25px;
       border-top-left-radius:10px;
       border-top-right-radius:10px;
+      display:flex;
       .inputSearch{
         /deep/.el-input-group__append{
           padding:0 10px;
@@ -74,6 +75,7 @@
           &.noMargin{
             margin-right:0;
           }
+          
           .newClass{
             font-size: 14px;
             position: relative;
@@ -104,7 +106,11 @@
               margin:15px 0;
               strong{
                 font-size:20px;
-                margin-right:10px;
+                margin-right:5px;
+              }
+              .typemark{
+                font-weight: bolder;
+                font-size:20px;
               }
             }
             .goodsName{
@@ -241,10 +247,13 @@
             margin-bottom:15px;
             text-align: center;
             cursor: pointer;
+            padding-top:10px;
+            background: rgba(0,0,0,0.05);
+            padding-bottom:10px;
             &:after{
               content: "";
               display: block;
-              background: rgba(0,0,0,0.05);
+              // background: rgba(0,0,0,0.05);
               position: absolute;
               width:100%;
               height:200px;

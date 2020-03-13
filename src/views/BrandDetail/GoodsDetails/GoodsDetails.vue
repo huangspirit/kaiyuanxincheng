@@ -44,11 +44,12 @@
                     }"
             >
               {{goodsinfo.brand}}
-              <ImgE :src="goodsinfo.brandImageUrl" :W="80" :H="40" style="margin-left:25px;"></ImgE>
+                 <img :src="goodsinfo.brandImageUrl"  style="height:30px;width:80px;"/>
+              <!-- <ImgE :src="goodsinfo.brandImageUrl" :W="80" :H="40" style="margin-left:25px;"></ImgE> -->
             </router-link>
           </p>
           <p class="goodsdesc" style="word-break:break-all;">描述：{{goodsinfo.productdesc}}</p>
-          <P class="goodsdesc">器件状态：{{status}}</P>
+          <P class="goodsdesc">零件状态：{{status}}</P>
           <div class="cont1">
             <span @click="openBig" class="txt">
               数据手册Datasheet：
@@ -68,30 +69,32 @@
               <i class="el-icon-star-on"></i>&nbsp;已关注
             </span>
             <span @click="addFocus" v-if="!goodsinfo.focus" class="btn unactive">
-              <i class="el-icon-star-off"></i>&nbsp;关注此器件
+              <i class="el-icon-star-off"></i>&nbsp;关注此零件
             </span>
             <span class="blu" v-if="loginState">目前已<i v-if="goodsinfo.favorCount>=0">有{{goodsinfo.favorCount | toFixed(0)}}人关注</i><i v-if="goodsinfo.favorCount>=0 && goodsinfo.searchCount>0">,</i><i v-if="goodsinfo.searchCount>0">有{{goodsinfo.searchCount | toFixed(0)}}次的搜索</i></span>
             <!-- <span class="btn"><img src="@/assets/image/icon/share.png" alt="" style="height:13px;">&nbsp;分享给好友</span> -->
           </div>
           <div class="btnwrap">
-            <span class="btn bgColor" @click="pushlishspecialPrice">发布特价</span>
+            <span class="btn bgColor" @click="pushlishspecialPrice(goodsinfo.factorySellerInfo.seller_id)">发布特价</span>
             <template
               v-if="goodsinfo.factorySellerInfo && goodsinfo.factorySellerInfo.seller_goods_id"
             >
-              <span class="btn bgOrange" @click="specialPrice">申请特价</span>
-              <span class="btn bgGray" @click="addInquiry">加入询价篮</span>
+             <span class="btn bgGray" @click="addInquiry(goodsinfo.factorySellerInfo.seller_id)">加入询价篮</span>
+              <span class="btn bgOrange" @click="specialPrice(goodsinfo.factorySellerInfo.seller_id)">申请特价</span>
+             
             </template>
-            <template v-else>
+            <!-- <template v-else>
               <span style=" cursor: unset;background:#bbb">申请特价</span>
               <span style=" cursor: unset;background:#bbb">加入询价篮</span>
-            </template>
+            </template> -->
           </div>
         </div>
       </div>
     </div>
     <!-- 特价共享区 -->
     <div class="special-offer allWidth">
-      <MerchantList :id="goodsinfo.id" v-if="goodsinfo.id" @specialPrice="specialPrice"></MerchantList>
+      <div class="color" v-if="showSelling" style="margin-top:20px;">注：人民币价格均为含税价，美元价为香港交货价</div>
+      <MerchantList :id="goodsinfo.id" v-if="showSelling" @specialPrice="specialPrice"></MerchantList>
     </div>
     <!-- 详细信息 -->
     <div class="detail-informan">
@@ -109,14 +112,30 @@
           </p>
           <ul class="parameter clear">
             <li>
-              <el-table :data="goodsinfo.list" stripe border>
+              <table class="canshu">
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>参数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="item in goodsinfo.list">
+                    <tr  :key="item.id" v-if="item.value">
+                      <td>{{item.name}}</td>
+                      <td>{{item.value}}</td>
+                  </tr>
+                  </template>
+                </tbody>
+              </table>
+              <!-- <el-table :data="goodsinfo.list" stripe border>
                 <el-table-column property="name" label="类型"></el-table-column>
                 <el-table-column property="value" label="参数"></el-table-column>
-              </el-table>
+              </el-table> -->
             </li>
             <li
               class="datasheet"
-              style="height:700px"
+              style="height:750px"
               v-loading="loading"
               element-loading-text="拼命加载中"
               element-loading-spinner="el-icon-loading"
@@ -127,7 +146,7 @@
                 :src="datasheet"
                 frameborder="0"
                 width="100%"
-                height="100%"
+                height="99%"
                 v-if="datasheet"
               ></iframe>
               <p v-else>暂无产品手册</p>
@@ -167,7 +186,6 @@ import { baseURL, baseURL2 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
 import { parse } from "path";
 import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
-
 export default {
   name: "GoodsDetails",
   data() {
@@ -184,7 +202,7 @@ export default {
       showPurchase: false,
       dialogVisible: false,
       showSelling: false,
-      UserInforma: sessionStorage.getItem("UserInforma")
+      RateList:[]
     };
   },
   components: {
@@ -201,8 +219,8 @@ export default {
         this.setshowlogin(true)
         return;
       }
+      
       if (this.UserInforma) {
-        this.UserInforma = JSON.parse(this.UserInforma);
         if (this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller) {
           this.$router.push(
             "/PersonalCenter/SellerIssuesProduct?name=" +
@@ -224,7 +242,7 @@ export default {
         length: 1,
         status: "1"
       };
-      axios.request({ ...home.SpecialOfferList, params: obj }).then(res => {
+      axios.request({ ...home.queryDirectGoods2, params: obj }).then(res => {
         if (res.data.total > 0) {
           this.showSelling = true;
         }
@@ -250,10 +268,14 @@ export default {
         this.loading = false;
       }, 5000);
     },
-    addInquiry() {
+    addInquiry(seller_id) {
       if (!this.loginState) {
         //this.$router.push("/Login");
         this.setshowlogin(true)
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己的品牌产品加入询价篮询价")
         return;
       }
       var obj = {
@@ -322,18 +344,24 @@ export default {
           
         });
     },
-    purchase() {
+    purchase(seller_id) {
       if (!this.loginState) {
-        //this.$router.push("/Login");
         this.setshowlogin(true)
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己发布的商品进行购买")
         return;
       }
       this.showPurchase = true;
     },
-    specialPrice() {
+    specialPrice(seller_id) {
       if (!this.loginState) {
-        //this.$router.push("/Login");
         this.setshowlogin(true)
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己申请特价")
         return;
       }
       let factorySellerInfo = this.goodsinfo.factorySellerInfo;
@@ -344,10 +372,6 @@ export default {
         ...this.goodsinfo,
         factorySellerInfo: factorySellerInfo
       }]);
-      console.log({
-        ...this.goodsinfo,
-        factorySellerInfo: factorySellerInfo
-      })
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     }
   },
@@ -371,7 +395,7 @@ export default {
         );
       }
       res.list.find(item => {
-        if (item.name == "零件状态") {
+        if (item.name == "零件状态" || item.name == "零件状态") {
           this.status = item.value;
         }
       });
@@ -458,9 +482,11 @@ export default {
     }
   },
   computed: {
-    loginState() {
-      return this.$store.state.loginState;
-    }
+    ...mapState({
+      UserInforma:state=>state.Login.UserInforma,
+      loginState:state=>state.loginState
+    })
+    
   },
   filters: {
     formatDate(val) {

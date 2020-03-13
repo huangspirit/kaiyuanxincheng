@@ -1,5 +1,6 @@
 <template>
   <div class="cont" :class="isPersonalCenter?'percenter':''">
+    <template v-if="UserInforma && UserInforma.id">
     <router-link to="/PersonalCenter/Message" class="messageCountWrap" tag="div">
       <span></span>
       <p>消息</p>
@@ -32,15 +33,41 @@
       <span></span>
       <p>反馈</p>
     </div>
-    <div class="miniparams" @click="feedBack">
+    </template>
+    <template v-else>
+      <div class="messageCountWrap" tag="div" @click="setshowlogin">
+        <span></span>
+        <p>消息</p>
+      </div>
+    <div class="personal" tag="div" @click="setshowlogin">
+      <span></span>
+      <p>用户<br>中心</p>
+    </div>
+    <div class="join"  @click="setshowlogin">
+      <span></span>
+      <p>商家入驻</p>
+    </div>
+    <div class="busket" tag="div" @click="setshowlogin">
+      <span></span>
+      <p>询价篮</p>
+    </div>
+    <div class="shoppingCar" tag="div"  @click="setshowlogin">
+      <span></span>
+      <p>购物车</p>
+    </div>
+    <div class="feedback" @click="setshowlogin">
+      <span></span>
+      <p>反馈</p>
+    </div>
+    </template>
+    <div class="miniparams">
       <span></span>
       <p>小程序</p>
       <div class="img">
-        <img src="@/assets/image/footer/u1697.png" alt="">
+        <img src="@/assets/image/footer/minparam.jpg" alt="">
       </div>
     </div>
     <feed-back v-if="showModal" :showfeedback="showModal" @submitSuc="showModal=false"></feed-back>
-
   </div>
 </template>
 <script>
@@ -70,8 +97,8 @@ export default {
     })
   },
   methods: {
+    ...mapMutations(['setshowlogin']),
     fetchDate(){
- 
       if(this.$route.path.indexOf("PersonalCenter")!=-1){
 //标识进入了个人中心
           this.isPersonalCenter=true;
@@ -90,7 +117,7 @@ export default {
   position: fixed;
   right: 0;
   top: 20vh;
-  z-index: 9;
+  z-index: 100;
   color: #fff;
   background: #5c5f63;
   border: 1px solid #fff;

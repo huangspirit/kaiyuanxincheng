@@ -7,13 +7,17 @@
     </el-breadcrumb>
     <div class="AdditionalQualifications">
       <!-- 选择品牌 -->
-      <SelectBrand
-        v-if="selectBrandFlag"
+      <div class="SelectBrandWrap"  v-if="selectBrandFlag">
+<SelectBrand
+       
         @select="SelectBrand"
         :addBrandUrl="addBrandUrl"
         @cancel="CancelBrand"
         :EndselectBrandList="EndselectBrandList"
+        :maxBrandNum="maxBrandNum"
       ></SelectBrand>
+      </div>
+      
       <div v-else class="Additional-con">
         <h3 class="h-sp">确认品牌</h3>
         <el-form
@@ -73,7 +77,7 @@
                 <div
                   slot="tip"
                   class="el-upload__tip"
-                >图片尺寸请确保清新，支持png、jpg、gif格式</div>
+                >图片尺寸请确保清晰，文件大小限制为2M，支持png、jpg、gif格式</div>
               </el-upload>
               <div class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
                 <img :src="exampleDiagram" alt />
@@ -106,6 +110,7 @@ export default {
   data() {
     return {
       // 现在选中的列表
+      maxBrandNum:1,
       EndselectBrandList: [],
       addBrandUrl: "/PersonalCenter/NewsBrandQualifica",
       selectBrandFlag: false,

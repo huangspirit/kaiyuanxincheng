@@ -10,24 +10,24 @@ Vue.filter('pointTwo', (value) => {
 Vue.filter('formatDate', value => {
     var date = new Date(value)
     var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate()
-    var hour = date.getHours()
-    var minute = date.getMinutes()
-    var second = date.getSeconds()
+    var month = (date.getMonth() + 1)<10?'0'+(date.getMonth()+1):date.getMonth()+1;
+    var day = date.getDate()<10?'0'+date.getDate():date.getDate();
+    var hour = date.getHours()<10?'0'+date.getHours():date.getHours();
+    var minute = date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes();
+    var second = date.getSeconds()<10?'0'+date.getSeconds():date.getSeconds();
     return year + "-" + month + "-" + day + " " + hour + ':' + minute + ':' + second
 })
 Vue.filter('applyStatus', value => {
     if (value == '1') {
-        return '原厂'
+        return '原厂商'
     } else if (value == '2') {
         return '代理商'
     } else if (value == '3') {
-        return '商城卖家'
+        return '分销商(个人)'
     } else if (value == '4') {
         return '月结'
     }else if (value == '18') {
-        return '企业分销商'
+        return '分销商(企业)'
     }
 })
 Vue.filter('effective', (val, value1) => {
@@ -42,6 +42,18 @@ Vue.filter('effective', (val, value1) => {
         return '已失效'
     }
 
+})
+Vue.filter("channelFilter",(val)=>{
+    switch (val){
+        case 1:
+            return "微信支付";
+          case 2:
+            return "支付宝支付";
+          case 3:
+            return "对公转账";
+          case 4:
+            return "月结白条";
+            }
 })
 Vue.filter('toFixed', (s,n) => {
             s=s?s:0;
@@ -65,9 +77,9 @@ Vue.filter('tagFilter', (value) => {
         case 2:
           return "代理商";
         case 3:
-          return "商家";
+          return "分销商(个人)";
         case 18:
-          return "企业分销商";
+          return "分销商(企业)";
       }
 })
 // 毫秒转化正常日期格式

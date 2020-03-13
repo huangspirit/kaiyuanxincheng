@@ -15,7 +15,8 @@
       </el-carousel>
     </div>
     <div class="banner">
-      <img :src="bannerList[2]['url']" alt style="height:100%;width:100%;" />
+      <img src="http://brand.113ic.com/1005e35152904af5a147e243816e9146.jpg" alt="" style="height:100%;width:100%;">
+      <!-- <img :src="bannerList[0]['url']" alt style="height:100%;width:100%;" /> -->
       <!-- <el-carousel>
                 <el-carousel-item v-for="(item,k) in bannerList" :key="k" >
                     <img :src="item.url" alt="" >
@@ -23,15 +24,14 @@
       </el-carousel>-->
       <div class="wrapSearch allWidth">
         <p class="tit">
-          <span>用芯链接世界</span>
-          <span style="margin-left:30px;">低价才是王道</span>
-          <!-- 找低价   买特价   开源节流 -->
+          <span>电子元零件特价共享交易平台</span>
+          <!-- <span style="margin-left:30px;">低价才是王道</span> -->
           <!-- <countTo :endVal="brandTotal" :duration="4"></countTo>个厂商
                     <countTo :endVal="catergoryTotal" :duration="4"></countTo>种产品
           <countTo :endVal="productTotal" :duration="4"></countTo>个产品-->
         </p>
         <p class="desc">
-          <!-- <span>用芯链接世界</span><span style="margin-left:30px;">低价才是王道</span> -->
+          <span>原装正品是底线</span><span style="margin-left:30px;">跟着特价买才省钱</span>
         </p>
         <HeaderSearch ref="HeaderSearch" class="headerSeach"></HeaderSearch>
         <ul class="hot-search clear">
@@ -42,8 +42,11 @@
           >{{item.name}}</li>
         </ul>
       </div>
+      <div class="topRuzhuWrap" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">
+<span @click="settle" class="topRuzhu bgColor" >商家入驻</span><br><br>
+      <span style="color:#fff">免费发布，0差价，0费率</span>
+      </div>
       
-      <span @click="settle" class="topRuzhu bgColor" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">立即入驻</span>
     </div>
     <div class="specialGoods allWidth">
       <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
@@ -85,26 +88,23 @@
               <span class="borderColor">{{item.diliverPlace}}交货</span>
               <span class="borderBlu" :class="item.seller_always?'':'color'">{{item.seller_always?'长期特价':'限时抢购'}}</span>
             </div>
-            <div class="info">
+            <div class="info" v-if="item.userImgeUrl">
               <div class="sellerInfo ">
                 <p class="img">
                   <img :src="item.userImgeUrl" alt @click="chipShop(item)" />
                 </p>
-                <div class="wrapInfo clear">
+                <!-- <div class="wrapInfo clear">
                     <div class="wrap" @click="chipShop(item)">
                       <img :src="item.userImgeUrl" alt />
                       <div :title="item.sellerName" >
                         <p style="margin:10px 0;">{{item.sellerName}}</p>
-                      
                         <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
                         <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-                        <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
-                         <span class="tag bgOrange">保</span>
+                        <span class="tag bgOrange">保</span>
                       </div>
                     </div>
-                 
                  <div class="score">
-                     <div >入驻时间：{{item.settleTime | formatDate}}</div>
+                     <div >入驻时间：{{item.settleTime.split(" ")[0]}}</div>
                      <div style="margin-bottom:20px;">企业资质：已认证</div>
                      <div class="scoreitem">
                         <span>产品质量：</span>
@@ -165,19 +165,20 @@
                   <p style="center">
                     <span class="borderColor" style="padding:2px 5px;border-radius:4px;cursor:pointer;"  @click="chipShop(item)">进入店铺</span>
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="price">
               <strong
-                class="green"
+                class="color"
                 v-if="!item.priceType"
-              >一口价：{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
+              >{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</strong>
               <strong
                 class="color fr"
                 v-if="item.priceType"
-              >阶梯价：{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
-              <span  v-if="item.priceType">起</span>
+              >{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
+              <span  v-if="item.priceType" class="typemark color">+</span>
+              <!-- <i style="margin-left:20px;color:#999;font-size:16px;font-style:normal">MOQ：{{item.moq}}</i> -->
             </div>
 
             <div class="blu" >
@@ -203,7 +204,7 @@
                   :secondsTxt="'秒'"
                 ></CountTime>
               </div>
-            <!-- <div @click="chipSellerGoodsDetal(item)" class="btn bgColor">立即跟单</div> -->
+            
           </div>
         </li>
       </ul>
@@ -211,7 +212,7 @@
         tag="div"
         class="more bluebtn"
         to="/specialPrice"
-        style="height:60px;line-height:60px;background:#f5f5f5;margin-bottom:35px;"
+        style="height:60px;line-height:60px;background:#f5f5f5;margin-bottom:20px;"
       >查看更多特价</router-link>
     </div>
     <div class="origin specialGoods">
@@ -252,12 +253,12 @@
               <div class="desc gray">{{item.goodsDesc}}</div>
               <div class="count gray">
                 <span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;
-                <span>最小增量:&nbsp;{{item.mpq}}只</span>
+                <span>增量:&nbsp;{{item.mpq}}只</span>
               </div>
               <div class="marking">
                 <span class="tag color borderColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
                 <span class="tag blu borderBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-                <span class="tag orange borderOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
+                <!-- <span class="tag orange borderOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> -->
                 <span class="borderColor">{{item.diliverPlace}}发货</span>
                 <span :class="item.goods_type?'borderGreen green':'borderColor color'">{{item.goods_type?'现货':'订货'}}</span>
               </div>
@@ -281,7 +282,7 @@
                 <p
                   style="color:#354cd9;font-size:12px;margin-bottom:12px;"
                 >({{!item.priceUnit?'含13%增值税':'不含税'}})</p>
-                <p class="bgColor btn">立即跟单</p>
+                <p class="bgColor btn">立即下单</p>
               </div>
             </div>
           </li>
@@ -292,7 +293,7 @@
           tag="div"
           class="more bluebtn"
           to="/brand"
-          style="height:60px;line-height:60px;background:#fff;margin-bottom:35px;margin-top:20px;"
+          style="height:60px;line-height:60px;background:#fff;margin-bottom:20px;margin-top:20px;"
         >查看更多原厂商品</router-link>
       </div>
     </div>
@@ -309,8 +310,8 @@
         </div>-->
         <div class="goodsList fl">
           <ul class="titleList bgColor">
-            <li class="goodsName">供应商</li>
-            <li class="goodsName" style="text-align:left;">型号</li>
+            <!-- <li class="goodsName">供应商</li> -->
+            <li class="goodsName">型号</li>
             <li class="item">品牌</li>
             <li class="item">批号</li>
             <li class="item">数量</li>
@@ -320,7 +321,7 @@
           </ul>
           <ol>
             <li v-for="(item,k) in oldProductList" :key="k">
-              <div class="goodsName taginfo">
+              <!-- <div class="goodsName taginfo">
                 <img :src="item.userImgeUrl" alt style="cursor:pointer;" @click="chipShop(item)" />
                 <div>
                   <p class="sellerName" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
@@ -334,22 +335,22 @@
                     >关注</span>
                   </p>
                 </div>
-              </div>
+              </div> -->
               <p
                 :title="item.goods_name"
                 class="goodsName"
                 @click="chipSellerGoodsDetal(item)"
-              >{{item.goods_name}}</p>
+              style="padding-left:10px;">{{item.goods_name}}</p>
               <div class="oneitem brand">
                 <router-link
                   :to="{
-                                    path:'/BrandDetail',
-                                    query:{
-                                        tag:'brand',
-                                        documentid:item.brandId,
-                                        name:item.brandName
-                                    }
-                                }"
+                          path:'/BrandDetail',
+                          query:{
+                              tag:'brand',
+                              documentid:item.brandId,
+                              name:item.brandName
+                          }
+                        }"
                 >{{item.brandName}}</router-link>
               </div>
               <div class="oneitem green">{{item.base_no}}</div>
@@ -387,12 +388,12 @@
         </div>
         <div class="fl left clear">
           <div class="count color fl">
-            <countTo :endVal="100" :duration="4"></countTo>
+            <countTo :endVal="400" :duration="4"></countTo>
             <span class="jia">+</span>
           </div>
           <div class="fl right">
-            <p class="tit">已入驻原厂</p>
-            <p class="small">数百家厂商的选择,{{title}}值得您信赖</p>
+            <p class="tit">全球知名品牌云集</p>
+            <p class="small">一站式采购，缩短品牌商与用户的距离</p>
           </div>
         </div>
       </div>
@@ -489,24 +490,26 @@ import { axios, home, shoppingCar, common } from "../../api/apiObj";
 import HeaderSearch from "_c/HeaderSearch";
 import { SearchJump } from "@/lib/utils";
 import countTo from "_c/countTo";
-import { TimeForma2, TimeForma } from "../../lib/utils";
+import { TimeForma2, TimeForma,TimeForma10 } from "../../lib/utils";
 import { ladderPrice } from "../../lib/utils";
 import { baseURL3 } from "@/config";
-
 export default {
   data() {
     return {
       baseURL3: baseURL3,
       bannerList: [
         {
-          url: require("@/assets/image/banner/1.jpg")
+          url:require("@/assets/image/banner/banner1.jpg")
         },
-        {
-          url: require("@/assets/image/banner/2.jpg")
-        },
-        {
-          url: require("@/assets/image/banner/3.jpg")
-        }
+        // {
+        //   url: require("@/assets/image/banner/1.jpg")
+        // },
+        // {
+        //   url: require("@/assets/image/banner/2.jpg")
+        // },
+        // {
+        //   url: require("@/assets/image/banner/3.jpg")
+        // }
       ],
       bannerHeight: "auto",
       messageList: [],
@@ -553,6 +556,7 @@ export default {
     formatDate(val) {
       return TimeForma(val);
     },
+    
     filterHours(val) {
       return Number(val) * 24;
     }
@@ -614,6 +618,7 @@ export default {
       });
     },
     getSpecialOfferList() {
+      
       let obj = {
         start: 0,
         length: 6,
@@ -676,7 +681,7 @@ export default {
       axios
         .request({
           ...home.findBrandList,
-          params: { start: 0, length: 15, type: "", name: "" }
+          params: { start: 0, length: 15, type: "", name: "",show_brand:1}
         })
         .then(res => {
           this.originFactoryList = res.data.data.map(item => {

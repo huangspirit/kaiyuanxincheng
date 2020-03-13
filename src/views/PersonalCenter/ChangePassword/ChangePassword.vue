@@ -12,7 +12,7 @@
         </span>
         <span class="go-set">去设定</span>
       </p>
-      <p class="advice">强烈建议您设定交易密码，以保障账户余额和押金安全</p>
+      <p class="advice">强烈建议您设定交易密码，以保障账户余额和保证金安全</p>
     </div>
   </div>
 </template>

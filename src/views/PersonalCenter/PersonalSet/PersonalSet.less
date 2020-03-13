@@ -6,12 +6,22 @@
     margin-bottom: 10px;
     display:flex;
     .username {
-      padding:20px;
+      padding:1vw;
       background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
-      background-size:auto 100%;
+      background-size:100% 100%;
       box-sizing: border-box;
       display: flex;
       align-items: center;
+      position: relative;
+      .vipwrap{
+        display: inline-block;
+        position: absolute;
+        left:5vw;
+        color:#efe305;
+        img{
+          height:18px;
+        }
+      }
       .head-portrait {
         width: 5vw;
         height:5vw;
@@ -38,19 +48,20 @@
           border-radius: 10px;
           margin-bottom:10px;
           margin-right: 10px;
+    
         }
       }
     }
     .right{
       float: left;
       flex:1;
-      margin-left:15px;
+      margin-left:10px;
       ul{
         display: flex;
         height:100%;
         li{
           width:25%;
-          padding-right:15px;
+          padding-right:10px;
           float:left;
           box-sizing: border-box;
           flex:1;
@@ -62,22 +73,23 @@
             text-align: center;
             padding-bottom:10px;
             box-sizing:border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             .money{
               color:#999;
-              font-size:3vw;
-              padding-top:35px;
+              font-size:2vw;
+              // padding-top:35px;
             }
             &>.desc{
               color:#333;
               font-weight: bold;
               margin-top:10px;
             }
-            .router{
-              margin-top:15px;
-            }
+            
             &.yajin{
               .router{
-                margin-top:5px;
+                // margin-top:5px;
                 margin-bottom:5px;
               }
             }
@@ -152,6 +164,45 @@
             display: flex;
             justify-content: space-between;
             flex-direction: column;
+            .router{
+              margin-top:10px;
+              position: relative;
+              &:hover{
+                  .cont1{
+                      display:block;
+                  }
+              }
+              .cont1{
+                  display: none;
+                  color:#333;
+                  position: absolute;
+                  background: #fff;
+                  z-index: 1;
+                  height:370px;
+                  width:500px;
+                  text-align: left;
+                  padding:20px;
+                  line-height:1.7;
+                  box-shadow: 0 0 5px 2px #999;
+                  font-size:14px;
+                  h2{
+                      text-align: center;
+                      font-size:18px;
+                      margin-bottom:10px;
+                  }
+                  .title{
+                      font-weight: bolder;
+                      font-size:15px;
+                      margin-bottom:10px;
+                      color:#666;
+
+                  }
+                  p{
+                      padding-left:20px;
+                      margin-bottom:6px;
+                  }
+              }
+          }
             .el-icon-arrow-right{
               font-size:18px;
             }

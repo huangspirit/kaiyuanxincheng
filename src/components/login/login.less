@@ -1,3 +1,14 @@
+.cont{
+    line-height: 1.7;
+    height:80%;
+    overflow-y: auto;
+    .tit{
+        font-weight: bold;
+    }
+    .item{
+        text-indent: 30px;
+    }
+}
 .loginCont{
     /deep/.el-dialog__header{
         display:none;
@@ -30,20 +41,27 @@
             img{
                 width:70px;
                 height:70px;
+               
             }
             .title{
-                font-size:30px;
+                font-size:26px;
                 color:#fff;
                 font-weight: bold;
                 text-align: left;
                 
                 .desc{
-                    font-size:16px;
+                    font-size:14px;
                     margin-bottom:10px;
+               
+                }
+                .name{
+                    margin-top:0px;
+                    
                 }
                 .intro{
                     text-align: right;
-                    margin-top:15px;
+                    margin-top:40px;
+                    margin-right:10px;
                 }
                 .line{
                     font-size:18px;
@@ -87,7 +105,7 @@
                 }
             }
             .form-con-list {
-                width:300px;
+                // width:300px;
                 margin: 30px auto;
                 .type {
                     border-bottom: 1px solid #DDD;
@@ -162,3 +180,35 @@
         
     }
 }
+.tishi{
+    margin-top:50px;
+    h3{
+        text-align: center;
+        margin-bottom:45px;
+        font-size:25px;
+    }
+    p{
+        margin-bottom:10px;
+        line-height: 30px;
+    }
+}
+.xieyiwrap{
+    /deep/.el-dialog{
+      height:95%;
+      box-sizing: border-box;
+      h3{
+        text-align: center;
+        font-size:28px;
+        color:#333;
+      }
+      .el-dialog__body{
+        height:93%;
+        box-sizing: border-box;
+        .cont{
+           height:90%; 
+           overflow-y: auto;
+        }
+      }
+    }
+    
+  }

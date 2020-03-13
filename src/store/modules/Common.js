@@ -53,9 +53,9 @@ const actions = {
         })
     },
     //反馈条目
-    GetQueryItem(){
+    GetQueryItem(context,data){
         return new Promise((resolve, reject) => {
-            axios.request(common.queryItem).then(
+            axios.request({...common.queryItem,params:data}).then(
                 res=>{
                     resolve(res)
                    /// commit('SetCenterChangeAddress', res)
@@ -68,6 +68,18 @@ const actions = {
         
         return new Promise((resolve, reject) => {
             axios.request({...common.save,data:JSON.parse(data),method:'post'}).then(
+                res=>{
+                    resolve(res)
+                  
+                }
+            )
+        })
+    },
+     //保存反馈
+     saveAftermark(context,data){
+        
+        return new Promise((resolve, reject) => {
+            axios.request({...common.saveAftermark,data:JSON.parse(data),method:'post'}).then(
                 res=>{
                     resolve(res)
                   

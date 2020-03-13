@@ -46,13 +46,13 @@
       <span>{{item.username}}</span>
       <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
       <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-      <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
+      <!-- <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> -->
     </div>
     <div class="rateCont">
       <el-input
         type="textarea"
         :rows="3"
-        placeholder="本次采购的器件满足您的需求吗？说说您的心得，分享给其他想买的人吧"
+        placeholder="本次采购的零件满足您的需求吗？说说您的心得，分享给其他想买的人吧"
         v-model="content"
       ></el-input>
     </div>
@@ -76,7 +76,7 @@
         <i class="el-icon-plus avatar-uploader-icon"></i>
           
       </el-upload>
-      <p>图片尺寸请确保800px*800px以上，支持png、jpg、gif格式</p>
+      <p>图片尺寸请确保800px*800px以上，文件大小限制为2M，支持png、jpg、gif格式</p>
     </div>
       
     
@@ -271,9 +271,7 @@ export default {
             content:this.content,
             goodsPicture:strArr.join("@"),
         }
-      
         axios.request({...buyerOrderCenter.insertOrderComment,method:"post",data:obj}).then(res=>{
-            console.log(res)
             this.$emit("submitRateSuc")
         })
     }

@@ -2,7 +2,14 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
-      <el-breadcrumb-item>产品库管理</el-breadcrumb-item>
+      <el-breadcrumb-item>
+        产品库管理
+        </el-breadcrumb-item>
+        <p class="fr" style="margin-right:20px;"> 
+          <router-link to="/PersonalCenter/publish">
+          <el-button type="primary">发布产品</el-button>
+        </router-link>
+        </p>
     </el-breadcrumb>
     <div class="wrap">
       <div class="cateGory">
@@ -17,9 +24,9 @@
         </ul>
       </div>
       <div class="title">
-        <router-link to="/PersonalCenter/sellerPushProduct/publish">
+        <!-- <router-link to="/PersonalCenter/publish">
           <el-button class="fr" type="primary">发布产品</el-button>
-        </router-link>
+        </router-link> -->
         <el-input
           placeholder="在结果中查找型号"
           v-model="name"
@@ -40,6 +47,7 @@
         <el-table-column prop="name" label="型号与描述" align="center" width="350">
           <template slot-scope="scoped">
             <div class="goodsinfo">
+
               <ImgE :src="scoped.row.imageUrl" :H="60" :W="60"></ImgE>
               <div>
                 <p>
@@ -76,7 +84,7 @@
             />
           </template>
         </el-table-column>
-         <el-table-column prop="address" label="器件状态" align="center">
+         <el-table-column prop="address" label="零件状态" align="center">
           <template slot-scope="scoped">
             <p>{{scoped.row.qijian}}</p>
           </template>
@@ -97,9 +105,10 @@
             <p>{{scoped.row.mpq}}</p>
           </template>
         </el-table-column>
-        <el-table-column prop="address" label="封装" align="center">
+        <el-table-column prop="authState" label="审核状态" align="center">
              <template slot-scope="scoped">
-            <p>{{scoped.row.fenghzhuang}}</p>
+            <p v-if="scoped.row.authState">已审核</p>
+            <p v-if="!scoped.row.authState">待审核</p>
           </template>
         </el-table-column>
         <el-table-column prop="address" label="操作" align="center">
@@ -130,7 +139,7 @@
   </div>
 </template>
 .<script>
-import { baseURL, baseURL2 } from "@/config";
+import { baseURL3,baseURL, baseURL2 } from "@/config";
 import { axios, sellerCenter } from "@/api/apiObj";
 import { mapState } from "vuex";
 export default {
@@ -268,7 +277,10 @@ export default {
         .then(res => {
            this.twoClassList = res.data;
            this.currentClass=res.data[0];
-           this.getGoodsList()
+           if(res.data.length){
+            this.getGoodsList()
+           }
+           
         });
     },
     getGoodsList() {
@@ -316,7 +328,7 @@ export default {
     },
     reset(item){
       this.$router.push({
-        path:"/PersonalCenter/sellerPushProduct/publish?id="+item.id
+        path:"/PersonalCenter/publish?id="+item.id
       })
     }
   }

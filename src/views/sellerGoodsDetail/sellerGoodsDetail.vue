@@ -55,9 +55,9 @@
               <i class="el-icon-star-on"></i>&nbsp;已关注
             </span>
             <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn">
-              <i class="el-icon-star-off"></i>&nbsp;关注此器件
+              <i class="el-icon-star-off"></i>&nbsp;关注此零件
             </span>
-            <span @click="addInquiry" v-if="sellerGoodsInfo.tag == 1" class="btn">
+            <span @click="addInquiry(sellerGoodsInfo.sellerId)" v-if="sellerGoodsInfo.tag == 1" class="btn">
               <i class="el-icon-circle-plus-outline"></i>&nbsp;询价蓝
             </span>
             <!-- <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span> -->
@@ -90,7 +90,8 @@
                         }"
             >
               {{goodsinfo.brand}}
-              <ImgE :src="goodsinfo.brandImageUrl" :W="80" :H="40" style="margin-left:25px;"></ImgE>
+              <img :src="goodsinfo.brandImageUrl"  style="height:30px;width:80px;"/>
+              <!-- <ImgE :src="goodsinfo.brandImageUrl" :W="80" :H="40" style="margin-left:25px;"></ImgE> -->
             </router-link>
 
             <!--                        <span>官方参考价：暂无</span>-->
@@ -137,8 +138,8 @@
             </p>
             <div class="mpq">
               <div class="fl">
-                <p>剩余数：{{sellerGoodsInfo.goodsStockCount}}只</p>
-                <p>跟单人数：{{sellerGoodsInfo.customerCount}}</p>
+                <p>库存量：{{sellerGoodsInfo.goodsStockCount}}只</p>
+                <p>已售出：{{sellerGoodsInfo.sellerCount}}只</p>
               </div>
               <div>
                 <p class="line"></p>
@@ -157,12 +158,12 @@
               </div>
               <div class="fl">
                 <p>起订量：{{sellerGoodsInfo.moq}}只</p>
-                <p>最小增量：{{sellerGoodsInfo.mpq}}只</p>
+                <p>增量：{{sellerGoodsInfo.mpq}}只</p>
               </div>
             </div>
           </div>
           <div class="seller fl">
-            此器件由以下供应商提供：
+            此零件由以下供应商提供：
             <img
               :src="sellerGoodsInfo.userImgeUrl"
               alt
@@ -195,17 +196,17 @@
               :max="sellerGoodsInfo.goodsStockCount"
               :step="sellerGoodsInfo.mpq"
             ></el-input-number>
-            <span>最多可购买数量：{{sellerGoodsInfo.goodsStockCount}}只</span>
+            <span>库存：{{sellerGoodsInfo.goodsStockCount}}只</span>
           </div>
           <div class="btnwrap fl" style="width:100%">
-            <span class="btn bgColor" @click="submitPurchase">立即跟单</span>
+            <span class="btn bgColor" @click="submitPurchase(sellerGoodsInfo.sellerId)">立即下单</span>
             <span
               class="btn bgOrange"
               @click="pushlishspecialPrice"
               v-if="sellerGoodsInfo.tag != 1"
             >我有特价</span>
-            <span class="btn bgOrange" @click="specialPrice" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
-            <span class="btn bgGray" @click="addShopingCar">加入购物车</span>
+            <span class="btn bgOrange" @click="specialPrice(sellerGoodsInfo.sellerId)" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
+            <span class="btn bgGray" @click="addShopingCar(sellerGoodsInfo.sellerId)">加入购物车</span>
             <router-link
               style="font-size:14px;margin-left:10px;"
               :to="{
@@ -300,10 +301,26 @@
           </p>
           <ul class="parameter clear">
             <li>
-              <el-table :data="parameterList" stripe border>
+              <table class="canshu">
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>参数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="item in goodsinfo.list">
+                    <tr  :key="item.id" v-if="item.value">
+                      <td>{{item.name}}</td>
+                      <td>{{item.value}}</td>
+                  </tr>
+                  </template>
+                </tbody>
+              </table>
+              <!-- <el-table :data="parameterList" stripe border>
                 <el-table-column property="name" label="类型"></el-table-column>
                 <el-table-column property="value" label="参数"></el-table-column>
-              </el-table>
+              </el-table> -->
             </li>
             <li
               class="datasheet"
@@ -318,7 +335,7 @@
                 :src="datasheet"
                 frameborder="0"
                 width="100%"
-                height="100%"
+                height="99%"
                 v-if="datasheet"
               ></iframe>
               <p v-else>暂无产品手册</p>
@@ -347,10 +364,10 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions,mapState } from "vuex";
 import { baseURL, baseURL2, baseURL3 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
-import { TimeForma2, TimeForma } from "../../lib/utils";
+import { TimeForma2, TimeForma, ladderPrice } from "../../lib/utils";
 import { setTimeout } from 'timers';
 export default {
   data() {
@@ -377,8 +394,7 @@ export default {
       //详情图片
       selectedstr: "",
       bigImgstr: "",
-      sellerGoodsImageUrlList: [],
-      UserInforma: sessionStorage.getItem("UserInforma")
+      sellerGoodsImageUrlList: []
     };
   },
   mounted() {
@@ -386,39 +402,7 @@ export default {
     if (this.$route.query.seller_goods_id) {
       this.getSellerGoodsId(this.$route.query.seller_goods_id);
     } else if (!this.$route.query.seller_goods_id && obj) {
-      this.sellerGoodsInfo = JSON.parse(obj);
-      if (this.sellerGoodsInfo.sellerGoodsImageUrl) {
-        let arr = this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
-        this.sellerGoodsImageUrlList = arr.map(item => {
-          return baseURL3 + "/" + item;
-        });
-        // this.sellerGoodsImageUrlList.push(this.sellerGoodsInfo.goodsImageUrl);
-      } else {
-        this.sellerGoodsImageUrlList.push(this.sellerGoodsInfo.goodsImageUrl);
-      }
-      this.bigImgstr = this.sellerGoodsImageUrlList[0];
-      this.purchaseObj = {
-        goods_id: this.sellerGoodsInfo.goods_id,
-        goods_name: this.sellerGoodsInfo.goods_name,
-        goodsDesc: this.sellerGoodsInfo.goodsDesc,
-        goodsImage: this.sellerGoodsInfo.goodsImageUrl,
-        clude_bill: this.sellerGoodsInfo.includBill,
-        price_unit: this.sellerGoodsInfo.priceUnit,
-        seckill_goods_id: this.sellerGoodsInfo.id,
-        goods_type: this.sellerGoodsInfo.goods_type,
-        diliver_place: this.sellerGoodsInfo.diliverPlace,
-        moq: Number(this.sellerGoodsInfo.moq),
-        mpq: Number(this.sellerGoodsInfo.mpq),
-        stockcount: this.sellerGoodsInfo.goodsStockCount,
-        price_type: this.sellerGoodsInfo.priceType,
-        priceList: this.sellerGoodsInfo.priceList,
-        seckil_price: this.sellerGoodsInfo.goodsPrice,
-        sellerName: this.sellerGoodsInfo.sellerName,
-        sellerHeader: this.sellerGoodsInfo.userImgeUrl,
-        seller_id: this.sellerGoodsInfo.sellerId,
-        tag: this.sellerGoodsInfo.tag
-      };
-      this.init();
+       this.getSellerGoodsId(JSON.parse(obj).id);
     }
   },
   methods: {
@@ -511,10 +495,13 @@ export default {
       this.price = currentPrice;
       this.money = this.count * currentPrice;
     },
-    submitPurchase() {
+    submitPurchase(seller_id) {
       if (!this.loginState) {
-        //this.$router.push("/Login");
         this.setshowlogin(true);
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己发布的商品进行购买")
         return;
       }
       let item = this.purchaseObj;
@@ -586,9 +573,12 @@ export default {
         seller_goods_id: seller_goods_id,
         start: 0
       };
-      axios.request({ ...home.SpecialOfferList, params: obj }).then(result => {
+      axios.request({ ...home.queryDirectGoodsDetail, params: obj }).then(result => {
         console.log(result);
-        this.sellerGoodsInfo = result.data.data[0];
+        this.sellerGoodsInfo = result.data;
+        if(this.sellerGoodsInfo.priceLevel){
+            this.sellerGoodsInfo.priceList=ladderPrice(this.sellerGoodsInfo.priceLevel)
+        }
         if (this.sellerGoodsInfo.sellerGoodsImageUrl) {
           let arr = this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
           this.sellerGoodsImageUrlList = arr.map(item => {
@@ -644,10 +634,13 @@ export default {
           loading.close();
         });
     },
-    addInquiry() {
+    addInquiry(seller_id) {
       if (!this.loginState) {
-        // this.$router.push("/Login");
         this.setshowlogin(true);
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己品牌下的产品加")
         return;
       }
       var obj = {
@@ -686,10 +679,14 @@ export default {
           _this.$message.success("已关注");
         });
     },
-    addShopingCar() {
+    addShopingCar(seller_id) {
       if (!this.loginState) {
         //this.$router.push("/Login");
         this.setshowlogin(true);
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己发布的商品加购物车进行购买")
         return;
       }
       var obj = {
@@ -697,7 +694,8 @@ export default {
         sellerId: this.sellerGoodsInfo.sellerId,
         goodsSource: "1",
         goodsName: this.sellerGoodsInfo.goods_name,
-        goodsId: this.goodsinfo.id
+        goodsId: this.goodsinfo.id,
+         goodsCount:this.count
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
@@ -712,18 +710,25 @@ export default {
           }
         });
     },
-    purchase() {
+    purchase(seller_id) {
+      if (!this.loginState) {
+        this.setshowlogin(true);
+        return;
+      }
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己发布的商品进行购买")
+        return;
+      }
+      this.showPurchase = true;
+    },
+    specialPrice(seller_id) {
       if (!this.loginState) {
         //this.$router.push("/Login");
         this.setshowlogin(true);
         return;
       }
-      this.showPurchase = true;
-    },
-    specialPrice() {
-      if (!this.loginState) {
-        //this.$router.push("/Login");
-        this.setshowlogin(true);
+      if(seller_id==this.UserInforma.id){
+        this.$message.error("不能对自己品牌下的产品申请特价")
         return;
       }
       let factorySellerInfo = this.goodsinfo.factorySellerInfo;
@@ -746,7 +751,6 @@ export default {
         return;
       }
       if (this.UserInforma) {
-        this.UserInforma = JSON.parse(this.UserInforma);
         if (this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller) {
           this.$router.push(
             "/PersonalCenter/SellerIssuesProduct?name=" +
@@ -774,9 +778,10 @@ export default {
     }
   },
   computed: {
-    loginState() {
-      return this.$store.state.loginState;
-    }
+    ...mapState({
+      UserInforma:state=>state.Login.UserInforma,
+      loginState:state => state.loginState
+    })
   },
   filters: {
     filterHours(val) {

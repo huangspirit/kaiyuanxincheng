@@ -1,0 +1,171 @@
+.oneGoodsDetail{
+    font-size:14px;
+    .top{
+        height:270px;
+        text-align: center;
+        border-top-left-radius:10px;
+        border-top-right-radius:10px;
+        /deep/.ImgE{
+            display: block!important;
+            margin:0 auto;
+        }
+    }
+    .detail{
+        padding:24px;
+        .tit{
+            margin-bottom:10px;
+            .goodsName{
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                flex:1;
+                min-height: 0;
+                &:hover{
+                    color:#df3f2f;
+                }
+            }
+            .mark{
+                font-size:14px;
+                font-weight: bold;
+            }
+            .fig{
+                font-size:24px;
+            }
+            .timer{
+                display: flex;
+                align-items: center;
+                height:35px;
+                line-height: 35px;
+            }
+            /deep/.counttime {
+                font-size:14px;
+                .timeStr{
+                    background:linear-gradient(#FFF693 40%, #FFE340 100%);
+                    padding:0 5px;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+            }
+            
+        }
+        .desc{
+            margin-bottom:15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width:100%;
+        }
+        .markwrap{
+            border-top:1px solid #e4e4e4;
+            padding-top:20px;
+            margin-bottom:0;
+            .sellerInfo{
+                position: relative;
+                &:hover{
+                    .wrapInfo{
+                        display:block;
+                    }
+                }
+                .img{
+                    background-color: #fbfbfb;
+                    width:32px;
+                    height:32px;
+                    border-radius: 100%;
+                    overflow: hidden;
+                    text-align: center;
+                    line-height: 32px;
+                    position: relative;
+                    cursor: pointer;
+                    img{
+                        width:120%;
+                        height:120%;
+                        position: absolute;
+                        left:50%;
+                        top:50%;
+                        transform: translate(-50%,-50%);
+                    }
+                }
+                .wrapInfo{
+                    background:#fff;
+                    top:-60px;
+                    box-shadow: 0 0 5px 2px #ddd;
+                    z-index:100;
+                    left:30px;
+                    min-width:200px;
+                    position: absolute;
+                    text-align:center;
+                    padding:15px 10px;
+                    display: none;
+                    font-size:14px;
+                    .wrap{
+                        text-align: center;
+                        border-bottom:1px dashed #e4e4e4;
+                        padding-bottom:17px;
+                        p{
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                        }
+                        img{
+                            width:45px;
+                            height:45px;
+                            border-radius: 100%;
+                            margin-right:15px;
+                            border:1px solid #e3e3e3;
+                        }
+                        .tag{
+                            font-size:12px;
+                            padding:1px 3px;
+                            border-radius: 3px;
+                            margin-right:5px;
+                        }
+                    }
+                    .score{
+                      padding:15px 0;
+                      .renzheng{
+                          margin-bottom:15px;
+                          padding-bottom:15px;
+                          border-bottom:1px dashed #e4e4e4;
+                      }
+                      div{
+                        text-align: left;
+                        line-height: 1.4;
+                      }
+                      .scoreitem{
+                        white-space: nowrap;
+                        &>span{
+                          margin-right:6px;
+                          &>span{
+                            margin-right:10px;
+                            &:first-of-type{
+                              font-size:16px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                    .btn{
+                        span{
+                            line-height: 30px;
+                            width:96px;
+                            text-align: center;
+                            border-radius:4px ;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            .mark{
+                padding-top:10px;
+                span{
+                    font-size:14px;
+                    padding:0 10px;
+                    line-height: 20px;
+                    margin-left:5px;
+                    border-radius: 2px;
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,99 @@
+.specialPrice{
+    color:#333;
+    .banner{
+        height: 22vh;
+        &.hiddenimg{
+          height:0;
+          overflow: hidden;
+          transition: height 2s linear 0.5s;
+        }
+        img{
+            width:100%;
+        }
+    }
+    .cont{
+        margin-top:20px;
+        .tit{
+            padding:15px 25px 0px;
+            background: #fff;
+            font-size:14px;
+            .title{
+                display:flex;
+                .one{
+                    width:78px;
+                }
+                ul{
+                    display:flex;
+                    flex-wrap: wrap;
+                    flex:1;
+                    // width:300px;
+                    transition: height 5s;
+                    height:auto;
+                    overflow: hidden;
+                  
+                    &.brand{
+                        padding-top:5px ;
+                        li{
+                            position: relative;
+                            padding:9px 11px;
+                            margin-right:10px;
+                            border:1px solid #ddd;
+                            &:hover{
+                                border-color:#df3f2f;
+                            }
+                            &.active{
+                                border-color:#df3f2f;
+                            }
+                            .close{
+                                position: absolute;
+                                right:-5px;
+                                top:-5px;
+                                z-index:10;
+                                background-color: #fff;
+                            }
+                        }
+                    }
+                    &.showmoreActive{
+                        max-height: 125px;
+                        transition: height 1s;
+                    }
+                    &.showmoreActive1{
+                        max-height: 68px;
+                        transition: height 1s;
+                    }
+                    li{
+                        cursor: pointer;
+                        margin-right:10px;
+                        margin-bottom:15px;
+                    }
+                }
+            }
+        }
+        .search{
+            padding:20px 0;
+            /deep/.el-input-group__append{
+                background: #FFE500;
+                color:#333;
+            }
+        }
+      .goodsList{
+        margin-top:20px;
+        .list{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          .item{
+            background-color: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 10px;
+            width:375px;
+            margin-bottom:40px;
+            &:hover{
+                box-shadow: 0 0 10px 2px #ddd;
+              }
+          }
+        }
+      }
+   
+    }}
+  

@@ -3,6 +3,11 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <!--      <el-breadcrumb-item>卖家中心</el-breadcrumb-item>-->
       <el-breadcrumb-item>特价管理</el-breadcrumb-item>
+      <p class="fr" style="margin-right:20px;"> 
+          <router-link to="/PersonalCenter/SellerIssuesProduct">
+          <el-button type="primary">发布特价</el-button>
+        </router-link>
+        </p>
     </el-breadcrumb>
     <div class="OrderManagement">
       <!-- 订单列表 -->
@@ -70,7 +75,7 @@
               <!-- style="table-layout:fixed" -->
               <thead>
                 <tr>
-                  <th v-if="currentModlue.id==0">
+                  <th v-if="currentModlue.id!=1">
                     <label>
                       <input type="checkbox" @change="allCheck" ref="allcheckmark" />
                       全选
@@ -82,12 +87,13 @@
                   <th>交货条件</th>
                   <th>数量</th>
                   <th>售卖时限</th>
+                  <th>状态</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in PublishGoodsList" :key="item.id">
-                  <td v-if="currentModlue.id==0">
+                  <td v-if="currentModlue.id!=1">
                     <label v-if="item.downButton">
                       <input
                         type="checkbox"
@@ -100,7 +106,11 @@
                   </td>
                   <td class="goodsInfo" >
                     <div class="wrap">
-                      <ImgE :src="item.goodsImageUrl" :W="60" :H="60"></ImgE>
+                      <div>
+                          <ImgE :src="item.oneimg" :W="60" :H="60" :isBig="true" :srcArr="item.imgArr" v-if="item.imgArr"></ImgE>
+                          <ImgE :src="item.oneimg" :W="60" :H="60" :isBig="true" v-else></ImgE>
+                          <p @click="updateImg(item)" class="blu" style="font-size:12px;text-align:center;cursor:pointer" v-if="item.isenable">{{item.sellerGoodsImageUrl?'更新图片':'新增实物图'}}</p>
+                      </div>
                       <div>
                         <p>
                           <router-link
@@ -160,7 +170,7 @@
                   </td>
                   <td>
                     <p>起订量：{{item.moq}}</p>
-                    <p>最小增量：{{item.mpq}}</p>
+                    <p>增量：{{item.mpq}}</p>
                   </td>
                   <td>
                     <span>发布：{{item.goodsCount}}</span>
@@ -193,8 +203,11 @@
                     </div>
                   </td>
                   <td>
+                    {{item.isenable?'在售中':'已下架'}}
+                  </td>
+                  <td>
                     <div class="wrapbtn">
-                      <p v-if="currentModlue.isenable">
+                      <p v-if="item.isenable">
                         <a
                           href="javascript:;"
                           v-if="item.downButton"
@@ -203,7 +216,7 @@
                         <br />
                         <a href="javascript:;" v-if="item.downButton" @click="addNum(item)">追加数量</a>
                       </p>
-                      <p v-if="!currentModlue.isenable">
+                      <p v-if="!item.isenable">
                         <a href="javascript:;" @click="repeatPublish(item)">重新发布</a>
                         <br />
                         <!-- <a href="javascript:;" v-if="item.upButton"  @click="ReLaunchingCommodities(item)" >上架</a> -->
@@ -218,7 +231,7 @@
             </table>
           </div>
           <el-button
-            v-if="checklist.length && currentModlue.isenable"
+            v-if="checklist.length && currentModlue.id!=1"
             size="mini"
             class="bgColor"
             @click="batchDown"
@@ -268,11 +281,39 @@
       </div>
     </el-dialog>
     <el-dialog title="重要提示：提前下架" :visible.sync="showdownitem" width="400px" class="showAddnum">
-      <div style="text-indent:25px">若此器件已经有成交，已经成交的订单须继续执行完毕。此外，你的订单‘提前下架’后不能恢复，只能重新发布新的特价；</div>
+      <div style="text-indent:25px">若此零件已经有成交，已经成交的订单须继续执行完毕。此外，你的订单‘提前下架’后不能恢复，只能重新发布新的特价；</div>
       <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click="confirmshowdownitem">确认下架</el-button>
         <el-button @click="showdownitem = false">我再想想</el-button>
       </div>
+    </el-dialog>
+    <el-dialog title="更新图片" :visible.sync="showUpdateImg" width="690px">
+      <div >
+ <el-upload
+            :action="url"
+            :on-success="handleAvatarSuccess"
+            class="upload-demo"
+            ref="upload"
+            :auto-upload="true"
+            list-type="picture-card"
+            :on-remove="handleRemoveimg"
+            :on-preview="handlePictureCardPreview"
+            :file-list="imglist"
+            multiple
+          >
+            <i class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div style="margin-top:15px;">
+            <p style>图片尺寸请确保800px*800px以上，文件大小限制为2MB以内，支持png、jpg、gif格式</p>
+          </div>
+      </div>
+      <div slot="footer" class="dialog-footer" style="text-align:center">
+        <el-button type="primary" @click="submitUpdateImg">确认更新</el-button>
+        <el-button @click="showUpdateImg = false">关闭</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
   </div>
 </template>
@@ -284,21 +325,32 @@
 import Countdown from "_c/Countdown";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
-import { axois, sellerCenter } from "@/api/apiObj";
-import { axios } from "../../../api/apiObj";
+import { axios,sellerCenter } from "@/api/apiObj";
+import { baseURL,baseURL3 } from "@/config";
 export default {
   name: "SellerCommodityManagement",
   data() {
     return {
+      dialogVisible:false,
+      dialogImageUrl:"",
+      imglist:[],
+      image_urls:'',
+      updateItem:{},
+      showUpdateImg:false,
       SearchInputValue: "",
       goodsType:"",
       // 一级分类列表
       currentModlue: {
-        id: 0,
-        name: "在售中",
-        isenable: true
+        id: -1,
+        name: "全部",
+     
       },
       tabFirstList: [
+        {
+          id: -1,
+          name: "全部",
+          
+        },
         {
           id: 0,
           name: "在售中",
@@ -376,7 +428,43 @@ export default {
       "GetPublishGoodsListByUser",
       "GetUpdatePublishGoodsSatus"
     ]),
-
+    // 预览图片
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleRemoveimg(file, fileList) {
+      let arr = this.image_urls.split("@");
+      arr.splice(arr.findIndex(item => baseURL3 + item == file.url), 1);
+      this.image_urls = arr.join("@");
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      if (this.image_urls) {
+        this.image_urls = this.image_urls + "@" + res.name;
+      } else {
+        this.image_urls = res.name;
+      }
+    },
+    submitUpdateImg(){
+      axios.request({...sellerCenter.updateSellerGoods,method:'post',data:{
+        id:this.updateItem.id,
+        uid:this.updateItem.uid,
+        image_urls:this.image_urls,
+        access_token:this.access_token,
+        token:this.access_token
+      }}).then(res=>{
+        if(res){
+          this.$message.success("已更新");
+          this.showUpdateImg=false;
+          this.all();
+        }
+        
+      })
+    },
+    updateImg(item){
+      this.updateItem=item;
+      this.showUpdateImg=true;
+    },
     batchDown() {
       this.$confirm("确定下架吗?", "提示", {
         confirmButtonText: "确定",
@@ -495,7 +583,7 @@ export default {
       this.downItem = item;
       return;
       this.$confirm(
-        "若此器件已经有成交，已经成交的订单须继续执行完毕。此外，你的订单‘提前下架’后不能恢复，只能重新发布新的特价；",
+        "若此零件已经有成交，已经成交的订单须继续执行完毕。此外，你的订单‘提前下架’后不能恢复，只能重新发布新的特价；",
         "重要提示：提前下架",
         {
           confirmButtonText: "确认下架",
@@ -579,7 +667,7 @@ export default {
       this.all();
     },
     tabFirstGoodsType(item){
-this.currentGoodsType = item;
+      this.currentGoodsType = item;
       this.currentPage = 1;
       this.all();
     },
@@ -599,22 +687,35 @@ this.currentGoodsType = item;
       let obj={
         start: this.start,
         length: this.pageSize,
-        isenable: this.currentModlue.isenable,
         searchType: true,
+      }
+      if(this.currentModlue.id!=-1){
+        obj.isenable=this.currentModlue.isenable
       }
       if(this.orderDate){
           obj.day=this.orderDate
       }
-      if(this.goodsType=="true" || this.goodsType=="false"){
-        obj.goodsType=this.goodsType;
+      if(this.currentGoodsType.goodsType===true || this.currentGoodsType.goodsType===false){
+        obj.goodsType=this.currentGoodsType.goodsType;
       }
       if(this.SearchInputValue){
-        obj.name=this.SearchInputValue
+        obj.product_no=this.SearchInputValue.replace(/\s/g,"")
       }
       this.GetPublishGoodsListByUser(obj)
         .then(res => {
           let arr = res.data;
           arr.forEach((item, idx) => {
+            if(item.sellerGoodsImageUrl){
+              arr[idx].oneimg=baseURL3+'/'+item.sellerGoodsImageUrl.split("@")[0];
+              if(item.sellerGoodsImageUrl.split("@").length>1){
+                arr[idx].imgArr=item.sellerGoodsImageUrl.split("@").map(item0=>{
+                  return baseURL3+'/'+item0
+                })
+              }
+            }else{
+              arr[idx].oneimg=item.goodsImageUrl
+            }
+         
             if (item.priceType) {
               let ret = item.priceLevel.split("@");
               ret.forEach((items, index) => {
@@ -650,7 +751,13 @@ this.currentGoodsType = item;
   },
   computed: {
     access_token() {
-      return localStorage.getItem("access_token");
+      return sessionStorage.getItem("access_token");
+    },
+    url() {
+      return (
+        baseURL +
+        `api-f/files/uploadWithCloud?access_token=${this.access_token}&fileSource=QINIUYUN&type=1&id=1`
+      );
     },
     //
     start() {

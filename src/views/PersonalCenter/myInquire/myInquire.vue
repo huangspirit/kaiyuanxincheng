@@ -42,7 +42,7 @@
             </div>
             <ul class="inquiryList">
               <li class="title">
-                <div class="info">器件信息</div>
+                <div class="info">零件信息</div>
                 <div class="item">品牌</div>
                 <div class="item">竞争型号</div>
                 <div class="item">价格/年用量</div>
@@ -97,7 +97,7 @@
                           批复:
                           {{listItem.priceUnit?'$':'￥'}}{{listItem.seckilPrice | toFixed(listItem.priceUnit?3:2)}}（一口价）
                         </strong>
-                        <div v-if="listItem.priceType" class="color pricelistCont">
+                        <div v-if="listItem.priceType && listItem.priceList" class="color pricelistCont">
                           <a class="color">批复:
                              {{listItem.priceUnit?'$':'￥'}}
                              {{listItem.priceList[listItem.priceList.length-1].price | toFixed(listItem.priceUnit?3:2)}}
@@ -108,19 +108,22 @@
                              </div>
                         </div>
                         <p>起订量:{{listItem.moq}}</p>
+                        <p>增量：{{listItem.mpq}}</p>
                         <P>有效期至：{{listItem.priceExpireTime | formatDate}}</P>
                       </div>
                   </div>
                   <div class="item">
+                    <p><a href="javascript:;" @click="againSpecial(listItem,item)" v-if="listItem.sheetEffective == true&&listItem.replayStates == false">修改申请</a></p>
                     <div class="applyStatus" v-if="listItem.sheetEffective == true&&listItem.replayStates == true">
-                      <a href="javascript:;" @click="repeat(listItem)">价格复议</a><br>
+                      
+                      <a href="javascript:;" @click="repeat(listItem)" >价格复议</a><br>
                        <a href="javascript:;" @click="againSpecial(listItem,item)">再次申请</a><br>
                         <a href="javascript:;" @click="purchase(index0,index)">直接下单</a>
                        <!-- <el-button @click="againSpecial(listItem,item)" class="bgColor" size="mini">价格复议</el-button><br>
                           <el-button @click="againSpecial(listItem,item)" class="bgColor" size="mini">重新申请</el-button><br>
                           <el-button @click="purchase(listItem,item)" class="bgColor" size="mini">立即采购</el-button> -->
                     </div>
-                    <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="listItem.purshase && listItem.sheetEffective == true &&listItem.replayStates == true"></purChase>
+                    <purChase v-on:closeCallBack="purshase=false" :item="purshaseData" v-if="purshase && listItem.purshase && listItem.sheetEffective == true &&listItem.replayStates == true"></purChase>
                   </div>
               </li>
              
@@ -322,7 +325,7 @@
                    <strong v-if="!repeatform.priceType">
                       {{repeatform.priceUnit?'$':'￥'}}{{repeatform.seckilPrice | toFixed(repeatform.priceUnit?3:2)}}（一口价）
                     </strong>
-                    <div v-if="repeatform.priceType" class="color pricelistCont">
+                    <div v-if="repeatform.priceType && repeatform.priceList" class="color pricelistCont">
                       <a class="color">
                           {{repeatform.priceUnit?'$':'￥'}}
                           {{repeatform.priceList[repeatform.priceList.length-1].price | toFixed(repeatform.priceUnit?3:2)}}
@@ -478,7 +481,7 @@ export default{
                 this.allInquiryData=res.data.data.map(item=>{
                   item.list.forEach(element => {
                     element.insteadArr=element.insteadNo.split("@");
-                     if(element.priceType){
+                     if(element.priceType && element.priceLevel){
                         element.priceList=ladderPrice(element.priceLevel)
                     }
                   });
@@ -511,7 +514,6 @@ export default{
         repeat(val){
           this.showRepeat=true;
           this.repeatform={...val};
-          console.log(val)
         },
         repeatSubmit(){
           
@@ -537,9 +539,9 @@ export default{
                 axios
                   .request({ ...siderInquiryList.replyAgain, params: { id: val.id } })
                   .then(res => {
-                    console.log(res);
                     if (res.resultCode == "200") {
-                      this.$store.dispatch("promation", res.data);
+                      this.$store.dispatch("promation", [res.data.goodsbaseIno]);
+                      localStorage.setItem("formAlign",JSON.stringify(res.data))
                       this.$router.push("/InquiryBasket/ApplySpecialPrice");
                     }
                   });
@@ -583,6 +585,7 @@ export default{
               tag: val.sellerInfoMap.tag
             };
             this.purshaseData = obj;
+            this.purshase=true;
           },
        
          

@@ -31,7 +31,7 @@ export const SerarchGoods = (data) => {
 }
 
 // 发布商品
-export const PublishGoods = (data) => {
+export const PublishGoods = (data,token) => {
   return axios.request({
     url: `/api-g/goods-b/publish?access_token=${data.access_token}`,
     method: 'post',
@@ -40,6 +40,7 @@ export const PublishGoods = (data) => {
       return data
     }],
     headers: {
+      token:token,
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     data: data,

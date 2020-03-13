@@ -174,7 +174,7 @@
                 <div
                   class="el-upload__tip"
                   slot="tip"
-                >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                >图片尺寸请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
               </el-upload>
             </el-form-item>
             <el-form-item label="温馨提示：">

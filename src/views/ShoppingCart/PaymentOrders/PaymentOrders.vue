@@ -43,9 +43,9 @@
     <!-- 扫码支付模态框 -->
     <el-dialog
       :visible.sync="dialogCode"
-      width="600px"
+      width="350px"
       :close-on-click-modal="false"
-      center
+      title="微信扫码支付"
       class="weichatCode"
     >
     <div class="weichatCodeCont">
@@ -80,7 +80,7 @@
               <div
                 slot="tip"
                 class="el-upload__tip"
-              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+              >图片尺寸请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
             </el-upload>
 
           </el-form-item>
@@ -291,7 +291,6 @@ export default {
             access_token: this.access_token
           })
           .then(res => {
-            console.log(res.prepay_id)
             const div = document.createElement("divform");
             div.innerHTML = res.prepay_id;
             document.body.appendChild(div);

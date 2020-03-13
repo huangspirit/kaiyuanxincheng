@@ -71,7 +71,8 @@
                         共有
                         <span class="num">{{item.goodsBase.map.totalSeller}}</span>
                         个供应商报价
-                        <span class="num">{{item.goodsBase.map.minPrice }}——{{item.goodsBase.map.maxPrice}}</span>
+                        <span class="num" v-if="item.goodsBase.map.minPrice != item.goodsBase.map.maxPrice">{{item.goodsBase.map.minPrice }}——{{item.goodsBase.map.maxPrice}}</span>
+                        <span class="num" v-if="item.goodsBase.map.minPrice = item.goodsBase.map.maxPrice">{{item.goodsBase.map.minPrice }}</span>
                     </p>
                 </div>
             </div>
@@ -81,8 +82,7 @@
                     加询价篮
                 </span>
                 <br>
-              
-                <span class="specialPrice bgOrange" @click="specialPrice">
+                <span class="specialPrice bgOrange" @click="publishspecialPrice(index)">
                     <!-- <i class="el-icon-plus"></i> -->
                      我有特价
                 </span>
@@ -146,6 +146,9 @@ export default {
     };
   },
     computed:{
+      ...mapState({
+      UserInforma:state => state.Login.UserInforma,
+      }),
       start(){
           return this.pageSize*(this.currentPage-1)
       }
@@ -155,8 +158,24 @@ export default {
     },
   methods: {
       ...mapActions("Login", ["GetUserInforma"]),
-      specialPrice(){
-          this.$message.success("开发中。。。")
+      publishspecialPrice(index){
+        if(this.UserInforma.userTagMap.seller){
+            this.$router.push(
+            "/PersonalCenter/SellerIssuesProduct?name=" +
+              this.goodsList[index].goodsBase.productno
+          );
+        }else{
+          this.$router.push("/OriginalFactoryEntry");
+        //    this.$confirm('您还不是大麦晶城的卖家，是否入驻?', '温馨提示', {
+        //   confirmButtonText: '立即入驻',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   this.$router.push("/OriginalFactoryEntry");
+        // }).catch(() => {
+                   
+        // });
+        }
       },
     tabChange(k) {
       this.catergoryId = this.tabList[k].catergoryId;

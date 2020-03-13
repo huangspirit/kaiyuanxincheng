@@ -1,30 +1,148 @@
 // 卖家账单中心
+.cont{
+  background:#fff;
+  margin-top:10px;
+  color:#333;
+  .titl{
+      display:flex;
+      text-align:center;
+      background:#fff;
+      font-size:12px;
+      padding:15px 0;
+      .oneitem{
+          flex:1;
+      }
+      .left{
+        width:200px
+      }
+      .goodsinfo{
+          width:200px;
+      }
+  }
+  .biglist{
+      border:1px solid #01a3f03b;
+      .userinfo{
+          background:#01a3f03b;
+          line-height: 40px;
+          font-size:14px;
+          display: flex;
+          padding:0 15px;
+          p{
+              margin-right:20px;
+          }
+          img{
+              height:30px;
+              width:30px;
+              border-radius: 30px;
+              margin-left:10px;
+          }
+          .detail{
+              font-size:12px;
+              display:none;
+          }
+      }
+      .listwrap{
+        display:flex;
+        align-items: center;
+        .left{
+          width:200px;
+          font-size:12px;
+          text-align: center;
+          padding:8px 0;
+          border-right:1px solid #ddd;
+          margin-right:-1px;
+        }
+      }
+      .list{
+        flex:1;
+        border-left:1px solid #ddd;
+        height: 100%;
+        li{
+          &:first-of-type{
+            border-top:none;
+          }
+         
+          font-size:14px;
+          border-top:1px solid #ddd;
+         
+          margin-bottom:-1px;
+         
+        }
+          .onecont{
+            display: flex;
+            align-items: center;
+              .goodsinfo{
+                  width:200px;
+                  display:flex;
+                  box-sizing: border-box;
+                  font-size:12px;
+                  .name{
+                    width:100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+                  img{
+                      width:60px;
+                      margin-right:10px;
+                  }
+                  p{
+                      margin-bottom:5px;
+                      min-height: 0;
+                      margin-left:10px;
+                      &.desc{
+                          white-space: nowrap;
+                          width:100%;
+                          overflow: hidden;
+                          width:230px;
+                          text-overflow: ellipsis;
+                         
+                      }
+                  }
+              }
+              .deliver{
+                  width:180px;
+                  text-align: center;
+              }
+              .oneitem{
+                  flex:1;
+                  text-align: center;
+                  padding:8px;
+                  font-size:12px;
+              }
+          }
+      }
+  }
+ 
+}
+.openbill{
+  /deep/.el-dialog__body{
+    padding-top:0;
+  }
+  .demo-ruleForm{
+    /deep/.el-form-item{
+      margin-bottom:0;
+    }
+  }
+}
 .top{
   display:flex;
   margin-bottom:10px;
-  .openbill{
-    /deep/.el-dialog__body{
-      padding-top:0;
-    }
-    .demo-ruleForm{
-      /deep/.el-form-item{
-        margin-bottom:0;
-      }
-    }
-  }
+  
   &>div{
       flex:1;
       text-align: center;
       max-width:250px;
       margin-right:50px;
-      background:#fff;
-      padding:20px;
+      background:#ffebef;
+      padding:10px;
       font-size:16px;
       cursor: pointer;
+     
       .title{
           text-align:left;
           font-size:14px;
-          margin-bottom:20px;
+          margin-bottom:10px;
       }
       .desc{
           font-size:12px;
@@ -35,12 +153,12 @@
           background: url("../../../assets/image/PersonalCenter/header_bg.png") left top no-repeat;
           background-size:100% 100%;
           p{
-              color:#fff;
+              color:#fff!important;
               strong{
-                  color:#fff;
+                  color:#fff!important;
               }
               a{
-                  color:#fff;
+                  color:#fff!important;
               }
           }
       }
@@ -141,61 +259,21 @@
         }
     }
 }
-.table{
-  width:100%;
-  background:#fff;
-  border-top:1px solid #ddd;
-  border-left: 1px solid #ddd;
-  font-size:12px;
-  /deep/button{
-     span{
-       padding:0 12px;
-     }
-   }
-   .infoWrap{
-     padding:5px;
-     overflow: hidden;
-     box-sizing: border-box;
-     &>div{
-       white-space: nowrap;
-     }
-     .goods_seller_no{
-       font-weight: bold;
-       margin-bottom:5px;
-       font-size:15px;
-       text-align: left;
-     }
-     .info{
-       display: flex;
-       text-align: left;
-       font-size:12px;
-       width:100%;
-       align-items: center;
-      
-       .cont{
-         flex:1;
-         margin-left:5px;
-         p{
-           width:100%;
-           white-space: normal;
-         }
-       }
-     }
-   }
-  th{
-    background:#f3f3f3;
-    line-height:40px;
-    text-align: center;
-  }
-  td{
-      padding:8px;
-      border-bottom:1px solid #ddd;
-      border-right:1px solid #ddd;
-      text-align: center;
-
-  }
-
 }
- 
-
+.avatar-uploader{
+  /deep/.el-upload--picture-card {
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+  }
+  /deep/.el-upload-list--picture-card {
+    .el-upload-list__item {
+      height: 100px;
+      width: 100px;
+      line-height: 100px;
+    }
+  }
+  /deep/.el-upload__tip {
+    line-height: 1;
+  }
 }

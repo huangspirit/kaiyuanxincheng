@@ -3,7 +3,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
 <!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter' }">用户中心</el-breadcrumb-item>-->
 <!--            <el-breadcrumb-item :to="{ path: '/PersonalCenter/PersonalSet' }">个人资料</el-breadcrumb-item>-->
-            <el-breadcrumb-item>押金充值明细</el-breadcrumb-item>
+            <el-breadcrumb-item>保证金充值明细</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="cont">
             <div class="search clear">

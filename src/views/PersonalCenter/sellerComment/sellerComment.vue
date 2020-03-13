@@ -92,12 +92,11 @@
               <p class="color" title="评价时间">{{item.createTime | formatDate}}</p>
               <p class="color" v-if="item.replyTime" title="回复时间">{{item.replyTime | formatDate}}</p>
             </td>
-            <td>{{item.content}}</td>
-            <td style="max-width:300px">
+            <td style="max-width:200px">{{item.content}}</td>
+            <td style="max-width:200px">
               {{item.replyContent}}
               <el-button size="mini" @click="replay(item)" v-if="!item.replyContent">回复</el-button>
             </td>
-
             <!-- <td>
               <el-button size="mini" @click="replay(item)">回复</el-button>
             </td>-->

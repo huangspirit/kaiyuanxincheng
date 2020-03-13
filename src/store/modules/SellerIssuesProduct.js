@@ -65,7 +65,7 @@ const actions = {
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      PublishGoods(data).then(res => {
+      PublishGoods(data.data,data.token).then(res => {
         if (res.resultCode === '200') {
           resolve(res.message)
         } else {

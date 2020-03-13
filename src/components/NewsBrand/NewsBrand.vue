@@ -31,7 +31,7 @@
             >
               <i class="el-icon-plus"></i>
 
-              <div slot="tip" class="el-upload__tip">图片迟训请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+              <div slot="tip" class="el-upload__tip">图片请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt>
@@ -287,7 +287,7 @@ export default {
         if (valid) {
           this.ruleForm.qualificationtime = `${
             this.ruleForm.qualificationstarttime
-          }-${this.ruleForm.qualificationendtime}`;
+          }/${this.ruleForm.qualificationendtime}`;
           this.ruleForm.access_token = this.access_token;
 
           this.GetInsertBrandInfoReview(this.ruleForm)

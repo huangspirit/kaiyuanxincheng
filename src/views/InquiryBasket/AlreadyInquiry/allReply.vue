@@ -121,7 +121,7 @@
                 <p>
                   起订量：
                   <span>{{listItem.moq}}</span>
-                   &nbsp;&nbsp; 最小增量：
+                   &nbsp;&nbsp; 增量：
                     <span>{{listItem.mpq}}</span>
                 </p>
                 <p>

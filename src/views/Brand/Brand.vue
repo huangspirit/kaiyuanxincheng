@@ -30,7 +30,7 @@
       <!-- <p class="tit">全部品牌</p> -->
       <!-- 品牌列表 -->
       <ul class="list" id="topList">
-          <li>中国芯</li>
+        <li class="item" :class="{active:listKey == '中国芯'}"  @click="send('中国芯')">中国芯</li>
         <li
           v-for="(item,index) in findBrandListKey"
           :key="index"
@@ -41,7 +41,25 @@
       </ul>
       <div class="brand-content">
         <p v-if="!findBrandList">暂无数据</p>
-        <ul v-else v-for="(item,index) in findBrandListKey" :key="index">
+        <ul>
+          <h3 id="中国芯">中国芯</h3>
+            <router-link
+                tag="li"
+                v-for="(subitem,k) in chinaBrandList"
+                :key="k"
+                :to="{
+                path:'/BrandDetail',
+                query:{
+                tag:'brand',
+                documentid:subitem.id,
+                name:subitem.brand
+                }
+                }"
+            >
+               <img :src="mark" alt="" v-if="subitem.hasFactorySeller" class="mark" title="原厂已入驻" />{{subitem.brand}}
+            </router-link>
+        </ul>
+        <ul v-for="(item,index) in findBrandListKey" :key="index">
           <h3 :id="item">{{item}}</h3>
             <router-link
                 tag="li"
@@ -90,14 +108,15 @@ export default {
   name: "Brand",
   data() {
     return {
-      listKey: "",
+      listKey: "中国芯",
       findBrandList: [],
       findBrandListKey: [],
+      chinaBrandList:[],
       imgList: [],
       animate: false,
       siderListShow: false,
-        screenHeight:1000,
-        mark:require("../../assets/image/icon/zhu1.png")
+      screenHeight:1000,
+      mark:require("../../assets/image/icon/zhu1.png")
     };
   },
   computed: {
@@ -148,6 +167,7 @@ export default {
       document.documentElement.scrollTop = 0;
     },
     getBrandList() {
+
       axios
         .request({
           ...home.queryBrandHomePage,
@@ -156,11 +176,16 @@ export default {
         .then(res => {
         this.$loading(this.$store.state.loading).close();
           if (res.resultCode == "200") {
-            this.findBrandList = res.data.result1;
+            this.findBrandList = res.data.base.result1;
+           let arr=[];
+           for(let p in res.data.china.result1){
+             arr=[...res.data.china.result1[p],...arr]
+           }
+           this.chinaBrandList=arr;
             this.findBrandListKey = Object.keys(this.findBrandList);
-            this.listKey = this.findBrandListKey[0];
+           // this.listKey = this.findBrandListKey[0];
            // this.imgList = this.findBrandList[this.listKey]
-             this.imgList = res.data.brandPicture[true]
+             this.imgList = res.data.china.brandPicture[true].concat(res.data.base.brandPicture[true]) 
               if(this.imgList.length>5){
                   this.animate = true;
                   this.interval = setInterval(this.scroll, 5000);
@@ -171,10 +196,12 @@ export default {
         });
     },
     send(val) {
-      this.imgList = this.findBrandList[val];
+     
       this.listKey = val;
+     
+     // this.imgList = this.findBrandList[val];
       var _id = document.getElementById(val);
-      window.scrollTo(0, _id.offsetTop - 65);
+      window.scrollTo(0, _id.offsetTop - 85);
         if(this.imgList.length>5){
             this.animate = true;
             this.interval = setInterval(this.scroll, 5000);

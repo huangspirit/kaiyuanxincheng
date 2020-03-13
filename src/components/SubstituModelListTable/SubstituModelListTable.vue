@@ -3,7 +3,8 @@
     <el-table
     :data="modelList"
     border
-    style="width: 100%"
+    style="width: 100%;"
+    :height="clientHeight"
    >
     <el-table-column
       fixed
@@ -12,13 +13,13 @@
       width="150"
       align="center">
       <template slot-scope="scope">
-            <ImgE :src="scope.row.imageUrl" :W="90" :H="90" :isBig="true"></ImgE>
+            <ImgE0 :src="scope.row.imageUrl" :W="90" :H="90" :isBig="true"></ImgE0>
       </template>
     </el-table-column>
     <el-table-column
      fixed
       prop="name"
-      label="器件描述"
+      label="零件描述"
       width="300"
       >
       <template slot-scope="scope">
@@ -52,10 +53,9 @@
               <p style="font-size:12px">
                 {{scope.row.productdesc}}
               </p>
-              <p v-if="scope.row.map" style="font-size:12px">
+              <!-- <p v-if="scope.row.map" style="font-size:12px">
                 <span v-if="!scope.row.map.totalSeller">
-                  <!-- <span class="nolist">暂无供应商报价</span> -->
-                      <span class="nolist gray">该器件暂无特价，赶紧抢先发布吧</span>
+                      <span class="nolist gray">该零件暂无特价，赶紧抢先发布吧</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
@@ -65,7 +65,7 @@
                     class="color"
                   >{{ scope.row.map.minPrice}} --- {{scope.row.map.maxPrice}}</span>
                 </span>
-              </p>
+              </p> -->
       </template>
     </el-table-column>
      <el-table-column
@@ -75,10 +75,10 @@
       align="center">
       <template slot-scope="scope">
         <div class="btnWrap">
-            <p v-if="scope.row.hasSeller"><el-button class="orange btn  bgColor" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p>
-            <p v-if="scope.row.hasSeller"><el-button class="orange btn  bgColor"  @click="specialPrice(scope.$index)" size="mini" >申请特价</el-button></p>
-            <p v-if="!scope.row.hasSeller"><el-button class="orange btn bgColor"  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
-            <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">关注器件</el-button>
+            <p v-if="scope.row.factorySellerInfo && scope.row.factorySellerInfo.seller_goods_id"><el-button class="orange btn  bgColor" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p>
+            <p v-if="scope.row.factorySellerInfo && scope.row.factorySellerInfo.seller_goods_id"><el-button class="orange btn  bgColor"  @click="specialPrice(scope.$index)" size="mini" >申请特价</el-button></p>
+            <p><el-button class="orange btn bgColor"  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
+            <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">关注零件</el-button>
             <span v-if="scope.row.focus" class="bgLightGray btn">已关注</span>
         </div>
       </template>
@@ -92,7 +92,7 @@
             align="center"
             >
             <template slot-scope="scope">
-          <span >
+          <span v-if="scope.row.list[k]">
             {{scope.row.list[k].value}}
           </span>
       </template>
@@ -107,24 +107,21 @@
     @import "./SubstituModelListTable.less";
 </style>
 <script>
-//import Pdf from "_c/Pdf";
 import { setTimeout } from "timers";
 import {ladderPrice} from "../../lib/utils";
-//import pdf from "vue-pdf";
 import MerchantList from "_c/MerchantList";
 import { axios, shoppingCar } from "@/api/apiObj";
-
 import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "SubstituModelList",
   data() {
     return {
+      clientHeight:"",
       dialogTableVisible: false,
       dialogTableVisible2: false,
       loading: true,
       modelList:[],
       titleList:[],
-      UserInforma:sessionStorage.getItem('UserInforma')
     };
   },
   props: {
@@ -141,13 +138,22 @@ export default {
           }
       }
     },
+    beforeMount(){
+ // 获取浏览器可视区域高度
+    this.clientHeight = String(window.innerHeight-130)
+      //console.log(window)
+      //document.body.clientWidth;
+      //console.log(self.clientHeight);
+      console.log(this.clientHeight)
+    },
     mounted(){
       this.modelList=this.list
       this.titleList=this.list[0].list
+       
     },
   methods: {
-         ...mapActions("Login", ["GetUserInforma"]),
-         ...mapMutations(["setshowlogin"]),
+    ...mapActions("Login", ["GetUserInforma"]),
+    ...mapMutations(["setshowlogin"]),
     viewDocument() {
       this.loading = true;
       this.dialogTableVisible2 = true;
@@ -213,7 +219,7 @@ export default {
                         return;
                     } 
                 if(this.UserInforma){
-                    this.UserInforma=JSON.parse(this.UserInforma)
+                    // this.UserInforma=JSON.parse(this.UserInforma)
                     if(this.UserInforma.userTagMap && this.UserInforma.userTagMap.seller){
                       let val=this.modelList[k]
                         this.$router.push("/PersonalCenter/SellerIssuesProduct?name="+val.productno);
@@ -250,9 +256,10 @@ export default {
       MerchantList
   },
     computed: {
-        loginState(){
-            return this.$store.state.loginState
-        }
+       ...mapState({
+      UserInforma:state => state.Login.UserInforma,
+      loginState: state => state.loginState,
+    })
     },
 };
 </script>

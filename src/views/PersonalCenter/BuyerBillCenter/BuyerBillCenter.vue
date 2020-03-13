@@ -1,13 +1,17 @@
 <template>
   <div>
+       <feed-back v-if="showModalfeed" :showfeedback="showModalfeed" @submitSuc="showModalfeed=false"></feed-back>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item>账单中心</el-breadcrumb-item>
+      <p style="text-align:right;padding:0 40px;">
+         <el-button size="" type="primary"  @click="showModalfeed=true">问题反馈</el-button> 
+          </p>
     </el-breadcrumb>
     <div class="BuyerBillCenter">
         <div class="top">
              <div @click="getalldetail"  :class="{active:modules==0}">
                 <p class="title">应付账单金额合计：</p>
-                <P><STRONG>人民币：{{obj.currentPay+obj.unCurrentPay | toFixed(2)}}</STRONG><a href="javascript:;">(查看全部)</a></P>
+                <P><STRONG>人民币：{{obj.currentPay+obj.unCurrentPay | toFixed(2)}}</STRONG><a>(查看全部)</a></P>
             </div>
             <div  :class="{active:modules==2}">
                 <p class='title'> 账单到期应付账款：</p>
@@ -48,16 +52,14 @@
                     <span :class="{bgColor:is_checkout==1}" @click="changeCheckout(1)">结算待审核</span>
                     <!-- <span :class="{bgColor:is_checkout==2}" @click="changeCheckout(2)">结算被驳回</span> -->
                     </p>
-                    
-                <!-- <p class="fl">发票|<span :class="{bgColor:isOpenBill==true}" @click="changeOpenBill(true)">已开票</span>&nbsp;
-                    <span :class="{bgColor:isOpenBill==false}" @click="changeOpenBill(false)">未开票</span></p> -->
-<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">全部</span>-->
-<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">待结算</span>-->
-<!--                <span class="fl btn" :class="{bgColor:is_checkout==true}" @click="is_checkout=true">已结算</span>-->
-<!--                <span class="fl btn" :class="{bgColor:is_checkout==false}" @click="is_checkout=false">已开票</span>-->
-<!--                <span class="fl btn" :class="{bgColor:is_checkout==true}" @click="is_checkout=true">未开票</span>-->
             </div>
-
+            <div style="text-align:right;">
+                <el-button size="mini" type="primary" @click="downloadExcel" style=" vertical-align: top;">
+                     <a
+                          :href="`${baseURL}api-order/customerCenter/queryCheckDetail?is_checkout=${is_checkout}&startTime=${startTime}&endTime=${endTime}&access_token=${access_token}`"
+                          style="text-decoration: underline;color:#fff;"
+                        >导出本期账单</a></el-button>
+            </div>
         </div>
 
 
@@ -98,14 +100,15 @@
                     </div>
                     <div class="left">
                         <p class="blue">订单号：{{item.orderNo}}</p>
-                        <p><span>订单总额：￥{{item.orderAmount}}</span><strong v-if="item.orderUsdAmount">(包含${{item.orderUsdAmount}})</strong></p>
-                         <!-- <p><span>实际结算：￥{{item.payRealTotal}}</span>   </p> -->
-                        <p v-if="item.guanshui">关税：￥{{item.guanshui}}</p>
-                        <p v-if="item.guanshuiService">清关税：￥{{item.guanshuiService}}</p>
+                        <p><span>订单总额：￥{{item.orderAmount | toFixed(2)}}</span>
+                        <strong v-if="item.orderUsdAmount">(包含${{item.orderUsdAmount | toFixed(3)}})</strong></p>
+                        <p v-if="item.guanshui">关税：￥{{item.guanshui | toFixed(2)}}</p>
+                        <p v-if="item.guanshuiService">清关税：￥{{item.guanshuiService | toFixed(2)}}</p>
                         <p>
                             <span v-if="item.postage">运费：{{item.postage}}</span>
                              <!-- <strong style="margin-left:15px;">{{item.isOpenBill?'已开票':'未开票'}}</strong> -->
                              </p>
+                             <p>实际支付：{{item.payRealTotal}}</p>
                     </div>
                     <div class="right">
                         <ol class="detaillist">
@@ -131,9 +134,8 @@
                                     </div>
                                 <div>{{item0.goodsCount}}只</div>
                                 <div>
-                                    {{item0.priceunit?'$':'￥'}}{{item0.price}}
-                                        <br><strong  style="font-size:8px;">({{item0.cludeBill?'含增值税':'不含税'}})</strong> 
-                            
+                                    {{item0.priceunit?'$':'￥'}}{{item0.price | toFixed(item0.priceunit?3:2)}}
+                                        <br><strong  class="blu" style="font-size:8px;">({{item0.cludeBill?'含13%增值税':'不含税'}})</strong> 
                                 </div>
                                 <div class="dataDesc">
                                     <span class="red">
@@ -143,10 +145,10 @@
                                         </div>
                                 </div>
                                 <div>
-                                    ￥{{item0.guanshuiTotal}}&nbsp;/
+                                    ￥{{item0.guanshuiTotal }}&nbsp;/
                                     {{item0.guanshuiRate}}
                                 </div>
-                                <div>￥{{item0.guanshuiService}}</div>
+                                <div>￥{{item0.guanshuiService }}</div>
                                 <div >
                                     <span v-if="item0.postPrice">{{item0.postPrice}}</span>
                                     </div>
@@ -168,8 +170,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <p>{{item0.priceunit?'$':'￥'}}{{item0.orderAmount}}</p>
-                                    <strong>实付：￥{{item0.orderRealAmount}}</strong>
+                                    <!-- <p>{{item0.priceunit?'$':'￥'}}{{item0.orderAmount  | toFixed(item0.priceunit?3:2)}}</p> -->
+                                    <strong>实付：￥{{item0.orderRealAmount | toFixed(2)}}</strong>
                                 </div>
                                  <div>
                                     <span>{{item0.is_checkout_sys | filterCheckout}}</span>
@@ -306,7 +308,7 @@
                               <div
                                   slot="tip"
                                   class="el-upload__tip"
-                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                              >图片尺寸请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
                           </el-upload>
                       </el-form-item>
                       <el-form-item label="汇款金额:">
@@ -334,10 +336,13 @@
 import {TimeForma2} from "../../../lib/utils";
 import {axios,buyerOrderCenter} from "../../../api/apiObj";
 import { baseURL, } from "@/config";
+import feedBack from "_c/feedback";
 export default {
   name: "BuyerBillCenter",
     data(){
       return{
+          baseURL:baseURL,
+          showModalfeed:false,
           changeAll:true,
           is_checkout:null,
           isOpenBill:null,
@@ -400,23 +405,49 @@ export default {
             this.init();
         },
         value2(val){
+            console.log(val)
+            if(val){
             this.startTime=TimeForma2(val[0])
             this.endTime=TimeForma2(val[1])
+            }else{
+                this.startTime=""
+                this.endTime=""
+            }
+            
             this.init()
         },
         checklist(val){
-            
+        if( this.$refs.allcheckmark){
                 if((this.$refs.input && (this.checklist.length<this.$refs.input.length )) || !this.$refs.input){
                  this.$refs.allcheckmark.checked=false
                 }else{
                   this.$refs.allcheckmark.checked=true;
                 }
         }
+                
+        }
     },
     mounted(){
       this.init()
     },
     methods:{
+        downloadExcel(){
+             axios.request({
+                params:{
+                     is_checkout:this.is_checkout,
+                    // check_bill_result:this.isOpenBill,
+                        startTime:this.startTime,
+                        endTime:this.endTime,
+                    },
+                ...buyerOrderCenter.queryCheckDetail,
+                headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+                },}).then(res=>{
+                    if(res){
+                        
+                    }
+                })
+        },
         allCheck(val){
             this.checklist=[];
             Array.from(this.$refs.input).forEach(el => {
@@ -599,6 +630,9 @@ export default {
             return (0-val).toFixed(2)
         }
     },
+    components:{
+        feedBack
+    },
     computed:{
         start1(){
              return this.pageSize1*(this.currentPage1-1)
@@ -612,7 +646,7 @@ export default {
         requestUrl() {
             console.log(this.sendData)
             return (
-                baseURL +
+                this.baseURL +
                 `api-order/customerCenter/uploadCustomerBillCenterBankTransfer?access_token=${this.access_token}&flag=${this.sendData.flag}`
             );
         },

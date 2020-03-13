@@ -1,6 +1,9 @@
 import HttpRequest from '@/lib/axios'
 const axios = new HttpRequest()
 const common = {
+    getToken:{
+        url:"api-g/gods-b/getToken"
+    },
     getDeliveryCompanyDefault:{
         url:"api-order/goods-order/queryKuaidi"
     },
@@ -34,9 +37,15 @@ const common = {
     save: {
         url: "api-b/feed/save"
     },
+    saveAftermark:{
+        url:"api-b/afterSales/save"
+    },
     //获取反馈的内容
     queryFeedList: {
         url: "api-b/feed/queryFeedList"
+    },
+    queryAfterSalesList:{
+        url:"api-b/afterSales/queryAfterSalesList"
     }
 
 }
@@ -47,6 +56,15 @@ const login = {
     }
 }
 const home = {
+    queryDirectGoods2:{
+        url:"api-g/gods-anon/queryDirectGoods2"
+    },
+    queryDirectGoodsDetail:{
+        url:"api-g/gods-anon/queryDirectGoodsDetail"
+    },
+    querySellerInfo:{
+        url:"api-g/gods-anon/querySellerInfo"
+    },
     SearchData: {
         url: "api-g/gods-anon/searchIndex"
     },
@@ -84,6 +102,13 @@ const footer = {
     }
 };
 const buyerOrderCenter = {
+    queryCheckDetail:{
+        url:"api-order/customerCenter/queryCheckDetail"
+    },
+    //查询产品下的售卖列表是否存在
+    querySellerGoods:{
+        url:"api-g/gods-anon/querySellerGoods"
+    },
     //增加评论
     insertOrderComment: { url: "api-order/order/insertOrderComment" },
     //支付宝支付取消订单时的报关税
@@ -96,6 +121,10 @@ const buyerOrderCenter = {
     increaseCredit: {
         url: 'api-b/vipApply/increaseCredit',
         method: 'post'
+    },
+    //删除订单
+    deleteOrder:{
+        url:"api-order/customerCenter/deleteOrder"
     },
     //获取买家订单
     queryOrderPersonal: {
@@ -141,6 +170,12 @@ const buyerOrderCenter = {
     }
 }
 const sellerOrderCenter = {
+    queryDeliverDetailForSeller:{
+        url:"api-order/sellerCenter/queryDeliverDetailForSeller"
+    },
+    updateOrder:{
+        url:"api-order/sellerCenter/updateOrder"
+    },
     queryPublishGoodsList: { 
         url: "api-g/goods-b/queryPublishGoodsList" 
     },
@@ -166,6 +201,10 @@ const sellerOrderCenter = {
     addSingleDeliverCar:{
         url:"api-order/sellerCenter/addSingleDeliverCar"
     },
+    //删除订单
+    deleteOrder:{
+        url:"api-order/sellerCenter/deleteOrder"
+    },
     //更改交期
     updateSellerGoodsDiliverTime:{url:"/api-order/sellerCenter/updateSellerGoodsDiliverTime"},
     //批量国内发货
@@ -189,7 +228,7 @@ const sellerOrderCenter = {
         url: "/api-u/users-anon/findBillContent"
     },
     billManager: {
-        url: "/api-order/customerCenter/billManager"
+        url: "/api-order/customerCenter/queryGoodBill"
     },
     openBill: {
         url: "/api-order/sellerCenter/openBill"
@@ -213,6 +252,10 @@ const sellerOrderCenter = {
     }
 }
 const sellerCenter = {
+    //更新实物图
+    updateSellerGoods:{
+        url:"api-g/goods-b/updateSellerGoods"
+    },
     //商品上下架管理
     updateBatchPublishGoodsSatus: {
         url: "api-g/goods-b/updateBatchPublishGoodsSatus"
@@ -343,6 +386,10 @@ const shoppingCar = {
     inquiryList: {
         url: "/api-g/sc/queryShoppingCarList"
     },
+    //更新购物车商品数量
+    updatShoppingCar:{
+        url:"api-g/sc/updatShoppingCar"
+    },
     //删除购物车商品
     deleteSigletonShoppingCar: {
         url: "/api-g/sc/deleteSigletonShoppingCar"
@@ -373,6 +420,10 @@ const shoppingCar = {
 
 }
 const siderInquiryList = {
+    //
+    querySellerInfo:{
+        url:"api-g/gods-anon/querySellerInfo"
+    },
     // 全部 批复
     allReply: {
         url: "/api-g/ic/queryInquirySheetList"
@@ -391,6 +442,9 @@ const siderInquiryList = {
 
 }
 const BrandDetail = {
+    queryPropertyBrother:{
+        url:"api-g/gods-anon/queryPropertyBrother"
+    },
     //导航搜索
     findGoodsBaseInfoAndExInfo: {
         url: "api-g/gods-anon/findGoodsBaseInfoAndExInfo"

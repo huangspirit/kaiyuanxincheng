@@ -12,6 +12,7 @@
       <side class="noprint"></side>
       <login v-if="showlogin"></login>
     </div>
+    
   </div>
 </template>
 <script>
@@ -109,7 +110,7 @@ export default {
         }
     }
     strong{
-        color:#df3f2f;
+        color:#FF5754;
     }
     img{
         vertical-align: middle;
@@ -122,58 +123,83 @@ export default {
   .peruBg{
     background: #fce9e5
   }
+  .yellowBg{
+    background:#F9C94B;
+    color:#fff;
+  }
+  .yellowBorder{
+    border: 1px solid #F9C94B;
+  }
+ 
+  .deepgreenBg{
+    background: #4dcd99;
+    color:#fff;
+  }
    .greenColor{
-     background:#529641;
+     background:#8DD444;
      color:#fff;
    }
    .borderGreen{
-      border:1px solid #529641;
+      border:1px solid #8DD444;
    }
-   .gray{
-     color:#999;
-   }
-   .green{
-     color:#529641;
-   }
-    .color{
-        color:#df3f2f;
-    }
+  
     .bgColor{
-        background: #df3f2f;
+        background: #FF5754;
         color:#fff;
     }
     .borderColor{
-      border:1px solid #df3f2f;
+      border:1px solid #FF5754;
     }
-    .blu{
-     color:#007efe;
-    }
+    
     .bgBlu{
-      background:#007efe;
+      background:#1890FF;
+      color:#fff;
+    }
+    .lightBgBlu{
+      background: #59A5EB;
+      color:#fff;
+    }
+    .bgpurple{
+      background: #B196FF;
       color:#fff;
     }
     .borderBlu{
-      border:1px solid #007efe;
+      border:1px solid #1890FF;
     }
-    .orange{
-      color:rgb(161, 106, 2);
-    }
+   
     .bgOrange{
-      background: rgb(161, 106, 2);
+      background: #FF6300;
       color:#fff;
     }
     .borderOrange{
-      border:1px solid rgb(161, 106, 2);
+      border:1px solid #FF6300;
     }
     .bgGray{
         background:#4f4f4f ;
         color:#fff;
     }
     .bgLightGray{
-        background: #d5d5d5;
+        background: #d8d8d8;
         color:#999;
     }
-   
+    .gray{
+     color:#999;
+   }
+    .orange{
+      color:#FF6300;
+    }
+   .green{
+     color:#529641;
+   }
+    .color{
+        color:#FF5754;
+    }
+     .deepgreen{
+    color:#4DCD99;
+  }
+    .blu{
+     color:#1890FF;
+    }
     color:#999;
     background: #f5f5f5;
     .defaultradioSquare .el-radio__inner{

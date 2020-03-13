@@ -3,8 +3,9 @@
         <div style="display:flex;" class="orange">
             <p>优先选择：</p><ul class="list" v-if="defaultList.length" style="margin-top:0;">
                 <template v-for="(item,k) in defaultList" >
-                    <li :class="currentCode==item.code?'active':''" :key="k" @click="setItem(item)">{{item.name}}</li>
+                    <li :class="currentCode==item.code?'active':''" :key="k" @click="setItem(item,1)">{{item.name}}</li>
                 </template>
+                <li v-if="addSelf" :class="currentCode=='sjsh'?'active':''"  @click="setItem({name:'商家送货',code:'sjsh',id:0},1)">商家送货</li>
             </ul>
         </div>
         <div class="alphabet clear">
@@ -69,6 +70,12 @@
 <script>
     import {mapActions} from 'vuex';
     export default {
+        props:{
+            addSelf:{
+                type:Boolean,
+                default:false
+            }
+        },
         data(){
             return{
                 alphabet:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
@@ -97,19 +104,22 @@
             ]),
             getdefault(){
                 this.getDeliveryCompanyDefault({start:0,length:10,is_default:true}).then(res=>{
-                    console.log(res)
+                   
                     this.defaultList=res.data;
                 })
             },
-            setItem(item){
-                console.log(item)
-                this.currentCode=item.code
+            setItem(item,mark){
+                if(mark==1){
+                    this.currentList=[]
+                    this.currentAlphabet="0"
+                }
+                this.currentCode=item.code;
                 this.$emit("handleCallBack",item)
             },
             getDeliveryCompany(){
                     //未请求过则不再请求
                     this.GetDeliveryCompany({"pfrixName":this.currentAlphabet.toLowerCase()}).then(res=>{
-                        console.log(res)
+                        
                         this.currentList=res;
                     })
 

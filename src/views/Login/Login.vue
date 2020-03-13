@@ -20,7 +20,7 @@
             <div class="form fr" >
             
                 <p class="type">
-                    <span @click="change(1)">欢迎来到水木晶城，10秒内急速注册成功！</span>
+                    <span @click="change(1)">欢迎来到大麦晶城，10秒内急速注册成功！</span>
                 </p>
                 <div class="form-con">
                     <div class="form-con-list" v-if="flag === 1">
@@ -47,7 +47,7 @@
             </div>
             <div class="desc fl">
                 <p class="title">
-                  <span>水木晶城</span>
+                  <span>大麦晶城</span>
                   <span class="line">---</span>
                   <span class="little"> 用芯链接世界</span>
                 </p>
@@ -229,7 +229,8 @@ export default {
         if(!(/^1[3456789]\d{9}$/.test(this.qqPhoneValue))){
             this.$message.info("手机号码有误，请重填");
             return false;
-        }
+        };
+        console.log(this.qqState);
       this.GetQqBindPhone({
         wxSrc: this.code,
         phone: this.qqPhoneValue,
@@ -423,7 +424,6 @@ export default {
   // 监听路由参数的变化
   watch: {
     $route() {
-      console.log("dddddd")
       const code = this.$route.query.code;
       if (code) {
         this.loginFlag = false;
@@ -448,6 +448,7 @@ export default {
               } else if (res.type === 2) {
                 clearInterval(this.wxTime);
                 this.wxTime = null;
+                console.log(this.qqState)
                 this.GetSignIn({
                   wxSrc: this.code,
                   openid: this.openid,

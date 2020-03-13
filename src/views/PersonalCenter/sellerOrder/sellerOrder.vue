@@ -1,11 +1,66 @@
 .<template>
   <div>
     <div class="goodslist">
-      <div class="title">
-       
-        <p>卖家订单中心</p>
+      <div class="title peruBg">
+        <p style="white-space:nowrap;">卖家订单中心</p>
+      <div class="step">
+        <ul>
+          <li class="item active" >
+            <img src="@/assets/image/ShoppingCart/icon/2.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/2a.png" class="img active" alt="">
+            <span>选择零件</span>
+            <span class="linewrap">
+              <p class="blu" style="font-size:12px;">加入</p>
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item active" >
+            <img src="@/assets/image/ShoppingCart/icon/ukuang.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/kuang.png" class="img active" alt="">
+            <span>发货筐</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item" >
+            <img src="@/assets/image/ShoppingCart/icon/4.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/4a.png" class="img active" alt="">
+            <span>国内发货<br>香港发货</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+               <p class="blu" style="font-size:12px;">上传PI</p>
+            </span>
+          </li>
+           <li class="item" >
+            <img src="@/assets/image/ShoppingCart/icon/uku.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/ku.png" class="img active" alt="">
+            <span>选择仓库</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li> 
+          <li class="item" >
+            <img src="@/assets/image/ShoppingCart/icon/7.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/7a.png" class="img active" alt="">
+            <span>发货</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li  >
+            <img src="@/assets/image/ShoppingCart/icon/upiao.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/piao.png" class="img active" alt="">
+            <span>开发票</span>
+          </li> 
+        </ul>
+      </div>
          <div style="padding-right:10px;">
-            <el-button size="small" class="bgBlu" style="position:relative"  @click="setshowDeliverCar(true)">发货框 <span style="position:absolute;border-radius:20px;padding:2px 3px;top:-5px" class="bgColor">{{deliveryCarCount}}</span> </el-button>
+            <el-button size="small" class="bgBlu" style="position:relative"  @click="setshowDeliverCar(true)">发货筐 <span style="position:absolute;border-radius:20px;padding:2px 3px;top:-5px" class="bgColor">{{deliveryCarCount}}</span> </el-button>
         </div>
       
       </div>
@@ -32,7 +87,7 @@
         
          <div class="input">
           <el-input
-            placeholder="输入器件型号"
+            placeholder="输入零件型号"
             v-model="goods_name"
             size="small"
             class="inputSearch"
@@ -59,7 +114,7 @@
               </label>
             </th>
             <th>发布日期</th>
-            <th>器件型号</th>
+            <th>零件型号</th>
             <th>类型</th>
             <th>发布数量</th>
             <th>已售数量</th>
@@ -124,7 +179,7 @@
             <td>
               <p class="blu">{{item.should_deliver_count | toFixed(0)}}</p>
               <p v-if="item.deliver_button">
-                <a href="javascript:;" class="blu" @click="deliverysignle(item)">加入发货框</a>
+                <a href="javascript:;" class="blu" @click="deliverysignle(item)">加入发货筐</a>
               </p>
               <div v-if="item.old_deliver_date && !item.goods_type">
                 <p>预计交期:{{item.old_deliver_date | formatDate0}}</p>
@@ -152,7 +207,7 @@
           </tr>
         </tbody>
       </table>
-      <el-button size="mini" class="bgBlu" v-if="checkedlist.length" @click="batchaddDelivery">加入发货框</el-button>
+      <el-button size="mini" class="bgBlu" v-if="checkedlist.length" @click="batchaddDelivery">加入发货筐</el-button>
       <!-- <el-button size="mini" class="bgBlu" v-if="checkedlist.length" @click="batchDelivery">合并发货</el-button> -->
       <Pagination
         v-if="total"
@@ -253,7 +308,7 @@
                     >
                       <i class="el-icon-plus"></i>
                        <div slot="tip" class="tip">
-                         <p style>可上传多张图片，支持png、jpg、gif格式</p>
+                         <p style>可上传多张图片，文件大小限制为2MB以内，支持png、jpg、gif格式</p>
                       </div>
                     </el-upload>
                      <div class="symbol">
@@ -347,6 +402,9 @@ export default {
     }
   },
    computed: {
+     ...mapState({
+        showDeliverCar:state => state.showDeliverCar
+        }),
     url() {
       let access_token = sessionStorage.getItem("access_token");
       return (
@@ -359,6 +417,13 @@ export default {
     DeliveryCompany
   },
   watch: {
+     showDeliverCar(val){
+      console.log("showDeliverCar:",val)
+      if(!val){
+        this.init();
+        this.getdeliveryCarCount();
+      }
+    },
     goods_type(newval, oldval) {
       this.currentPage=1;
       this.init();
@@ -494,7 +559,7 @@ export default {
       axios.request({...sellerOrderCenter.addDeliverCar,data:obj,method:"post"}).then(res=>{
         if(res){
           this.$message({
-            message:'加入发货框成功',
+            message:'加入发货筐成功',
             type:'success'
           })
           this.init();

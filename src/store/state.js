@@ -12,9 +12,10 @@ const state = {
   headerFxed: true,
   showlogin:false,
   showDeliverCar:false,
+  showPayTypeOnline:false,
   proInformation:{},
   applyDetailEdit:{},
-  title:'水木晶城',
-  AgencyBrandNumLimit:5
+  title:'大麦晶城',
+  AgencyBrandNumLimit:6
 }
-export default state
+export default state;

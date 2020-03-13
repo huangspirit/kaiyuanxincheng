@@ -1,10 +1,37 @@
+/deep/.el-dialog{
+  background:#dedede;
+  .el-dialog__header{
+    padding:0 20px;
+  }
+  .el-dialog__body{
+    padding:10px 20px 0;
+  }
+}
+
 .SellerIssuesProduct {
-    background:#fff;
+    background:#dedede;
     margin:0 auto;
     position: relative;
-    
+    .wrap{
+      background:#fff;
+      padding:15px 0;
+      &>div{
+        margin-bottom:10px;
+        font-size:14px;
+        .left{
+          width:180px;
+          text-align: right;
+          margin-right:20px;
+          font-weight: bold;
+        }
+      }
+    }
     .el-form{
+      margin-top:15px;
+      background:#fff;
+      padding:20px 0;
       .setitem{
+
           display: flex;
           .label{
             font-size: 14px;
@@ -22,18 +49,44 @@
               margin-right: 4px;
             }
           }
-          .el-form-item{
+          /deep/.el-form-item{
             flex:1;
             position: relative;
-            
+            margin-bottom:12px;
+           
+           
             // .el-form-item__content{
             //   margin:0;
             // }
           }
       }
-      .el-form-item{
+      /deep/.el-form-item{
         position: relative;
         font-size:16px;
+        margin-bottom:8px;
+        .el-form-item__label{
+          line-height: 30px;
+        }
+        .el-form-item__content{
+          line-height: 30px;
+        }
+        .el-radio__label{
+          font-size:14px;
+        }
+        .form-item0{
+          .stepped-price{
+            display: flex;
+            .steppedItem{
+              display: flex;
+              white-space: nowrap;
+              margin-right:10px;
+              margin-bottom:10px;
+              label{
+                margin-right:10px;
+              }
+            }
+          }
+        }
         .select-product-list{
           position: absolute;
           top:0;

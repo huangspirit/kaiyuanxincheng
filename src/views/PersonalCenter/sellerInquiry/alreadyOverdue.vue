@@ -43,7 +43,7 @@
           </li>
           <li>
             量产时间：
-            <span>{{item.projectBeginTime | formatDate}}</span>
+            <span>{{item.projectBeginTime | formatDate3}}</span>
           </li>
           <li>
             提交日期：
@@ -55,7 +55,7 @@
         <table border="1" style="width:100%;">
           <thead>
             <tr>
-              <th>器件</th>
+              <th>零件</th>
               <th>竞争型号</th>
               <th>年常用量EAU</th>
               <th>接受价格T/P</th>
@@ -99,7 +99,9 @@
                 </div>
               </td>
               <td>
-                <span v-if="item0.insteadNo && item0.insteadNo!='@'">{{item0.insteadNo.split('@')}}</span>
+                <template  v-if="item0.insteadNo && item0.insteadNo!='@'">
+                    <p  v-for="item1 in item0.insteadNo.split('@')" :key="item1" style="margin-bottom:5px;">{{item1}}</p>
+                </template>
               </td>
               <td>{{item0.projectEau}}</td>
               <td>{{item0.acceptUnit?'$':'￥'}}{{item0.acceptPrice}}</td>
@@ -112,8 +114,10 @@
                 >批复请求</el-button>
                 <div v-if="item0.sheetEffective==true&&item0.replayStates==true">
                   <p>
-                    <span>交货地：</span>
-                    <span>{{item0.diliverPlace}}</span>
+                    <!-- <span>交货地：</span>
+                    <span>{{item0.diliverPlace}}</span> -->
+                    <span>起订量MOQ：</span>
+                    <span>{{item0.moq}}</span>
                   </p>
                   <p>
                     <span>批复价格：</span>
@@ -126,7 +130,7 @@
 
                   <p>
                     <span>预计交期：</span>
-                    <span>{{item0.currentTime | formatDate(item0.currentTime)}}</span>
+                    <span>{{item0.diliverIntervalDay}}天</span>
                   </p>
 
                   <p>
@@ -140,8 +144,10 @@
                 </div>
                 <div v-if="item0.sheetEffective==false&&item0.replayStates==true">
                   <p>
-                    <span>交货地：</span>
-                    <span>{{item0.diliverPlace}}</span>
+                    <!-- <span>交货地：</span>
+                    <span>{{item0.diliverPlace}}</span> -->
+                    <span>起订量MOQ：</span>
+                    <span>{{item0.moq}}</span>
                   </p>
                   <p>
                     <span>批复价格：</span>
@@ -153,7 +159,7 @@
                   </p>
                   <p>
                     <span>预计交期：</span>
-                    <span>{{item0.priceIntervalDay}} 天</span>
+                    <span>{{item0.diliverIntervalDay}} 天</span>
                   </p>
 
                   <p>
@@ -185,7 +191,7 @@
       <!-- 分页 -->
       <el-pagination
         layout="prev, pager, next, jumper"
-        :page-size="2"
+        :page-size="pageSize"
         :total="total"
         background
         @current-page="currentPage"
@@ -203,8 +209,9 @@
 </template>
 
 <script>
-import { ladderPrice } from "@/lib/utils";
+
 import { axios, siderInquiryList } from "@/api/apiObj";
+import { ladderPrice,TimeForma,TimeForma2 ,TimeForma3} from "@/lib/utils";
 import "@/lib/filters";
 import "./AlreadyInquiry.less";
 import allReplyDialog from "./replyDialog/replyDialog";
@@ -215,7 +222,8 @@ export default {
       allListData: [],
       replyDialogVisible: false,
       start: 0,
-      total: 0
+      total: 0,
+      pageSize:10
     };
   },
   components: {
@@ -233,6 +241,11 @@ export default {
       }
     });
   },
+ filters: {
+    formatDate3(val){
+      return TimeForma3(val);
+    }
+  },
   computed: {},
   methods: {
     filterprice(val, priceUnit) {
@@ -247,7 +260,7 @@ export default {
     getAllReplyList() {
       var obj = {
         start: this.start,
-        length: 2,
+        length: this.pageSize,
         sheet_effective: false,
         type: false
       };
@@ -347,7 +360,7 @@ export default {
     .goodsDesc {
       display: flex;
       text-align: left;
-      width: 80%;
+      width: 90%;
       margin: 0 auto;
     }
     .status {

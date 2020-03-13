@@ -18,6 +18,9 @@ const mutations = {
     },
     setshowDeliverCar(state,data){
         state.showDeliverCar = data;
+    },
+    setshowPayTypeOnline(state,data){
+        state.showPayTypeOnline = data;
     }
 }
 export default mutations

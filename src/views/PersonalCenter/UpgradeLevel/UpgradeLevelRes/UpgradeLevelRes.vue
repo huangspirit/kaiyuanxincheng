@@ -16,7 +16,7 @@
     <div v-if="UserInforma.userTagMap.vipStatus==1" class="cont">
       <div class="title">
         <h2>月结额度管理</h2>
-        <p>尊贵的水木晶城月结VIP用户：</p>
+        <p>尊贵的大麦晶城月结VIP用户：</p>
       </div>
       <div class="tit">
         <p>
@@ -57,11 +57,11 @@
       <div class="tit peruBg">
         <p>
           <span>当前月结额度：</span>
-          <span>RMB ￥{{detail.creditBase | toFixed(0)}}</span>
+          <span>RMB {{detail.creditBase | toFixed(0)}}</span>
         </p>
         <p>
           <span>剩余月结额度：</span>
-          <span>RMB ￥{{detail.creditRest | toFixed(2)}}</span>
+          <span>RMB {{detail.creditRest | toFixed(2)}}</span>
         </p>
         <p>
           <span>月结周期：</span>
@@ -72,10 +72,10 @@
           <span>每月25日</span>
         </p>
       </div>
-      <div class="btn">
+      <!-- <div class="btn">
         当前可申请的最高额度：10000000
         <el-button class="bgColor" size="mini" @click="showUplevel=true">立即提升</el-button>
-      </div>
+      </div> -->
       <div class="peruBg desc">
         <p>
           <i class="el-icon-alarm-clock"></i>
@@ -87,7 +87,7 @@
         <p>
           <span>2、</span>该额度会根据您在平台的消费行为和信用进行调整，调整规则如下：
           <br />&nbsp;&nbsp;i、&nbsp;取消订单：若您订货中途取消订单，平台将会按您采购金额的10倍进行额度扣除；
-          <br />&nbsp;&nbsp;ii、&nbsp;延期付款：平台将按您的帐单日发送帐单，请在最后期限前支付货款；每延期一天，将按延期金额的2倍扣除；
+          <br />&nbsp;&nbsp;ii、&nbsp;延期付款：平台将按您的账单日发送账单，请在最后期限前支付货款；每延期一天，将按延期金额的2倍扣除；
         </p>
         <p>
           <span>3、</span>

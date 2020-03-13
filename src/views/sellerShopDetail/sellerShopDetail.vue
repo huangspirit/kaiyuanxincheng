@@ -8,8 +8,8 @@
           <p>
             <span class="greenColor" v-if="sellerinfo.tag==1">原</span>
             <span class="greenColor" v-if="sellerinfo.tag==2">代</span>
-            <span class="greenColor" v-if="sellerinfo.tag==18">分</span>
-            <span class="bgOrange">保</span>
+            <span class="greenColor" v-if="sellerinfo.tag==18 || sellerinfo.tag==3">分</span>
+            <span class="bgOrange" v-if="sellerinfo.deposite" :title="`保证金：￥${sellerinfo.deposite}`">保</span>
             <!-- <span class="bgColor">VIP</span> -->
           </p>
           <P style="text-align:left;">
@@ -20,7 +20,7 @@
               @click="showqualification=true"
             >查看</span>
           </P>
-          <p style="text-align:left;">入驻时间：{{TimeForma(sellerinfo.qualification.create_time)}}</p>
+          <p style="text-align:left;" v-if="sellerinfo.qualification.create_time">入驻时间：{{sellerinfo.qualification.create_time.split(" ")[0]}}</p>
         </div>
         <div class="score">
           <div>
@@ -106,7 +106,7 @@
               }
             }"
             >
-              <ImgE :src="item.imgurl" :W="200" :H="100"></ImgE>
+               <img :src="item.imgurl" alt="">
             </router-link>
           </ul>
         </div>
@@ -141,7 +141,7 @@
           </ul>
         </div>
         <div>
-          <p>按器件类别</p>
+          <p>按零件类别</p>
           <ul>
             <li
               :class="getGoodsListItem.catergory_id==item1.cid?'color':''"
@@ -187,10 +187,22 @@
               >{{item.goods_type?'现':'订'}}</span>
               <div>
                 <div style="text-align:center;">
-                  <ImgE :src="item.goodsImageUrl" :W="150" :H="100"></ImgE>
+                  <ImgE
+                    :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]"
+                    :W="150"
+                    :H="100"
+                    v-if="item.sellerGoodsImageUrl"
+              ></ImgE>
+              <ImgE
+                :src="item.goodsImageUrl"
+                :W="150"
+                :H="100"
+                v-else
+              ></ImgE>
                 </div>
                 <p class="gray">{{item.catergoryName}}</p>
-                <P>{{item.goods_name}}</P>
+                
+                <P :title="item.goods_name">{{item.goods_name}}</P>
                 <p>
                   <Strong>{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</Strong>&nbsp;
                   <span style="font-size:12px;" v-if="item.priceType">起</span>
@@ -198,6 +210,9 @@
               </div>
             </li>
           </ul>
+           <div class="Pagination">
+            <Pagination :currentPage.sync="currentPage" :total="total" @current-change="handleChangePage" v-if="total"></Pagination>
+      </div>
         </div>
       </div>
     </div>
@@ -205,9 +220,9 @@
       <div class="tit">
         <h3>用户评价</h3>
         <div>
-           <el-pagination
+          <el-pagination
             :page-size="commentPageSize"
-           small
+            small
             layout="prev, pager, next"
             :total="commentTotal"
             @current-change="handleCommentPageChange"
@@ -215,13 +230,6 @@
             hide-on-single-page
             :current-page.sync="CommentCurrentPage"
           ></el-pagination>
-          <!-- <Pagination
-            :currentPage.sync="CommentCurrentPage"
-            :page-size="commentPageSize"
-            :total="commentTotal"
-            @current-change="handleCommentPageChange"
-            v-if="commentTotal"
-          ></Pagination> -->
         </div>
       </div>
       <div class="comment">
@@ -341,7 +349,7 @@
                   </div>
                 </div>
               </div>
-              <div class="reply">
+              <div class="reply" v-if="item0.replyContent">
                 <p>商家回复：</p>
                 <p style="padding-left:15px;">{{item0.replyContent}}</p>
               </div>
@@ -350,7 +358,13 @@
         </ul>
       </div>
     </div>
-    <el-dialog title :visible.sync="showqualification" width="700px" class="showqualification" top="10vh">
+    <el-dialog
+      title
+      :visible.sync="showqualification"
+      width="700px"
+      class="showqualification"
+      top="10vh"
+    >
       <el-carousel height="500px" indicator-position="outside">
         <el-carousel-item v-for="item in sellerinfo.qualification.list" :key="item.id">
           <div class="wrap">
@@ -363,13 +377,18 @@
   </div>
 </template>
 .<script>
-import { mapState , mapMutations} from "vuex";
+import { baseURL3 } from "@/config";
+import { mapState, mapMutations } from "vuex";
 import { TimeForma } from "@/lib/utils";
 import { axios, sellerShop, home, shoppingCar } from "@/api/apiObj";
-import { ladderPrice } from '../../lib/utils';
+import { ladderPrice } from "../../lib/utils";
 export default {
   data() {
     return {
+      pageSize:16,
+      currentPage:1,
+      total:0,
+      baseURL3:baseURL3,
       TimeForma: TimeForma,
       CommentCurrentPage: 1,
       commentPageSize: 5,
@@ -390,6 +409,9 @@ export default {
         name: ""
       }
     };
+  },
+  watch:{
+    
   },
   computed: {
     ...mapState({
@@ -419,7 +441,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setshowlogin']),
+    ...mapMutations(["setshowlogin"]),
+    handleChangePage(x) {
+      this.currentPage = x;
+      this.getGoodsList();
+    },
     scrollComment() {
       //滚动到查看品论
 
@@ -428,18 +454,25 @@ export default {
     },
     getGoodsListByItem(item, type) {
       if (type == "goodsType") {
+        delete this.getGoodsListItem.brand_id;
+         delete this.getGoodsListItem.catergory_id;
         if (this.getGoodsListItem.goods_type == item) {
           delete this.getGoodsListItem.goods_type;
         } else {
           this.getGoodsListItem.goods_type = item;
         }
       } else if (type == "catergory") {
+          delete this.getGoodsListItem.brand_id;
+            delete this.getGoodsListItem.goods_type;
         if (this.getGoodsListItem.catergory_id == item.cid) {
           delete this.getGoodsListItem.catergory_id;
+         
         } else {
           this.getGoodsListItem.catergory_id = item.cid;
         }
       } else if (type == "brandseller") {
+          delete this.getGoodsListItem.goods_type;
+         delete this.getGoodsListItem.catergory_id;
         if (this.getGoodsListItem.brand_id == item.brandId) {
           delete this.getGoodsListItem.brand_id;
         } else {
@@ -450,9 +483,11 @@ export default {
     },
     chipSellerGoodsDetal(item) {
       //跳转商品详情
-      if(item.priceLevel){
-        item.priceList=ladderPrice(item.priceLevel)
+      console.log(this.sellerinfo)
+      if (item.priceLevel) {
+        item.priceList = ladderPrice(item.priceLevel);
       }
+
       sessionStorage.setItem("sellerGoodsDetail", JSON.stringify(item));
       this.$router.push("/sellerGoodsDetail");
     },
@@ -487,24 +522,27 @@ export default {
         });
     },
     getGoodsList() {
+      this.$loading(this.$store.state.loading);
       this.getGoodsListItem = {
         ...this.getGoodsListItem,
         seller_id: this.$route.query.sellerId,
-        start: 0,
-        length: 50
+        start: this.pageSize*(this.currentPage-1),
+        length:this.pageSize,
       };
       axios
         .request({ ...home.SpecialOfferList, params: this.getGoodsListItem })
         .then(res => {
+          this.$loading(this.$store.state.loading).close();
           if (res.data) {
             this.goodsList = res.data.data;
+            this.total=res.data.total
           }
         });
     },
     addFocus() {
       if (!this.loginState) {
         //this.$router.push("/Login");
-        this.setshowlogin(true)
+        this.setshowlogin(true);
         return;
       }
       let obj = {

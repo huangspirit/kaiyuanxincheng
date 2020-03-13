@@ -10,6 +10,10 @@
                   title="点击更换"
                 >
             <img :src="UserInforma.headImgUrl" class="head-portrait " alt />
+            <div class="vipwrap" v-if="UserInforma.userTagMap.vip">
+                <img src="@/assets/image/icon/VIP.png" alt="">
+                <span class="vipLevel">{{UserInforma.userTagMap.vipLevel?UserInforma.userTagMap.vipLevel:0}}</span>
+          </div>
             </el-upload>
               <div class="info fl">
                   <p class="name" style="max-width:200px;">
@@ -42,7 +46,7 @@
                   <li  v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
                       <div class="cont yajin">
                           <p class="money">{{UserInforma.userTagMap.deposit | toFixed(2)}}</p>
-                          <p class="desc">押金（元）</p>
+                          <p class="desc">保证金（元）</p>
                           <p class="router">
                               <router-link to="/PersonalCenter/deposit" >充值</router-link>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
                               <router-link to="/PersonalCenter/depositDetailList" >明细</router-link>
@@ -58,7 +62,7 @@
                             <span>售卖额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp; <a>|&nbsp;&nbsp;</a>
                             <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
                             </p>
-                            <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+                            <p style="font-size:14px;">售卖额度 = 保证金*10 + 基础额度</p>
                         </div>
                       <!-- <div class="cont circle clear">
                           <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
@@ -68,7 +72,7 @@
                               </p>
                               <p class="rest">剩余额度：{{UserInforma.userTagMap['restcredit-seller']}}</p>
                               <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
-                               <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+                               <p style="font-size:14px;">售卖额度 = 保证金*10 + 基础额度</p>
                           </div>
                             
                       </div>
@@ -142,7 +146,7 @@
           <div class="withdrawApplyTotalCont">
               <el-input placeholder="请输入提现金额" v-model="withdrawApplyTotal"  @input="changewithdrawApplyTotal" ></el-input>
               <div v-if="withdrawApplyTotal" class="clear">
-                  <div class="withdrawCharge">
+                  <!-- <div class="withdrawCharge">
                       手续费：<span class="color">￥{{withdrawApplyTotalObj.withdrawCharge | toFixed(2)}}</span>
                       <div class="desc">
                           <i class="el-icon-question color" ></i>
@@ -161,7 +165,7 @@
                               <p>温馨提示：单笔提现金额≥1500为最优提现方案</p>
                           </div>
                       </div>
-                  </div>
+                  </div> -->
                   <p>实际提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawRealityTotal | toFixed(2)}}</span></p>
                   <p>申请提现金额：<span class="color">￥{{withdrawApplyTotalObj.withdrawApplyTotal | toFixed(2)}}</span></p>
                   <ul v-if="bankList.length">

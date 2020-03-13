@@ -38,9 +38,9 @@
                 <!-- <span>描述：</span> -->
                 {{item.productdesc}}
               </p>
-              <p v-if="item.map">
+              <!-- <p v-if="item.map">
                 <span v-if="!item.map.totalSeller">
-                  <span class="nolist color">该器件暂无特价，赶紧抢先发布吧</span>
+                  <span class="nolist color">该零件暂无特价，赶紧抢先发布吧</span>
                 </span>
                 <span v-else>
                   <span>共有</span>
@@ -50,12 +50,12 @@
                     class="color"
                   >{{ item.map.minPrice}} --- {{item.map.maxPrice}}</span>
                 </span>
-              </p>
+              </p> -->
                 <p class="btnWrap">
-                    <span class="bgColor btn" @click="pushlishspecialPrice(k)" v-if="!item.hasSeller">我有特价</span>
-                    <span class="bgOrange btn "  @click="specialPrice(k)" v-if="item.hasSeller">申请特价</span>
-                      <span class="bgColor btn" @click="addInquiry(k)" v-if="item.hasSeller">询价篮</span>
-                    <span v-if="!item.focus" class="bgGray btn" @click="focus(k)">关注此器件</span>
+                    <span class="bgColor btn" @click="pushlishspecialPrice(k)" >我有特价</span>
+                    <span class="bgOrange btn "  @click="specialPrice(k)" v-if="item.factorySellerInfo && item.factorySellerInfo.seller_goods_id">申请特价</span>
+                      <span class="bgColor btn" @click="addInquiry(k)"  v-if="item.factorySellerInfo && item.factorySellerInfo.seller_goods_id">询价篮</span>
+                    <span v-if="!item.focus" class="bgGray btn" @click="focus(k)">关注此零件</span>
                     <span v-if="item.focus" class="bgd5">已关注</span>
                 </p>
             </div>

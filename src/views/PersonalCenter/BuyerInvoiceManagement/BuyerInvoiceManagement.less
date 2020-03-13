@@ -2,17 +2,85 @@
     padding: 20px;
     min-height: 800px;
     background: #fff;
+    color:#333;
+    .tit{
+        padding:10px 20px 10px 10px;
+            display:flex;
+            background:#fff;
+            .deliver_states{
+                display: flex;
+                font-size:14px;
+                line-height:30px;
+                white-space: nowrap;
+                margin-right:15px;
+                p{
+                    margin-right: 15px;
+                    label{
+                        font-weight: normal!important;
+                        cursor: pointer;
+                        font-size:14px;
+                        &:hover{
+                            color:#df3f2f;
+                        }
+                    }
+                    input{
+                        width:0;
+                        height:0;
+                        opacity: 0;
+                    }
+                }
+            }
+    }
     .AddVoice {
         margin-bottom:10px;
     }
-    /deep/.el-table{
-        .goodsinfo{
-            display:flex;
-            justify-content: center;
-            align-items: center;
-            &>div{
-                text-align: left;
-                margin-left:5px;
+    // /deep/.el-table{
+    //     .goodsinfo{
+    //         display:flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         &>div{
+    //             text-align: left;
+    //             margin-left:5px;
+    //         }
+    //     }
+    // }
+    .wrap{
+        color:#333;
+        font-size:13px;
+        .bigTitle{
+            display: flex;
+            text-align: center;
+            padding:10px 0;
+            background:#dedede;
+            .item{
+                flex:1;
+            }
+            .desc{
+                width:280px;
+            }
+        }
+        .list{
+            .total{
+                display:flex;
+                line-height:40px;
+                background:#01a3f03b;
+                div{
+                    margin-right:20px;
+                }
+            }
+            .itemone>div{
+                display: flex;
+                padding:6px 4px;
+                border-bottom:1px solid #dedede;
+                align-items: center;
+                .one{
+                    flex:1;
+                    text-align: center;
+                }
+                .desc{
+                    width:280px;
+                }
             }
         }
     }

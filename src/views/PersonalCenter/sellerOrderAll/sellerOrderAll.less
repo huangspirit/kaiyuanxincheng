@@ -1,29 +1,87 @@
 .sellerOrderAll{
+    
+
     .goodslist{
         color:#333;
         &>.title{
-            line-height: 60px;
+            height: 60px;
             background:#fff;
             margin-bottom:10px;
             display: flex;
             padding:0 20px;
             position: relative;
-            &>div{
-                flex: 1;
-                text-align: right;
+            align-items: center;
+            &>p{
+                white-space: nowrap;
             }
-            .input{
-                width:80%;
-                position: absolute;
-                height:100%;
-                top:0;
-                left:10%;
-                text-align: center;
-                .inputSearch {
-                    margin:0 auto;
+            .step{
+                font-size:12px;
+                line-height: 1;
+                flex:1;
+                padding:0 30px;
+                ul{
+                  display:flex;
+                  width:800px;
+                  margin:0 auto;
+                  li{
                     text-align: center;
+                      font-size:14px;
+                      white-space: nowrap;
+                      display:flex;
+                      align-items: center;
+                      color:#333;
+                      &>i{
+                        font-size:20px;
+                        margin-right:10px;
+                        color:orange;
+                        font-weight: bold;
+                      }
+                      .img{
+                          width:20px;
+                          margin-right:5px;
+                          &.active{
+                              display: none;
+                          }
+                      }
+                      &.active{
+                          .img{
+                              display: none;
+                              &.active{
+                                  display: inline-block;
+                              }
+                          }
+                      }
+                      &.item{
+                        flex:1;
+                      }
+                      .linewrap{
+                          color:#ddd;
+                          margin:5px;
+                          flex:1;
+                          text-align: center;
+                          .line{
+                            height:3px;
+                            width:45px;
+                            background:#ddd;
+                            margin-top:-5px;
+                          }
+                          i{
+                            font-size:16px;
+                            margin-left:-7px;
+                          
+                          }
+                      }
+                      &.active{
+                          .linewrap{
+                              color:#e16531;
+                          }
+                          .line{
+                              background: #e16531;
+                          }
+                      }
+                    }
                 }
-            }
+              }
             
         }
         &>.tit{
@@ -31,15 +89,16 @@
             display:flex;
             background:#fff;
             .deliver_states{
-                flex:1;
                 display: flex;
                 font-size:14px;
                 line-height:30px;
                 white-space: nowrap;
+                margin-right:5px;
+                width:45%;
                 p{
-                    margin-right: 10px;
-                    
-                    
+                    margin-right: 5px;
+                    flex: 1;
+                    text-align: center;
                     label{
                         font-weight: normal!important;
                         cursor: pointer;
@@ -56,7 +115,7 @@
                 }
             }
             .models{
-                flex:1;
+                
                 text-align: right;
                 font-size:14px;
                 line-height:30px;
@@ -78,7 +137,11 @@
                     flex:1;
                 }
                 .goodsinfo{
-                    width:300px;
+                    width:350px;
+                }
+                .deliver{
+                    width:180px;
+                    text-align: center;
                 }
             }
             .biglist{
@@ -119,9 +182,10 @@
                         display: flex;
                         font-size:14px;
                         border-bottom:1px solid #ddd;
-                        border-top:1px solid #ddd;;
+                        border-top:1px solid #ddd;
+                        align-items: center;
                         .goodsinfo{
-                            width:300px;
+                            width:350px;
                             display:flex;
                             padding:8px;
                             box-sizing: border-box;
@@ -133,14 +197,20 @@
                             p{
                                 margin-bottom:5px;
                                 min-height: 0;
+                                margin-left:10px;
                                 &.desc{
                                     white-space: nowrap;
                                     width:100%;
                                     overflow: hidden;
                                     width:230px;
                                     text-overflow: ellipsis;
+                                   
                                 }
                             }
+                        }
+                        .deliver{
+                            width:180px;
+                            text-align: center;
                         }
                         .oneitem{
                             flex:1;

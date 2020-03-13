@@ -16,16 +16,22 @@
                 <div class="googsDesc">
                   <h3 class="color">{{item.row.productno}}</h3>
                   <p class="gray">描述：{{item.row.productdesc}}</p>
-                  <p>
+                  <!-- <p>
                     <span>
                       共有
                       <strong>{{item.row.map.totalSeller}}</strong>个供应商报价
                     </span>
                     <span
                       class="color"
-                      v-if="item.row.map.totalSeller != 0"
-                    >{{item.row.map.minPrice}} ------ {{item.row.map.maxPrice}}</span>
-                  </p>
+                      v-if="item.row.map.totalSeller != 0 && item.row.map.minPrice!=item.row.map.maxPrice"
+                    >{{item.row.map.minPrice}} ------ {{item.row.map.maxPrice}}
+                    </span>
+                    <span
+                      class="color"
+                      v-if="item.row.map.totalSeller != 0 && item.row.map.minPrice==item.row.map.maxPrice"
+                    >{{item.row.map.minPrice}}
+                    </span>
+                  </p> -->
                 </div>
               </div>
             </div>
@@ -33,7 +39,7 @@
         </el-table-column>
         <el-table-column label="品牌">
           <template slot-scope="item">
-            <ImgE :src="item.row.brandImageUrl " :W="100" :H="60" :isBig="true"></ImgE>
+            <!-- <ImgE :src="item.row.brandImageUrl " :W="100" :H="60" :isBig="true"></ImgE> -->
             <router-link
               :to="{
                     path:'/BrandDetail',
@@ -44,7 +50,7 @@
                     }
                   }"
               style="display:block;"
-            >{{item.row.brand}}</router-link>
+            > <ImgE :src="item.row.brandImageUrl " :W="100" :H="60" :isBig="true"></ImgE></router-link>
           </template>
         </el-table-column>
         <el-table-column label="原厂参考价">
@@ -54,7 +60,7 @@
                     <div
                       v-if="item.row.factorySellerInfo.priceType || item.row.factorySellerInfo.price_type"
                       :key="index"
-                      class="color"
+                      class="gray"
                     >
                       <span>{{subitem.num}}+</span> -------
                       <span>
@@ -67,7 +73,7 @@
                   <div
                     v-if="!(item.row.factorySellerInfo.priceType || item.row.factorySellerInfo.price_type)"
               
-                    class="color"
+                    class="gray"
                   >
                     <span
                       v-if="item.row.factorySellerInfo.priceUnit || item.row.factorySellerInfo.priceunit"
@@ -89,7 +95,7 @@
                         v-model="item.row.projectEau"
                         class="input-with-select unit"
                         size="mini"
-                        type="number"
+                     
                       ></el-input>
           </template>
         </el-table-column>
@@ -116,15 +122,16 @@
                       </el-input>
          </template>
       </el-table-column>
-        <el-table-column label="竞争型号">
+        <el-table-column label="竞争型号+品牌"  width="240px">
           <template slot-scope="item">
                       <div style="display:flex;align-items:center">
-                        <div> <el-input
+                        <div style="width:210px;"> <el-input
                         v-for="(item0,k) in item.row.insteadData"
                         :key="k"
-                        placeholder="请输入竞争型号"
+                        placeholder="请输入竞争型号+品牌"
                         v-model="item.row.insteadData[k]"
                         size="mini"
+                        
                       >
                         <el-button
                           slot="append"
@@ -133,7 +140,7 @@
                         ></el-button>
                       </el-input>
                       <el-input
-                        placeholder="请输入竞争型号"
+                        placeholder="请输入竞争型号+品牌"
                         v-model="item.row.insteadNo"
                         @input="listChange"
                          size="mini"
@@ -143,8 +150,9 @@
                           @click.native.stop="addInsteadNo(item.row,true)"
                           icon="el-icon-circle-plus"
                         ></el-button>
-                      </el-input></div>
-                        <p class="el-icon-delete" @click="deleteOne(item.$index)" style="margin-left:5px;cursor:Pointer;font-size:20px"></p>
+                      </el-input>
+                      </div>
+                        <p class="el-icon-delete" @click="deleteOne(item.$index)" style="margin-left:12px;cursor:Pointer;font-size:20px"></p>
                       </div>
           </template>
         </el-table-column>
@@ -153,9 +161,6 @@
         <div class="product-msg">
           <div class="product-msg-img">
             <ImgE :src="oneData.imageUrl" :W="100" :H="100"></ImgE>
-
-            <!-- <span v-if="oneData.focus==false" class="attention">未关注</span>
-            <span v-if="oneData.focus==true" class="attention">已关注</span>-->
           </div>
           <div class="product-msg-text">
             <router-link
@@ -193,9 +198,13 @@
               <span class="color">{{oneData.map.totalSeller}}</span>
               个供应商报价
               <span
-                v-if="oneData.map.totalSeller != 0"
+                v-if="oneData.map.totalSeller != 0 && oneData.map.minPrice!=oneData.map.maxPrice"
                 class="color"
               >{{oneData.map.minPrice}}——{{oneData.map.maxPrice}}</span>
+              <span
+                v-if="oneData.map.totalSeller != 0 && oneData.map.minPrice==oneData.map.maxPrice"
+                class="color"
+              >{{oneData.map.minPrice}}</span>
             </p>
           </div>
           <div
@@ -295,16 +304,16 @@
               </el-select>
             </el-input>
           </el-form-item>
-          <el-form-item v-if="topShow" label="竞争型号" class="purchaseAmount" prop="insteadNo">
+          <el-form-item v-if="topShow" label="竞争型号+品牌" class="purchaseAmount" prop="insteadNo">
             <el-input
               v-for="(item,k) in formAlign.insteadData"
               :key="k"
-              placeholder="请输入竞争型号"
+              placeholder="请输入竞争型号+品牌"
               v-model="formAlign.insteadData[k]"
             >
               <el-button slot="append" @click="deleteInsteadNo(k,false)" icon="el-icon-delete"></el-button>
             </el-input>
-            <el-input placeholder="请输入竞争型号" v-model="formAlign.insteadNo">
+            <el-input placeholder="请输入竞争型号+品牌" v-model="formAlign.insteadNo">
               <el-button
                 slot="append"
                 @click.native="addInsteadNo(formAlign.insteadNo,false)"
@@ -377,8 +386,12 @@
                     </span>
                     <span
                       class="color"
-                      v-if="listItem.map.totalSeller != 0"
+                      v-if="listItem.map.totalSeller != 0 && listItem.map.minPrice!=listItem.map.maxPrice"
                     >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
+                    <span
+                      class="color"
+                      v-if="listItem.map.totalSeller != 0  && listItem.map.minPrice==listItem.map.maxPrice"
+                    >{{listItem.map.minPrice}}</span>
                   </p>
                 </div>
                 <div class="goodPrice">
@@ -490,9 +503,9 @@
         <el-checkbox v-model="checked">下次自动填充本次填写的信息</el-checkbox>
       </div>
 
-      <div class="submit">
-        <el-button class="submitBtn bgColor" @click="commitSprice">提交特价申请信息</el-button>
-        <p style="margin-bottom:20px">特价申请有效期将为6个月，您可以在询价篮产看状态</p>
+      <div class="submit" style="text-align:center;">
+        <el-button class="submitBtn bgColor" @click="commitSprice" style="width:400px;">提交特价申请信息</el-button>
+        <!-- <p style="margin-bottom:20px">特价申请有效期将为6个月，您可以在询价篮产看状态</p> -->
       </div>
     </div>
   </div>
@@ -523,7 +536,7 @@ export default {
         insteadNo: "",
         insteadData: []
       },
-      projectProcess: ["投入期", "成长期", "成熟期", "衰退期"],
+      projectProcess: ["样品试制", "小批量", "大批量", "老产品替换"],
       rules: {
         companyName: [
           { required: true, message: "公司名称不能为空", trigger: "blur" }
@@ -578,7 +591,28 @@ export default {
     // localStorage.removeItem("applyDetailEdit")
   },
   mounted() {
+ 
+   let formAlign = localStorage.getItem("formAlign")?JSON.parse(localStorage.getItem("formAlign")):'';
+      if(formAlign){
+        this.formAlign={
+        companyName: formAlign.companyName,
+        website: formAlign.website,
+        projectName: formAlign.projectName,
+        projectProcess: formAlign.projectProcess,
+        contactName:formAlign.contactName,
+        telphone: formAlign.telphone,
+        acceptPrice:formAlign.telphone,
+        priceType: formAlign.priceType,
+        remark: formAlign.remark,
+        projectBeginTime: formAlign.projectBeginTime,
+        projectEau: formAlign.projectEau,
+        position: formAlign.position,
+        insteadNo: formAlign.insteadNo,
+        insteadData:formAlign.insteadNo.split("@")
+        }
+      }
     this.proInformation = JSON.parse(localStorage.getItem("proInformation"));
+    console.log("proInformation:",this.proInformation)
     if (!this.proInformation) {
       return;
     }
@@ -684,20 +718,34 @@ export default {
             axios
               .request({ ...shoppingCar.saveInquiry, params: obj })
               .then(res => {
-                console.log(res);
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
                   this.$router.push("/InquiryBasket/Inquiry/waitInquiry");
                 }
               });
           } else {
-            var projectBeginTime = formatAllDate(
+             var projectBeginTime = formatAllDate(
               this.formAlign.projectBeginTime,
               "-"
             )[1];
            
             var infoData = [];
-            this.proInformation.forEach(element => {
+            for(var index =0; index<this.proInformation.length;index++){
+              let element = this.proInformation[index];
+              console.log("element:",element)
+              if(!element.projectEau){
+                this.$message.info("第"+(index+1)+"个产品的年用量未填写")
+                return;
+              }
+              
+              if(!element.acceptPrice){
+                this.$message.info("第"+(index+1)+"个产品的接受价未填写")
+                return;
+              }
+               if(!element.insteadNo){
+                this.$message.info("第"+(index+1)+"个产品的竞争型号和品牌未填写")
+                return;
+              }
               if (element.insteadData.push(element.insteadNo))
                 infoData.push({
                   requestId: element.id,
@@ -707,9 +755,10 @@ export default {
                   goodsName: element.productno,
                   brandId: element.brandId,
                   bucketId: element.bucketId,
-                  acceptUnit: element.priceType
+                  acceptUnit: element.priceType,
+                  seller_goods_id:element.factorySellerInfo.seller_goods_id
                 });
-            });
+            }
             var orderData = JSON.stringify(infoData);
             var obj = {
               projectName: this.formAlign.projectName,
@@ -729,6 +778,7 @@ export default {
               .then(res => {
                 if (res.resultCode == "200") {
                   this.$message.success("提交成功");
+                  localStorage.removeItem("formAlign")
                   this.$router.push("/InquiryBasket/Inquiry/waitInquiry");
                 }
               });
@@ -737,29 +787,17 @@ export default {
       });
     },
     addInsteadNo(val, type) {
-      //type==false,标志单个添加，true,标识多个添加
-      console.log(val);
-      if (!type) {
-        if (!val) {
-          this.$message({
-            message: "请填写竞争型号",
-            type: "warning"
-          });
-        } else {
-          if (this.formAlign.insteadData.length >= 2) {
-            this.$message({
-              message: "最多添加三个竞争型号",
-              type: "warning"
-            });
-          } else {
-            let arr = this.formAlign.insteadData;
-            arr.push(val);
-            this.$set(this.formAlign, "insteadData", arr);
-          }
-        }
-      } else {
         for (var i = 0; i < this.productData.length; i++) {
           if (this.productData[i].id == val.id) {
+            if (val.insteadData.length >= 2) {
+                this.$message({
+                  message: "最多添加三个竞争型号",
+                  type: "warning"
+                });
+              } else {
+                this.productData[i].insteadData.push("");
+              }
+            return;
             if (!val.insteadNo) {
               this.$message({
                 message: "请填写竞争型号",
@@ -778,7 +816,7 @@ export default {
             return;
           }
         }
-      }
+      // }
     },
     deleteInsteadNo(index, type, val) {
       if (type) {

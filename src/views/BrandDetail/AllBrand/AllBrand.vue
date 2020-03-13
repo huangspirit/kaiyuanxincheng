@@ -6,9 +6,6 @@
       <div class="brand-msg allWidth">
           <div class="top">
               <p class="title"><a :href="brandInfo.brandWeb">{{brandInfo.name}}</a> </p>
-              <!-- <p v-if="brandInfo.brandWeb"><a :href="brandInfo.brandWeb" target="_blank">{{brandInfo.brandWeb}}</a></p>
-              <p v-if="brandInfo.tel">电话：{{brandInfo.tel}}</p>
-              <p v-if="brandInfo.email">邮件：{{brandInfo.email}}</p> -->
           </div>
         <div class="brand-msg-con clear">
             <div class="brand-msg-con-l">

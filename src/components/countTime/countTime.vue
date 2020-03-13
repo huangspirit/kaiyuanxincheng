@@ -1,6 +1,6 @@
 <template>
   <div class="counttime">
-    <p v-if="msTime.show">
+    <p v-if="msTime.show" style="display:flex;">
       <!--<span v-if="tipShow">{{tipText}}:</span>-->
       <span v-if="!tipShow">{{tipTextEnd}}</span>
       <span v-if="msTime.day>0">

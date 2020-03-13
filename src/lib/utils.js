@@ -30,10 +30,10 @@ export function formatDate(date, fmt) {
     }
     let o = {
         'M+': date.getMonth() + 1,
-        'd+': date.getDate(),
-        'h+': date.getHours(),
-        'm+': date.getMinutes(),
-        's+': date.getSeconds()
+        'd+': date.getDate()<10?'0'+date.getDate():date.getDate(),
+        'h+': date.getHours()<10?'0'+date.getHours():date.getHours(),
+        'm+': date.getMinutes()<10?'0'+date.getMinutes():date.getMinutes(),
+        's+': date.getSeconds()<10?'0'+date.getSeconds():date.getSeconds()
     }
     for (let k in o) {
         if (new RegExp(`(${k})`).test(fmt)) {
@@ -57,7 +57,7 @@ export const getToken = (tokenName = 'token') => {
 }
 
 export const setTitle = (title) => {
-    window.document.title = title || '水木晶城'
+    window.document.title = title || '大麦晶城'
 }
 // 时间格式化（不带时秒分）
 export const TimeForma3 = (value) => {
@@ -68,8 +68,33 @@ export const TimeForma3 = (value) => {
     return y + '-' + MM 
 }
 // 时间格式化（不带时秒分）
+export const TimeForma10 = (value) => {
+   
+    // let   date = new Date(value.replace(/-/g, "/"));
+    var dataee=new Date(value).toJSON();
+var date = new Date(+new Date(dataee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+
+return date.split(" ")[0];
+    // let y = date.getFullYear()
+    // let MM = date.getMonth() + 1
+    // MM = MM < 10 ? '0' + MM : MM
+    // let d = date.getDate()
+    // d = d < 10 ? '0' + d : d
+    // let h = date.getHours()
+    // h = h < 10 ? '0' + h : h
+    // let m = date.getMinutes()
+    // m = m < 10 ? '0' + m : m
+    // let s = date.getSeconds()
+    // s = s < 10 ? '0' + s : s
+    // return y + '-' + MM + '-' + d 
+}
+// 时间格式化（不带时秒分）
 export const TimeForma = (value) => {
     let date = new Date(value)
+    console.log(date)
+    if(!date){
+         date = new Date((value.replace(/-/g, "/")));
+    }
     let y = date.getFullYear()
     let MM = date.getMonth() + 1
     MM = MM < 10 ? '0' + MM : MM

@@ -53,11 +53,21 @@
             >{{item.goods_type?'现':'订'}}</span>
             <div>
               <div style="text-align:center;">
-                <ImgE :src="item.goodsImageUrl" :W="150" :H="100"></ImgE>
+                <ImgE
+                :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]"
+                :W="150"
+                :H="100"
+                v-if="item.sellerGoodsImageUrl"
+              ></ImgE>
+              <ImgE
+                :src="item.goodsImageUrl"
+                :W="150"
+                :H="100"
+                v-else
+              ></ImgE>
               </div>
-
               <p class="gray">{{item.catergoryName}}</p>
-              <P>{{item.goods_name}}</P>
+              <P :title="item.goods_name">{{item.goods_name}}</P>
               <p>
                 <Strong>{{item.priceUnit?'$':'￥'}}{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</Strong>&nbsp;
                 <span style="font-size:12px;" v-if="item.priceType">起</span>
@@ -78,8 +88,7 @@
             <router-link tag="div" style="cursor:pointer;" :to="{
                 path:'/BrandDetail/Undirect',
                 query:{
-                   
-                   catergoryId:item.catergoryId,
+                      catergoryId:item.catergoryId,
                       name:item.catergoryName,
                       brandId:brandInfo.id,
                       brandName:brandInfo.name
@@ -245,7 +254,7 @@
                   </div>
                 </div>
               </div>
-              <div class="reply">
+              <div class="reply" v-if="item0.replyContent">
                 <p>商家回复：</p>
                 <p style="padding-left:15px;">{{item0.replyContent}}</p>
               </div>
@@ -257,6 +266,7 @@
   </div>
 </template>
 .<script>
+import { baseURL3 } from "@/config";
 import { mapState,mapMutations } from "vuex";
 import { TimeForma } from "@/lib/utils";
 import { axios, BrandDetail, sellerShop, home } from "@/api/apiObj";
@@ -264,6 +274,7 @@ import { ladderPrice } from '../../lib/utils';
 export default {
   data() {
     return {
+      baseURL3:baseURL3,
       originTag: {},
       brandInfo: {},
       goodsList: [],
@@ -292,6 +303,29 @@ export default {
           return "非常好";
       }
     }
+  },
+  watch:{
+     $route: {
+      // val是改变之后的路由，oldVal是改变之前的val
+      handler: function(val, oldVal) {
+        if (this.$route.query.documentid) {
+          //从制造商跳转
+          this.originTag = {
+            id: this.$route.query.documentid,
+            tag: this.$route.query.tag,
+            name: this.$route.query.name
+          };
+          this.brandId = this.$route.query.documentid;
+          this.init();
+        }
+        if (this.$route.query.seller_id) {
+          //从卖家头像跳转
+          this.getbrandInfo(this.$route.query.seller_id);
+        }
+      },
+      // 深度观察监听
+      deep: true
+    },
   },
   mounted() {
     if (this.$route.query.documentid) {
@@ -385,7 +419,7 @@ export default {
         });
     },
     init() {
-      this.$loading(this.$store.state.loading);
+     
 
       axios
         .request({ ...BrandDetail.searchResult, params: this.originTag })
@@ -399,6 +433,7 @@ export default {
         });
     },
     getGoodsList(hasSeller) {
+       this.$loading(this.$store.state.loading);
       this.getGoodsListItem = {
         start: (this.currentPage - 1) * this.pageSize,
         length: this.pageSize
@@ -411,6 +446,7 @@ export default {
       axios
         .request({ ...home.SpecialOfferList, params: this.getGoodsListItem })
         .then(res => {
+           this.$loading(this.$store.state.loading).close();
           if (res.data) {
             this.goodsList = res.data.data;
             this.total = res.data.total;

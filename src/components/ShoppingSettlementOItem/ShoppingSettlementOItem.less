@@ -75,12 +75,12 @@
           width: 40%;
           display: flex;
           max-width:300px;
-         
           .img {
             background: #fff;
             margin-right: 20px;
+            overflow: hidden;
+            border: 1px solid #ddd;
             /deep/.ImgE{
-              border: 1px solid #ddd;
               img {
                 width: 100%;
                 max-width:80px;
@@ -102,9 +102,9 @@
               word-break: break-all;
               overflow: hidden;
               display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 1;
-overflow: hidden;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 1;
+              overflow: hidden;
             }
             .btnwrap{
               span{

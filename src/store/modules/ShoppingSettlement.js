@@ -112,7 +112,7 @@ const actions = {
     commit
   }, data) {
     return new Promise((resolve, reject) => {
-      OrderCreater(data).then(res => {
+      OrderCreater(data.data,data.token).then(res => {
 
         if (res.resultCode === '200') {
           resolve(res)

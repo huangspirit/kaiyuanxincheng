@@ -1,9 +1,9 @@
 <template>
 
     <el-dialog
-  title="确认数量"
+  title="确认购买数量"
   :visible.sync="dialogVisible"
-  width="350px"
+  width="450px"
   align="center"
  
   >
@@ -21,15 +21,15 @@
       <span class="price color">  {{item.price_unit?"$":"￥"}}{{price| toFixed(item.price_unit?3:2)}}</span>
   </div>
    <div>
-      <label for="">数量：</label>
+      <label for="">购买数量：</label>
        <el-input-number
             v-model="count"
-           
             @blur="handleBlur($event)"
             @change="handleChange($event)"
             :min="item.stockcount>item.moq?item.moq:item.stockcount"
             :max="item.stockcount"
             :step="item.mpq"
+            size="small"
           ></el-input-number>
   </div>
   <div>
@@ -43,71 +43,7 @@
   </div>
 </el-dialog>
 
-  <!-- <transition name="el-zoom-in-bottom">
-    <div class="transition-box purchase" @mouseleave="callback" :class="mini?'min':''">
-      <span class="close fr" @click="callback">&times;</span>
-      <div v-if="!mini">
-        <div class="info">
-          <p class="goodsName">{{item.goods_name}}</p>
-          <p>库存:{{item.stockcount}}</p>
-        </div>
-        <div>
-          跟单量：
-          <el-input-number
-            v-model="count"
-            size="mini"
-            @blur="handleBlur($event)"
-            @change="handleChange($event)"
-            :min="item.stockcount>item.moq?item.moq:item.stockcount"
-            :max="item.stockcount"
-            :step="item.mpq"
-          ></el-input-number>
-        </div>
-        <div>
-          单价:
-          <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong>
-        </div>
-        <div>
-          总计:
-          <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong>
-        </div>
-        <div class="btnWrap">
-          <span class="btn bgColor" @click="submitPurchase">提交结算</span>
-        </div>
-      </div>
-      <div v-if="mini" class="mini">
-        <div class="top">
-          <div>跟单量</div>
-          <div>单价</div>
-          <div>总计</div>
-          <div>操作</div>
-        </div>
-        <div class="bottom">
-          <div>
-            <el-input-number
-              v-model="count"
-              size="mini"
-              @blur="handleBlur($event)"
-              @change="handleChange($event)"
-              :min="item.moq"
-              :max="item.stockcount"
-              :step="item.mpq"
-              step-strictly
-            ></el-input-number>
-          </div>
-          <div>
-            <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong>
-          </div>
-          <div>
-            <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong>
-          </div>
-          <div class="btnWrap">
-            <span class="btn bgColor" @click="submitPurchase">提交结算</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </transition> -->
+  
 </template>
 <script>
 import { mapMutations } from "vuex";
@@ -200,7 +136,7 @@ export default {
       } else {
         this.count = e;
       }
-      this.handleChange(e);
+      this.handleChange(this.count);
     },
     handleChange(e) {
       let obj = this.item;
@@ -209,15 +145,15 @@ export default {
         if (obj.priceList.length == 1) {
           currentPrice = parseFloat(obj.priceList[0].price);
         } else if (obj.priceList.length == 2) {
-          if (e <= Number(obj.priceList[1].num)) {
+          if (e < Number(obj.priceList[1].num)) {
             currentPrice = parseFloat(obj.priceList[0].price);
           } else {
             currentPrice = parseFloat(obj.priceList[1].price);
           }
         } else if (obj.priceList.length == 3) {
-          if (e <= Number(obj.priceList[1].num)) {
+          if (e < Number(obj.priceList[1].num)) {
             currentPrice = parseFloat(obj.priceList[0].price);
-          } else if (e <= Number(obj.priceList[2].num)) {
+          } else if (e < Number(obj.priceList[2].num)) {
             currentPrice = parseFloat(obj.priceList[1].price);
           } else {
             currentPrice = parseFloat(obj.priceList[2].price);
@@ -291,17 +227,18 @@ export default {
 </script>
 <style scoped lang="less">
 .purchase{
+    padding:0 20px;
     &>div{
         text-align: left;
         white-space: nowrap;
         display: flex;
         margin-bottom:20px;
-        font-size:18px;
+        font-size:16px;
         .price{
-            font-size:20px;
+            font-size:18px;
             font-weight:bolder; 
             flex:1;
-            text-align: center;
+           
         }
     }
 }

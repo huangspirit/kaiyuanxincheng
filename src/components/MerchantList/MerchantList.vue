@@ -4,41 +4,48 @@
     <ul class="title bgGray clear">
       <li style="width:7%">实物图</li>
       <li style="width:20%">商家</li>
-      <!-- <li>器件与订购描述</li> -->
+      <!-- <li>零件与订购描述</li> -->
       <li class="itemone">交货周期</li>
       <li class="itemone">订购条件</li>
       <li class="itemone">剩余数量</li>
-      <li class="itemone">跟单价</li>
+      <li class="itemone">单价</li>
       <li class="itemone">操作</li>
     </ul>
     <div>
       <template v-for="(item,index) in MerchantList">
-        <div v-if="item.tag==1" class="item originFactory clear" :key="index">
+        <div v-if="item.tag==1" class="item originFactory clear" :key="index" @click="chipDetail(item.id)">
           <div class="flexitemwrap">
             <div class="infoimg clear" style="width:7%">
-                <div  >
-                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                  <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
-                </div>
-             
+              <div>
+                <span class="cover" @click.stop="bigimg(item.sellerGoodsImageUrl,0)">
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+                <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
+              </div>
             </div>
             <div class="info" style="width:20%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
-                  white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
+                  <p
+                    style="font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
+                  white-space:nowrap;"
+                    @click.stop="chipShop(item)"
+                    :title="item.sellerName"
+                  >{{item.sellerName}}</p>
                   <p>
                     <span
                       class="tag bgColor"
                       style="margin-right:10px;"
                       v-if="item.tag!=3"
                     >{{item.tag | tagFilter}}</span>
-                    <span class="bgColor tag" v-if="!item.focus" @click="focus(index)" style="cursor:pointer;">关注此卖家</span>
-                      <span class="bgd5 tag" v-if="item.focus" >已关注</span>
-                  
+                    <span
+                      class="bgColor tag"
+                      v-if="!item.focus"
+                      @click.stop="focus(index)"
+                      style="cursor:pointer;"
+                    >关注此卖家</span>
+                    <span class="bgd5 tag" v-if="item.focus">已关注</span>
                   </p>
                 </div>
               </div>
@@ -49,8 +56,8 @@
                   <label class="blue">{{item.goods_type ? '现货' : '订货'}}</label>
                 </p>
                 <p>
-                  预计于
-                  <span v-if="item.seller_always">{{item.day_interval | filterHours}}小时内</span>
+                  
+                  <span v-if="item.goods_type">下单后{{item.day_interval | filterHours}}小时内</span>
                   <span v-else>{{item.deliverTime | formatDate}}</span>
                 </p>
                 <p>{{item.diliverPlace}}发货</p>
@@ -59,15 +66,15 @@
             <div class="sellerInfo flexitem">
               <div>
                 <p v-if="item.base_no" class="green">批号：{{item.base_no}}</p>
-                <p class="gray">起订量：{{item.moq | toFixed(0)}}只</p>
-                <p class="gray">最小增量：{{item.mpq | toFixed(0)}}只</p>
+                <p class="gray">起订量：{{item.moq | toFixed(0)}}</p>
+                <p class="gray">增量：{{item.mpq | toFixed(0)}}</p>
               </div>
 
               <!-- <p>总数量：{{item.goodsCount}}只</p>
               <p>(已成交：{{item.sellerCount}})</p>-->
             </div>
             <div class="flexitem">
-              <p class="blue">{{item.goodsStockCount | toFixed(0)}}只</p>
+              <p class="blue">{{item.goodsStockCount | toFixed(0)}}</p>
               <p v-if="item.customerCount" class="gray">已有{{item.customerCount}}人跟单</p>
             </div>
             <div class="price flexitem">
@@ -115,16 +122,15 @@
                   <span class="btn oldProduct" style="margin-top:3px;">呆料清仓</span>
                 </template>
               </div>
-
               <p style="margin-top:5px;">
-                <a href="javascript:;" @click="specialPrice" v-if="item.priceType">更多数量可申请特价</a>
+                <a href="javascript:;" @click.stop="specialPrice(index)" v-if="item.priceType">更多数量可申请特价</a>
               </p>
             </div>
             <div class="btnWrap flexitem">
-              <p class="bgColor" @click="purchase(index)">立即跟单</p>
-              <p class="specialPrice" @click="specialPrice">申请特价</p>
-              <p class="addCark" @click="addCar(index)">加入购物车</p>
-           
+              <p class="bgColor" @click.stop="purchase(index)">立即下单</p>
+              <p class="specialPrice" @click.stop="specialPrice(index)">申请特价</p>
+              <p class="borderColor" @click.stop="addCar(index)">加入购物车</p>
+              <p class="yellowBg" @click.stop="addRate(index)" v-if="MerchantList.length>2">加入比价</p>
             </div>
           </div>
           <div v-if="!item.seller_always" class="countTime blue">
@@ -143,24 +149,26 @@
             ></CountTime>
           </div>
         </div>
-        <div v-else class="item clear" :key="index">
+        <div v-else class="item clear" :key="index" @click="chipDetail(item.id)">
           <div class="flexitemwrap">
             <div class="infoimg" style="width:7%">
-           
-                <div  >
-                  <span class="cover" @click="bigimg(item.sellerGoodsImageUrl,0)">
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                  <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
-                </div>
-          
+              <div>
+                <span class="cover" @click.stop="bigimg(item.sellerGoodsImageUrl,0)">
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+                <ImgE :src="baseURL3+'/'+item.sellerGoodsImageUrl.split('@')[0]" :W="50" :H="50"></ImgE>
+              </div>
             </div>
             <div class="info" style="width:20%">
               <div>
                 <!-- <img :src="item.userImgeUrl" :onerror="`this.src='${HeaderImg}'`"/> -->
                 <div>
-                  <p style="font-size:15px;cursor:pointer;font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
-                  white-space:nowrap;" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
+                  <p
+                    style="font-size:15px;cursor:pointer;font-size:15px;cursor:pointer;max-width:200px;overflow:hidden;text-overflow:ellipsis;
+                  white-space:nowrap;"
+                    @click.stop="chipShop(item)"
+                    :title="item.sellerName"
+                  >{{item.sellerName}}</p>
                   <p>
                     <span
                       class="tag bgColor"
@@ -172,13 +180,18 @@
                       v-if="item.tag==2"
                       style="margin-right:10px;"
                     >{{item.tag | tagFilter}}</span>
-                    <span
+                    <!-- <span
                       class="tag bgOrange"
                       v-if="item.tag==18"
                       style="margin-right:10px;"
-                    >{{item.tag | tagFilter}}</span>
-                      <span class="bgColor tag" v-if="!item.focus" @click="focus(index)" style="cursor:pointer;">关注此卖家</span>
-                      <span class="bgd5 tag" v-if="item.focus" >已关注</span>
+                    >{{item.tag | tagFilter}}</span> -->
+                    <span
+                      class="bgColor tag"
+                      v-if="!item.focus"
+                     @click.stop="focus(index)"
+                      style="cursor:pointer;"
+                    >关注此卖家</span>
+                    <span class="bgd5 tag" v-if="item.focus">已关注</span>
                   </p>
                 </div>
               </div>
@@ -190,7 +203,7 @@
                 </p>
                 <p>
                   预计于
-                  <span v-if="item.seller_always">{{item.day_interval |filterHours}}小时内</span>
+                  <span v-if="item.goods_type">{{item.day_interval |filterHours}}小时内</span>
                   <span v-else>{{item.deliverTime | formatDate}}</span>
                 </p>
                 <p>{{item.diliverPlace}}发货</p>
@@ -200,14 +213,14 @@
               <!-- <ImgE :src="item.goodsImageUrl" :W="50" :H="50"></ImgE> -->
               <div>
                 <p v-if="item.base_no" class="green">批号：{{item.base_no}}</p>
-                <p class="gray">起订量：{{item.moq | toFixed(0)}}只</p>
-                <p class="gray">最小增量：{{item.mpq | toFixed(0)}}只</p>
+                <p class="gray">起订量：{{item.moq | toFixed(0)}}</p>
+                <p class="gray">增量：{{item.mpq | toFixed(0)}}</p>
                 <!-- <p>总数量：{{item.goodsCount}}只</p>
                 <p>(已成交：{{item.sellerCount}})</p>-->
               </div>
             </div>
             <div class="flexitem">
-              <p class="blue">{{item.goodsStockCount | toFixed(0)}}只</p>
+              <p class="blue">{{item.goodsStockCount | toFixed(0)}}</p>
               <p v-if="item.customerCount" class="gray">已有{{item.customerCount}}人跟单</p>
             </div>
             <div class="price flexitem">
@@ -253,11 +266,12 @@
               <!-- <div v-if="item.customerCount" style="color:#448aca;">目前已有{{item.customerCount}}人参与</div> -->
             </div>
             <div class="btnWrap flexitem">
-              <p class="bgColor" @click="purchase(index)">立即跟单</p>
-              <p class="addCark" @click="addCar(index)">加入购物车</p>
+              <p class="bgColor" @click.stop="purchase(index)">立即下单</p>
+              <p class="borderColor" @click.stop="addCar(index)">加入购物车</p>
+              <p class="yellowBg" @click.stop="addRate(index)" v-if="MerchantList.length>2">加入比价</p>
             </div>
           </div>
-        
+
           <div v-if="!item.seller_always" class="countTime blue">
             <CountTime
               v-on:end_callback="countDownE_cb()"
@@ -305,12 +319,57 @@
         </ul>-->
       </div>
     </el-dialog>
-      <Purchase
-            :item="purchaseObj"
-            v-if="showPurchase"
-            :showPurchase="showPurchase"
-            @closeCallBack="showPurchase=false"
-          ></Purchase>
+    <Purchase
+      :item="purchaseObj"
+      v-if="showPurchase"
+      :showPurchase="showPurchase"
+      @closeCallBack="showPurchase=false"
+    ></Purchase>
+    <div class="rate bgColor" v-if="ratelistArr.length>0" @click="showRate=true">
+      <span class="num color">{{ratelistArr.length}}</span>去比价
+    </div>
+    <el-dialog :visible.sync="showRate" title="比价购买" :center="true" class="showRate">
+      <ul class="table1">
+        <li class="tittle">
+          <div class="one">供应商</div>
+          <div class="one">售卖类型</div>
+          <div class="one">发货地址</div>
+          <div class="one">起订量</div>
+          <div class="one">最小增量</div>
+          <div class="one">剩余</div>
+          <div class="price">价格</div>
+          <div class="btnwrap" >操作</div>
+        </li>
+        <li v-for="(item,index) in ratelistArr" :key="item.id" class="itemone">
+          <div style="font-weight:bolder;" class="one">{{item.sellerName}}</div>
+          <div  class="one">
+            <label class="blue">{{item.goods_type ? '现货' : '订货'}}</label>
+          </div>
+          <div class="one">{{item.diliverPlace}}发货</div>
+          <div  class="one">{{item.moq}}</div>
+          <div  class="one">{{item.mpq}}</div>
+          <div class="one">{{item.goodsStockCount | toFixed(0)}}</div>
+          <div class="price">
+            <ul v-if="item.priceType">
+              <li v-for="(val, k) in item.priceList" :key="k" class="clear color" style="display:flex;justify-content: center;">
+                <span class="num">{{val.num}}+</span>
+                <span>{{item.priceUnit ? '$' : '￥'}}{{val.price | toFixed(item.priceUnit?3:2)}}</span>
+              </li>
+            </ul>
+            <div v-if="!item.priceType">
+              <span class="color mark">{{item.priceUnit ? '$' : '￥'}}</span>
+              <span class="price-num color">{{item.goodsPrice | toFixed(item.priceUnit?3:2)}}</span>
+            </div>
+            
+          </div>
+          <div class="btnWrap" style='height:80px;'>
+            <p class="bgColor" @click.stop="purchase(index)">立即下单</p>
+            <p class="bgOrange" @click.stop="addCar(index)" >加入购物车</p>
+            <p class="bgLightGray" @click.stop="specialPrice(index)" v-if="item.tag==1">申请特价</p>
+          </div>
+        </li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 <style scoped lang="less">
@@ -320,7 +379,7 @@
 import { TimeForma2, ladderPrice, TimeForma } from "../../lib/utils";
 import { baseURL3 } from "@/config";
 import { axios, home, shoppingCar } from "../../api/apiObj";
-import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "MerchantList",
   props: {
@@ -331,6 +390,7 @@ export default {
   },
   data() {
     return {
+      showRate: false,
       initialIndex: 0,
       dialogVisible: false,
       dialogImageUrl: "",
@@ -344,57 +404,70 @@ export default {
       pageSize: 10,
       getMore: false,
       showOriginFactory: false,
-       purchaseObj:{},
-       showPurchase:false
+      purchaseObj: {},
+      showPurchase: false,
+      ratelistObj: {},
+      ratelistArr: []
     };
   },
   computed: {
+    ...mapState({
+      UserInforma:state => state.Login.UserInforma,
+      loginState:state => state.loginState
+    }),
     closeTable() {
       if (this.MerchantList.length) {
         return true;
       } else {
         return false;
       }
-    },
-    loginState() {
-      return this.$store.state.loginState;
     }
   },
-
   methods: {
-     ...mapActions("Login", ["GetUserInforma"]),
-     ...mapMutations(['setshowlogin']),
-    chipShop(item){
-       if(item.tag==1){
-                    this.$router.push({
-                        path:"/BrandDetail",
-                        query:{
-                            tag:'brand',
-                            documentid:item.brandId,
-                            name:item.brandName
-                        }
-                    })
-                }else{
-                    this.$router.push({
-                        path:"/sellerShopDetail",
-                        query:{
-                          
-                            sellerId:item.sellerId
-                        }
-                    })
-                }
+    ...mapActions("Login", ["GetUserInforma"]),
+    ...mapMutations(["setshowlogin"]),
+    chipDetail(sellerGoodsId){
+      this.$router.push({
+        path:"/sellerGoodsDetail",
+        query:{
+          seller_goods_id:sellerGoodsId
+        }
+      })
     },
+    chipShop(item) {
+      if (item.tag == 1) {
+        this.$router.push({
+          path: "/BrandDetail",
+          query: {
+            tag: "brand",
+            documentid: item.brandId,
+            name: item.brandName
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/sellerShopDetail",
+          query: {
+            sellerId: item.sellerId
+          }
+        });
+      }
+    },
+
     bigimg(url, index) {
-    
       this.dialogVisible = true;
       this.dialogImageUrl = url;
       this.initialIndex = index;
     },
     handlemouseenter(index) {
-      console.log(index);
       this.initialIndex = index;
     },
     focus(k) {
+      if (!this.loginState) {
+        //this.$router.push("/Login");
+        this.setshowlogin(true)
+        return;
+      }
       let obj = {
         favour_type: 2, //标识关注卖家
         user_tag: this.MerchantList[k].tag,
@@ -405,28 +478,20 @@ export default {
         .then(res => {
           if (res) {
             this.$message.success(res.message);
-            var _this=this;
-            setTimeout(()=>{
+            var _this = this;
+            setTimeout(() => {
               _this.GetUserInforma();
-            },2000)
+            }, 2000);
             this.$set(this.MerchantList[k], "focus", true);
           }
         });
     },
-    specialPrice() {
+    specialPrice(k) {
       if (!this.loginState) {
-        //this.$router.push("/Login");
-        this.setshowlogin(true)
+        this.setshowlogin(true);
         return;
       }
-      this.$emit("specialPrice");
-
-      // let factorySellerInfo=this.goodsinfo.factorySellerInfo
-      // factorySellerInfo.priceType=factorySellerInfo.price_type
-      // factorySellerInfo.priceLevel=factorySellerInfo.price_level
-      // factorySellerInfo.seckilPrice=factorySellerInfo.seckil_price;
-      // this.$store.dispatch("promation", {...this.goodsinfo,factorySellerInfo:factorySellerInfo});
-      // this.$router.push("/InquiryBasket/ApplySpecialPrice");
+      this.$emit("specialPrice",this.MerchantList[k].sellerId);
     },
     GetMerchantList() {
       let obj = {
@@ -435,7 +500,7 @@ export default {
         length: this.pageSize,
         status: "1"
       };
-      axios.request({ ...home.SpecialOfferList, params: obj }).then(res => {
+      axios.request({ ...home.queryDirectGoods2, params: obj }).then(res => {
         this.flag = true;
         this.total = res.data.total;
         this.MerchantList = res.data.data.map(item0 => {
@@ -477,13 +542,31 @@ export default {
     countDownE_cb() {
       this.init();
     },
+    addRate(k) {
+      if (
+        this.ratelistArr.length < 4 &&
+        !this.ratelistObj[this.MerchantList[k].id]
+      ) {
+        this.ratelistObj[this.MerchantList[k].id] = this.MerchantList[k];
+        this.ratelistArr = Object.values(this.ratelistObj);
+      } else {
+        this.$message({
+          message: "比价商家不能超过5个或者重复加入"
+        });
+      }
+    },
     purchase(k) {
       if (!this.loginState) {
-       // this.$router.push("/Login");
-       this.setshowlogin(true)
+        // this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
+  
       let res = this.MerchantList[k];
+      if(res.sellerId==this.UserInforma.id){
+        this.$message.error("不能购买自己发布的商品")
+        return;
+      }
       let purchaseObj = {
         goods_id: res.goods_id,
         goods_name: res.goods_name,
@@ -510,13 +593,13 @@ export default {
       };
       // this.MerchantList[k].purchaseObj = purchaseObj;
       // this.$set(this.MerchantList[k], "showPurchase", true);
-      this.purchaseObj=purchaseObj
-       this.showPurchase=true;
+      this.purchaseObj = purchaseObj;
+      this.showPurchase = true;
     },
     addCar(k) {
       if (!this.loginState) {
         //this.$router.push("/Login");
-        this.setshowlogin(true)
+        this.setshowlogin(true);
         return;
       }
 
@@ -530,20 +613,17 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          if(res){
+          if (res) {
             this.$message.success("添加成功");
-            var _this=this;
-            setTimeout(()=>{
+            var _this = this;
+            setTimeout(() => {
               _this.GetUserInforma();
-            },2000)
+            }, 2000);
           }
-          
-
         });
     }
   },
   mounted() {
-    console.log(this.HeaderImg);
     this.GetMerchantList();
   },
   filters: {

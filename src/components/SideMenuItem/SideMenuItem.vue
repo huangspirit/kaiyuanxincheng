@@ -1,5 +1,5 @@
 <template>
-  <div class="SideMenuItem">
+  <div class="SideMenuItem1">
     <el-submenu
       v-if="item.children"
       :index="item.index"

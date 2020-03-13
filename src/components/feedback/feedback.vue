@@ -117,7 +117,6 @@ export default {
       });
 
       this.saveFeed(JSON.stringify(this.form)).then(res=>{
-        console.log(res)
         if(res.resultCode==200){
             this.$message({
                 message:"已提交反馈，反馈结果会在个人中心展示，请注意查看",
@@ -129,7 +128,7 @@ export default {
       })
     },
     getqueryItem() {
-        this.GetQueryItem().then(res=>{
+        this.GetQueryItem({type:1}).then(res=>{
             this.options = res.data;
         })
     },
@@ -170,6 +169,7 @@ export default {
   .el-form {
     /deep/.el-form-item {
       display: flex;
+      margin-bottom:10px;
       .el-form-item__content {
         flex: 1;
       }

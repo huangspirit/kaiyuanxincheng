@@ -4,7 +4,7 @@
             <router-link to="/" tag="div" class="logo">
                 <h1 class="logoText">{{title}}</h1>
                 <div class="logowrap">
-                    <img src="@/assets/logo2.png" alt>
+                    <img src="http://brand.113ic.com/8904e4fe85564325847710fe9d3f3277.jpg" alt>
                     <div>
                         <p class="text">{{title}}</p>
                         <p class="route">icmap.cn</p>
@@ -20,10 +20,10 @@
             </div>
             <div class="nav ">
                      <router-link to="/brand">原厂直营店</router-link>
-                    <router-link to="/specialPrice">特价直通车</router-link>
-                    <!-- <router-link to="/order">订货跟单区</router-link> -->
+                    <router-link to="/specialPrice">现货直通车</router-link>
+                    <router-link to="/order">订货拼购区</router-link>
                     <router-link to="/oldGoods">呆料掘金池</router-link>
-                     <router-link to="/chinaXin">中国芯</router-link>
+                     <!-- <router-link to="/chinaXin">中国芯</router-link> -->
                     <router-link to="/OriginalFactoryEntry" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">商家入驻</router-link>
                 </div>
             <div class="rightwrap clear">
@@ -37,7 +37,7 @@
                     </router-link>
                 </div> -->
                 <div class="login" v-if="!loginState" @click="uplogin">
-                    快速登录
+                    登陆/注册
                 </div>
                 <!-- <router-link class="login" tag="div" to="/Login" v-if="!loginState">
                     快速登录

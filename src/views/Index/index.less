@@ -7,20 +7,23 @@
       color:#df3f2f;
     }
   }
-  .topRuzhu{
-    border-radius: 3px;
-    padding:8px 25px;
-    bottom:8vh;
-    position: absolute;
-    left:50%;
-    transform: translate(-50%,-50%);
-    z-index:91;
-    cursor: pointer;
-    font-size:28px;
-    &:hover{
-      box-shadow: 0 0 2px 2px #df3f2f;
+  .topRuzhuWrap{
+    bottom:3vh;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,-50%);
+      z-index:91;
+    .topRuzhu{
+      border-radius: 3px;
+      padding:8px 25px;
+      cursor: pointer;
+      font-size:28px;
+      &:hover{
+        box-shadow: 0 0 2px 2px #df3f2f;
+      }
     }
   }
+  
   .message{
     position: absolute;
     top:80px;
@@ -101,7 +104,7 @@
       left:50%;
       top:48%;
       transform: translate(-50%,-50%);
-      z-index:91;
+      z-index:92;
       .tit{
         font-size:50px;
       }
@@ -188,7 +191,6 @@
         }
         .newClass{
           font-size: 14px;
-     
           &>div{
             margin-bottom:7px;
           }
@@ -216,7 +218,11 @@
             margin:15px 0;
             strong{
               font-size:20px;
-              margin-right:10px;
+              margin-right:5px;
+            }
+            .typemark{
+              font-weight: bolder;
+              font-size:20px;
             }
           }
           .goodsName{
@@ -229,6 +235,8 @@
           .time{
               display:flex;
               white-space: nowrap;
+              font-size: 12px;
+              line-height: 1;
               .counttime {
                   font-size:12px;
               }
@@ -353,10 +361,13 @@
           margin-bottom:15px;
           text-align: center;
           cursor: pointer;
+          background: rgba(0,0,0,0.05);
+          padding-top:10px;
+          padding-bottom:10px;
           &:after{
             content: "";
             display: block;
-            background: rgba(0,0,0,0.05);
+           
             position: absolute;
             width:100%;
             height:200px;
@@ -543,7 +554,7 @@
   .origin{
     background:url("../../assets/image/banner/bg_3.jpg") 0 0 no-repeat;
     background-size: 100% 100%;
-    padding-bottom:40px;
+    padding-bottom:10px;
       .cont{
         display: flex;
         .left{
@@ -730,6 +741,7 @@
           }
           &.goodsName{
             width:250px;
+            
        
           }
         }
@@ -750,6 +762,7 @@
             white-space: nowrap;
             cursor: pointer;
             text-align: left;
+            box-sizing: border-box;
             &:hover{
               color:#df3f2f;
             }
@@ -900,7 +913,7 @@
       // width: 1350px;
       margin: 20px auto;
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       flex-wrap: wrap;
       li {
         width: 19%;

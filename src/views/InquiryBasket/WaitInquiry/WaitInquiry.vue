@@ -31,14 +31,13 @@
             <span>{{item.sellerName}}</span>
             <ImgE  :src="item.sellerUrl" :W="80" :H="20" style="line-height:20px;"></ImgE>
           </div>
-          <div class="allNum">
+          <!-- <div class="allNum">
             <span>
               已选
               <strong>{{item.subNum}}</strong> 个型号
             </span>
             <el-button class="batchBtn bgColor" @click="subSpecial" size="mini" v-show="item.subNum">申请特价</el-button>
-            <!-- <img src="@/assets/image/inquirybasket/delete.png" alt /> -->
-          </div>
+          </div> -->
         </div>
 
         <li class="listContent" v-for="(listItem,index) in item.baseList" :key="index">
@@ -87,8 +86,11 @@
               <p>
                 <span>共有{{listItem.map.totalSeller}}个供应商报价</span>
                 <span
-                  v-if="listItem.map.totalSeller != 0" class="color"
+                  v-if="listItem.map.totalSeller != 0 &&listItem.map.minPrice!=listItem.map.maxPrice" class="color"
                 >{{listItem.map.minPrice}} ------ {{listItem.map.maxPrice}}</span>
+                <span
+                  v-if="listItem.map.totalSeller != 0 &&listItem.map.minPrice==listItem.map.maxPrice" class="color"
+                >{{listItem.map.minPrice}}</span>
               </p>
             </div>
             <div class="goodPrice">
@@ -136,7 +138,7 @@
       <!-- 分页 -->
       <el-pagination
         layout="prev, pager, next, jumper"
-        :page-size="1"
+        :page-size="pageSize"
         :total="total"
         v-if="total"
         background
@@ -164,7 +166,8 @@ export default {
       brandNum:0,
       disabled: true,
       total: 0,
-      start: 0
+      start: 0,
+      pageSize:5
     };
   },
   inject: ["reload"],
@@ -181,7 +184,7 @@ export default {
     getInquiry() {
       var obj = {
         start: this.start,
-        length: 1,
+        length: this.pageSize,
         source: "2"
       };
       axios.request({ ...shoppingCar.inquiryList, params: obj }).then(res => {
@@ -355,10 +358,7 @@ export default {
       this.getInquiry();
     },
     applySpecial(val) {
-      if(val.priceList){
-          val.factorySellerInfo.priceList= val.priceList
-      }
-      this.$store.dispatch("promation", val);
+       this.$store.dispatch("promation", [val]);
       this.$router.push("/InquiryBasket/ApplySpecialPrice");
     },
     subSpecial() {

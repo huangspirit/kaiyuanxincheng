@@ -137,7 +137,7 @@
           <div class="btnWrap">
             <span
               @click="changeType"
-              v-if="propertyCount>0 && ScreenProductTotal"
+              v-if="propertyCount>0 || ScreenProductTotal"
               class="btn bgColor"
             >应用已选参数</span>
             <span v-if="!(propertyCount>0 && ScreenProductTotal)" class="gray">应用已选参数</span>
@@ -233,6 +233,11 @@ export default {
         } else {
           this.query = this.directJOSN;
         }
+        this.selectedScreen={}
+        this.selectedGoods={}
+        this.ScreenProductTotal=0;
+        this.brandList=[]
+        this.propertyCount=0;
         this.init();
         this.getPropertyByParentId();
       },
@@ -447,6 +452,9 @@ export default {
         .then(res => {
           if (!this.brandList.length) {
             this.brandList = res.data.factory;
+            if(!this.selectedScreen.brand_id){
+              this.selectedScreen.brand_id=res.data.factory[0].id;
+            }
           }
           this.screenTypeList = res.data.propertyList.map(item => {
             return item;

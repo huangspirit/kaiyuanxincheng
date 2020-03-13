@@ -1,15 +1,22 @@
 <template>
   <div class="Pagination">
     <!-- 分页 -->
-    <el-pagination layout="prev, pager, next, jumper" :page-size='pageSize' :total="total" background :current-page="currentPage" @current-change='change'></el-pagination>
+    <el-pagination :class="color" layout="prev, pager, next, jumper" :page-size='pageSize' :total="total" background :current-page="currentPage" @current-change='change'></el-pagination>
   </div>
 </template>
-
+.<style lang="less" scoped>
+    @import "./Pagination.less";
+</style>
 <script>
-import "./Pagination.less";
+
+
 export default {
   name: "Pagination",
   props:{
+    color:{
+      type:String,
+      default:'gray'
+    },
     currentPage:{
       type:Number,
       default:1

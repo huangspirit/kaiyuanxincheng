@@ -24,7 +24,7 @@
           <strong>{{item.priceUnit?"$":"￥"}}{{price| toFixed(item.priceUnit?3:2)}}</strong>
         </div>
         <div>
-          总计:
+          金额:
           <strong>{{item.priceUnit?"$":"￥"}}{{money | toFixed(item.priceUnit?3:2)}}</strong>
         </div>
         <div class="btnWrap">
@@ -35,7 +35,7 @@
         <div class="top">
           <div>跟单量</div>
           <div>单价</div>
-          <div>总计</div>
+          <div>金额</div>
           <div>操作</div>
         </div>
         <div class="bottom">
@@ -140,7 +140,7 @@ export default {
       } else {
         this.count = e;
       }
-      this.handleChange(e);
+      this.handleChange(this.count);
     },
     handleChange(e) {
       let obj = this.item;
@@ -149,15 +149,15 @@ export default {
         if (obj.priceList.length == 1) {
           currentPrice = parseFloat(obj.priceList[0].price);
         } else if (obj.priceList.length == 2) {
-          if (e <= Number(obj.priceList[1].num)) {
+          if (e < Number(obj.priceList[1].num)) {
             currentPrice = parseFloat(obj.priceList[0].price);
           } else {
             currentPrice = parseFloat(obj.priceList[1].price);
           }
         } else if (obj.priceList.length == 3) {
-          if (e <= Number(obj.priceList[1].num)) {
+          if (e < Number(obj.priceList[1].num)) {
             currentPrice = parseFloat(obj.priceList[0].price);
-          } else if (e <= Number(obj.priceList[2].num)) {
+          } else if (e < Number(obj.priceList[2].num)) {
             currentPrice = parseFloat(obj.priceList[1].price);
           } else {
             currentPrice = parseFloat(obj.priceList[2].price);

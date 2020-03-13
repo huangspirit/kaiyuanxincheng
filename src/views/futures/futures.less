@@ -1,287 +1,98 @@
 .specialPrice{
-  min-height:500px;
-  text-align: center;
   color:#333;
-  background:  url("../../assets/image/specialPrice/futures1.png") 0 0 no-repeat;
-  background-size: 100% auto;
-  padding-top:18vw;
   .banner{
-    height:300px;
-    line-height: 300px;
+      height: 22vh;
+      &.hiddenimg{
+        height:0;
+        overflow: hidden;
+        transition: height 2s linear 0.5s;
+      }
+      img{
+          width:100%;
+      }
   }
   .cont{
-    position: relative;
-    z-index:1;
-    .title{
-      background:#fff;
-      padding:15px 25px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      .inputSearch{
-        /deep/.el-input-group__append{
-          padding:0 10px;
-        }
+    margin-top:20px;
+      .tit{
+          padding:15px 25px 0px;
+          background: #fff;
+          font-size:14px;
+          .title{
+              display:flex;
+              .one{
+                  width:78px;
+              }
+              ul{
+                  display:flex;
+                  flex-wrap: wrap;
+                  flex:1;
+                  // width:300px;
+                  transition: height 5s;
+                  height:auto;
+                  overflow: hidden;
+                
+                  &.brand{
+                      padding-top:5px ;
+                      li{
+                          position: relative;
+                          padding:9px 11px;
+                          margin-right:10px;
+                          border:1px solid #ddd;
+                          &:hover{
+                              border-color:#df3f2f;
+                          }
+                          &.active{
+                              border-color:#df3f2f;
+                          }
+                          .close{
+                              position: absolute;
+                              right:-5px;
+                              top:-5px;
+                              z-index:10;
+                              background-color: #fff;
+                          }
+                      }
+                  }
+                  &.showmoreActive{
+                      max-height: 125px;
+                      transition: height 1s;
+                  }
+                  &.showmoreActive1{
+                      max-height: 68px;
+                      transition: height 1s;
+                  }
+                  li{
+                      cursor: pointer;
+                      margin-right:10px;
+                      margin-bottom:15px;
+                  }
+              }
+          }
       }
-      .btn{
-        cursor: pointer;
-        i{
-          padding-right:10px;
-        }
-        &:hover{
-          color:#df3f2f;
-        }
+      .search{
+          padding:20px 0;
+          /deep/.el-input-group__append{
+              background: #FFE500;
+              color:#333;
+          }
       }
-      ul>li{
-        float: left;
-        margin-right:25px;
-        cursor: pointer;
-        line-height: 30px;
-        &.active{
-          color:#df3f2f;
-        }
-        &:hover{
-          color:#df3f2f;
-        }
-      }
-    }
     .goodsList{
       margin-top:20px;
       .list{
-        display:flex;
-        flex-wrap:wrap;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         .item{
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          background:#fff;
-          width:32%;
-          margin-right:2%;
-          position: relative;
-          text-align: left;
-          color:#656565;
-          margin-bottom:40px;
-          padding-bottom:10px;
+          background-color: #fff;
+          border: 1px solid #e7e7e7;
           border-radius: 10px;
+          width:375px;
+          margin-bottom:40px;
           &:hover{
-            box-shadow: 0 0 10px 2px #ddd;
-            transform: scale(1.003,1.003,1);
-            transition: all 0.2s;
-          }
-          &.noMargin{
-            margin-right:0;
-          }
-          .mark{
-            position: absolute;
-            left:0;
-            top:0;
-            border-top-left-radius: 10px;
-            overflow: hidden;
-            img{
-              width:60px;
+              box-shadow: 0 0 10px 2px #ddd;
             }
-          }
-          .goodsType{
-            position: absolute;
-            right:25px;
-            top:15px;
-            background:#ff7d0b;
-            color:#fff;
-            font-size:12px;
-            padding:1px 7px;
-            border-radius: 3px;
-            z-index: 1;
-            &.goods_type{
-              background: #f40;
-            }
-          }
-          .wrapImg{
-            position: relative;
-            margin-bottom:15px;
-            text-align: center;
-            cursor: pointer;
-            &:after{
-              content: "";
-              display: block;
-              background: rgba(0,0,0,0.05);
-              position: absolute;
-              width:100%;
-              height:220px;
-              z-index: 1;
-              top:0;
-              left:0;
-            }
-            .ImgE{
-              padding-top:20px;
-              /deep/img{
-                height:100%;
-              }
-            }
-            .desc{
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              background: rgba(0,0,0,0.05);
-              font-size:16px;
-              text-align: left;
-              padding:10px;
-              font-weight: bold;
-              color:#333;
-            }
-          }
-          .info{
-            padding:0 15px;
-            .sellerInfo{
-              color:#333;
-              font-size:15px;
-              text-align: center;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              height:100%;
-              padding-left:10px;
-              position: relative;
-              align-items: center;
-              min-height:0;
-              &:hover{
-                .wrapInfo{
-                  display:block;
-                }
-              }
-              .wrapInfo{
-                position: absolute;
-                background:#fff;
-                top:60%;
-                box-shadow: 0 0 5px 2px #ddd;
-                z-index:100;
-                right:-20px;
-                min-width:200px;
-                padding-bottom:15px;
-                display: none;
-                &>div{
-                  background:#f5f5f5;
-                  padding:10px 15px;
-                  .wrap{
-                    float: left;
-                    display: flex;
-                    white-space: nowrap;
-                    align-items: center;
-                    text-align: left;
-                    font-weight: bolder;
-                    p{
-                      width:130px;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                    }
-                    img{
-                      width:45px;
-                      height:45px;
-                      border-radius: 100%;
-                      margin-right:15px;
-                    }
-                    .tag{
-                      font-size:12px;
-                      padding:1px 10px;
-                      border-radius: 3px;
-                    }
-                  }
-                  
-                }
-                &>p{
-                  margin-top:6px;
-                  padding:0 15px;
-                  white-space: nowrap;
-                  text-align: left;
-                  float: left;
-                  width:100%;
-                  box-sizing: border-box;
-                  .btn0{
-                    width:100%;
-                    line-height:20px;
-                  }
-                }
-                
-              }
-              .sellerName{
-                width:80px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                height:20px;
-                font-size:12px;
-                line-height:20px;
-              }
-              .img{
-                height:45px;
-                width:45px;
-                border-radius: 100%;
-                overflow: hidden;
-                margin-bottom:5px;
-                cursor: pointer;
-                img{
-                  width:100%;
-                }
-              }
-            }
-            .time{
-              color:#ff7e0d;
-              font-size:14px;
-              margin-bottom:15px;
-              font-weight: bold;
-              /deep/.counttime{
-                font-size:14px;
-                .timeStr{
-                  background: #fff;
-                  color:#ff7e0d;
-                  margin:0;
-                  padding:0;
-                  font-size:16px;
-                  font-weight: bold;
-                }
-              }
-             
-            }
-            .goodsName{
-              font-size: 18px;
-              font-weight:bold;
-              color:#333;
-              cursor: pointer;
-              margin-bottom:3px;
-              &:hover{
-                color:#df3f2f
-              }
-            }
-            .brand{
-              color:#333;
-              font-size:14px;
-              margin-bottom:10px;
-              cursor: pointer;
-              &:hover{
-                color:#df3f2f
-              }
-            }
-            .count{
-              span{
-                padding-right:15px;
-                font-size:14px;
-              }
-            }
-            .place{
-              font-size:14px;
-              margin-bottom:15px;
-            }
-          }
-          .btn{
-            margin-top:15px;
-            line-height: 50px;
-            text-align: center;
-            cursor: pointer;
-            &:hover{
-              font-weight: bold;
-              font-size:18px;
-              transition: all 0.2s;
-            }
-          }
         }
       }
     }
-  }
-}
+ 
+  }}

@@ -1,6 +1,63 @@
 <template>
   <div class="sellerDeliveryCar">
-    <div class="cont" >
+
+    <div class="cont" style="display:flex;flex-direction: column">
+      <div class="step peruBg">
+        <ul>
+          <li class="item " >
+            <img src="@/assets/image/ShoppingCart/icon/2.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/2a.png" class="img active" alt="">
+            <span>选择订单</span>
+            <span class="linewrap">
+              <p class="blu" style="font-size:12px;">加入</p>
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item " >
+            <img src="@/assets/image/ShoppingCart/icon/ukuang.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/kuang.png" class="img active" alt="">
+            <span>发货筐</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li class="item active" >
+            <img src="@/assets/image/ShoppingCart/icon/4.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/4a.png" class="img active" alt="">
+            <span>国内发货<br>香港发货</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+               <p class="blu" style="font-size:12px;">上传PI</p>
+            </span>
+          </li>
+           <li class="item active" >
+            <img src="@/assets/image/ShoppingCart/icon/uku.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/ku.png" class="img active" alt="">
+            <span>选择仓库</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li> 
+          <li class="item active" >
+            <img src="@/assets/image/ShoppingCart/icon/7.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/7a.png" class="img active" alt="">
+            <span>发货</span>
+            <span class="linewrap">
+              <span class="line"></span>
+              <i class="el-icon-caret-right"></i>
+            </span>
+          </li>
+           <li  >
+            <img src="@/assets/image/ShoppingCart/icon/upiao.png" class="img" alt="">
+            <img src="@/assets/image/ShoppingCart/icon/piao.png" class="img active" alt="">
+            <span>开发票</span>
+          </li> 
+        </ul>
+      </div>
       <div class="tit">
           <p>
               <span class="bgBlu imgwrap">
@@ -24,11 +81,12 @@
             <i class="el-icon-circle-close" @click="setshowDeliverCar(false)"></i>
         </p>
       </div>
+      <div style="display:flex; flex-direction: column;flex:1;">
       <div class="wrapTable">
           <table>
             <thead>
               <tr>
-                <th>器件信息</th>
+                <th>零件信息</th>
                 <th>订单编号</th>
                 <th>数量</th>
                 <th>单价</th>
@@ -42,10 +100,10 @@
                 <template v-for="(item1,index1) in item.list">
                   <tr v-if="index1==0" :key="item1.id">
                     <td :rowspan="item.list.length" class="borderRight">
-                      <div style="display:flex; align-items: center;">
+                      <div style="display:flex; align-items: center;min-width:350px;padding:0 10px;">
                       <i
                             class="el-icon-delete"
-                            title="从发货框移除此器件"
+                            title="从发货筐移除此零件"
                             @click="deleteGoods(1,item.goodsSellerId)"
                           ></i>
                       <div class="goodsinfo">
@@ -103,27 +161,24 @@
           </table>
           
     </div>
-      <div class="btnwrap" v-if="list.length">
+      <div class="btnwrap" v-if="list.length" style="max-height:85px;">
         <!-- <el-button size="small">打印标签</el-button> -->
         <!-- <el-button size="small" type="primary" @click="printBox">下载发货单</el-button> -->
         <el-button size="small" @click="batchDelivery(false)" type="primary" v-if="priceunit!==true && unpriceunitCount">国内发货</el-button>
-          <el-button size="small" @click="batchDelivery(true)" type="primary" v-if="priceunit!==false && priceunitCount">香港发货</el-button>
+          <el-button size="small" @click="batchDelivery(true)" type="primary" v-if="priceunit!==false && priceunitCount">香港到货通知</el-button>
+          <div style="font-size:12px;line-height:1.2;text-align:left;width:450px;margin:0 auto;" v-if="priceunit===false">
+            <p>1、同一型号多个订单请按订单分别包装，贴上产品标签；<a href="javscript:;"> 标签样式</a></p>
+            <p>2、一个订单若包含多个型号，请将一个订单的型号整体放置在一起；</p>
+            <p>3、请务必放置发货清单，无发货清单者将被拒收；点击发货后可下载打印；</p>
+          </div>
       </div>
+       </div>
     </div>
-    <el-dialog title="批量发货" :visible.sync="showBatchDelivery" width="800px" align="center" :append-to-body="true">
+    <el-dialog title="批量发货" :visible.sync="showBatchDelivery" width="1000px" align="center" :append-to-body="true">
       <div class="delivery">
         <div v-if="deliveryObj.hongkong.length" class="item">
           <div class="title">
             <span>香港发货</span>
-            <span v-if="deliveryObj.hongkong.length>1">
-              <el-switch
-                v-model="deliveryObj.hongkongActive"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-text="统一仓库"
-                inactive-text="单选仓库"
-              ></el-switch>
-            </span>
           </div>
           <div class="list">
             <ul v-if="deliveryObj.hongkong.length">
@@ -147,7 +202,7 @@
                         style="font-size:12px;margin-top:25px;display:block;line-height:1.6"
                       ></i>
                       <span style="font-size:12px;line-height:1;display:block;">上传PI单号</span>
-                      <div slot="tip" class="el-upload__tip">支持png、jpg、gif格式</div>
+                       <div slot="tip" class="el-upload__tip">可以上传图片、PDF、Word、Excel文件，文件大小限制为2MB以内；</div>
                     </el-upload>
                   </div>
                 </div>
@@ -215,14 +270,14 @@
         <div v-if="deliveryObj.internal.length" class="item">
           <div class="title">
             <span>国内发货</span>
-            <el-switch
+            <!-- <el-switch
               v-if="deliveryObj.internal.length>1"
               v-model="deliveryObj.internalActive"
               active-text="统一仓库"
               inactive-text="单选仓库"
               active-color="#13ce66"
               inactive-color="#ff4949"
-            ></el-switch>
+            ></el-switch> -->
           </div>
           <div class="list">
             <ul>
@@ -323,10 +378,10 @@
       </span>
     </el-dialog>
     <el-dialog title="选择物流公司" :visible.sync="showDeliveryCompany" width="700px" :append-to-body="true">
-      <DeliveryCompany v-if="showDeliveryCompany" @handleCallBack="getCode"></DeliveryCompany>
-      <el-input v-model="trans_no" placeholder="填写物流单号" style="padding-top:20px;"></el-input>
+      <DeliveryCompany v-if="showDeliveryCompany" @handleCallBack="getCode" :addSelf="true"></DeliveryCompany>
+      <el-input v-model="trans_no" placeholder="填写物流单号" style="padding-top:20px;" :disabled="currentDeliver.id==0"></el-input>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="showDeliveryCompany=false">确 定</el-button>
+        <el-button type="primary" @click="ensureDeliveryCompany">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog  :visible.sync="showbigimg" width="600px" :append-to-body="true">
@@ -364,6 +419,8 @@ import { mapState, mapActions ,mapMutations} from "vuex";
 export default {
   data() {
     return {
+        uptype:1,
+        currentDeliver:{},
         showbigimg:false,
         bigmigurl:'',
         downloadExcel:false,
@@ -442,6 +499,14 @@ export default {
   },
   methods: {
     ...mapMutations(["setshowDeliverCar"]),
+    ensureDeliveryCompany(){
+      if(!this.trans_no){
+        this.$message.error("请填写物流单号")
+        return;
+      }
+      this.showDeliveryCompany=false;
+
+    },
     printBox(){
       this.$message({
         message:"功能待完善"
@@ -482,7 +547,7 @@ export default {
         });
     },
     deleteGoods(type, id) {
-      this.$confirm("确定要从发货框移除吗？", "提示", {
+      this.$confirm("确定要从发货筐移除吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -598,6 +663,12 @@ export default {
       this.showDeliveryCompany = true;
     },
     getCode(val) {
+      this.currentDeliver=val
+      if(this.currentDeliver.id==0){
+        this.trans_no="暂无单号"
+      }else{
+         this.trans_no=""
+      }
       //香港不需要物流
       //国内物流
       if (this.deliveryObj.internalActive) {
@@ -613,8 +684,8 @@ export default {
       }
     },
     submitDelivery() {
-         this.$loading(this.$store.state.loading);
         let obj={}
+        // let hasTrans_no=true;
         if(this.deliveryObj.hongkong.length){
             let hongkongArr=[];
            if (this.deliveryObj.hongkongActive) {
@@ -651,9 +722,13 @@ export default {
         
       if (this.deliveryObj.internal.length ) {
           let internalArr=[]
+          
         if (this.deliveryObj.internalActive) {
           //标识国内统一发货
             internalArr=this.deliveryObj.internal.map(item=>{
+              // if(!this.deliveryObj.internalDeliver.trans_no){
+              //   hasTrans_no=false;
+              // }
                     let obj={
                         goodsSellerId:item.goodsSellerId,
                         goodsId:item.goosId,
@@ -669,7 +744,9 @@ export default {
                 })
         }else{
             internalArr=this.deliveryObj.internal.map(item=>{
-              console.log(item)
+              // if(!item.trans_no){
+              //   hasTrans_no=false;
+              // }
                     let obj={
                         goodsSellerId:item.goodsSellerId,
                         goodsId:item.goosId,
@@ -686,6 +763,11 @@ export default {
         }
         obj.cn=JSON.stringify(internalArr)
       }
+      // if(!hasTrans_no){
+      //   this.$message.error("请填写物流单号");
+      //   return;
+      // }
+      this.$loading(this.$store.state.loading);
       axios.request({...sellerOrderCenter.diliverGoods,data:obj,method:'post'}).then(res=>{
          this.$loading(this.$store.state.loading).close();
           if(res && res.resultCode==200){

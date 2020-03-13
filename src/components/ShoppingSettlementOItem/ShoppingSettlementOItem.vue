@@ -14,11 +14,11 @@
           v-if="item.list[0].tag==2"
           style="margin-right:10px;"
         >{{item.list[0].tag | tagFilter}}</span>
-        <span
+        <!-- <span
           class="tag bgOrange"
           v-if="item.list[0].tag==18"
           style="margin-right:10px;"
-        >{{item.list[0].tag | tagFilter}}</span>
+        >{{item.list[0].tag | tagFilter}}</span> -->
         <!-- <span class="bgColor" v-if="item.list[0].tag!=3">{{item.list[0].tag | tagFilter}}</span> -->
         <!-- <span v-if="item.list[0].tag === '1'">原厂商户</span>
         <span v-if="item.list[0].tag === '2'">代理商</span>
@@ -27,15 +27,16 @@
     </div>
     <div class="list">
       <ul class="title">
-        <li class="desc">器件信息</li>
+        <li class="desc">零件信息</li>
         <li class="item">状态</li>
         <li class="item">单价</li>
         <li class="item">数量</li>
         <li class="item">金额</li>
         <li class="item">关税</li>
         <li class="item">交货</li>
+        <li  style="width:150px;">备注</li>
       </ul>
-      <div class="item" v-for="value in item.list" :key="value.goods_id">
+      <div class="item" v-for="value in item.list" :key="value.goods_id" >
         <div class="desc">
           <span class="img">
             <ImgE :src="value.goodsImage" :W="60" :H="60"></ImgE>
@@ -77,6 +78,24 @@
           <span v-if="value.goods_type">{{value.day_interval | filterhours}}小时内</span>
           <br />
           {{value.diliver_place}}交货
+        </div>
+        <!-- <div style="width:100%;margin-top:10px;text-align:left;">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="备注"
+            v-model="value.order_mark"
+            style="">
+          </el-input>
+        </div> -->
+        <div class="oneitem">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="订单备注，选填"
+            v-model="value.order_mark"
+            style="font-size:12px;width:150px;">
+          </el-input>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div class="HeaderSearch" @click="noSearch()" :class="mini?'mini':''">
     <div class="search">
       <div class="ipt" >
-        <input type="text" placeholder="请输入你要查找的器件型号/类别/品牌关键字" @focus.stop="focus" v-model="searchValue" autocomplete="off">
+        <input type="text" placeholder="请输入你要查找的零件型号/类别/品牌关键字" @focus.stop="focus" v-model="searchValue" autocomplete="off">
         <div class="btn" @click="search" style="cursor:pointer;">
           <i class="el-icon-search"></i>
         </div>
@@ -66,6 +66,19 @@ export default {
         SearchData(obj)
           .then(res => {
             this.SearchData = res.data.data;
+            // map(item=>{
+            //   let tag=''
+            //   if(item.tag=='brand'){
+            //     tag="（品牌"
+            //   }else if(item.tag=='direct'){
+            //     tag="类别"
+            //   }else
+            //    if(item.tag=='goodsinfo'){
+            //     tag="（型号）"
+            //   }
+            //   item.nick_name_tag=item.nick_name+tag;
+            //   return item;
+            // });
             this.SearchDataList = res.data.data;
           })
           .catch(err => {});

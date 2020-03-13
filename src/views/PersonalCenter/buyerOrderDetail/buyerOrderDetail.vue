@@ -49,8 +49,15 @@
                              </div>
                              <div  style="display:flex;">
                                  <div style="margin-right:10px;">
-                                    <el-button  @click="downLoadOrderContract(item.orderVo.contractUrl)" size="mini">
-                                        下载合同
+                                    <el-button  size="mini">
+                                           <a  :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.contractUrl}&access_token=${access_token}`">
+                                         下载合同(系统)</a>
+                                    </el-button>
+                                 </div>
+                                 <div style="margin-right:10px;">
+                                    <el-button  size="mini" v-if="item.orderVo.customerContractUrl">
+                                           <a :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.customerContractUrl}&access_token=${access_token}`">
+                                         下载合同(已上传)</a>
                                     </el-button>
                                  </div>
                                 <el-upload
@@ -68,7 +75,7 @@
                                 </el-upload>
                              </div>
                         </li>
-                        <li class="item">
+                        <li class="item" v-if="item.orderVo.billType">
                              <div class="title">发票信息</div>
                              <div class="center">
                                  <p class="">发票类型：{{item.orderVo.billType}}</p>
@@ -83,26 +90,30 @@
                              <div class="title">付款方式/明细</div>
                              <div class="center">
                                  <div class style="border-bottom:1px solid #ddd;padding-bottom:10px">
-                                    <p class="color">总金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
-                                    <p
+                                    <p class="color" style="margin-right:10px;">总金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
+                                    <p class="" style="margin-right:10px;">已付金额：￥{{item.orderVo.alreadyPay | toFixed(2)}}</p>
+                                    <p class="green" style="margin-right:10px;">未付金额：￥{{item.orderVo.shouldPay | toFixed(2)}}</p>
+                                     <!-- <p >优惠金额：￥{{item.orderVo.counpPay | toFixed(2)}}</p> -->
+                                       
+                                     <!-- <p
                                     v-if="item.orderVo.order_status==5"
                                     class=""
-                                    >已付金额：￥{{item.orderVo.order_prepay | toFixed(2)}}</p>
-                                    <p
+                                    >已付金额：￥{{item.orderVo.order_prepay | toFixed(2)}}</p> -->
+                                    <!-- <p
                                     class=""
                                     v-if="item.orderVo.order_status==1 || item.orderVo.order_status==4 || item.orderVo.order_status==6 || item.orderVo.order_status==6"
-                                    >已付金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
+                                    >已付金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p> -->
                                     <div style="white-space:nowrap;display:flex;">
-                                        <p
+                                        <!-- <p
                                             v-if="!item.orderVo.prePayChannel && !item.orderVo.need_pre_pay"
                                             class="green"
                                             style="margin-right:10px;"
                                             >未付金额：￥{{item.orderVo.order_amount | toFixed(2)}}</p>
                                         <p
-                                        v-if="!item.orderVo.prePayChannel && item.orderVo.need_pre_pay"
+                                       v-if="item.orderVo.prePayButton"
                                         class="green"
                                         style="margin-right:10px;"
-                                        >未付金额：￥{{item.orderVo.order_prepay | toFixed(2)}}</p>
+                                        >未付金额：￥{{item.orderVo.order_prepay | toFixed(2)}}</p>  -->
                                         <p style="white-space: nowrap;" v-if="item.orderVo.prePayButton">
                                         <a
                                         href="javascript:;"
@@ -198,7 +209,7 @@
                     <table border="1">
                         <thead>
                             <tr>
-                                <th>器件信息</th>
+                                <th>零件信息</th>
                                 <th>单价</th>
                                 <th>数量</th>
                                 <th>金额</th>
@@ -220,7 +231,7 @@
                                                     <p style="margin:5px;">{{value.username}}</p>
                                         <span class="tag bgColor" v-if="value.tag==1">{{value.tag | tagFilter}}</span>
                                              <span class="tag bgBlu" v-if="value.tag==2">{{value.tag | tagFilter}}</span>
-                                              <span class="tag bgOrange" v-if="value.tag==18">{{value.tag | tagFilter}}</span>
+                                              <!-- <span class="tag bgOrange" v-if="value.tag==18">{{value.tag | tagFilter}}</span> -->
                                             </div>
                                        
                                         </div>
@@ -240,9 +251,9 @@
                                         </div>
                                     </td> -->
                                     <td>
-                                        <div class="gpoodsinfo">
+                                        <div class="gpoodsinfo" style="max-width:300px">
                                             <ImgE :src="value.goods_image" :W="80" :H="80"></ImgE>
-                                            <div>
+                                            <div style="max-width:300px">
                                                 <router-link class="color" :to="{
                                                    path:'/BrandDetail/GoodsDetails',
                                                     query:{
@@ -264,21 +275,67 @@
                                                     }">{{value.goods_branda}}</router-link>
                                                        </p> 
                                              
-                                                <p class="gray">{{value.goods_desc}}</p>
+                                                <p class="gray desc">{{value.goods_desc}}</p>
                                             </div>
                                         </div>
                                         </td>
                                     <td>
-                                       <p v-if="value.good_price"> {{value.priceunit?'$':'￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}
+                                     
+                                       <div v-if="value.good_price"> {{value.priceunit?'$':'￥'}}{{value.good_price | toFixed(value.priceunit?3:2)}}
                                          
-                                       </p>
+                                            </div>
                                     </td>
                                     <td>{{value.goods_count}}</td>
-                                    <td>{{value.priceunit?'$':'￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}</td>
+                                    <td>
+                                      <el-popover
+                                        placement="bottom"
+                                        trigger="hover"
+                                        >
+                                        <div v-if="!value.goods_type" style="white-space:nowrap;">
+                                          <p v-if="!value.pay_channel && !value.last_pay_channel">未付款</p>
+                                          <p  v-if="value.pay_channel">
+                                            <span style="margin-right:10px;">预付款：￥{{value.pre_pay | toFixed(2)}}</span>
+                                            <span v-if="value.pay_channel==3" style="margin-right:10px;">
+                                              <ImgE :src="value.prePayNo" :W="40" :H="40" :isBig="true"></ImgE>
+                                              </span>
+                                             <span v-if="value.pay_channel && value.pay_channel!=3 && value.prePayNo"  class="blu" style="margin-right:10px;">{{value.prePayNo}}</span>
+                                            
+                                             <span v-if="value.pay_channel==3 && value.final_pay">已审核</span>   
+                                              <span v-if="value.pay_channel==3 && !value.final_pay">待审核</span>   
+                                          </p>
+                                          <p  v-if="value.final_pay">
+                                            <span style="margin-right:10px;">尾  &nbsp;&nbsp;款：￥{{value.final_pay | toFixed(2)}}</span>
+                                            <span v-if="value.last_pay_channel==3" style="margin-right:10px;">
+                                              <ImgE :src="value.finalPayNo" :W="40" :H="40" :isBig="true"></ImgE>
+                                              </span>
+                                             <span v-if="value.last_pay_channel && value.last_pay_channel!=3 && value.finalPayNo" class="blu" style="margin-right:10px;">{{value.finalPayNo}}</span>
+                                            <span v-if="value.last_pay_channel" style="margin-right:10px;">（{{value.last_pay_channel | prePayChannel}}）</span>
+                                            <span v-if="!value.last_pay_channel" style="margin-right:10px;">（待支付）</span>
+                                            <span v-if="value.last_pay_channel==3 && value.order_status!=5">已审核</span>   
+                                              <span v-if="value.last_pay_channel==3 && value.order_status==5">待审核</span>   
+                                            </p>
+                                        </div>
+                                        <div v-if="value.goods_type">
+                                           <p v-if="!value.pay_channel && !value.last_pay_channel">未付款</p>
+                                          <p  v-if="value.pay_channel">
+                                            <span style="margin-right:10px;">总金额：￥{{value.pre_pay | toFixed(2)}}</span>
+                                          <span v-if="value.pay_channel==3" style="margin-right:10px;">
+                                              <ImgE :src="value.prePayNo" :W="40" :H="40" :isBig="true"></ImgE>
+                                              </span>
+                                             <span v-if="value.pay_channel && value.pay_channel!=3 && value.prePayNo"  class="blu" style="margin-right:10px;">{{value.prePayNo}}</span>
+                                             <span style="margin-right:10px;">（{{value.pay_channel | prePayChannel}}）</span>
+                                             <span v-if="value.pay_channel==3 && value.order_status">已审核</span>   
+                                              <span v-if="value.pay_channel==3 && value.order_status==0">待审核</span>   
+                                          </p>
+
+                                        </div>
+                                        <a href="javascript:;" slot="reference"> {{value.priceunit?'$':'￥'}}{{value.total_price | toFixed(value.priceunit?3:2)}}</a>
+                                      </el-popover>
+                                      </td>
                                   
                                     <td>
                                         <div v-if="value.trans_no">
-                                            <span>{{value.trans_no}}</span>
+                                            <!-- <span>{{value.trans_no}}</span> -->
                                         <el-popover
                                         placement="top-start"
                                         width="500"
@@ -306,22 +363,45 @@
                                         <span
                                             slot="reference"
                                             style="color:#0d98ff; cursor: pointer;margin-left:10px;text-decoration: underline;"
-                                        >查询物流</span>
+                                        >{{value.trans_no}}</span>
                                         </el-popover>
                                     </div>
                                     <p v-else>暂无物流信息</p>
                                     </td>
-                                    <td>￥{{value.guanshui}}</td>
                                     <td>
-                                        <p>{{value.complete_date | formatDate}}</p>
-                                         <p>{{value.diliver_place}}</p>
-                                         <p>{{value.order_status | filtersStatus}}</p>
+                                      <span v-if="value.guanshui">￥{{value.guanshui}}</span>
+                                      </td>
+                                    <td >
+                                      <div style="position:relative;">
+                                          <p>{{value.complete_date | formatDate}}</p>
+                                          <p>{{value.diliver_place}}</p>
+                                          <template v-if="value.order_status==3">
+                                            <p v-if="item.orderVo.order_status==3">{{value.order_status | filtersStatus}}</p>
+                                            <img v-if="item.orderVo.order_status!=3" src="@/assets/image/PersonalCenter/cancleMark.png" alt="" class="cancleMark" style="top:0;width:60px;">
+                                          </template>
+                                          <template v-if="value.order_status!=3">
+                                            <p>{{value.order_status | filtersStatus}}</p>
+                                          </template>
+                                         
+                                      </div>
+                            
+                                        
                                     </td>
                                     <td class="btn">
+                                      <p v-if="value.order_mark">
+                                        <el-popover
+                                              placement="right"
+                                              title="买家备注："
+                                              width="200"
+                                              trigger="hover"
+                                              :content="value.order_mark">
+                                              <a  slot="reference">查看备注</a>
+                                            </el-popover>
+                                      </p>
                                         <p v-if="value.confirmChangeDiliverTimeButton"><el-button size="mini" 
                                                 @click="confirmChangeDiliverTime(value)">确认新交期</el-button></p>
                                         <p v-if="value.cancleButton"> <el-button size="mini"  
-                                                @click="cancleOrder(2,value)">取消此器件</el-button></p>
+                                                @click="cancleOrder(2,value)">取消此零件</el-button></p>
                                         <p v-if="value.receivingGoodsButton">
                                              <el-button size="mini" @click="confirmRecieveGoods(value.id)"
                                                 >确认收货</el-button>
@@ -336,16 +416,17 @@
                             
                         </tbody>
                     </table>
-                    <div class="fr total">
-                        <p class=""><strong class="">人民币</strong>共{{countObj.renCount}}种器件，金额小计：<span class="right">{{countObj.ren | toFixed(2)}}</span></p>
-                         <p class=""><strong class="">美元</strong>共{{countObj.usdCount}}种器件，金额小计：<span class="right">US${{countObj.usd | toFixed(3)}}</span></p>
+                    <div class="fr total relative" style="position:relative;">
+                        <img v-if="item.orderVo.order_status==3" src="@/assets/image/PersonalCenter/bigCancleMark.png" alt="" class="cancleMark">
+                        <p class=""><strong class="">人民币</strong>共{{countObj.renCount}}种零件，金额小计：<span class="right">{{countObj.ren | toFixed(2)}}</span></p>
+                         <p class=""><strong class="">美元</strong>共{{countObj.usdCount}}种零件，金额小计：<span class="right">US${{countObj.usd | toFixed(3)}}</span></p>
                          <P>今日美元汇率牌价：<span class="right">{{item.orderVo.today_exchange}}</span></P>
                          <P>海关增值税13%：<span class="right">{{item.orderVo.order_bill | toFixed(2)}}</span></P>
                          <P>关税：<span class="right">￥{{item.orderVo.guanshui_total | toFixed(2)}}</span></P>
                          <P>清关服务费：<span class="right">￥{{item.orderVo.guanshui_service | toFixed(2)}}</span></P>
                     </div>
                      <div class="footer" v-if="item.orderVo.order_status!=3">订单总额：<label>￥{{item.orderVo.order_amount | toFixed(2)}}</label></div>
-                     <div class="footer" v-if="item.orderVo.order_status==3"><label for="">订单已取消</label></div>
+                     <!-- <div class="footer" v-if="item.orderVo.order_status==3"><label for="">订单已取消</label></div> -->
                 </div>
             </div>
             
@@ -357,7 +438,7 @@
                 <strong style>{{currentSecondOrder.complete_date | formatDate}}</strong>
                 </p>
                 <p>接受后无法撤销订单，如未付尾款请务必在新交期前支付尾款</p>
-                <p>若拒绝接收新交期，请在订单中心取消器件</p>
+                <p>若拒绝接收新交期，请在订单中心取消零件</p>
             </div>
             <div slot="footer" class="dialog-footer AcceptNewTime" style="text-align:center;margin-top:20px;" >
             
@@ -445,7 +526,7 @@
                               <div
                                   slot="tip"
                                   class="el-upload__tip"
-                              >图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                              >图片尺寸请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
                           </el-upload>
                       </el-form-item>
                     
@@ -509,9 +590,9 @@
     </el-dialog>
     <el-dialog
       :visible.sync="dialogCode"
-      width="600px"
+      width="350px"
       :close-on-click-modal="false"
-      center
+      title="微信扫码支付"
       class="weichatCode"
     >
       <div class="weichatCodeCont">
@@ -544,6 +625,7 @@ import { mapActions, mapState } from "vuex";
 import { TimeForma,TimeForma2 } from "@/lib/utils";
 import { axios, buyerOrderCenter } from "@/api/apiObj";
 import { baseURL, baseURL2,imgBaseUrl } from "@/config";
+
 import AddRate from "@/components/addRate";
 import bankTransfer from "_c/bankTransfer";
 // import { watch } from 'fs';
@@ -556,6 +638,7 @@ import bankTransfer from "_c/bankTransfer";
         // },
         data(){
             return {
+                baseURL:baseURL,
                 addRateItem:{},
                 showAddRate:false,
                 TimeForma2:TimeForma2,
@@ -747,6 +830,7 @@ import bankTransfer from "_c/bankTransfer";
                 this.getorderDetail()
             },
             getorderDetail(){
+              this.$loading(this.$store.state.loading);
                  let orderNo=this.$route.query.orderNo;
                 axios.request({...buyerOrderCenter.queryOrderDeatil,params:{orderNo:orderNo}}).then(res=>{
                     this.item=res.data.data[0];
@@ -759,13 +843,16 @@ import bankTransfer from "_c/bankTransfer";
                         ren:0
                     }
                     this.item.orderInfoList.forEach(item=>{
-                        if(item.priceunit){
+                      if( item.order_status!=3){
+                      if(item.priceunit ){
                             count.usdCount++;
                             count.usd+=item.total_price
                         }else{
                             count.renCount++;
                             count.ren+=item.total_price
                         }
+                      }
+                        
                             if(obj[item.username]){
                             obj[item.username].list.push(item)
                             }else{
@@ -784,8 +871,7 @@ import bankTransfer from "_c/bankTransfer";
                         })
                         this.orderInfoList=obj;
                         this.countObj=count;
-                        console.log(this.orderInfoList);
-                        console.log(this.countObj)
+                        this.$loading(this.$store.state.loading).close();
         
                 })
             },
@@ -945,7 +1031,23 @@ import bankTransfer from "_c/bankTransfer";
     },
     confirmRecieveGoods(id){
         this.confirmRecieveGoodsId=id;
-        this.dialogVisible3=true;
+        //this.dialogVisible3=true;
+         this.$confirm('请确认您已收到货品，确认后系统将会放款给卖家', '温馨提示', {
+          confirmButtonText: '确认收货',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          axios.request({...buyerOrderCenter.confirmRecieveGoods,params:{
+        orderId:this.confirmRecieveGoodsId
+        }}).then(res=>{
+        if(res){
+         //   this.dialogVisible3=false;
+          this.getorderDetail()
+        }
+        })
+        }).catch(() => {
+                  
+        });
     },
     // 确认收货
     ConfirmReceipt() {
@@ -1327,18 +1429,23 @@ this.payment(2, this.transPaymentobj);
   font-size: 12px;
   border-radius: 3px;
 }
+.cancleMark{
+  position: absolute;
+  left:40%;
+  
+}
  // 支付二维码的模态框
   .weichatCode{
     /deep/.el-dialog{
-      background: url('../../../assets/image/ShoppingCart/wechatpay.jpg') center center no-repeat;
-      background-size:600px 333px;
+      // background: url('../../../assets/image/ShoppingCart/wechatpay.jpg') center center no-repeat;
+      // background-size:600px 333px;
       position: relative;
       .el-dialog__header{
-          position: absolute;
-          right:0;
-          top:0px;
-          cursor: pointer;
-          z-index: 1;
+          // position: absolute;
+          // right:0;
+          // top:0px;
+          // cursor: pointer;
+          // z-index: 1;
           i{
             font-size:25px;
           }
@@ -1350,19 +1457,17 @@ this.payment(2, this.transPaymentobj);
       }
     }
     .weichatCodeCont{
-      height:333px;
       position: relative;
       .codeImg{
-        margin-left: 75px;
-        margin-top: 115px;
-        width: 170px;
+        width: 95%;
+        margin-left:10px;
       }
       .Invalid{
-        width:180px;
-        height:180px;
+        width:200px;
+        height:200px;
         position: absolute;
-        top:110px;
-        left:70px;
+        top:75px;
+        left:75px;
         background: rgba(255,255,255,0.85);
         text-align: center;
         color:#333;
@@ -1380,15 +1485,13 @@ this.payment(2, this.transPaymentobj);
     .buyerOrderDetail{
         max-width:100%;
         color:#333;
-         
- 
         .steps{
-        color:green;
-
+            color:green;
             padding-top:20px;
-         
-             /deep/.el-step{
+            /deep/.el-steps{
+                display:block!important;
            
+            .el-step{
             flex-basis:auto!important;
             .el-step__title{
                 line-height:1;
@@ -1407,9 +1510,8 @@ this.payment(2, this.transPaymentobj);
                    color:#333;
                }
             }
+             } 
         }
-    
-      
     }
         .content{
             .step{
@@ -1629,6 +1731,7 @@ this.payment(2, this.transPaymentobj);
                         align-items: center;
                         text-align: left;
                         // justify-content: center;
+                       
                         .ImgE{
                                 /deep/img{
                               
@@ -1648,6 +1751,14 @@ this.payment(2, this.transPaymentobj);
                         } 
                         p{
                             margin-top:10px;
+                            width:100%;
+                            &.desc{
+                              min-height:0;
+                              width:100%;
+                              overflow: hidden;
+                              white-space: nowrap;
+                              text-overflow: ellipsis;
+                            }
                         }
                         .name{
                             font-weight: bold;

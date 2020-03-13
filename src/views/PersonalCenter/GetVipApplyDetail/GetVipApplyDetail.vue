@@ -12,7 +12,7 @@
       </el-table-column>
       <el-table-column prop="applyTime" label="申报时间"  align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.applyTime | formatDate}}</span>
+          <span>{{scope.row.applyTime}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="contactName" label="联系人"  align="center"></el-table-column>

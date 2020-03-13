@@ -3,7 +3,7 @@
         <router-link to="/OriginalFactoryEntry/BasicInforma">
         <div class="wrap">
             <p class="one">- - I C M A P .C N - -</p>
-            <h1>入驻水木晶城</h1>
+            <h1>入驻大麦晶城</h1>
             <div class="two">
                 <p>0 差 价，你 的 价 格 你 做 主 ！</p>
                 </div>

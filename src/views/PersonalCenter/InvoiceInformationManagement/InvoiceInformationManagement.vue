@@ -71,15 +71,15 @@
             <el-input v-model="ruleForm.corporatename"></el-input>
           </el-form-item>
           <el-form-item label="税号/统一信用代码证号：" prop="billno">
-            <el-input v-model="ruleForm.billno"></el-input>
+            <el-input v-model="ruleForm.billno" @input="setBillo" maxlength="18" show-word-limit></el-input>
           </el-form-item>
           <el-form-item label="开户银行：" prop="openingbank">
             <el-input v-model="ruleForm.openingbank"></el-input>
           </el-form-item>
-          <el-form-item label="银行账号：" prop="bankaccount">
+          <el-form-item label="银行账号：" prop="bankaccount" @input="setBankCount">
             <el-input v-model="ruleForm.bankaccount"></el-input>
           </el-form-item>
-          <el-form-item label="开票电话：" prop="registeredphone">
+          <el-form-item label="开票电话：" prop="registeredphone" @input="setPhone">
             <el-input v-model="ruleForm.registeredphone"></el-input>
           </el-form-item>
           <el-form-item label="开票地址：" prop="registeredaddress">
@@ -172,7 +172,7 @@ export default {
           {
             required: true,
             message: "请输入税号/统一信用代码证号",
-            trigger: "blur"
+            trigger: "blur",
           }
         ]
       }
@@ -198,6 +198,15 @@ export default {
       "GetChangePersonalInvoice",
       "GetQueryUserBillById"
     ]),
+    setBillo(){
+      this.ruleForm.billno=this.ruleForm.billno.replace(/[^a-z0-9]/g,'')
+    },
+    setBankCount(){
+      this.ruleForm.bankaccount=this.ruleForm.bankaccount.replace(/[^0-9]/g,'')
+    },
+    setPhone(){
+      this.ruleForm.registeredphone=this.ruleForm.registeredphone.replace(/[^0-9]/g,'')
+    },
     // 默认框改变时
     // checkboxChange(item) {
     //   if (item.isdefault) {

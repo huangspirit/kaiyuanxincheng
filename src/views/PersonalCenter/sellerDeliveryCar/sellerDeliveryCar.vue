@@ -2,7 +2,7 @@
   <div class="sellerDeliveryCar">
     <el-breadcrumb separator-class="el-icon-arrow-right ">
       <el-breadcrumb-item to="/PersonalCenter/SellerOrderManagement">卖家订单中心</el-breadcrumb-item>
-      <el-breadcrumb-item>发货框</el-breadcrumb-item>
+      <el-breadcrumb-item>发货筐</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="cont">
       <div class="tit">
@@ -25,7 +25,7 @@
           <table>
             <thead>
               <tr>
-                <th>器件信息</th>
+                <th>零件信息</th>
                 <th>订单编号</th>
                 <th>数量</th>
                 <th>单价</th>
@@ -42,7 +42,7 @@
                       <div style="display:flex; align-items: center;">
                       <i
                             class="el-icon-delete"
-                            title="从发货框移除此器件"
+                            title="从发货筐移除此零件"
                             @click="deleteGoods(1,item.goodsSellerId)"
                           ></i>
                       <div class="goodsinfo">
@@ -104,7 +104,7 @@
         <!-- <el-button size="small">打印标签</el-button> -->
         <!-- <el-button size="small" type="primary" @click="printBox">下载发货单</el-button> -->
         <el-button size="small" @click="batchDelivery(false)" type="primary" v-if="priceunit!==true && unpriceunitCount">国内发货</el-button>
-          <el-button size="small" @click="batchDelivery(true)" type="primary" v-if="priceunit!==false && priceunitCount">香港发货</el-button>
+          <el-button size="small" @click="batchDelivery(true)" type="primary" v-if="priceunit!==false && priceunitCount">香港到货通知</el-button>
       </div>
     </div>
     <el-dialog title="批量发货" :visible.sync="showBatchDelivery" width="800px" align="center">
@@ -477,7 +477,7 @@ export default {
         });
     },
     deleteGoods(type, id) {
-      this.$confirm("确定要从发货框移除吗？", "提示", {
+      this.$confirm("确定要从发货筐移除吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

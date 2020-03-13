@@ -12,6 +12,11 @@
           title="点击更换"
         >
           <img :src="UserInforma.headImgUrl" class="head-portrait" alt />
+          <div class="vipwrap" v-if="UserInforma.userTagMap.vip">
+<img src="@/assets/image/icon/VIP.png" alt="">
+          <span class="vipLevel">{{UserInforma.userTagMap.vipLevel?UserInforma.userTagMap.vipLevel:0}}</span>
+          </div>
+          
         </el-upload>
         <div class="info fl">
           <p class="name" style="max-width:200px;">
@@ -30,7 +35,9 @@
             />
           </p>
           <p>
-            <span class="type color" v-if="UserInforma.userTagMap.vip">月结用户</span>
+            <span class="type color" v-if="UserInforma.userTagMap.vip">
+              月结用户
+              </span>
             <span
               class="type color"
               v-if="UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=3"
@@ -40,15 +47,17 @@
               tag="span"
               class="type color"
               v-if="!UserInforma.userTagMap.seller"
+              style="cursor:pointer;"
             >申请入驻</router-link>
           </p>
-          <!--            <div>信用等级：{{UserInforma.userTagMap.userLevel}}</div>-->
+          <!-- <div>信用等级：{{UserInforma.userTagMap.userLevel}}</div>-->
         </div>
       </div>
       <div class="right">
         <ul class="clear">
           <li>
             <div class="cont">
+              <div>
               <p class="money">{{UserInforma.userTagMap.wallet | toFixed(2) }}</p>
               <p class="desc">钱包余额（元）</p>
               <p class="router">
@@ -58,21 +67,27 @@
                 <a>|&nbsp;&nbsp;</a>
                 <router-link to="/PersonalCenter/buyerDetailList">明细</router-link>
               </p>
+              </div>
             </div>
           </li>
           <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
             <div class="cont yajin">
+              <div>
+
+             
               <p class="money">{{UserInforma.userTagMap.deposit | toFixed(2)}}</p>
-              <p class="desc">押金（元）</p>
+              <p class="desc">保证金（元）</p>
               <p class="router">
                 <router-link to="/PersonalCenter/deposit">充值</router-link>&nbsp;&nbsp;
                 <a>|&nbsp;&nbsp;</a>
                 <router-link to="/PersonalCenter/depositDetailList">明细</router-link>
               </p>
+               </div>
             </div>
           </li>
           <li v-if="UserInforma.userTagMap.vip">
             <div class="cont yajin">
+              <div>
               <p class="money">{{UserInforma.userTagMap['restcredit-vip'] | toFixed(2)}}</p>
               <p class="desc">剩余月结额度（元）</p>
               <p class="router">
@@ -80,6 +95,7 @@
                 <a>|&nbsp;&nbsp;</a>
                 <router-link to="/PersonalCenter/vipDetailList" class="route">明细</router-link>
               </p>
+              </div>
             </div>
             <!-- <div class="cont circle clear">
                         <el-progress type="circle" :width="70" :percentage="creditvipPercente"  class="fl"></el-progress>
@@ -96,14 +112,16 @@
             v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1"
           >
             <div class="cont yajin">
+              <div>
               <p class="money">{{UserInforma.userTagMap['restcredit-seller'] | toFixed(2)}}</p>
               <p class="desc">剩余售卖额度（元）</p>
               <p class="router">
-                <span>售卖额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp;
+                <span>基础额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp;
                 <a>|&nbsp;&nbsp;</a>
                 <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
               </p>
-              <p style="font-size:14px;">售卖额度 = 押金*10 + 基础额度</p>
+              <p style="font-size:14px;">售卖额度 = 保证金*10 + 基础额度</p>
+              </div>
             </div>
             <!-- <div class="cont circle clear">
                         <el-progress type="circle" :width="70" :percentage="creditsellerPercente"  class="fl"></el-progress>
@@ -127,6 +145,49 @@
     </div>
     <!-- 个人信息设置 -->
     <ul class="informa-set clear">
+      <li>
+        <div class="clear cont">
+          <div class="clear">
+            <div class="userLevel fl">
+              <p class="name">
+                晶豆 &nbsp;
+              </p>
+            </div>
+          </div>
+          <div class="desc"><p class="router">
+                <a href="javascript:;">获取原则及使用方法
+                    <div class="cont1">
+                      <h2>晶豆是大麦晶城的内部虚拟货币</h2>
+                      <div class="title">一、如何获取晶豆？</div>
+                      <div>
+                        <p>
+                         ① 用户连续
+                          <label class="blu">3</label>个月如期付款可获得10个晶豆
+                        </p>
+                        <p>
+                         ② 用户连续
+                          <label class="blu">6</label>个月如期付款可获得30个晶豆
+                        </p>
+                        <p>
+                        ③  用户连续
+                          <label class="blu">12</label>个月如期付款可获得100个晶豆
+                        </p>
+                      </div>
+                      <div class="title">二、晶豆的功能</div>
+                      <div>
+                        <p>1.晶豆主要用来实现平台对用户各种行为的奖励，以及用于兑换平台的道具与推广功能等；</p>
+                        <p>2.买家用于兑换月结额度，每一个晶豆可以兑换月结额度100元；</p>
+                        <p>3.卖家用于兑换售卖额度，每一个晶豆可以兑换售卖额度100元；</p>
+                        <p>4.兑换现金,兑换现金后可直接提现，一颗晶豆可兑现金2元；</p>
+                      </div>
+                    </div>
+                </a>
+              </p></div>
+          <div class="val">
+            <span>{{UserInforma.userTagMap.dou | toFixed(0)}}</span>
+          </div>
+        </div>
+      </li>
       <li>
         <div class="clear cont">
           <div class="clear">
@@ -169,8 +230,8 @@
         </div>
       </li>
       <li>
-        <div class="cont">
-          <div class="name">绑定微信</div>
+        <div class="cont" title="公众号用以推送平台消息，若以前绑定过大麦晶城公众号，可以先取消关注，再扫码关注绑定">
+          <div class="name">绑定微信公众号</div>
           <p class="desc" v-if="!UserInforma.bindWeChat">你还没有绑定微信，快去绑定吧</p>
           <p class="bind" v-if="!UserInforma.bindWeChat" @click="dialogVisibleWeChatBindHandle">
             <span>去绑定</span>
@@ -219,6 +280,16 @@
       <li>
          <router-link to="/PersonalCenter/feedBack" class="cont" tag="div">
           <p class="name">我的反馈</p>
+         <div class="desc" >&nbsp;</div>
+          <p class="marginTop">
+            <span>查看结果</span>
+            <span class="el-icon-arrow-right fr"></span>
+          </p>
+         </router-link>
+      </li>
+      <li>
+         <router-link to="/PersonalCenter/afterMark" class="cont" tag="div">
+          <p class="name">我的售后</p>
          <div class="desc" >&nbsp;</div>
           <p class="marginTop">
             <span>查看结果</span>
@@ -579,11 +650,46 @@ export default {
   methods: {
     ...mapActions("ShippingAddress", ["GetAllReceivingAddress"]),
     ...mapActions("Login", ["GetUserInforma"]),
-    setPassword() {
-      this.showsetpassword = true;
-      this.setform = {};
-    },
-    
+    // setPassword() {
+    //   this.showsetpassword = true;
+    //   this.setform = {};
+    // },
+    setPassword(){
+            //先验证是否设置提现密码
+          console.log("weeweew")
+            this.inputpassword="";
+            axios.request(personCenter.checkSetPassword).then(res=>{
+                if(res.data==1){
+                    this.showsetpassword=true;
+                    this.setform = {};
+                }else{
+                    //需要新增
+                    this.$prompt('请设置提现密码', '', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        //校验密码
+                        axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
+                            console.log(res)
+                            if(res){
+                                
+                            }
+                        })
+                    }).catch(() => {
+
+                    });
+                }
+            })
+        },
+        checkpassword(){
+            axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
+                console.log(res)
+                if(res){
+                    this.showinputPassword=false;
+                }
+
+            })
+        },
     submitSetpassword() {
       if (
         this.setform.password &&

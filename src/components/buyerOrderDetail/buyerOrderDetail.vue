@@ -63,8 +63,9 @@
                              </div>
                              <div  style="display:flex;">
                                  <div style="margin-right:10px;">
-                                    <el-button  @click="downLoadOrderContract(item.orderVo.contractUrl)" size="mini">
-                                        下载合同
+                                    <el-button size="mini">
+                                        <a  :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.contractUrl}&access_token=${access_token}`">
+                                         下载合同</a>
                                     </el-button>
                                  </div>
                                    
@@ -117,7 +118,7 @@
                         <thead>
                             <tr>
                                 <th>供应商</th>
-                                <th>器件信息</th>
+                                <th>零件信息</th>
                                 <th>单价</th>
                                 <th>数量</th>
                                 <th>金额</th>
@@ -207,8 +208,8 @@
                         </tbody>
                     </table>
                     <div class="fr total">
-                        <p class=""><strong class="">人民币</strong>共1种器件，金额小计：<span class="right">￥888</span></p>
-                         <p class=""><strong class="">美元</strong>共1种器件，金额小计：<span class="right">US$888</span></p>
+                        <p class=""><strong class="">人民币</strong>共1种零件，金额小计：<span class="right">￥888</span></p>
+                         <p class=""><strong class="">美元</strong>共1种零件，金额小计：<span class="right">US$888</span></p>
                          <P>今日美元汇率牌价：<span class="right">7.38234</span></P>
                          <P>海关增值税13%：<span class="right">232</span></P>
                          <P>关税：<span class="right">7.38234</span></P>
@@ -379,7 +380,6 @@ import { baseURL, baseURL2 } from "@/config";
             },
             getDiliverInfo(orderId) {
                 this.queryExpress({ orderId }).then(res => {
-                
                     this.expressList = res.data;
                 });
             },

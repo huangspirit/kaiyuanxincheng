@@ -8,6 +8,10 @@
                 <!-- <div class="fr btn" v-if="showGetMore" @click="getMore">
                     <i class="el-icon-refresh"></i>换一批
                 </div> -->
+                <ul class="clear" style="flex:1;">
+                    <li @click="getSpecialList(-1)" :class="{'active':selectedK==-1}">全部</li>
+                    <li v-for="(item ,k) in categoryList" :key="k"  @click="getSpecialList(k)"  :class="{'active':selectedK==k}">{{item.name}}</li>
+                </ul>
                 <div class="fr ">
                     <el-input
                         placeholder="在结果中查找型号"
@@ -22,10 +26,7 @@
 
                     </el-input>
                 </div>
-                <ul class="clear">
-                    <li @click="getSpecialList(-1)" :class="{'active':selectedK==-1}">全部</li>
-                    <li v-for="(item ,k) in categoryList" :key="k"  @click="getSpecialList(k)"  :class="{'active':selectedK==k}">{{item.name}}</li>
-                </ul>
+                
             </div>
             <table class="goodsList" >
                 <thead>
@@ -69,7 +70,7 @@
                                         <p>
                                             <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
                                              <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-                                              <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>
+                                              <!-- <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> -->
                                             <span class="tag bgLightGray"  v-if="!item.focus" @click.stop="addFocus(k)" style="cursor:pointer;">关注</span>
                                             <span class="bgd5 tag" v-if="item.focus">已关注</span>
                                         </p>
@@ -97,7 +98,8 @@
                         </td>
                         <td >
                               {{item.goodsCount}}只
-                            <p class="desc">起订量：{{item.moq}}</p>
+                            <p class="desc gray">起订量：{{item.moq}}</p>
+                            <p class="desc gray">增量：{{item.mpq}}</p>
                         </td>
                         <td >
                             <div class="stepPrice">
@@ -156,7 +158,7 @@
             return {
                 specialList:[],
                 categoryList:[],
-                pageSize:15,
+                pageSize:50,
                 currentPage:1,
                 selectedK:-1,
                 total:0,

@@ -1,6 +1,6 @@
 <template>
   <div class="PersonalCenter" id="PersonalCenter">
-    <div class="sideMenu noprint">
+    <div class="sideMenu">
       <sideMenu :list="list"></sideMenu>
     </div>
     <div class="content">
@@ -68,9 +68,16 @@ export default {
               path: "/PersonalCenter/sellerComment",
               icon: require("@/assets/image/sidemenuicon/comment.png")
             },
+            //  {
+            //   title: "发布新产品",
+            //   index: "1_5",
+            //   name: "publish",
+            //   path: "/PersonalCenter/publish",
+            //   icon: require("@/assets/image/sidemenuicon/SellerIssuesProduct.png")
+            // },
             {
-              title: "产品库管理",
-              index: "1_5",
+              title: "产品管理",
+              index: "1_6",
               name: "sellerPushProduct",
               path: "/PersonalCenter/sellerPushProduct",
               icon: require("@/assets/image/sidemenuicon/product.png")
@@ -78,19 +85,19 @@ export default {
             {
               name: "inquiryList",
               title: "询价单列表",
-              index: "1_6",
+              index: "1_7",
               path: "/PersonalCenter/inquiryList",
               icon: require("@/assets/image/sidemenuicon/inquiryList.png")
             },
             {
               title: "发票管理",
-              index: "1_7",
+              index: "1_8",
               path: "/PersonalCenter/SellerInvoiceManagement",
               icon: require("@/assets/image/sidemenuicon/SellerInvoiceManagement.png")
             },
             {
-              title: "账单中心",
-              index: "1_8",
+              title: "结算中心",
+              index: "1_9",
               name: "SellerBillCenter",
               class: "active",
               path: "/PersonalCenter/SellerBillCenter",
@@ -137,7 +144,7 @@ export default {
               icon: require("@/assets/image/sidemenuicon/myInquire.png")
             },
             {
-              title: "账单中心",
+              title: "对账单",
               name: "BuyerBillCenter",
               index: "2_5",
               class: "active",
@@ -234,7 +241,9 @@ export default {
           if (this.UserInforma.userTagMap.seller == true) {
             if (this.UserInforma.userTagMap.tag != 1) {
               item.children = item.children.map(item0 => {
-                if (item0.name == "inquiryList" || item0.name=="sellerPushProduct") {
+                if (item0.name == "inquiryList" ) {
+                  //不判断
+                  // if (item0.name == "inquiryList") {
                   item0.show = "hidden";
                 }
                 if (item0.name == "SellerBillCenter") {

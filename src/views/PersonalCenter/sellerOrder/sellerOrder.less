@@ -82,28 +82,82 @@
     }
     
     &>.title{
-        line-height: 60px;
+        height:60px;
         background:#fff;
         margin-bottom:10px;
         display: flex;
         padding:0 20px;
         position: relative;
-        &>div{
-            flex: 1;
-            text-align: right;
-        }
-        .input{
-            width:100%;
-            position: absolute;
-            height:100%;
-            top:0;
-            left:0;
-            text-align: center;
-            .inputSearch {
-                margin:0 auto;
+        align-items: center;
+
+        .step{
+            font-size:12px;
+            line-height: 1;
+            flex:1;
+            padding:0 30px;
+            ul{
+              display:flex;
+              width:800px;
+              margin:0 auto;
+              li{
                 text-align: center;
+                  font-size:14px;
+                  white-space: nowrap;
+                  display:flex;
+                  align-items: center;
+                  color:#333;
+                  &>i{
+                    font-size:20px;
+                    margin-right:10px;
+                    color:orange;
+                    font-weight: bold;
+                  }
+                  .img{
+                      width:20px;
+                      margin-right:5px;
+                      &.active{
+                          display: none;
+                      }
+                  }
+                  &.active{
+                      .img{
+                          display: none;
+                          &.active{
+                              display: inline-block;
+                          }
+                      }
+                  }
+                  &.item{
+                    flex:1;
+                  }
+                  .linewrap{
+                      color:#ddd;
+                      margin:5px;
+                      flex:1;
+                      text-align: center;
+                      .line{
+                        height:3px;
+                        width:45px;
+                        background:#ddd;
+                        margin-top:-5px;
+                      }
+                      i{
+                        font-size:16px;
+                        margin-left:-7px;
+                      
+                      }
+                  }
+                  &.active{
+                      .linewrap{
+                          color:#e16531;
+                      }
+                      .line{
+                          background: #e16531;
+                      }
+                  }
+                }
             }
-        }
+          }
         
     }
     .tit{

@@ -14,15 +14,15 @@
         <div class="detail">
           <p>
             信用额度是决定您发布商品总价的额度，您当前在售商品的价格总额度不能超过信用总额度
-            <br>信用额度由以下三部分因素决定，采购额度、押金额度(注：不是余额)、基础额度，计算公式如下:
+            <br>信用额度由以下三部分因素决定，采购额度、保证金额度(注：不是余额)、基础额度，计算公式如下:
           </p>
           <p class="xy">
             <span>信用额度</span>
             <span>=采购（消费）总额</span>
             <span class="num">x10</span>
-            <span>+押金额度</span>
+            <span>+保证金额度</span>
             <span class="num">x10</span>
-            <span>+基础额度额度</span>
+            <span>+基础额度</span>
           </p>
           <p class="jc">
             <span>基础额度：未认证商户￥10000元</span>
@@ -42,13 +42,13 @@
             <span class="num">￥130000</span>
           </li>
           <li>
-            <span>押金额度 :</span>
+            <span>保证金额度 :</span>
             <span class="num">￥130000</span>
             <div class="fr" style="display:flex;">
-              <el-button class="default" style="margin-right:20px;">押金充值</el-button>
-               <el-button class="default">押金提现</el-button>
-              <!-- <span>押金充值</span>
-              <span>押金提现</span> -->
+              <el-button class="default" style="margin-right:20px;">保证金充值</el-button>
+               <el-button class="default">保证金提现</el-button>
+              <!-- <span>保证金充值</span>
+              <span>保证金提现</span> -->
             </div>
           </li>
           <li>

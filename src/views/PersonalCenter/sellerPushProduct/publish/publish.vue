@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div style="position:relative;">
+    <brandlist @select="selectBrand" @cancel="CancelSelectBrand" v-if="showBrandlist" ></brandlist>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item to="/PersonalCenter/sellerPushProduct">产品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>发布产品</el-breadcrumb-item>
+      <!-- <el-breadcrumb-item to="/PersonalCenter/sellerPushProduct">产品管理</el-breadcrumb-item> -->
+      <el-breadcrumb-item>{{this.$route.query.id?'更新产品':"发布产品"}}</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="publishWrap">
+       
       <div class="step">
         <ul>
           <li class="item">
@@ -70,8 +72,14 @@
           label-width="150px"
           class="demo-ruleForm"
         >
-          <el-form-item label="制造商：">
-            <div>{{UserInforma.userTagMap.factoryName}}</div>
+          <el-form-item label="制造商：" prop="brandName">
+            <el-select
+              style="display:block;width:250px;"
+              v-model="ruleForm.brandName"
+              placeholder="请选择"
+              @focus="showBrandlist=true"
+            ></el-select>
+          <!-- <div>{{UserInforma.userTagMap.factoryName}}</div> -->
           </el-form-item>
           <el-form-item label="一级类目：" prop="first_id">
             <el-select
@@ -82,6 +90,7 @@
               :remote-method="getOneClass"
               :loading="loading"
               :disabled="ruleForm.id?true:false"
+              style="width:250px"
             >
               <el-option
                 v-for="(item,index) in oneClassList"
@@ -99,7 +108,8 @@
               placeholder="请输入二级类目关键词"
               :remote-method="getTwoClass"
               :loading="loading"
-                :disabled="ruleForm.id?true:false"
+              :disabled="ruleForm.id?true:false"
+              style="width:250px"
             >
               <el-option
                 v-for="(item,index0) in twoClassList"
@@ -118,7 +128,8 @@
               v-model="ruleForm.productno"
               class="inputSearch"
               @keyup.enter.native="inputHandler"
-              style="width:300px;"
+              @input="upCase"
+              style="width:400px;line-height:35px;"
               clearable
               @blur="inputHandler"
             >
@@ -137,25 +148,21 @@
             <!-- <el-input v-model="ruleForm.productno" style="width:300px;"></el-input> -->
           </el-form-item>
           <el-form-item label="产品描述：" prop="productdesc">
-            <el-input type="textarea" v-model="ruleForm.productdesc" style="width:400px;"></el-input>
+            <el-input type="textarea" v-model="ruleForm.productdesc" style="width:600px;" rows="3"></el-input>
           </el-form-item>
           <el-form-item label="基本单位：" prop="unit">
-            <el-input v-model="ruleForm.unit"></el-input>
+            <el-input v-model="ruleForm.unit" style="width:246px"></el-input>
           </el-form-item>
           <el-form-item label="官方参考价格：" prop="price">
             <div class="flexitem">
-              <el-input v-model="ruleForm.price" type="number">
+              <el-input v-model="ruleForm.price" type="number"  style="width:246px">
                 <template slot="prepend">{{priceunit?'$':'￥'}}</template>
-                <!-- <el-select v-model="priceunit" slot="append" placeholder="请选择">
-                <el-option label="人民币" :value="false"></el-option>
-                <el-option label="美元" :value="true"></el-option>
-                </el-select>-->
               </el-input>
               <p class="desc gray">&nbsp;该价格仅做用户参考，不影响实际成交；</p>
             </div>
           </el-form-item>
           <el-form-item label="标准包装量MPQ：" prop="mpq">
-            <el-input v-model="ruleForm.mpq"></el-input>
+            <el-input v-model="ruleForm.mpq"  style="width:246px"></el-input>
           </el-form-item>
           <el-form-item label="数据手册：" prop="name">
             <el-upload
@@ -188,7 +195,7 @@
             >
               <i class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <p>图片清晰，支持png、jpg、gif格式</p>
+            <p>图片清晰，支持png、jpg、gif格式,建议图片尺寸为 200 x 200,大小控制在2M以内</p>
           </el-form-item>
           <!-- <el-form-item label="零件状态：" prop="resource">
             <el-radio-group v-model="ruleForm.resource">
@@ -197,22 +204,24 @@
               <el-radio label="不推荐用于新的设计"></el-radio>
             </el-radio-group>
           </el-form-item>-->
-          <el-form-item label="器件链接：" prop="link_url">
+          <el-form-item label="零件链接：" prop="link_url">
             <el-input
               v-model="ruleForm.link_url"
-              placeholder="为了器件尽快通过审核，请提供厂商网址链接"
+              placeholder="为了零件尽快通过审核，请提供厂商网址链接"
               style="width:400px;"
             ></el-input>
           </el-form-item>
-          <div class="titleDesc" v-if="attributeList.length">
+          <div class="titleDesc" v-if="attributeList.length && UserInforma.userTagMap.tag==1">
             <span>扩展属性</span>
           </div>
-          <el-form-item :label="`${item.name}：`" v-for="item in attributeList" :key="item.id">
-            <div class="flexitem">
-              <el-input v-model="item.property_value" size="mini"></el-input>
-              <!-- <i class="color el-icon-error"></i> -->
-            </div>
-          </el-form-item>
+          <template  v-for="item in attributeList">
+            <el-form-item :label="`${item.name}：`" :key="item.id" v-if="attributeList.length && UserInforma.userTagMap.tag==1">
+              <div class="flexitem">
+                <el-input v-model="item.property_value" size="mini"  style="width:246px"></el-input>
+                <!-- <i class="color el-icon-error"></i> -->
+              </div>
+            </el-form-item>
+          </template>
           <!-- <el-form-item label prop="name">
             <i class="el-icon-circle-plus-outline addbtn blu" @click="addAttr">添加属性</i>
             <div v-for="(item,index) in addAttrList" :key="index">
@@ -239,15 +248,24 @@
         />
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="showres" width="400px" center title="温馨提示">
+      <div style="text-align:center;padding-bottom:30px;">
+        产品已添加成功，请等待审核！
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { axios, sellerCenter } from "@/api/apiObj";
 import { baseURL, goodspictureURL } from "@/config";
+import brandlist from "_c/brandlist"
 import { mapState } from "vuex";
 export default {
   data() {
     return {
+      showres:false,
+      showBrandlist:false,
+      currentBrand:{},
       pdflist: [],
       imglist: [],
       goodspictureURL: goodspictureURL,
@@ -255,7 +273,8 @@ export default {
       loading: false,
       isChecked: 0,
       ruleForm: {
-        unit: "只"
+        unit: "只",
+        
       },
       getResetDetail: {},
       oneClassList: [],
@@ -266,6 +285,11 @@ export default {
       attributeList: [],
       addAttrList: [{}, {}],
       rules: {
+        brandName:[{
+          required: true,
+          message: "请选择制造商",
+          trigger: "blur"
+        }],
         first_id: [
           {
             required: true,
@@ -329,17 +353,34 @@ export default {
       UserInforma: state => state.Login.UserInforma
     })
   },
+  components:{
+    brandlist
+  },
   mounted() {
-    this.ruleForm.brand = this.UserInforma.userTagMap.brand;
-    this.ruleForm.branda = this.UserInforma.userTagMap.brand;
+    // this.ruleForm.brand = this.UserInforma.userTagMap.brand;
+    // this.ruleForm.branda = this.UserInforma.userTagMap.brand;
     if (this.$route.query.id) {
       this.getDetail(this.$route.query.id);
-     
     }
     this.getOneClass();
     //  this.ruleForm.productno = this.UserInforma.userTagMap.branda;
   },
   methods: {
+    selectBrand(val){
+      this.showBrandlist=false;
+      this.ruleForm.brand=val[0].id;
+      this.ruleForm.branda=val[0].id;//branda对应的必须是品牌Id
+      this.ruleForm.brandName=val[0].brand
+    },
+    CancelSelectBrand(){
+       this.showBrandlist=false;
+    },
+    upCase(val){
+      this.ruleForm={
+        ...this.ruleForm,
+        productno:val.toUpperCase()
+      }
+    },
     getDetail(id) {
       axios
         .request({ ...sellerCenter.findGoodsBaseInfoById, params: { id: id } })
@@ -366,6 +407,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          delete this.ruleForm.brandName;
           if (this.ruleForm.id) {
             //更新
           
@@ -387,8 +429,7 @@ export default {
                 id:item.id
               }
             })
-               console.log(obj)
-            console.log(arr)
+
             axios.request({...sellerCenter.updateGoodsBaseInfo,data:obj,method:"post",emulateJSON:true}).then(res=>{
               if(res.resultCode==200){
                 axios.request({...sellerCenter.updateGoodsExinfo,data:arr,method:"post",emulateJSON:true}).then(res=>{
@@ -408,6 +449,8 @@ export default {
               });
               return;
             }
+            this.ruleForm.source=2;//标志是卖家添加或者更新
+           
             axios
               .request({
                 ...sellerCenter.saveGoodsBaseInfo,
@@ -423,7 +466,7 @@ export default {
         }
       });
     },
-    inputHandler() {
+    inputHandler(val) {
       if (!this.ruleForm.parent_id) {
         this.$message({
           message: "请选择类目",
@@ -539,7 +582,8 @@ export default {
           method: "post"
         })
         .then(res => {
-          console.log(res);
+          this.showres=true;
+          return;
           this.$router.push({
             path: "/PersonalCenter/sellerPushProduct"
           });
@@ -550,6 +594,8 @@ export default {
       const isPdf = file.type == "application/pdf";
       if (!isPdf) {
         this.$message.error("只能上传pdf格式的文档!");
+      }else{
+        this.$loading(this.$store.state.loading);
       }
       return isPdf;
     },
@@ -557,6 +603,8 @@ export default {
       this.ruleForm.jy_sheet = "";
     },
     handleAvatarSuccesspdf(res) {
+      console.log("山川成功：",res)
+      this.$loading(this.$store.state.loading).close();
       this.ruleForm.jy_sheet = res.data;
     },
     handleAvatarSuccess(res) {
@@ -586,8 +634,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .publishWrap {
+  position: relative;
   .step{
-    width: 1000px;
+   
     margin:0 auto;
     background:#ffebef;
     padding:20px 70px;
@@ -633,12 +682,12 @@ export default {
   }
   .publish {
     padding: 70px;
-    padding-top:0;
-    width: 1000px;
-    margin: 0px auto;
+    padding-top:10px;
+    width: 100%;
     // border: 1px solid #e3e3e3;
     background: #fff;
     color: #333;
+    box-sizing: border-box;
     .el-form {
       .mark {
         margin-left: 15px;

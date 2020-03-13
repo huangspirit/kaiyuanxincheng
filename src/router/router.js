@@ -33,7 +33,7 @@ export default [
     {
         path: '/specialPrice',
         name: 'specialPrice',
-        component: () => import('@/views/specialPrice'),
+        component: () => import('@/views/specialGoods'),
         meta: {
             title: '现货特价'
         }
@@ -51,7 +51,7 @@ export default [
     {
         path: '/oldGoods',
         name: 'oldGoods',
-        component: () => import('@/views/oldGoods'),
+        component: () => import('@/views/digGold'),
         meta: {
             title: '呆料掘金'
         }
@@ -66,6 +66,129 @@ export default [
         }
     },
     //底部导航详情
+    {
+        path:"/footerWrap",
+        name:"footerWrap",
+        component:() => import("@/views/footerWrap"),
+        meta:{
+            title:'底部导航'
+        },
+        children:[
+            {
+                path:"searchSpecial",
+                name:"searchSpecial",
+                component:() => import("@/views/footerWrap/searchspecial"),
+               
+            },
+            {
+                path:"createOrder",
+                name:"createOrder",
+                component:() => import("@/views/footerWrap/createOrder")
+            },
+            {
+                path:"signIn",
+                name:"signIn",
+                component:() => import("@/views/footerWrap/signIn")
+            },
+            {
+                path:"bindWeChat",
+                name:"bindWeChat",
+                component:() => import("@/views/footerWrap/bindWeChat")
+            },
+            {
+                path:"interDeliver",
+                name:"interDeliver",
+                component:() => import("@/views/footerWrap/interDeliver")
+            },
+            {
+                path:"hkDeliver",
+                name:"hkDeliver",
+                component:() => import("@/views/footerWrap/hkDeliver")
+            },
+            {
+                path:"payType",
+                name:"payType",
+                component:() => import("@/views/footerWrap/payType")
+            },
+            {
+                path:"publishSpe",
+                name:"publishSpe",
+                component:() => import("@/views/footerWrap/publishSpe")
+            },
+            {
+                path:"pulishPro",
+                name:"pulishPro",
+                component:() => import("@/views/footerWrap/pulishPro")
+            },
+            {
+                path:"hdeliver",
+                name:"hdeliver",
+                component:() => import("@/views/footerWrap/hdeliver")
+            },
+            {
+                path:"sellMoney",
+                name:"sellMoney",
+                component:() => import("@/views/footerWrap/sellMoney")
+            },
+            {
+                path:"bindWeChat",
+                name:"bindWeChat",
+                component:() => import("@/views/footerWrap/bindWeChat")
+            },
+            {
+                path:"jingDou",
+                name:"jingDou",
+                component:() => import("@/views/footerWrap/jingDou")
+            },
+            {
+                path:"monthquota",
+                name:"monthquota",
+                component:() => import("@/views/footerWrap/monthquota")
+            },
+            {
+                path:"monthWhitestrip",
+                name:"monthWhitestrip",
+                component:() => import("@/views/footerWrap/monthWhitestrip")
+            },
+            {
+                path:"openbillProcess",
+                name:"openbillProcess",
+                component:() => import("@/views/footerWrap/openbillProcess")
+            },
+            {
+                path:"viplevel",
+                name:"viplevel",
+                component:() => import("@/views/footerWrap/viplevel")
+            },
+            {
+                path:"billcenter",
+                name:"billcenter",
+                component:() => import("@/views/footerWrap/billcenter")
+            },
+            {
+                path:"Privacyprotection",
+                name:"Privacyprotection",
+                component:() => import("@/views/footerWrap/Privacyprotection")
+            },
+            {
+                path:"Registration",
+                name:"Registration",
+                component:() => import("@/views/footerWrap/Registration")
+            },
+            {
+                path:"Settlement",
+                name:"Settlement",
+                component:() => import("@/views/footerWrap/Settlement")
+            },
+            {
+                path:"Buyandsell",
+                name:"Buyandsell",
+                component:() => import("@/views/footerWrap/Buyandsell")
+            },
+           
+        ]
+        
+    },
     {
         path: '/footerNav',
         name: 'footerNav',
@@ -354,7 +477,8 @@ export default [
         name: 'Login',
         component: () => import('@/views/Login'),
         meta: {
-            title: '登录'
+            title: '登录',
+            requireAuth: true,
         }
     },
     //普通卖家详情
@@ -550,7 +674,7 @@ export default [
                 component: () => import('@/views/PersonalCenter/PersonalSet/depositDetailList'),
                 meta: {
                     requireAuth: true,
-                    title: '押金充值明细'
+                    title: '保证金充值明细'
                 }
             },
             {
@@ -569,6 +693,16 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '卖家中心',
+                    parentname:"SellerCenter"
+                }
+            },
+            {
+                path: 'joinDialog',
+                name: 'joinDialog',
+                component: () => import('@/views/PersonalCenter/joinDialog'),
+                meta: {
+                    requireAuth: true,
+                    title: '入驻提示',
                     parentname:"SellerCenter"
                 }
             },
@@ -621,7 +755,7 @@ export default [
                component: () => import('@/views/PersonalCenter/sellerDeliveryCar'),
                 meta: {
                     requireAuth: true,
-                    title: '发货框管理',
+                    title: '发货筐管理',
                     parentname:"SellerCenter"
                 },
             },
@@ -659,17 +793,16 @@ export default [
                     title: '产品管理',
                     parentname:"SellerCenter"
                 },
-               
             },
             //原厂发布产品
             {
-                path: 'sellerPushProduct/publish',
+                path: 'publish',
                 name: 'publish',
                 component: () => import('@/views/PersonalCenter/sellerPushProduct/publish'),
                 meta: {
                     requireAuth: true,
                     title: '发布产品',
-                    parentname:"sellerPushProduct"
+                    parentname:"SellerCenter"
                 },
             },
             // 卖家发布完成
@@ -812,7 +945,7 @@ export default [
                     requireAuth: true,
                     title: '买家订单',
                     parentname:"BuyerCenter",
-                    keepAlive:true
+                  
                 },
                 children: [{
                     path: 'buyerOrderDetail',
@@ -983,6 +1116,16 @@ export default [
                 meta: {
                     requireAuth: true,
                     title: '反馈结果',
+                    parentname:"PersonalCenter"
+                }
+            },
+            {
+                path: 'afterMark',
+                name: 'afterMark',
+                component: () => import('@/views/PersonalCenter/afterMark'),
+                meta: {
+                    requireAuth: true,
+                    title: '售后结果',
                     parentname:"PersonalCenter"
                 }
             },

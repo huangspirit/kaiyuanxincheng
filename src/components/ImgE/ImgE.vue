@@ -6,10 +6,20 @@
         :onerror="`this.src='${errorGoodsImgUrl}?imageView2/2/w/${this.W}/h/${this.H}'`">
       </span>
       <div class="big" v-show="showBigImg" @click="showBigImg=false">
-        <div class="wrap">
+        <div class="wrap" v-if="!srcArr">
           <i class="el-icon-close fr close" @click="showBigImg=false"></i>
           <img  :src="`${ src ? src : errorGoodsImgUrl}` " alt=''
           :onerror="`this.src='${errorGoodsImgUrl}'`">
+        </div>
+        <div class="wrap" v-if="srcArr && srcArr.length">
+          <i class="el-icon-close fr close" @click="showBigImg=false"></i>
+            <el-carousel height="500PX">
+              <el-carousel-item v-for="item in srcArr" :key="item">
+                <div style="line-height:500px;">
+                  <img  :src="item" alt='' style="max-height:500px;">
+                </div>
+              </el-carousel-item>
+            </el-carousel>
         </div>
       </div>
   </div>
@@ -19,6 +29,13 @@ import {baseURL4,baseURL3} from "@/config";
 export default {
   name:'ImgE',
   props:{
+    height:{
+      type:String
+    },
+    srcArr:{
+      type:Array,
+     
+    },
     src:{
       type:String,
     },

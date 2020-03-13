@@ -39,7 +39,7 @@
                 <div
                   slot="tip"
                   class="el-upload__tip"
-                >图片迟训请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+                >图片请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</div>
               </el-upload>
             </div>
           </div>
@@ -106,7 +106,7 @@
                 <div slot="tip" class="el-upload__tip">证件正面照</div>
               </el-upload>
 
-              <p class="small">图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</p>
+              <p class="small">图片尺寸请确保800px*800px以上，文件大小在2MB以内，支持png、jpg、gif格式</p>
             </div>
           </div>
         </el-form>

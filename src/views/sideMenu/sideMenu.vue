@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      class="sidemenu noprint"
+      class="sidemenu"
       id="sidemenu"
       :collapse="false"
       :unique-opened="true"
@@ -242,7 +242,8 @@ export default {
       this.showverufy = true;
     },
     chip() {
-      this.dialogVisible = true;
+      this.$router.push("/PersonalCenter/joinDialog")
+    //  this.dialogVisible = true;
     },
     chipDetail(){
         this.showverufy=false;

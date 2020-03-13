@@ -76,7 +76,7 @@
                 <span class="name">{{item.sellerName}}</span>
                  <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span> 
                                                <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span> 
-                                               <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> 
+                                               <!-- <span class="tag bgOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span>  -->
               </div>
               </div>
             </div>
@@ -106,7 +106,7 @@
       <table class="table">
         <tr class="title">
           <td>起订量</td>
-          <td>最小增量</td>
+          <td>增量</td>
           <td>货源</td>
           <td>交货地</td>
           <td>预计交期</td>
@@ -155,7 +155,6 @@
           :minutesTxt="'分钟'"
           :secondsTxt="'秒'"
         ></CountTime>
-
       </div>
       <div class="documentary" >
         <span @click="documentary">立刻跟单</span>
@@ -175,7 +174,7 @@
             ></el-input-number>
           </div>
           <div class="total">
-            <span>总计：</span>
+            <span>金额：</span>
             <span>￥{{purchaseObj.total | toFixed(2)}}</span>
           </div>
         </div>
@@ -195,7 +194,6 @@
 import "./SpecialOfferItem.less";
 import { formatDate } from "@/lib/utils";
 import {axios,shoppingCar} from "../../api/apiObj";
-
 import { mapState, mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "SpecialOfferItem",
@@ -229,16 +227,6 @@ export default {
       var data = new Date(time);
       return formatDate(data, "yyyy-MM-dd");
     },
-      // tagFilter(val){
-      //   switch (val) {
-      //       case 1:
-      //           return "原厂商户";
-      //       case 2:
-      //           return "代理商户";
-      //       case 3:
-      //           return "普通商户";
-      //   }
-      // }
   },
   watch: {
     "purchaseObj.num": {
@@ -249,7 +237,6 @@ export default {
       }
     }
   },
-
   computed: {
     access_token() {
       return localStorage.getItem("access_token");
@@ -357,7 +344,7 @@ export default {
       this.submitFlag = false;
     },
     documentary() {
-      console.log
+     
       if (!sessionStorage.getItem("access_token")) {
         this.$router.push({
           path: "/Login"

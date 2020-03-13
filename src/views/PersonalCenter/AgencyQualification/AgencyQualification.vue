@@ -46,7 +46,7 @@
             </td>
             <td>
               <div class="operation">
-                <el-button class="default" @click="EditQualifica(item)">编辑资质</el-button>
+                <el-button class="default" @click="EditQualifica(item)" v-if="item.isEnable!=1">编辑资质</el-button>
                 <el-button class="cancle" @click="deleteFication(item.id)">撤销资质</el-button>
               </div>
             </td>

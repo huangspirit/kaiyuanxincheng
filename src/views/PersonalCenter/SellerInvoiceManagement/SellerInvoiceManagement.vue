@@ -24,7 +24,7 @@
               @click="tabFirst(item)"
             >{{item.name}}</li>
           </ul>
-          <el-select
+          <!-- <el-select
             class="all-time fl"
             @change="setDay(orderDate)"
             v-model="orderDate"
@@ -36,44 +36,48 @@
               :label="item.label"
               :value="item.value"
             ></el-option>
-          </el-select>
+          </el-select> -->
+          <el-date-picker
+            v-model="twotime"
+            type="daterange"
+            align="right"
+            unlink-panels
+            @change="timeChange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-mm-dd 00:00:00"
+            :picker-options="pickerOptions"
+            clearable>
+          </el-date-picker>
         </div>
          <table class="table">
           <thead>
             <tr>
               <th>开票信息</th>
-              <th>器件型号</th>
+              <th>零件型号</th>
+              <th>数量</th>
+              <th>单价</th>
               <th>金额</th>
-              <th>是否需要开票</th>
-              <th>收货地址</th>
+              <th>开票状态</th>
+              <th>开票时间</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
+            <div v-if="!list" class="gray">暂无数据</div>
             <template v-for="(item0,k) in list">
             <tr v-for="(item,index) in item0.list" :key="item.id" >
-              <td v-if="index==0" :rowspan="item0.list.length">
+              <td v-if="index==0" :rowspan="item0.list.length" style="text-align:left;">
                 <div class="color goods_seller_no">
-                 批次号：{{item.send_no}}
-                  </div>
+                  批次号：{{item.send_no}}
+                </div>
                   <div v-if="item0 && item0.billTitle" style="line-height:30px">
                     发票抬头：{{item0.billTitle}} 
                     <a href="javascript:;" @click="getbilldetail(item0)" style="padding-left:10px;"> 发票详情</a>
                   </div>
-                  <div style="line-height:30px;">
-                    <label v-if="!item0.makeOutBill">
-                      <input
-                        type="checkbox"
-                        name="checking"
-                        :value="k"
-                        v-model="checklist"
-                        ref="input"
-                      />
-                    </label> <a href="javascript:;" @click="getonedetailbill(item)" style="padding-right:10px;" v-if="!item0.makeOutBill"> 开发票</a>
-                  </div>
               </td>
-          
               <td>
-                
                <div class="infoWrap">
                 <div class="info">
                   <ImgE :src="item.goods_image" :W="50" :H="50" style="width:50px;"></ImgE>
@@ -109,17 +113,99 @@
               </div>
               </td>
               <td>
+                  {{item.goods_count}}
+              </td>
+              <td>
+                 <el-popover
+                  placement="left"
+                  trigger="manual"
+                  width="450px"
+                  v-model="item.visible"
+                  >
+                  <div>
+                    <el-table
+                      v-if="item.sellprice"
+                      :data="item.sellprice"
+                      border
+                      
+                      style="width: 100%">
+                      <el-table-column
+                        prop="orderNo"
+                        label="订单号"
+                        width="180"
+                        align="center"
+                       >
+                      </el-table-column>
+                      <el-table-column
+                        prop="goodsCount"
+                        label="数量"
+                        align="center"
+                        >
+                      </el-table-column>
+                      <el-table-column
+                        prop="address"
+                        align="center"
+                        label="成交单价">
+                        <template slot-scope="scoped">
+                            {{scoped.row.priceUnit?'$':'￥'}}{{scoped.row.basePrice | toFixed(scoped.row.priceUnit?3:2)}}
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                  <a slot="reference" @click="getpriceDetail(k,index)">详细</a>
+                </el-popover>
+                <!-- <div
+                    class="color"
+                    v-if="!item.price_type"
+                  >
+                      {{item.priceunit ? '$':'￥'}}{{Number(item.seckil_price) | toFixed(item.priceunit ?3:2)}}
+                      </div>
+                      <template v-for="k in item.pricelist">
+                          <p  :key="k.num" v-if="item.pricelist" class="color">
+                            {{k.num}}+ --- {{item.priceunit ? '$':'￥'}}{{k.price | toFixed(item.priceunit ?3:2)}}
+                          </p>
+                      </template>
+                      <span class="blu">({{item.clude_bill?'含13%增值税':'不含税'}})</span> -->
+              </td>
+              <td>
                  <span
                 class="color"
               >{{item.priceunit ? '$':'￥'}}{{item.rmbTotal | toFixed(item.priceunit ? 3:2)}}</span>
               </td>
               <td>
-                 <span>{{item.needBill?'需要':'不需要'}}</span>
+                <template v-if="item.auth_state!=2">
+                  <span v-if="item.needBill && !item.makeOutBill">未开票</span>
+                 <span v-if="item.needBill && item.makeOutBill">{{item.trans_type?'单独邮寄':'随货寄出'}}</span>
+                 <!-- <span v-if="!item.needBill">不开票</span> -->
+                </template>
+                <span v-if="item.auth_state==2">
+                  已退货，发票失效<br>{{item.reason}}
+                </span>
               </td>
-              
+              <td >
+                <div v-if="item.openBillTime">{{item.openBillTime | formatDate}}</div>
+              </td>
               <td>
+                <div style="line-height:30px;" v-if="!item0.makeOutBill && item0.needBill && item.auth_state!=2">
+                    <label v-if="!item0.makeOutBill">
+                      <input
+                        type="checkbox"
+                        name="checking"
+                        :value="k"
+                        v-model="checklist"
+                        ref="input"
+                      />
+                    </label> <a href="javascript:;" @click="getonedetailbill(item)" style="padding-right:10px;" > 开发票</a>
+                  </div>
+                   <el-popover
+                      placement="left"
+                      trigger="hover"
+                    >
                       <p>仓库地址：{{item.warehouseAddr}}</p>
                       <p>收货人：{{item.warehouseRecipient}} {{item.warehousePhone}}</p>
+                      <p><a slot="reference">收货地址</a></p>
+                    </el-popover>
+                      
                        <el-popover
                         placement="top-start"
                         width="500"
@@ -144,132 +230,14 @@
                             </el-timeline-item>
                           </el-timeline>
                         </div>
-                        <span slot="reference" style="color:#0d98ff; cursor: pointer;margin-left:15px;">查询物流</span>
+                        <span slot="reference" style="color:#0d98ff; cursor: pointer;">查询物流</span>
                       </el-popover>
               </td>
             </tr>
             </template>
           </tbody>
         </table>
-        <!-- <div class="tab-list-con" style="color:#333;">
-          <p class="tab-list-con-tit">
-            <span style="width:25%">开票信息</span>
-            <span style="width:17%">状态</span>
-            <span style="width:30%">器件型号</span>
-            <span style="width:7%">购买数量</span>
-            <span style="width:7%">单价</span>
-            <span style="width:7%">金额</span>
-            <span style="width:7%">是否需要开票</span>
-          </p>
-          <div v-if="list.length==0" class="nocontent">暂无内容</div>
-          <div class="list-item" v-for="item0 in list" :key="item0.id">
-            <div class="list-item-tit">
-              <span class="phon">
-                发货单号：
-                <strong>{{item0.send_no}}</strong>
-              </span>
-              <span>发货日期：{{item0.create_time | formatDate1}}</span>
-            </div>
-            <table
-              width="100%"
-              border="1"
-              cellpadding="0"
-              cellspacing="0"
-              style="table-layout:fixed"
-            >
-              <template v-for="(item,index) in item0.childRenList">
-                <tr :key="index">
-                  <td
-                    style="width:25%;text-align:left;padding:8px;color:#333;"
-                    :rowspan="item0.childRenList.length"
-                    v-if="index==0"
-                  >
-                    <p>公司抬头：{{sysBillDefault.corporatename}}</p>
-                    <p>
-                      发票总额：
-                      <strong>{{item0.priceunit?'$':'￥'}}{{item0.totalPay | toFixed(item0.priceunit?3:2)}}</strong>
-                    </p>
-                    <p>
-                      汇率：
-                      <strong>{{item0.exchange}}</strong>
-                    </p>
-                    <p>发票类型：增值税发票</p>
-                  </td>
-                  <td style="width:17%" :rowspan="item0.childRenList.length" v-if="index==0">
-                    <p v-if="item0.bill_state==0">未开票</p>
-                     
-                    <p v-if="item0.bill_state==1">{{item0.auth_state | authState}}</p>
-                    <el-button
-                      v-if="item0.bill_state==0 || item0.auth_state==2"
-                      class="bgColor"
-                      @click="confirmOpenbill(item0)"
-                    >{{item0.auth_state==2?'重新开票':'开票'}}</el-button>
-                    <div v-if="item0.bill_state">
-                      <p style="margin:5px 0;">日期：{{item0.update_time | formatDate1}}</p>
-                      <p><el-button @click="getdetail(item0)" size="mini" >查看</el-button></p>
-                    </div>
-                  </td>
-                  <td style="width:30%" class="goodsInfo">
-                    <div>
-                      <p>
-                        <ImgE :src="item.goods_image" :W="70" :H="70"></ImgE>
-                      </p>
-
-                      <div>
-                        <p>
-                          <router-link
-                            :to="{
-                                path:'/BrandDetail/GoodsDetails',
-                                query:{
-                                    tag:'goodsinfo',
-                                    documentid:item.goods_id,
-                                    name:item.goods_name
-                                }
-                            }"
-                          >
-                            <strong>{{item.goods_name}}</strong>
-                          </router-link>
-                        </p>
-                        <p>
-                          <label>品牌：</label>
-                          <router-link
-                            :to="{
-                                path:'/BrandDetail',
-                                query:{
-                                    tag:'brand',
-                                    name:item.goods_brand,
-                                    documentid:item.goods_brand_id
-                                }
-                            }"
-                          >{{item.goods_branda}}</router-link>
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td style="width:7%">
-                    <strong>{{item.total_pay_count}}</strong>
-                  </td>
-                  <td style="width:7%">
-                    <strong
-                      v-if="!item.price_type"
-                    >{{item.priceunit?"$":"￥"}}{{item.seckil_price | toFixed(item.priceunit?3:2)}}</strong>
-                    <div v-else>
-                      <p v-for="item0 in item.priceList" :key="item0">{{item0}}}</p>
-                    </div>
-                  </td>
-                  <td style="width:7%">
-                    <strong>{{item.priceunit?"$":"¥"}}{{item.totalPay}}</strong>
-                  </td>
-                  <td style="width:7%">
-                    <strong>{{item.needBill?"需要":"不需要"}}</strong>
-                  </td>
-                 
-                </tr>
-              </template>
-            </table>
-          </div>
-        </div> -->
-      <div> <label><input type="checkbox" @change="allCheck" ref="allcheckmark" />
+      <div class="fr" v-if="list.length"> <label><input type="checkbox" @change="allCheck" ref="allcheckmark" />
                       全选</label> 
                       <el-button
                         v-if="checklist.length"
@@ -321,8 +289,7 @@
                       :auto-upload="true"
                       list-type="picture-card"
                       :on-preview="(file)=>{return onpreview(file)}"
-                      :on-success="(response, file, fileList)=>{return handleAvatarSuccess(response, file, fileList)}"
-                      
+                      :on-success="handleAvatarSuccess"
                       multiple
                     >
                       <i
@@ -385,6 +352,34 @@ export default {
   name: "SellerInvoiceManagement",
   data() {
     return {
+      pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        twotime:[],
       billImage:"",
       checklist:[],
       SearchInputValue: "",
@@ -437,7 +432,6 @@ export default {
       pageSize: 10,
       total: 0,
       list: [],
-      //开发票
       centerDialogVisibleInvoice: false,
       sysBillDefault: {},
       currentItem: {},
@@ -476,9 +470,9 @@ export default {
     this.DeliverGoodsInvoice();
   },
   filters: {
-    formatDate(value) {
-      return TimeForma(value);
-    },
+    // formatDate(value) {
+    //   return TimeForma(value);
+    // },
     formatDate1(value) {
       return TimeForma2(value);
     },
@@ -532,6 +526,42 @@ export default {
   },
   methods: {
     ...mapActions("GetAllPersonalInvoice", ["GetAllPersonalInvoice"]),
+    getpriceDetail(k,index){
+      let item=this.list[k].list[index];
+      if(item.visible){
+        this.list[k].list[index].visible=false;
+        return;
+      }
+      axios.request({...sellerOrderCenter.queryDeliverDetailForSeller,params:{
+        start:0,
+        length:100,
+        seller_goods_id:item.seller_goods_id,
+        deliver_no:item.send_no
+      }}).then(res=>{
+         let obj={}
+        Object.keys(this.list).forEach(key=>{
+          let one = this.list[key];
+          if(key==k){
+            one.list  = one.list.map((item0,k0)=>{
+              if(k0==index){
+                 item0.visible=true;
+                 item0.sellprice=res.data.data
+              }else{
+                 item0.visible=false;
+              }
+              return item0
+            })
+          }else{
+            one.list  = one.list.map((item0,k0)=>{
+              item0.visible=false;
+              return item0
+            })
+          }
+          obj[key]=one;
+
+      })
+      this.list=obj;})
+    },
     allCheck(val) {
       this.checklist = [];
       Array.from(this.$refs.input).forEach(el => {
@@ -553,6 +583,11 @@ export default {
           billImage:this.billImage,
         }
       })
+      
+     if(!this.billImage){
+       this.$message.error("等待上传发票图片")
+       return;
+     }
       axios
         .request({...sellerOrderCenter.openBatchBill, data: arr,method:'post' })
         .then(res => {
@@ -602,15 +637,22 @@ export default {
       this.showbigimg = true;
     },
      handleAvatarSuccess(response, file, fileList){
+      
       let str="";
       fileList.forEach((el,index) => {
-        if(index==0){
-          str=el.response.data.name
-        }else{
-          str=str+'@'+el.response.data.name;
+        if(el.response){
+          if(index==0){
+            str=el.response.data.name
+          }else{
+            str=str+'@'+el.response.data.name
+          }
         }
       });
       this.billImage=str;
+    },
+    timeChange(val){
+      console.log(val)
+      this.init()
     },
     init() {
       let obj = {
@@ -621,8 +663,12 @@ export default {
       if (this.currentModule.val===true || this.currentModule.val===false) {
         obj.make_out_bill = this.currentModule.val;
       }
-      if (this.orderDate) {
-        obj.day = this.orderDate;
+      // if (this.orderDate) {
+      //   obj.day = this.orderDate;
+      // }
+      if(this.twotime && this.twotime.length){
+          obj.start_date=this.twotime[0]
+          obj.end_date=this.twotime[1]
       }
       axios
         .request({ ...sellerOrderCenter.queryBillListBySeller, params: obj })
@@ -631,10 +677,18 @@ export default {
             this.total = res.data.total;
             let obj={};
               res.data.data.forEach((el,index) => {
+                if(el.price_type){
+                  el.pricelist=el.price_level.split("@").map(item=>{
+                    return {num:item.split("-")[0],price:item.split("-")[1]}
+                  })
+                }
                 if(obj[el.send_no]){
                   obj[el.send_no].list.push(el)
                   if(el.makeOutBill){
                       obj[el.send_no].makeOutBill=el.makeOutBill
+                  }
+                  if(!el.needBill){
+                      obj[el.send_no].needBill=el.needBill
                   }
                   if(el.billTitle){
                      obj[el.send_no].billTitle=el.billTitle
@@ -647,6 +701,7 @@ export default {
                     makeOutBill:el.makeOutBill,
                     billTitle:el.billTitle,
                     billImage:el.billImage,
+                    needBill:el.needBill,
                     list:[el]
                   }
                 }

@@ -41,7 +41,7 @@
               :on-change="handlechange"
             >
               <i class="el-icon-plus"></i>
-              <div slot="tip" class="el-upload__tip">图片尺寸请确保800px*800px以上，文件大小在1MB以内，支持png、jpg、gif格式</div>
+              <div slot="tip" class="el-upload__tip">图片尺寸请确保800px*800px以上，文件大小限制为2MB以内，支持png、jpg、gif格式</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="付款公司：" prop="payCompany">
@@ -81,7 +81,7 @@
         <div class="desc">2、平台将进行到账审核，审核结果将以平台内消息、短信和微信通知您，请及时查看！</div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitBank('upload0')">确 定</el-button>
+        <el-button type="primary" @click="submitBank('upload0')" :disabled="!hasSelectImg">确 定</el-button>
         <el-button @click="close">取 消</el-button>
       </span>
     </el-dialog>
@@ -100,6 +100,7 @@ export default {
   },
   data() {
     return {
+      isdisable:true,
       centerDialogVisible: true,
       dialogVisible: false,
       dialogImageUrl: "",
@@ -107,7 +108,7 @@ export default {
       ruleForm: {
         payCompany:this.bankTransferObj.danweiName
       },
-      bandlist:["农业银行","工商银行",'建设银行', '招商银行','交通银行'],
+      bandlist:["中国工商银行","中国农业银行","中国银行","中国建设银行","招商银行","中国民生银行","交通银行","中国光大银行"],
       rules: {
         payCompany: [
           { required: true, message: "请输入付款公司名称", trigger: "blur" }
@@ -152,9 +153,11 @@ export default {
           type: "success",
           message: "上传成功"
         });
+        this.isdisable=false;
         this.$emit("bankSuccess");
         this.ruleForm = {};
         this.close();
+        this.$loading(this.$store.state.loading).close();
       }
     },
     submitBank(name) {
@@ -167,6 +170,7 @@ export default {
       }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
+          this.$loading(this.$store.state.loading);
           this.$refs[name].submit();
         } else {
           this.$message({
