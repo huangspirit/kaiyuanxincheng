@@ -47,7 +47,7 @@
         <span slot="title" class="form-title">
           {{DialogText ? "新增个人发票" : "编辑个人发票"}}
           <img
-            src="@/assets/image/PersonalCenter/u172.png"
+            src="@/assets/image/brandDetail/u172.png"
             alt
             @click="centerDialogVisible = false"
           >

@@ -167,7 +167,6 @@
       </div>
       <div class="management-class">
         <SubstituModelListTable :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelListTable>
-        <!-- <SubstituModelList :list="ProductnformaList" v-if="ProductnformaList.length"></SubstituModelList> -->
         <div class="nocontent" v-if="total==0">暂无此类产品</div>
         <Pagination
           v-if="total"
@@ -186,7 +185,6 @@
 <script>
 import { axios, BrandDetail } from "../../../api/apiObj";
 import { mapGetters, mapActions, mapState } from "vuex";
-import SubstituModelList from "_c/SubstituModelList";
 import SubstituModelListTable from "_c/SubstituModelListTable";
 import ScreenItem from "_c/ScreenItem";
 export default {
@@ -259,7 +257,6 @@ export default {
   },
   components: {
     SubstituModelListTable,
-    SubstituModelList,
     ScreenItem
   },
   computed: {

@@ -102,6 +102,10 @@ const footer = {
     }
 };
 const buyerOrderCenter = {
+    //验证订单是否重复
+    orderCheck2:{
+        url:"api-g/goods-b/orderCheck2"
+    },
     queryCheckDetail:{
         url:"api-order/customerCenter/queryCheckDetail"
     },

@@ -13,10 +13,11 @@
         >
           <img :src="UserInforma.headImgUrl" class="head-portrait" alt />
           <div class="vipwrap" v-if="UserInforma.userTagMap.vip">
-<img src="@/assets/image/icon/VIP.png" alt="">
-          <span class="vipLevel">{{UserInforma.userTagMap.vipLevel?UserInforma.userTagMap.vipLevel:0}}</span>
+            <img src="@/assets/image/icon/VIP.png" alt />
+            <span
+              class="vipLevel"
+            >{{UserInforma.userTagMap.vipLevel?UserInforma.userTagMap.vipLevel:0}}</span>
           </div>
-          
         </el-upload>
         <div class="info fl">
           <p class="name" style="max-width:200px;">
@@ -35,9 +36,7 @@
             />
           </p>
           <p>
-            <span class="type color" v-if="UserInforma.userTagMap.vip">
-              月结用户
-              </span>
+            <span class="type color" v-if="UserInforma.userTagMap.vip">月结用户</span>
             <span
               class="type color"
               v-if="UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=3"
@@ -58,43 +57,45 @@
           <li>
             <div class="cont">
               <div>
-              <p class="money">{{UserInforma.userTagMap.wallet | toFixed(2) }}</p>
-              <p class="desc">钱包余额（元）</p>
-              <p class="router">
-                <a href="javascript:;" @click="withDraw" v-if="UserInforma.userTagMap.wallet>10">提现</a>&nbsp;&nbsp;
-                <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
-                <router-link to="/PersonalCenter/withdraw">提现管理</router-link>&nbsp;&nbsp;
-                <a>|&nbsp;&nbsp;</a>
-                <router-link to="/PersonalCenter/buyerDetailList">明细</router-link>
-              </p>
+                <p class="money">{{UserInforma.userTagMap.wallet | toFixed(2) }}</p>
+                <p class="desc">钱包余额（元）</p>
+                <p class="router">
+                  <a
+                    href="javascript:;"
+                    @click="withDraw"
+                    v-if="UserInforma.userTagMap.wallet>10"
+                  >提现</a>&nbsp;&nbsp;
+                  <a v-if="UserInforma.userTagMap.wallet>10">|&nbsp;&nbsp;</a>
+                  <router-link to="/PersonalCenter/withdraw">提现管理</router-link>&nbsp;&nbsp;
+                  <a>|&nbsp;&nbsp;</a>
+                  <router-link to="/PersonalCenter/buyerDetailList">明细</router-link>
+                </p>
               </div>
             </div>
           </li>
           <li v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller">
             <div class="cont yajin">
               <div>
-
-             
-              <p class="money">{{UserInforma.userTagMap.deposit | toFixed(2)}}</p>
-              <p class="desc">保证金（元）</p>
-              <p class="router">
-                <router-link to="/PersonalCenter/deposit">充值</router-link>&nbsp;&nbsp;
-                <a>|&nbsp;&nbsp;</a>
-                <router-link to="/PersonalCenter/depositDetailList">明细</router-link>
-              </p>
-               </div>
+                <p class="money">{{UserInforma.userTagMap.deposit | toFixed(2)}}</p>
+                <p class="desc">保证金（元）</p>
+                <p class="router">
+                  <router-link to="/PersonalCenter/deposit">充值</router-link>&nbsp;&nbsp;
+                  <a>|&nbsp;&nbsp;</a>
+                  <router-link to="/PersonalCenter/depositDetailList">明细</router-link>
+                </p>
+              </div>
             </div>
           </li>
           <li v-if="UserInforma.userTagMap.vip">
             <div class="cont yajin">
               <div>
-              <p class="money">{{UserInforma.userTagMap['restcredit-vip'] | toFixed(2)}}</p>
-              <p class="desc">剩余月结额度（元）</p>
-              <p class="router">
-                <span>月结额度：{{UserInforma.userTagMap['credit-vip'] | toFixed(0)}}</span>&nbsp;&nbsp;
-                <a>|&nbsp;&nbsp;</a>
-                <router-link to="/PersonalCenter/vipDetailList" class="route">明细</router-link>
-              </p>
+                <p class="money">{{UserInforma.userTagMap['restcredit-vip'] | toFixed(2)}}</p>
+                <p class="desc">剩余月结额度（元）</p>
+                <p class="router">
+                  <span>月结额度：{{UserInforma.userTagMap['credit-vip'] | toFixed(0)}}</span>&nbsp;&nbsp;
+                  <a>|&nbsp;&nbsp;</a>
+                  <router-link to="/PersonalCenter/vipDetailList" class="route">明细</router-link>
+                </p>
               </div>
             </div>
             <!-- <div class="cont circle clear">
@@ -113,14 +114,14 @@
           >
             <div class="cont yajin">
               <div>
-              <p class="money">{{UserInforma.userTagMap['restcredit-seller'] | toFixed(2)}}</p>
-              <p class="desc">剩余售卖额度（元）</p>
-              <p class="router">
-                <span>基础额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp;
-                <a>|&nbsp;&nbsp;</a>
-                <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
-              </p>
-              <p style="font-size:14px;">售卖额度 = 保证金*10 + 基础额度</p>
+                <p class="money">{{UserInforma.userTagMap['restcredit-seller'] | toFixed(2)}}</p>
+                <p class="desc">剩余售卖额度（元）</p>
+                <p class="router">
+                  <span>基础额度：{{UserInforma.userTagMap['credit-seller'] | toFixed(0)}}</span>&nbsp;&nbsp;
+                  <a>|&nbsp;&nbsp;</a>
+                  <router-link to="/PersonalCenter/sellerDetailList" class="route">明细</router-link>
+                </p>
+                <p style="font-size:14px;">售卖额度 = 保证金*10 + 基础额度</p>
               </div>
             </div>
             <!-- <div class="cont circle clear">
@@ -149,40 +150,41 @@
         <div class="clear cont">
           <div class="clear">
             <div class="userLevel fl">
-              <p class="name">
-                晶豆 &nbsp;
-              </p>
+              <p class="name">晶豆 &nbsp;</p>
             </div>
           </div>
-          <div class="desc"><p class="router">
-                <a href="javascript:;">获取原则及使用方法
-                    <div class="cont1">
-                      <h2>晶豆是大麦晶城的内部虚拟货币</h2>
-                      <div class="title">一、如何获取晶豆？</div>
-                      <div>
-                        <p>
-                         ① 用户连续
-                          <label class="blu">3</label>个月如期付款可获得10个晶豆
-                        </p>
-                        <p>
-                         ② 用户连续
-                          <label class="blu">6</label>个月如期付款可获得30个晶豆
-                        </p>
-                        <p>
-                        ③  用户连续
-                          <label class="blu">12</label>个月如期付款可获得100个晶豆
-                        </p>
-                      </div>
-                      <div class="title">二、晶豆的功能</div>
-                      <div>
-                        <p>1.晶豆主要用来实现平台对用户各种行为的奖励，以及用于兑换平台的道具与推广功能等；</p>
-                        <p>2.买家用于兑换月结额度，每一个晶豆可以兑换月结额度100元；</p>
-                        <p>3.卖家用于兑换售卖额度，每一个晶豆可以兑换售卖额度100元；</p>
-                        <p>4.兑换现金,兑换现金后可直接提现，一颗晶豆可兑现金2元；</p>
-                      </div>
-                    </div>
-                </a>
-              </p></div>
+          <div class="desc">
+            <p class="router">
+              <a href="javascript:;">
+                获取原则及使用方法
+                <div class="cont1">
+                  <h2>晶豆是大麦晶城的内部虚拟货币</h2>
+                  <div class="title">一、如何获取晶豆？</div>
+                  <div>
+                    <p>
+                      ① 用户连续
+                      <label class="blu">3</label>个月如期付款可获得10个晶豆
+                    </p>
+                    <p>
+                      ② 用户连续
+                      <label class="blu">6</label>个月如期付款可获得30个晶豆
+                    </p>
+                    <p>
+                      ③ 用户连续
+                      <label class="blu">12</label>个月如期付款可获得100个晶豆
+                    </p>
+                  </div>
+                  <div class="title">二、晶豆的功能</div>
+                  <div>
+                    <p>1.晶豆主要用来实现平台对用户各种行为的奖励，以及用于兑换平台的道具与推广功能等；</p>
+                    <p>2.买家用于兑换月结额度，每一个晶豆可以兑换月结额度100元；</p>
+                    <p>3.卖家用于兑换售卖额度，每一个晶豆可以兑换售卖额度100元；</p>
+                    <p>4.兑换现金,兑换现金后可直接提现，一颗晶豆可兑现金2元；</p>
+                  </div>
+                </div>
+              </a>
+            </p>
+          </div>
           <div class="val">
             <span>{{UserInforma.userTagMap.dou | toFixed(0)}}</span>
           </div>
@@ -229,7 +231,7 @@
           </p>
         </div>
       </li>
-      <li>
+      <!-- <li>
         <div class="cont" title="公众号用以推送平台消息，若以前绑定过大麦晶城公众号，可以先取消关注，再扫码关注绑定">
           <div class="name">绑定微信公众号</div>
           <p class="desc" v-if="!UserInforma.bindWeChat">你还没有绑定微信，快去绑定吧</p>
@@ -239,7 +241,7 @@
           </p>
           <p class="marginTop" v-if="UserInforma.bindWeChat">已绑定</p>
         </div>
-      </li>
+      </li>-->
       <li
         v-if="UserInforma.userTagMap && UserInforma.userTagMap.seller && UserInforma.userTagMap.tag!=1"
       >
@@ -249,11 +251,6 @@
           <div
             class="val"
           >￥{{UserInforma.userTagMap.baseCredit?UserInforma.userTagMap.baseCredit:0 | toFixed(0)}}</div>
-          <!--              <router-link-->
-          <!--                  to="/PersonalCenter/UpgradeLevel"-->
-          <!--                  tag="span"-->
-          <!--                  v-if="!UserInforma.userTagMap.seller"-->
-          <!--              >原厂入驻</router-link>-->
         </div>
       </li>
       <li>
@@ -270,7 +267,7 @@
       <li>
         <div class="cont" @click="setPassword">
           <p class="name">帐户密码管理</p>
-         <div class="desc" >此密码用于管理账单和提现</div>
+          <div class="desc">此密码用于管理账单和提现</div>
           <p class="marginTop">
             <span>重新设置</span>
             <span class="el-icon-arrow-right fr"></span>
@@ -278,24 +275,24 @@
         </div>
       </li>
       <li>
-         <router-link to="/PersonalCenter/feedBack" class="cont" tag="div">
+        <router-link to="/PersonalCenter/feedBack" class="cont" tag="div">
           <p class="name">我的反馈</p>
-         <div class="desc" >&nbsp;</div>
+          <div class="desc">&nbsp;</div>
           <p class="marginTop">
             <span>查看结果</span>
             <span class="el-icon-arrow-right fr"></span>
           </p>
-         </router-link>
+        </router-link>
       </li>
       <li>
-         <router-link to="/PersonalCenter/afterMark" class="cont" tag="div">
+        <router-link to="/PersonalCenter/afterMark" class="cont" tag="div">
           <p class="name">我的售后</p>
-         <div class="desc" >&nbsp;</div>
+          <div class="desc">&nbsp;</div>
           <p class="marginTop">
             <span>查看结果</span>
             <span class="el-icon-arrow-right fr"></span>
           </p>
-         </router-link>
+        </router-link>
       </li>
     </ul>
     <!-- 修改手机号的模态框 -->
@@ -326,36 +323,23 @@
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button class="cancle" @click="centerDialogVisible = false">取消</el-button> -->
         <el-button class="default" style="width:100%;" @click="submitCodePhone">{{newFlagbtn}}</el-button>
       </div>
     </SetTankuang>
-    <!--      <el-dialog-->
-    <!--          :visible.sync="dialogVisibleWeChat"-->
-    <!--          width="600px"-->
-    <!--          class="dialog-code-wechat"-->
-    <!--          :close-on-click-modal="false"-->
-    <!--      >-->
-    <!--          <p slot="title" class="title">提示</p>-->
-    <!--          <div class="body-wechat">-->
-    <!--              <p>确认解绑微信号？</p>-->
-    <!--              <p class="small">解绑之后微信将不再接收系统提示信息</p>-->
-    <!--          </div>-->
-    <!--          <div slot="footer" class="footer-wechat">-->
-    <!--              <span @click="sureUnboundWeChat">确认解绑</span>-->
-    <!--              <span @click="dialogVisibleWeChat = false" class="close">取消</span>-->
-    <!--          </div>-->
-    <!--      </el-dialog>-->
-    <!-- 绑定微信的二维码模态框 -->
     <el-dialog
+      v-if="dialogVisibleWeChatBindCodeUrl"
       :visible.sync="dialogVisibleWeChatBind"
       width="600px"
       class="dialog-code-wecha-bind"
       :close-on-click-modal="false"
+      :show-close="false"
+      :center="true"
     >
-      <p slot="title" class="title">绑定微信</p>
       <div class="dialog-code-wecha-bind-body" style="text-align: center">
         <img :src="dialogVisibleWeChatBindCodeUrl" alt />
+        <p class="title" style="text-align:left;padding:0 40px 20px;">
+          <strong>请扫码关注官方微信公众号以接收平台的重要通知信息；若之前已关注，请先取消关注后再次扫码关注</strong>
+        </p>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="showinputPassword" width="500px">
@@ -502,7 +486,7 @@ export default {
       // 绑定微信二维码的url
       dialogVisibleWeChatBindCodeUrl: "",
       // 绑定微信二维码模态框
-      dialogVisibleWeChatBind: false,
+      dialogVisibleWeChatBind: true,
       // 微信的模态框
       dialogVisibleWeChat: false,
       // 已被绑定的文字
@@ -539,19 +523,21 @@ export default {
       },
       timer: null,
       access_token: sessionStorage.getItem("access_token"),
-      refresh_token: sessionStorage.getItem("refresh_token")
+      refresh_token: sessionStorage.getItem("refresh_token"),
+      countercode: 80,
+      settimner:null
     };
   },
   computed: {
     requestUrl() {
       return (
-        baseURL + `api-f/files/uploadHead?access_token=${this.access_token}`
+        baseURL + `api-u/files/uploadHead?access_token=${this.access_token}`
       );
     },
     url() {
       return (
         baseURL +
-        `api-f/files/uploadWithCloud?access_token=${this.access_token}&fileSource=QINIUYUN&type=7&id=1`
+        `api-g/files/uploadWithCloud?access_token=${this.access_token}&fileSource=QINIUYUN&type=7&id=1`
       );
     },
     creditvipPercente() {
@@ -627,8 +613,11 @@ export default {
       }
     }
   },
+  destroyed(){
+    clearTimeout(this.settimner);
+    this.settimner=null
+  },
   mounted() {
-    // this.$store.dispatch("Login/GetUserInforma");
     var queryAlign = this.$route.query;
     if (queryAlign.code) {
       if (queryAlign.code == "success") {
@@ -650,46 +639,50 @@ export default {
   methods: {
     ...mapActions("ShippingAddress", ["GetAllReceivingAddress"]),
     ...mapActions("Login", ["GetUserInforma"]),
-    // setPassword() {
-    //   this.showsetpassword = true;
-    //   this.setform = {};
-    // },
-    setPassword(){
-            //先验证是否设置提现密码
-          console.log("weeweew")
-            this.inputpassword="";
-            axios.request(personCenter.checkSetPassword).then(res=>{
-                if(res.data==1){
-                    this.showsetpassword=true;
-                    this.setform = {};
-                }else{
-                    //需要新增
-                    this.$prompt('请设置提现密码', '', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                    }).then(({ value }) => {
-                        //校验密码
-                        axios.request({...personCenter.savedrawPassword,data:{password:value}}).then(res=>{
-                            console.log(res)
-                            if(res){
-                                
-                            }
-                        })
-                    }).catch(() => {
-
-                    });
-                }
+    setPassword() {
+      //先验证是否设置提现密码
+      console.log("weeweew");
+      this.inputpassword = "";
+      axios.request(personCenter.checkSetPassword).then(res => {
+        if (res.data == 1) {
+          this.showsetpassword = true;
+          this.setform = {};
+        } else {
+          //需要新增
+          this.$prompt("请设置提现密码", "", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消"
+          })
+            .then(({ value }) => {
+              //校验密码
+              axios
+                .request({
+                  ...personCenter.savedrawPassword,
+                  data: { password: value }
+                })
+                .then(res => {
+                  console.log(res);
+                  if (res) {
+                  }
+                });
             })
-        },
-        checkpassword(){
-            axios.request({...personCenter.checkdrawPassword,data:{password:this.inputpassword}}).then(res=>{
-                console.log(res)
-                if(res){
-                    this.showinputPassword=false;
-                }
-
-            })
-        },
+            .catch(() => {});
+        }
+      });
+    },
+    checkpassword() {
+      axios
+        .request({
+          ...personCenter.checkdrawPassword,
+          data: { password: this.inputpassword }
+        })
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.showinputPassword = false;
+          }
+        });
+    },
     submitSetpassword() {
       if (
         this.setform.password &&
@@ -862,7 +855,6 @@ export default {
           data: { password: this.inputpassword }
         })
         .then(res => {
-          console.log(res);
           if (res) {
             this.showinputPassword = false;
             this.showinputwithdrawTotal = true;
@@ -935,21 +927,35 @@ export default {
       })
         .then(res => {
           this.dialogVisibleWeChatBindCodeUrl = res;
-          let timeBindWechat = setInterval(() => {
-            this.GetCheckBind({
-              access_token: this.access_token
-            }).then(res => {
-              if (res) {
-                clearInterval(timeBindWechat);
-                this.dialogVisibleWeChatBind = false;
-                this.all();
-              }
-            });
-          }, 2000);
+          this.settimer()
         })
         .catch(err => {
           this.$message.error(err);
         });
+    },
+    settimer() {
+      let _this = this;
+      if (this.countercode > 0) {
+        this.countercode = this.countercode - 1;
+        this.settimner = setTimeout(() => {
+          _this
+            .GetCheckBind({
+              access_token: _this.access_token
+            })
+            .then(res => {
+              if (res) {
+                _this.dialogVisibleWeChatBind = false;
+                _this.all();
+              } else {
+                _this.settimer();
+              }
+            });
+        }, 3000);
+      }else{
+        this.dialogVisibleWeChatBindHandle();
+        this.countercode=80;
+        console.log(this.countercode)
+      }
     },
     // 成功上传之后
     successUpload(x) {
@@ -961,23 +967,6 @@ export default {
         type: "success",
         message: "保存成功！"
       });
-      // this.$refs[formName].validate(valid => {
-      //   if (valid) {
-      //
-      //     this.ruleForm.access_token = this.access_token;
-      //     if (this.ruleForm.headImgUrl) {
-      //       obj.headImgUrl =
-      //         "http://head.113ic.com/" + this.ruleForm.headImgUrl;
-      //     }
-      //     this.GetPersonalData(this.ruleForm).then(res => {
-      //
-      //       this.RefreshToken();
-      //     });
-      //   } else {
-      //
-      //     return false;
-      //   }
-      // });
     },
     // 刷新token
     RefreshToken() {
@@ -998,6 +987,9 @@ export default {
         access_token: this.access_token
       }).then(res => {
         this.UserInforma = res;
+        if (!res.bindWeChat) {
+          this.dialogVisibleWeChatBindHandle();
+        }
         let baseCredit = res.userTagMap.baseCredit
           ? res.userTagMap.baseCredit
           : 0;
@@ -1085,20 +1077,20 @@ export default {
     },
 
     // 解绑微信
-    sureUnboundWeChat() {
-      this.GetUnboundWeChat({
-        access_token: this.access_token
-      })
-        .then(res => {
-          this.$message({
-            type: "success",
-            message: "解绑成功!"
-          });
-        })
-        .catch(err => {
-          this.$message.error(err);
-        });
-    }
+    // sureUnboundWeChat() {
+    //   this.GetUnboundWeChat({
+    //     access_token: this.access_token
+    //   })
+    //     .then(res => {
+    //       this.$message({
+    //         type: "success",
+    //         message: "解绑成功!"
+    //       });
+    //     })
+    //     .catch(err => {
+    //       this.$message.error(err);
+    //     });
+    // }
   }
 };
 </script>

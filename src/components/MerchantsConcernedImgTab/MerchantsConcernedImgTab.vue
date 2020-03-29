@@ -47,7 +47,9 @@
             <div class="price stepPrice" v-if="item.priceType">
               <strong>
                 起售价：{{item.priceUnit?'$':'￥'}}{{item.priceList[0].price | toFixed(item.priceUnit?3:2)}}
-                <i class="el-icon-circle-plus-outline"></i>
+                <i
+                  class="el-icon-circle-plus-outline"
+                ></i>
               </strong>
               <ul>
                 <li v-for="item_0 in item.priceList" :key="item_0.price">
@@ -299,24 +301,68 @@ export default {
         orderSource: 1
       };
       console.log(obj2);
-      this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
-        localStorage.setItem(
-          "buyOneGoodsDetail",
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
-        this.setBuyOneGoodsDetail(
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
-        this.$router.push({
-          path: "/ShoppingCart/ShoppingSettlement"
+      axios
+        .request({
+          ...buyerOrderCenter.orderCheck2,
+          data: obj2,
+          method: "post"
+        })
+        .then(res => {
+          if (res.data) {
+            this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+              localStorage.setItem(
+                "buyOneGoodsDetail",
+                JSON.stringify({
+                  data: JSON.stringify(res),
+                  obj2: JSON.stringify(obj2)
+                })
+              );
+              this.setBuyOneGoodsDetail(
+                JSON.stringify({
+                  data: JSON.stringify(res),
+                  obj2: JSON.stringify(obj2)
+                })
+              );
+              this.$router.push({
+                path: "/ShoppingCart/ShoppingSettlement"
+              });
+            });
+          } else {
+            this.$confirm(res.message, "提示", {
+              confirmButtonText: "继续提交新订单",
+              cancelButtonText: "去订单中心支付",
+              distinguishCancelAndClose: true,
+              type: "warning"
+            })
+              .then(() => {
+                this.$store
+                  .dispatch("MerchantList/GetOrder", obj2)
+                  .then(res => {
+                    localStorage.setItem(
+                      "buyOneGoodsDetail",
+                      JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                      })
+                    );
+                    this.setBuyOneGoodsDetail(
+                      JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                      })
+                    );
+                    this.$router.push({
+                      path: "/ShoppingCart/ShoppingSettlement"
+                    });
+                  });
+              })
+              .catch(action => {
+                if (action === "cancel") {
+                  this.$router.push("/PersonalCenter/BuyerOrderManagement");
+                }
+              });
+          }
         });
-      });
     }
   }
 };

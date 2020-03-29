@@ -92,7 +92,7 @@
         <el-table-column prop="address" label="官方参考价" align="center">
           <template slot-scope="scoped">
             <p>${{scoped.row.price}}</p>
-            <a class="color" @click="publish(scoped.row)">去发布特价</a>
+            <a class="color" @click="publish(scoped.row)"  v-if="scoped.row.authState">去发布特价</a>
           </template>
         </el-table-column>
         <el-table-column prop="address" label="单位" align="center">

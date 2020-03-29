@@ -61,12 +61,12 @@
                         >{{item.sellerTag | tagFilter}}</span>
                         <span
                           class="tag bgBlu"
-                          v-if="item.sellerTag==2"
+                          v-if="item.sellerTag==2 && item.isAgent"
                         >{{item.sellerTag | tagFilter}}</span>
-                        <span
+                        <!-- <span
                           class="tag bgOrange"
                           v-if="item.sellerTag==18"
-                        >{{item.sellerTag | tagFilter}}</span>
+                        >{{item.sellerTag | tagFilter}}</span> -->
                         <span class="tag bgOrange">保</span>
                       </div>
                     </div>

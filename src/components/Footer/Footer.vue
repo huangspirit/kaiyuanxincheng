@@ -181,7 +181,6 @@
 <script>
 import "./Footer.less";
 import { mapState, mapActions, mapMutations } from "vuex";
-
 export default {
   name: "Footer",
   data() {
@@ -198,9 +197,9 @@ export default {
     })
   },
   mounted() {
-    this.getfooterNav({ isEnable: 1 }).then(res => {
-      this.navmap = res.data;
-    });
+    // this.getfooterNav({ isEnable: 1 }).then(res => {
+    //   this.navmap = res.data;
+    // });
     if (sessionStorage.getItem("access_token")) {
       this.setloginState(true);
       this.GetUserInforma({

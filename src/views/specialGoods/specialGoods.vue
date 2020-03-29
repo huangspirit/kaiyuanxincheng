@@ -122,9 +122,9 @@ export default {
   },
   mounted() {
     var _this=this;
-    setTimeout(function(){
-      _this.showmimg=false
-    },6000)
+    // setTimeout(function(){
+    //   _this.showmimg=false
+    // },6000)
     this.getCategroy();
     this.getSpecialList(-1);
   },

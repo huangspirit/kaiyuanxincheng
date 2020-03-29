@@ -32,12 +32,19 @@
                   white-space:nowrap;"
                     @click.stop="chipShop(item)"
                     :title="item.sellerName"
-                  >{{item.sellerName}}</p>
+                  >{{item.sellerName}} 
+                  <i  v-if="item.isSelf" style="font-style:normal;font-size:10px;margin-left:5px;border-radius:2px;padding:1px 5px;" class="bgColor">自营</i>
+                  </p>
                   <p>
                     <span
                       class="tag bgColor"
                       style="margin-right:10px;"
-                      v-if="item.tag!=3"
+                      v-if="item.tag==1"
+                    >{{item.tag | tagFilter}}</span>
+                    <span
+                      class="tag bgColor"
+                      style="margin-right:10px;"
+                      v-if="item.tag==2 && item.isAgent"
                     >{{item.tag | tagFilter}}</span>
                     <span
                       class="bgColor tag"
@@ -168,16 +175,16 @@
                   white-space:nowrap;"
                     @click.stop="chipShop(item)"
                     :title="item.sellerName"
-                  >{{item.sellerName}}</p>
+                  >{{item.sellerName}} <i  v-if="item.isSelf" style="font-style:normal;font-size:10px;margin-left:5px;border-radius:2px;padding:1px 5px;" class="bgColor">自营</i></p>
                   <p>
                     <span
-                      class="tag bgColor"
+                      class="tag bgOrange"
                       v-if="item.tag==1"
                       style="margin-right:10px;"
                     >{{item.tag | tagFilter}}</span>
                     <span
                       class="tag bgBlu"
-                      v-if="item.tag==2"
+                      v-if="item.tag==2 && item.isAgent"
                       style="margin-right:10px;"
                     >{{item.tag | tagFilter}}</span>
                     <!-- <span
@@ -186,12 +193,12 @@
                       style="margin-right:10px;"
                     >{{item.tag | tagFilter}}</span> -->
                     <span
-                      class="bgColor tag"
+                      class="bgGray tag"
                       v-if="!item.focus"
                      @click.stop="focus(index)"
                       style="cursor:pointer;"
                     >关注此卖家</span>
-                    <span class="bgd5 tag" v-if="item.focus">已关注</span>
+                    <!-- <span class="bgd5 tag" v-if="item.focus">已关注</span> -->
                   </p>
                 </div>
               </div>
@@ -401,14 +408,24 @@ export default {
       // 总数量
       total: 0,
       MerchantList: [],
-      pageSize: 10,
+      pageSize: 20,
       getMore: false,
       showOriginFactory: false,
       purchaseObj: {},
       showPurchase: false,
       ratelistObj: {},
-      ratelistArr: []
+      ratelistArr: [],
+
     };
+  },
+  watch:{
+     id:{
+      immediate:true,
+      deep:true,
+      handler:function(){
+        this.GetMerchantList()
+     }
+    }
   },
   computed: {
     ...mapState({

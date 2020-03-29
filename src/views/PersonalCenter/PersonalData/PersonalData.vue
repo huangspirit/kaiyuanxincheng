@@ -30,7 +30,7 @@
           <li>
             <span>基础额度：</span>
             <span class="num">￥{{UserInforma.userTagMap.totalcredit}}</span>
-            <span class="typr-s" v-if="UserInfoma.userTagMap.tag!=3">{{UserInforma.userTagMap.tag | tagFilter}}</span>
+            <span class="typr-s">{{UserInforma.userTagMap.tag | tagFilter}}</span>
             <span class="operation btn">原厂入驻</span>
           </li>
           <li>
@@ -249,7 +249,7 @@ export default {
     url() {
       return (
         baseURL +
-        `api-f/files/uploadWithCloud?access_token=${
+        `api-g/files/uploadWithCloud?access_token=${
           this.access_token
         }&fileSource=QINIUYUN&type=7&id=1`
       );

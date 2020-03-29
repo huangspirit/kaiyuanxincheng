@@ -75,9 +75,9 @@
       align="center">
       <template slot-scope="scope">
         <div class="btnWrap">
-            <p v-if="scope.row.factorySellerInfo && scope.row.factorySellerInfo.seller_goods_id"><el-button class="orange btn  bgColor" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p>
+            <!-- <p v-if="scope.row.factorySellerInfo && scope.row.factorySellerInfo.seller_goods_id"><el-button class="orange btn  bgColor" @click="addInquiry(scope.$index)" size="mini">询价篮</el-button></p> -->
             <p v-if="scope.row.factorySellerInfo && scope.row.factorySellerInfo.seller_goods_id"><el-button class="orange btn  bgColor"  @click="specialPrice(scope.$index)" size="mini" >申请特价</el-button></p>
-            <p><el-button class="orange btn bgColor"  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
+            <p><el-button class="orange btn bgOrange"  @click="pushlishspecialPrice(scope.$index)" size="mini" >我有特价</el-button></p>
             <el-button v-if="!scope.row.focus" class="orange btn" @click="focus(scope.$index)" size="mini">关注零件</el-button>
             <span v-if="scope.row.focus" class="bgLightGray btn">已关注</span>
         </div>
@@ -234,6 +234,11 @@ export default {
                 
             },
       specialPrice(k){
+         if(!this.loginState){
+                       // this.$router.push('/Login')
+                         this.setshowlogin(true)
+                        return;
+                    } 
         let item=this.modelList[k]
           let factorySellerInfo=item.factorySellerInfo
           factorySellerInfo.priceType=factorySellerInfo.price_type

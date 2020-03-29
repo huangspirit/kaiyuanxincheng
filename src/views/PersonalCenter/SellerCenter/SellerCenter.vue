@@ -261,7 +261,7 @@
             requestUrl() {
                 return (
                     baseURL +
-                    `api-f/files/uploadHead?access_token=${this.access_token}`
+                    `api-u/files/uploadHead?access_token=${this.access_token}`
                 );
             },
         },

@@ -359,7 +359,7 @@ export default {
     },
     requestUrl() {
       return (
-        baseURL + `api-f/files/uploadHead?access_token=${this.access_token}`
+        baseURL + `api-u/files/uploadHead?access_token=${this.access_token}`
       );
     }
   },

@@ -377,9 +377,9 @@
                         :action="uploadUrl"
                         :limit="1"
                         :data="{
-                                             orderno: item.orderVo.order_no,
-                                            access_token: access_token
-                                        }"
+                                orderno: item.orderVo.order_no,
+                              access_token: access_token
+                          }"
                         :on-success="uploadSuccess"
                         :on-error="onuploaderror"
                         :before-upload="beforeAvatarUpload"
@@ -388,7 +388,7 @@
                       >
                         <a href="javascript:;" class="btnColor">上传PDF合同</a>
                       </el-upload>
-                      <div style="margin-top:10px;">
+                      <div style="margin-top:10px;" v-if="item.orderVo.download">
                         <a
                           :href="`${baseURL}api-order/customerCenter/downLoad?urls=${item.orderVo.contractUrl}&access_token=${access_token}`"
                           style="text-decoration: underline;"
@@ -524,6 +524,9 @@
           取消零件条件：合并报关下取消该订单需要支付对应的报关费
           <strong>￥{{item.amount}}</strong>
         </div>
+        <div class="color" v-if="isFF && payType==4" style="margin-top:10px;">
+          温馨提示：系统检测到您是火狐浏览器，选择支付宝支付时如若失败请去支付宝官网下载安全控件
+          </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="selectedPayType = false">取 消</el-button>
@@ -1544,10 +1547,12 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      isFF:state => state.isFF
+    }),
     start() {
       return (this.currentPage - 1) * this.pageSize;
     },
-
     access_token() {
       return sessionStorage.getItem("access_token");
     },
@@ -1626,8 +1631,10 @@ export default {
           return "已取消";
         case 4:
           return "已交货";
+        // case 5:
+        //   return "已付预付款";
         case 5:
-          return "已付预付款";
+          return "待付尾款";
         case 6:
           return "已发货到质检中心";
         case 7:

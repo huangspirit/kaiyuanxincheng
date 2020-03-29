@@ -4,7 +4,6 @@
     <div class="WaitingAudit-con">
         <img src="@/assets/image/icon/bgSuccess.png" alt="">
         <p class="color title">入驻申请已提交！</p>
-
         <p class="">您的入驻已进入审批流程，审核将于72小时内完成，审核结果系统将会以短信和系统内信息的方式通知您！</p>
         <p class="desc">若您希望通过微信接收审核结果，请前往用户中心绑定微信号；若已经绑定，请耐心等待！</p>
         <p>
@@ -14,9 +13,7 @@
     </div>
   </div>
 </template>
-
 <script>
-
 export default {
   name: "WaitingAudit",
   mounted() {

@@ -179,7 +179,7 @@ export default {
     url() {
       return (
         baseURL +
-        `api-f/files/uploadWithCloud?access_token=${
+        `api-g/files/uploadWithCloud?access_token=${
           this.access_token
         }&fileSource=QINIUYUN&type=5&id=1`
       );

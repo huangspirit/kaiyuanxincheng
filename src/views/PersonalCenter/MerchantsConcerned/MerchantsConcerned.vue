@@ -40,7 +40,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import {axios,buyerOrderCenter,shoppingCar} from "../../../api/apiObj"
 import MerchantsConcernedImgTab from "_c/MerchantsConcernedImgTab";

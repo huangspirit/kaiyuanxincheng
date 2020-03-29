@@ -11,7 +11,7 @@
         >{{item.list[0].tag | tagFilter}}</span>
         <span
           class="tag bgBlu"
-          v-if="item.list[0].tag==2"
+          v-if="item.list[0].tag==2 && item.list[0].isAgent"
           style="margin-right:10px;"
         >{{item.list[0].tag | tagFilter}}</span>
         <!-- <span

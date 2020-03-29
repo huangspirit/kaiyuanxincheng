@@ -339,7 +339,6 @@
   </div>
 </template>
 <style lang="less" scoped>
-/*@import "../SellerOrderManagement/SellerOrderManagement.less";*/
 @import "./SellerInvoiceManagement.less";
 </style>
 <script>
@@ -347,7 +346,6 @@ import { baseURL, baseURL4 } from "@/config";
 import { mapState, mapActions } from "vuex";
 import { axios, sellerOrderCenter } from "@/api/apiObj";
 import { TimeForma, TimeForma2 } from "@/lib/utils";
-
 export default {
   name: "SellerInvoiceManagement",
   data() {

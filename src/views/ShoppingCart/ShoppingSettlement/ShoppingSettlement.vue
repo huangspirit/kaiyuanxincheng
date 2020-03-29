@@ -87,7 +87,8 @@
             </span>
           </li>
           <li class="typetwo clear">
-            <el-radio v-model="paytype" label="1">公对公转账</el-radio>
+            <el-radio v-model="paytype" label="1" >公对公转账</el-radio>
+
             <br />
             <div v-if="paytype==1" class="desc clear">
               <p>
@@ -111,11 +112,19 @@
           </li>
           <li class="typethree">
             <!-- v-if="this.priceTotalDetail.isVIP" -->
+            <template  v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough">
+              <el-radio
+              v-model="paytype"
+              label="2"
+             v-if="selectedGoodsBillSetOff!=3"
+            >月结白条</el-radio>
             <el-radio
               v-model="paytype"
               label="2"
-              v-if="this.priceTotalDetail.isVIP && this.priceTotalDetail.isEnough"
-            >月结白条</el-radio>
+              v-if="selectedGoodsBillSetOff==3"
+              disabled
+            >月结白条 &nbsp;(月结订单必选发票信息)</el-radio>
+            </template>
             <el-radio
               v-model="paytype"
               label="2"

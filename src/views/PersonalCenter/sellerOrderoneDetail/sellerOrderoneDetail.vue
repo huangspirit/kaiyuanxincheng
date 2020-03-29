@@ -147,7 +147,7 @@
                   <div v-if="scoped.row.order_status<6">
                     <p class="color" v-if="scoped.row.order_status!=1">{{scoped.row.order_status | deliverStatesFilter}}</p>
                     <p class="color" v-if="scoped.row.order_status==1">
-                      <template v-if="scoped.row.real_dilivertime">平台已退货</template>
+                      <template v-if="scoped.row.real_dilivertime">平台已退货，可再发</template>
                       <template v-else>未发货</template>
                     </p>
                     <template v-if="!(scoped.row.isconfirm==0 || scoped.row.isconfirm)">

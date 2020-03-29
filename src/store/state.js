@@ -16,6 +16,8 @@ const state = {
   proInformation:{},
   applyDetailEdit:{},
   title:'大麦晶城',
-  AgencyBrandNumLimit:6
+  zhizhao:"http://brand.113ic.com/fb76cdd9d3904c029533f2c8819ee098.jpg",
+  AgencyBrandNumLimit:6,
+  isFF:navigator.userAgent.indexOf("Firefox") > -1
 }
 export default state;

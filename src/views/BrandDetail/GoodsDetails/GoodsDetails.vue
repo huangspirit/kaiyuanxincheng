@@ -22,7 +22,7 @@
     </div>
     <!-- 商品详情 -->
     <div class="sellerGoodsInfo allWidth">
-      <div class="title tit-h">商品详情</div>
+      <div class="title tit-h">零件详情</div>
       <div class="cont clear">
         <div class="fl left">
           <ImgE :src="goodsinfo.imageUrl" :W="200" :H="200"></ImgE>
@@ -181,7 +181,6 @@
 <script>
 import { TimeForma2, ladderPrice } from "../../../lib/utils";
 import MerchantList from "_c/MerchantList";
-import SubstituModelList from "_c/SubstituModelList";
 import { baseURL, baseURL2 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
 import { parse } from "path";
@@ -206,8 +205,7 @@ export default {
     };
   },
   components: {
-    MerchantList,
-    SubstituModelList
+    MerchantList
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
@@ -356,6 +354,7 @@ export default {
       this.showPurchase = true;
     },
     specialPrice(seller_id) {
+      console.log("shenqingtejia")
       if (!this.loginState) {
         this.setshowlogin(true)
         return;
@@ -395,7 +394,7 @@ export default {
         );
       }
       res.list.find(item => {
-        if (item.name == "零件状态" || item.name == "零件状态") {
+        if (item.name == "零件状态" || item.name == "器件状态") {
           this.status = item.value;
         }
       });
@@ -472,7 +471,7 @@ export default {
               seller_id: res.factorySellerInfo.seller_id,
               tag: 1
             };
-            this.GetMerchantList();
+           // this.GetMerchantList();
             this.searchDatasheet(res.id);
             loading.close();
           });

@@ -15,7 +15,11 @@
       </el-carousel>
     </div>
     <div class="banner">
-      <img src="http://brand.113ic.com/1005e35152904af5a147e243816e9146.jpg" alt="" style="height:100%;width:100%;">
+      <img
+        src="http://brand.113ic.com/1005e35152904af5a147e243816e9146.jpg"
+        alt
+        style="height:100%;width:100%;"
+      />
       <!-- <img :src="bannerList[0]['url']" alt style="height:100%;width:100%;" /> -->
       <!-- <el-carousel>
                 <el-carousel-item v-for="(item,k) in bannerList" :key="k" >
@@ -31,7 +35,8 @@
           <countTo :endVal="productTotal" :duration="4"></countTo>个产品-->
         </p>
         <p class="desc">
-          <span>原装正品是底线</span><span style="margin-left:30px;">跟着特价买才省钱</span>
+          <span>原装正品是底线</span>
+          <span style="margin-left:30px;">跟着特价买才省钱</span>
         </p>
         <HeaderSearch ref="HeaderSearch" class="headerSeach"></HeaderSearch>
         <ul class="hot-search clear">
@@ -42,17 +47,26 @@
           >{{item.name}}</li>
         </ul>
       </div>
-      <div class="topRuzhuWrap" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">
-<span @click="settle" class="topRuzhu bgColor" >商家入驻</span><br><br>
-      <span style="color:#fff">免费发布，0差价，0费率</span>
+      <div
+        class="topRuzhuWrap"
+        v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)"
+      >
+        <span @click="settle" class="topRuzhu bgColor">商家入驻</span>
+        <br />
+        <br />
+        <span style="color:#fff">免费发布，0差价，0费率</span>
       </div>
-      
     </div>
     <div class="specialGoods allWidth">
       <router-link tag="div" class="title btn" to="/specialPrice">特价直通车</router-link>
       <div class="desc color">跟着特价买，越来越便宜</div>
       <ul class="list clear">
-        <li v-for="(item,k) in specialList" class="item fl" :class="(k+1)%3==0?'noMargin':''" :key="k">
+        <li
+          v-for="(item,k) in specialList"
+          class="item fl"
+          :class="(k+1)%3==0?'noMargin':''"
+          :key="k"
+        >
           <span
             class="goodsType"
             :class="item.goods_type?'greenColor':'bgColor'"
@@ -68,104 +82,126 @@
             <ImgE :src="item.goodsImageUrl" :W="350" :H="200" v-if="!item.sellerGoodsImageUrl"></ImgE>
           </div>
           <div style="padding:0 15px;" class="newClass">
-            <div @click="chipSellerGoodsDetal(item)" class="goodsName" :title="item.goods_name">{{item.goods_name}}</div>
+            <div @click="chipSellerGoodsDetal(item)" class="goodsName" :title="item.goods_name">
+              {{item.goods_name}}
+              <i
+                v-if="item.isSelf"
+                style="font-style:normal;font-size:10px;margin-left:5px;border-radius:2px;padding:1px 5px;vertical-align:top"
+                class="bgColor"
+              >自营</i>
+            </div>
             <div class="gray desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
             <div class="brand">
               品牌：
               <router-link
                 :to="{
-                                    path:'/BrandDetail',
-                                    query:{
-                                        tag:'brand',
-                                        documentid:item.brandId,
-                                        name:item.brandName
-                                    }
-                                }"
+                      path:'/BrandDetail',
+                      query:{
+                          tag:'brand',
+                          documentid:item.brandId,
+                          name:item.brandName
+                      }
+                  }"
               >{{item.brandName}}</router-link>
             </div>
             <div class="tagwrap">
-              <span :class="item.goods_type?'borderGreen green':'borderColor color'">{{item.goods_type?'现货':'订货'}}</span>
+              <span
+                :class="item.goods_type?'borderGreen green':'borderColor color'"
+              >{{item.goods_type?'现货':'订货'}}</span>
               <span class="borderColor">{{item.diliverPlace}}交货</span>
-              <span class="borderBlu" :class="item.seller_always?'':'color'">{{item.seller_always?'长期特价':'限时抢购'}}</span>
+              <span
+                class="borderBlu"
+                :class="item.seller_always?'':'color'"
+              >{{item.seller_always?'长期特价':'限时抢购'}}</span>
             </div>
             <div class="info" v-if="item.userImgeUrl">
-              <div class="sellerInfo ">
+              <div class="sellerInfo">
                 <p class="img">
                   <img :src="item.userImgeUrl" alt @click="chipShop(item)" />
                 </p>
-                <!-- <div class="wrapInfo clear">
-                    <div class="wrap" @click="chipShop(item)">
-                      <img :src="item.userImgeUrl" alt />
-                      <div :title="item.sellerName" >
-                        <p style="margin:10px 0;">{{item.sellerName}}</p>
-                        <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
-                        <span class="tag bgBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-                        <span class="tag bgOrange">保</span>
-                      </div>
+                <div class="wrapInfo clear">
+                  <div class="wrap" @click="chipShop(item)">
+                    <img :src="item.userImgeUrl" alt />
+                    <div :title="item.sellerName">
+                      <p style="margin:10px 0;">{{item.sellerName}}</p>
+                      <span class="tag bgColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
+                      <span
+                        class="tag bgBlu"
+                        v-if="item.tag==2 && item.isAgent"
+                      >{{item.tag | tagFilter}}</span>
+                      <span
+                        class="tag bgOrange"
+                        v-if="item.deposite"
+                        :title="`保证金：￥${item.deposite}`"
+                      >保</span>
                     </div>
-                 <div class="score">
-                     <div >入驻时间：{{item.settleTime.split(" ")[0]}}</div>
-                     <div style="margin-bottom:20px;">企业资质：已认证</div>
-                     <div class="scoreitem">
-                        <span>产品质量：</span>
-                        <span class="color" v-if="item.mapComment.profileA>item.mapComment.profileB">
-                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
-                            <span>高于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
-                            <span class="el-icon-top"></span>
-                        </span>
-                        <span class="green" v-if="item.mapComment.profileA<item.mapComment.profileB">
-                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
-                            <span>低于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
-                            <span class="el-icon-bottom"></span>
-                        </span>
-                        <span v-if="item.mapComment.profileA==item.mapComment.profileB">
-                            <span>{{item.mapComment.profileA | toFixed(1)}}</span>
-                            <span>等于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
-                        </span>
+                  </div>
+                  <div class="score">
+                    <div v-if="item.settleTime">入驻时间：{{item.settleTime.split(" ")[0]}}</div>
+                    <div style="margin-bottom:20px;" v-if="item.tag!=3">企业资质：已认证</div>
+                    <div class="scoreitem">
+                      <span>产品质量：</span>
+                      <span class="color" v-if="item.mapComment.profileA>item.mapComment.profileB">
+                        <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                        <span>高于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                        <span class="el-icon-top"></span>
+                      </span>
+                      <span class="green" v-if="item.mapComment.profileA<item.mapComment.profileB">
+                        <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                        <span>低于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                        <span class="el-icon-bottom"></span>
+                      </span>
+                      <span v-if="item.mapComment.profileA==item.mapComment.profileB">
+                        <span>{{item.mapComment.profileA | toFixed(1)}}</span>
+                        <span>等于平均值{{item.mapComment.profileB | toFixed(1)}}</span>
+                      </span>
                     </div>
-                     <div class="scoreitem">
-                        <span>发货速度：</span>
-                        <span class="color" v-if="item.mapComment.deliverA>item.mapComment.deliverB">
+                    <div class="scoreitem">
+                      <span>发货速度：</span>
+                      <span class="color" v-if="item.mapComment.deliverA>item.mapComment.deliverB">
                         <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
-                        
+
                         <span>高于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
                         <span class="el-icon-top"></span>
-                        </span>
-                        <span class="green" v-if="item.mapComment.deliverA<item.mapComment.deliverB">
+                      </span>
+                      <span class="green" v-if="item.mapComment.deliverA<item.mapComment.deliverB">
                         <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
                         <span>低于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
                         <span class="el-icon-bottom"></span>
-                        </span>
-                        <span v-if="item.mapComment.deliverA==item.mapComment.deliverB">
+                      </span>
+                      <span v-if="item.mapComment.deliverA==item.mapComment.deliverB">
                         <span>{{item.mapComment.deliverA | toFixed(1)}}</span>
                         <span>等于平均值{{item.mapComment.deliverB | toFixed(1)}}</span>
-                        </span>
+                      </span>
                     </div>
-                     <div class="scoreitem">
-                        <span>服务支持：</span>
-                        <span class="color" v-if="item.mapComment.serviceA>item.mapComment.serviceB">
-                        <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
-                        
-                        <span>高于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
-                        <span class="el-icon-top"></span>
-                        </span>
-                        <span class="green" v-if="item.mapComment.serviceA<item.mapComment.serviceB">
+                    <div class="scoreitem">
+                      <span>服务支持：</span>
+                      <span class="color" v-if="item.mapComment.serviceA>item.mapComment.serviceB">
                         <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
 
-                        
+                        <span>高于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
+                        <span class="el-icon-top"></span>
+                      </span>
+                      <span class="green" v-if="item.mapComment.serviceA<item.mapComment.serviceB">
+                        <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
+
                         <span>低于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
                         <span class="el-icon-bottom"></span>
-                        </span>
-                        <span v-if="item.mapComment.serviceA==item.mapComment.serviceB">
+                      </span>
+                      <span v-if="item.mapComment.serviceA==item.mapComment.serviceB">
                         <span>{{item.mapComment.serviceA | toFixed(1)}}</span>
                         <span>等于平均值{{item.mapComment.serviceB | toFixed(1)}}</span>
-                        </span>
+                      </span>
                     </div>
-                 </div>
+                  </div>
                   <p style="center">
-                    <span class="borderColor" style="padding:2px 5px;border-radius:4px;cursor:pointer;"  @click="chipShop(item)">进入店铺</span>
+                    <span
+                      class="borderColor"
+                      style="padding:2px 5px;border-radius:4px;cursor:pointer;"
+                      @click="chipShop(item)"
+                    >进入店铺</span>
                   </p>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="price">
@@ -177,34 +213,33 @@
                 class="color fr"
                 v-if="item.priceType"
               >{{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}}</strong>
-              <span  v-if="item.priceType" class="typemark color">+</span>
+              <span v-if="item.priceType" class="typemark color">+</span>
               <!-- <i style="margin-left:20px;color:#999;font-size:16px;font-style:normal">MOQ：{{item.moq}}</i> -->
             </div>
 
-            <div class="blu" >
-                <span v-if="item.day_interval">下单后{{item.day_interval | filterHours}}小时内可发货</span>
+            <div class="blu">
+              <span v-if="item.day_interval">下单后{{item.day_interval | filterHours}}小时内可发货</span>
             </div>
-              <div class="time clear blu" v-if="!item.seller_always && item.expireTime">
-                <span class="fl">
-                  <img src="@/assets/image/index/timer.png" alt />
-                  距离特价结束：
-                </span>
-                <CountTime
-                  class="fl"
-                  v-on:end_callback="countDownE_cb()"
-                  :currentTime="item.currentTime"
-                  :startTime="item.currentTime"
-                  :endTime="item.expireTime"
-                  :tipText="'距离活动开始'"
-                  :tipTextEnd="''"
-                  :endText="'活动已失效'"
-                  :dayTxt="'天'"
-                  :hourTxt="'小时'"
-                  :minutesTxt="'分'"
-                  :secondsTxt="'秒'"
-                ></CountTime>
-              </div>
-            
+            <div class="time clear blu" v-if="!item.seller_always && item.expireTime">
+              <span class="fl">
+                <img src="@/assets/image/index/timer.png" alt />
+                距离特价结束：
+              </span>
+              <CountTime
+                class="fl"
+                v-on:end_callback="countDownE_cb()"
+                :currentTime="item.currentTime"
+                :startTime="item.currentTime"
+                :endTime="item.expireTime"
+                :tipText="'距离活动开始'"
+                :tipTextEnd="''"
+                :endText="'活动已失效'"
+                :dayTxt="'天'"
+                :hourTxt="'小时'"
+                :minutesTxt="'分'"
+                :secondsTxt="'秒'"
+              ></CountTime>
+            </div>
           </div>
         </li>
       </ul>
@@ -249,18 +284,22 @@
                                 }"
                 >{{item.brandName}}</router-link>
               </div>
-
-              <div class="desc gray">{{item.goodsDesc}}</div>
+              <div class="desc gray" :title="item.goodsDesc">{{item.goodsDesc}}</div>
               <div class="count gray">
                 <span>起订量:&nbsp;{{item.moq}}只</span>&nbsp;&nbsp;
                 <span>增量:&nbsp;{{item.mpq}}只</span>
               </div>
               <div class="marking">
                 <span class="tag color borderColor" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
-                <span class="tag blu borderBlu" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
+                <span
+                  class="tag blu borderBlu"
+                  v-if="item.tag==2 && item.isAgent"
+                >{{item.tag | tagFilter}}</span>
                 <!-- <span class="tag orange borderOrange" v-if="item.tag==18">{{item.tag | tagFilter}}</span> -->
                 <span class="borderColor">{{item.diliverPlace}}发货</span>
-                <span :class="item.goods_type?'borderGreen green':'borderColor color'">{{item.goods_type?'现货':'订货'}}</span>
+                <span
+                  :class="item.goods_type?'borderGreen green':'borderColor color'"
+                >{{item.goods_type?'现货':'订货'}}</span>
               </div>
             </div>
             <div class="price">
@@ -310,7 +349,7 @@
         </div>-->
         <div class="goodsList fl">
           <ul class="titleList bgColor">
-            <!-- <li class="goodsName">供应商</li> -->
+            <li class="goodsName">供应商</li>
             <li class="goodsName">型号</li>
             <li class="item">品牌</li>
             <li class="item">批号</li>
@@ -321,12 +360,21 @@
           </ul>
           <ol>
             <li v-for="(item,k) in oldProductList" :key="k">
-              <!-- <div class="goodsName taginfo">
+              <div class="goodsName taginfo">
                 <img :src="item.userImgeUrl" alt style="cursor:pointer;" @click="chipShop(item)" />
+                
                 <div>
-                  <p class="sellerName" @click="chipShop(item)" :title="item.sellerName">{{item.sellerName}}</p>
+                  <p
+                    class="sellerName"
+                    @click="chipShop(item)"
+                    :title="item.sellerName"
+                  >{{item.sellerName}}</p>
                   <p>
-                    <span class="btn blue" v-if="item.tag!=3">{{item.tag | tagFilter}}</span>
+                    <span class="btn blue" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
+                    <span
+                      class="btn blue"
+                      v-if="item.tag==2 && item.isAgent"
+                    >{{item.tag | tagFilter}}</span>
                     <span v-if="item.focus" class="btn bgd5">已关注</span>
                     <span
                       v-if="!item.focus"
@@ -335,12 +383,13 @@
                     >关注</span>
                   </p>
                 </div>
-              </div> -->
+              </div>
               <p
                 :title="item.goods_name"
                 class="goodsName"
                 @click="chipSellerGoodsDetal(item)"
-              style="padding-left:10px;">{{item.goods_name}}</p>
+                style="padding-left:10px;"
+              >{{item.goods_name}}</p>
               <div class="oneitem brand">
                 <router-link
                   :to="{
@@ -353,13 +402,16 @@
                         }"
                 >{{item.brandName}}</router-link>
               </div>
-              <div class="oneitem green">{{item.base_no}}</div>
+              <div class="oneitem green">{{item.base_no?item.base_no:'暂无'}}</div>
               <div class="oneitem">{{item.goodsStockCount}}</div>
 
               <div class="color stepPriceWrap oneitem">
                 <div v-if="item.priceType" class="stepPrice">
                   {{item.priceUnit?'$':'￥'}}{{item.priceList[item.priceList.length-1]['price'] | toFixed(item.priceUnit?3:2)}}&nbsp;
-                  <i class="el-icon-circle-plus-outline" style="font-size:12px;"></i>
+                  <i
+                    class="el-icon-circle-plus-outline"
+                    style="font-size:12px;"
+                  ></i>
                   <ul class="priceList">
                     <li
                       v-for="(item0,index0) in item.priceList"
@@ -382,8 +434,10 @@
     <!-- 已入驻原厂 -->
     <div class="settledIn">
       <div class="title allWidth clear">
-    
-        <div class="fr ruzhu" v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)">
+        <div
+          class="fr ruzhu"
+          v-if="!UserInforma.userTagMap || (UserInforma.userTagMap && !UserInforma.userTagMap.seller)"
+        >
           <span class="bgColor" @click="settle">立即入驻</span>
         </div>
         <div class="fl left clear">
@@ -490,7 +544,7 @@ import { axios, home, shoppingCar, common } from "../../api/apiObj";
 import HeaderSearch from "_c/HeaderSearch";
 import { SearchJump } from "@/lib/utils";
 import countTo from "_c/countTo";
-import { TimeForma2, TimeForma,TimeForma10 } from "../../lib/utils";
+import { TimeForma2, TimeForma, TimeForma10 } from "../../lib/utils";
 import { ladderPrice } from "../../lib/utils";
 import { baseURL3 } from "@/config";
 export default {
@@ -498,9 +552,9 @@ export default {
     return {
       baseURL3: baseURL3,
       bannerList: [
-        {
-          url:require("@/assets/image/banner/banner1.jpg")
-        },
+        // {
+        //   url: require("@/assets/image/banner/banner1.jpg")
+        // }
         // {
         //   url: require("@/assets/image/banner/1.jpg")
         // },
@@ -532,7 +586,7 @@ export default {
       catergoryTotal: 0,
       productTotal: 0,
       screenHeight: 0,
-      screenWidth: 0,
+      screenWidth: 0
       //isSeller: false
     };
   },
@@ -541,29 +595,28 @@ export default {
       title: state => state.title,
       headerFxed: state => state.headerFxed,
       loginState: state => state.loginState,
-      UserInforma:state => state.Login.UserInforma,
+      UserInforma: state => state.Login.UserInforma
     })
   },
   watch: {
     selected(k) {
       this.catergoryBrandList = this.CatergoryList[k].brandList;
       this.secondCategory = this.CatergoryList[k].childernList;
-    //  this.querySecondCatergory(k);
-        
+      //  this.querySecondCatergory(k);
     }
   },
   filters: {
     formatDate(val) {
       return TimeForma(val);
     },
-    
+
     filterHours(val) {
       return Number(val) * 24;
     }
   },
   methods: {
     ...mapActions("Login", ["GetUserInforma"]),
-    ...mapMutations(["setloginState","setshowlogin"]),
+    ...mapMutations(["setloginState", "setshowlogin"]),
     async init() {
       await this.querySysMessage();
       await this.getHotSearchList();
@@ -618,7 +671,6 @@ export default {
       });
     },
     getSpecialOfferList() {
-      
       let obj = {
         start: 0,
         length: 6,
@@ -663,7 +715,7 @@ export default {
     getoldProductList() {
       let obj = {
         start: 0,
-        length: 100,
+        length: 10,
         is_old_product: true,
         status: 1
       };
@@ -681,7 +733,7 @@ export default {
       axios
         .request({
           ...home.findBrandList,
-          params: { start: 0, length: 15, type: "", name: "",show_brand:1}
+          params: { start: 0, length: 15, type: "", name: "", show_brand: 1 }
         })
         .then(res => {
           this.originFactoryList = res.data.data.map(item => {
@@ -703,7 +755,7 @@ export default {
           this.catergoryBrandList = res.data[0].brandList;
           this.secondCategory = res.data[0].childernList;
           this.interval = setInterval(this.scroll, 5000);
-         // this.querySecondCatergory(0);
+          // this.querySecondCatergory(0);
         });
     },
     querySecondCatergory(k) {
@@ -777,14 +829,13 @@ export default {
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
-          if(res){
+          if (res) {
             this.$message.success("已加入购物车");
-            var _this=this;
-            setTimeout(()=>{
+            var _this = this;
+            setTimeout(() => {
               _this.GetUserInforma();
-            },2000)
+            }, 2000);
           }
-          
         });
     },
     countDownE_cb() {
@@ -801,8 +852,8 @@ export default {
           this.$router.push("/OriginalFactoryEntry");
         }
       } else {
-       // this.$router.push("/Login");
-       this.setshowlogin(true)
+        // this.$router.push("/Login");
+        this.setshowlogin(true);
       }
     },
     settle() {
@@ -815,12 +866,11 @@ export default {
         //   })
         //     return;
         // }
-    
+
         this.$router.push("/OriginalFactoryEntry");
       } else {
-
-       // this.$router.push("/Login");
-       this.setshowlogin(true)
+        // this.$router.push("/Login");
+        this.setshowlogin(true);
       }
     },
     chipShop(item) {
@@ -849,8 +899,8 @@ export default {
     },
     addFocus(index, mark) {
       if (!this.loginState) {
-       // this.$router.push("/Login");
-       this.setshowlogin(true)
+        // this.$router.push("/Login");
+        this.setshowlogin(true);
         return;
       }
       let obj = {};

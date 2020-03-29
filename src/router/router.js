@@ -352,7 +352,7 @@ export default [
                 name: 'firstPage',
                 component: () => import('@/views/OriginalFactoryEntry/firstPage'),
                 meta: {
-                    requireAuth: true,
+                     requireAuth: true,
                     title: '平台入驻',
                     keepAlive: true // 需要被缓存
                 }
@@ -472,15 +472,15 @@ export default [
         ]
     },
     // 登录
-    {
-        path: '/Login',
-        name: 'Login',
-        component: () => import('@/views/Login'),
-        meta: {
-            title: '登录',
-            requireAuth: true,
-        }
-    },
+    // {
+    //     path: '/Login',
+    //     name: 'Login',
+    //     component: () => import('@/views/Login'),
+    //     meta: {
+    //         title: '登录',
+    //         requireAuth: true,
+    //     }
+    // },
     //普通卖家详情
     {
         path:"/sellerShopDetail",
@@ -1098,16 +1098,6 @@ export default [
                     title: '申请列表'
                 }
             },
-            // 信誉额
-            // {
-            //     path: 'CredibiliForehead',
-            //     name: 'CredibiliForehead',
-            //     component: () => import('@/views/PersonalCenter/CredibiliForehead'),
-            //     meta: {
-            //         requireAuth: true,
-            //         title: '信誉额'
-            //     }
-            // },
             // 收货地址
             {
                 path: 'feedBack',

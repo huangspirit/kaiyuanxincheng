@@ -132,8 +132,8 @@
                     <i class="el-icon-plus"></i>
                     <div slot="tip" class="el-upload__tip">图片尺寸请确保800px*800px以上，文件件大小限制2M,支持png、jpg、gif格式</div>
                   </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(zhizhao)">
+                    <img :src="zhizhao" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -256,8 +256,8 @@
                     <i class="el-icon-plus"></i>
                     <div slot="tip" class="el-upload__tip">图片尺寸请确保800px*800px以上，文件件大小限制2M,支持png、jpg、gif格式</div>
                   </el-upload>
-                  <span class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                    <img :src="exampleDiagram" alt />
+                  <span class="example-diagram" @click="PrvExampleDiagram(zhizhao)">
+                    <img :src="zhizhao" alt />
                     <span>示例图</span>
                   </span>
                 </el-form-item>
@@ -477,7 +477,6 @@ export default {
       checkboxChangeValue2: false,
       dialogImageUrl: "",
       // 示例图
-      exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
       identityExam: require("@/assets/image/OriginalFactoryEntry/timg.jpg"),
       zheng: require("@/assets/image/OriginalFactoryEntry/zheng.jpg"),
       fan: require("@/assets/image/OriginalFactoryEntry/fan.jpg"),
@@ -632,7 +631,8 @@ export default {
   components: { VDistpicker },
   computed: {
     ...mapState({
-      title: state => state.title
+      title: state => state.title,
+      zhizhao:state=>state.zhizhao
     }),
     access_token() {
       return sessionStorage.getItem("access_token");

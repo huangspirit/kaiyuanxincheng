@@ -10,6 +10,14 @@ export const MerchantList = (data) => {
 }
 
 // 下单
+export const beforeOrder = (data) => {
+  return axios.request({
+    url: `/api-g/goods-b/orderCheck2`,
+    method: 'post',
+    data: JSON.stringify(data),
+    params: {}
+  })
+}
 export const Order = (data) => {
   return axios.request({
     url: `/api-g/goods-b/orderCheck`,

@@ -71,7 +71,8 @@
                 
                 <div class="merchant">
                   <span class="companyName">{{listItem.sellerInfoMap.nickname}}</span><br>
-                    <span class="bgColor identify" v-if="listItem.sellerInfoMap.tag!=3">{{listItem.sellerInfoMap.tag | tagFilter}}</span>
+                    <span class="bgColor identify" v-if="listItem.sellerInfoMap.tag==1">{{listItem.sellerInfoMap.tag | tagFilter}}</span>
+                    <span class="bgColor identify" v-if="listItem.sellerInfoMap.tag==2 && listItem.sellerInfoMap.isAgent">{{listItem.sellerInfoMap.tag | tagFilter}}</span>
                 </div>
                  <p>
                     回复日期：

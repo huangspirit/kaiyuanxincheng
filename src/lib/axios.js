@@ -62,7 +62,6 @@ class HttpRequest {
            type:'warning',
            message:error.response.data.message
          })
-         // alert(error.response.data.message)
       }
       else {
         //返回 response 里的错误信息

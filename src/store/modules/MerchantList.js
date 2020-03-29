@@ -1,5 +1,6 @@
 import {
   MerchantList,
+  beforeOrder,
   Order
 } from '@/api/MerchantList'
 
@@ -13,6 +14,22 @@ const getters = {
 }
 
 const actions = {
+  BeforeGetOrder({
+    commit
+  }, data) {
+    return new Promise((resolve, reject) => {
+      beforeOrder(data).then(res => {
+        if (res.resultCode === '200') {
+          resolve(res)
+         // commit('GetMerchantList', res.data)
+        } else {
+          reject(res.message)
+        }
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
   // 下单
   GetOrder({
     commit

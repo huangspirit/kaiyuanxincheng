@@ -79,8 +79,8 @@
                   class="el-upload__tip"
                 >图片尺寸请确保清晰，文件大小限制为2M，支持png、jpg、gif格式</div>
               </el-upload>
-              <div class="example-diagram" @click="PrvExampleDiagram(exampleDiagram)">
-                <img :src="exampleDiagram" alt />
+              <div class="example-diagram" @click="PrvExampleDiagram(zhizhao)">
+                <img :src="zhizhao" alt />
               </div>
             </el-form-item>
           </div>
@@ -117,7 +117,6 @@ export default {
       dialogImageUrl: "",
       checkboxChangeValue: false,
       // 示例图
-      exampleDiagram: require("@/assets/image/OriginalFactoryEntry/u85165.jpg"),
       // 预览图片
       dialogVisible: false,
       qualificationMapList: [],
@@ -151,7 +150,10 @@ export default {
     SelectBrand
   },
   computed: {
-    ...mapState(["applyDetailEdit"]),
+    ...mapState({
+      zhizhao:state=>state.zhizhao,
+      applyDetailEdit:state=>state.applyDetailEdit
+    }),
     access_token() {
       return sessionStorage.getItem("access_token");
     },

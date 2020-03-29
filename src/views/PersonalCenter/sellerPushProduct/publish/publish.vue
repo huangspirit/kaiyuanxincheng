@@ -218,18 +218,9 @@
             <el-form-item :label="`${item.name}：`" :key="item.id" v-if="attributeList.length && UserInforma.userTagMap.tag==1">
               <div class="flexitem">
                 <el-input v-model="item.property_value" size="mini"  style="width:246px"></el-input>
-                <!-- <i class="color el-icon-error"></i> -->
               </div>
             </el-form-item>
           </template>
-          <!-- <el-form-item label prop="name">
-            <i class="el-icon-circle-plus-outline addbtn blu" @click="addAttr">添加属性</i>
-            <div v-for="(item,index) in addAttrList" :key="index">
-              <el-input v-model="ruleForm.name" placeholder="属性名" size="mini"></el-input>&nbsp;
-              <el-input v-model="ruleForm.name" placeholder="参数值" size="mini"></el-input>
-              <i class="color el-icon-error" @click="removeAddAttr(index)"></i>
-            </div>
-          </el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')" size="mini">提交</el-button>
           </el-form-item>
@@ -405,6 +396,8 @@ export default {
         });
     },
     submitForm(formName) {
+      
+ 
       this.$refs[formName].validate(valid => {
         if (valid) {
           delete this.ruleForm.brandName;
@@ -583,6 +576,7 @@ export default {
         })
         .then(res => {
           this.showres=true;
+          this.$router.go(0);
           return;
           this.$router.push({
             path: "/PersonalCenter/sellerPushProduct"

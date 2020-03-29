@@ -47,10 +47,6 @@
                   <img :src="item1.icon" alt />
                   <span slot="title">{{item1.title}}</span>
                 </div>
-                <!-- <div class="twotitle" v-else-if="item1.name=='UpgradeLevelverify'" slot="title" :class="item1.class">
-                  <img :src="item1.icon" alt />
-                  <span slot="title">{{item1.title}}</span>
-                </div> -->
                 <router-link v-else :to="item1.path" slot="title" tag="div" class="twotitle">
                   <img :src="item1.icon" alt />
                   <span>{{item1.title}}</span>

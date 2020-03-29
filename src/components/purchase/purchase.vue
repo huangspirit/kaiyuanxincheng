@@ -206,24 +206,61 @@ export default {
         type: 0,
         orderSource: 1
       };
-      this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
-        localStorage.setItem(
-          "buyOneGoodsDetail",
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
-        this.setBuyOneGoodsDetail(
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
+      this.$store.dispatch("MerchantList/BeforeGetOrder", obj2).then(res => {
+        if (res.data) {
+          this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+            localStorage.setItem(
+              "buyOneGoodsDetail",
+              JSON.stringify({
+                data: JSON.stringify(res),
+                obj2: JSON.stringify(obj2)
+              })
+            );
+            this.setBuyOneGoodsDetail(
+              JSON.stringify({
+                data: JSON.stringify(res),
+                obj2: JSON.stringify(obj2)
+              })
+            );
 
-        this.$router.push({
-          path: "/ShoppingCart/ShoppingSettlement"
-        });
+            this.$router.push({
+              path: "/ShoppingCart/ShoppingSettlement"
+            });
+          });
+        } else {
+          this.$confirm(res.message, "提示", {
+            confirmButtonText: "继续提交新订单",
+            cancelButtonText: "去订单中心支付",
+            distinguishCancelAndClose: true,
+            type: "warning"
+          })
+            .then(() => {
+              this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+                localStorage.setItem(
+                  "buyOneGoodsDetail",
+                  JSON.stringify({
+                    data: JSON.stringify(res),
+                    obj2: JSON.stringify(obj2)
+                  })
+                );
+                this.setBuyOneGoodsDetail(
+                  JSON.stringify({
+                    data: JSON.stringify(res),
+                    obj2: JSON.stringify(obj2)
+                  })
+                );
+
+                this.$router.push({
+                  path: "/ShoppingCart/ShoppingSettlement"
+                });
+              });
+            })
+            .catch(action => {
+              if (action === "cancel") {
+                this.$router.push("/PersonalCenter/BuyerOrderManagement");
+              }
+            });
+        }
       });
     }
   }

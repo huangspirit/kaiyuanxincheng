@@ -57,7 +57,11 @@
             <span @click="addFocus" v-if="!sellerGoodsInfo.focus" class="btn">
               <i class="el-icon-star-off"></i>&nbsp;关注此零件
             </span>
-            <span @click="addInquiry(sellerGoodsInfo.sellerId)" v-if="sellerGoodsInfo.tag == 1" class="btn">
+            <span
+              @click="addInquiry(sellerGoodsInfo.sellerId)"
+              v-if="sellerGoodsInfo.tag == 1"
+              class="btn"
+            >
               <i class="el-icon-circle-plus-outline"></i>&nbsp;询价蓝
             </span>
             <!-- <span class="btn"><img src="@/assets/image/icon/share.png" style="height:12px;" alt="">&nbsp;分享给好友</span> -->
@@ -75,7 +79,14 @@
                         }
                     }">
           {{sellerGoodsInfo.goods_name}}</router-link>-->
-          <p class="goodsName">{{sellerGoodsInfo.goods_name}}</p>
+          <p class="goodsName">
+            {{sellerGoodsInfo.goods_name}}
+            <i
+              v-if="sellerGoodsInfo.isSelf"
+              style="font-style:normal;font-size:10px;margin-left:5px;border-radius:2px;padding:1px 5px;vertical-align:middle"
+              class="bgColor"
+            >自营</i>
+          </p>
           <p class="brandDesc">
             制造商：
             <router-link
@@ -90,7 +101,10 @@
                         }"
             >
               {{goodsinfo.brand}}
-              <img :src="goodsinfo.brandImageUrl"  style="height:30px;width:80px;"/>
+              <img
+                :src="goodsinfo.brandImageUrl"
+                style="height:30px;width:80px;"
+              />
               <!-- <ImgE :src="goodsinfo.brandImageUrl" :W="80" :H="40" style="margin-left:25px;"></ImgE> -->
             </router-link>
 
@@ -179,11 +193,14 @@
               class="color"
               v-if="sellerGoodsInfo.tag == 1"
             >({{sellerGoodsInfo.tag | tagFilter}})</span>
-            <span class="blue" v-if="sellerGoodsInfo.tag == 2">({{sellerGoodsInfo.tag | tagFilter}})</span>
             <span
+              class="blue"
+              v-if="sellerGoodsInfo.tag == 2 && sellerGoodsInfo.isAgent"
+            >({{sellerGoodsInfo.tag | tagFilter}})</span>
+            <!-- <span
               class="orange"
               v-if="sellerGoodsInfo.tag == 18"
-            >({{sellerGoodsInfo.tag | tagFilter}})</span>
+            >({{sellerGoodsInfo.tag | tagFilter}})</span> -->
           </div>
           <div class="count fl" style="width:100%;" v-if="sellerGoodsInfo.moq">
             数量：
@@ -205,7 +222,11 @@
               @click="pushlishspecialPrice"
               v-if="sellerGoodsInfo.tag != 1"
             >我有特价</span>
-            <span class="btn bgOrange" @click="specialPrice(sellerGoodsInfo.sellerId)" v-if="sellerGoodsInfo.tag == 1">申请特价</span>
+            <span
+              class="btn bgOrange"
+              @click="specialPrice(sellerGoodsInfo.sellerId)"
+              v-if="sellerGoodsInfo.tag == 1"
+            >申请特价</span>
             <span class="btn bgGray" @click="addShopingCar(sellerGoodsInfo.sellerId)">加入购物车</span>
             <router-link
               style="font-size:14px;margin-left:10px;"
@@ -310,17 +331,17 @@
                 </thead>
                 <tbody>
                   <template v-for="item in goodsinfo.list">
-                    <tr  :key="item.id" v-if="item.value">
+                    <tr :key="item.id" v-if="item.value">
                       <td>{{item.name}}</td>
                       <td>{{item.value}}</td>
-                  </tr>
+                    </tr>
                   </template>
                 </tbody>
               </table>
               <!-- <el-table :data="parameterList" stripe border>
                 <el-table-column property="name" label="类型"></el-table-column>
                 <el-table-column property="value" label="参数"></el-table-column>
-              </el-table> -->
+              </el-table>-->
             </li>
             <li
               class="datasheet"
@@ -364,11 +385,12 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapActions,mapState } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 import { baseURL, baseURL2, baseURL3 } from "@/config";
 import { axios, shoppingCar, BrandDetail, home } from "@/api/apiObj";
 import { TimeForma2, TimeForma, ladderPrice } from "../../lib/utils";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
+import { buyerOrderCenter } from "../../api/apiObj";
 export default {
   data() {
     return {
@@ -402,7 +424,7 @@ export default {
     if (this.$route.query.seller_goods_id) {
       this.getSellerGoodsId(this.$route.query.seller_goods_id);
     } else if (!this.$route.query.seller_goods_id && obj) {
-       this.getSellerGoodsId(JSON.parse(obj).id);
+      this.getSellerGoodsId(JSON.parse(obj).id);
     }
   },
   methods: {
@@ -500,8 +522,8 @@ export default {
         this.setshowlogin(true);
         return;
       }
-      if(seller_id==this.UserInforma.id){
-        this.$message.error("不能对自己发布的商品进行购买")
+      if (seller_id == this.UserInforma.id) {
+        this.$message.error("不能对自己发布的商品进行购买");
         return;
       }
       let item = this.purchaseObj;
@@ -539,25 +561,70 @@ export default {
         type: 0,
         orderSource: 1
       };
-      this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
-        localStorage.setItem(
-          "buyOneGoodsDetail",
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
-        this.setBuyOneGoodsDetail(
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
+      axios
+        .request({
+          ...buyerOrderCenter.orderCheck2,
+          data: obj2,
+          method: "post"
+        })
+        .then(res => {
+          if (res.data) {
+            this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+              localStorage.setItem(
+                "buyOneGoodsDetail",
+                JSON.stringify({
+                  data: JSON.stringify(res),
+                  obj2: JSON.stringify(obj2)
+                })
+              );
+              this.setBuyOneGoodsDetail(
+                JSON.stringify({
+                  data: JSON.stringify(res),
+                  obj2: JSON.stringify(obj2)
+                })
+              );
 
-        this.$router.push({
-          path: "/ShoppingCart/ShoppingSettlement"
+              this.$router.push({
+                path: "/ShoppingCart/ShoppingSettlement"
+              });
+            });
+          } else {
+            this.$confirm(res.message, "提示", {
+              confirmButtonText: "继续提交新订单",
+              cancelButtonText: "去订单中心支付",
+              distinguishCancelAndClose: true,
+              type: "warning"
+            })
+              .then(() => {
+                this.$store
+                  .dispatch("MerchantList/GetOrder", obj2)
+                  .then(res => {
+                    localStorage.setItem(
+                      "buyOneGoodsDetail",
+                      JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                      })
+                    );
+                    this.setBuyOneGoodsDetail(
+                      JSON.stringify({
+                        data: JSON.stringify(res),
+                        obj2: JSON.stringify(obj2)
+                      })
+                    );
+
+                    this.$router.push({
+                      path: "/ShoppingCart/ShoppingSettlement"
+                    });
+                  });
+              })
+              .catch(action => {
+                if (action === "cancel") {
+                  this.$router.push("/PersonalCenter/BuyerOrderManagement");
+                }
+              });
+          }
         });
-      });
     },
     openBig() {
       this.loading = true;
@@ -573,45 +640,49 @@ export default {
         seller_goods_id: seller_goods_id,
         start: 0
       };
-      axios.request({ ...home.queryDirectGoodsDetail, params: obj }).then(result => {
-        console.log(result);
-        this.sellerGoodsInfo = result.data;
-        if(this.sellerGoodsInfo.priceLevel){
-            this.sellerGoodsInfo.priceList=ladderPrice(this.sellerGoodsInfo.priceLevel)
-        }
-        if (this.sellerGoodsInfo.sellerGoodsImageUrl) {
-          let arr = this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
-          this.sellerGoodsImageUrlList = arr.map(item => {
-            return baseURL3 + "/" + item;
-          });
-          this.sellerGoodsImageUrlList.unshift(
-            this.sellerGoodsInfo.goodsImageUrl
-          );
-        }
-        this.bigImgstr = this.sellerGoodsInfo.goodsImageUrl;
-        this.purchaseObj = {
-          goods_id: this.sellerGoodsInfo.goods_id,
-          goods_name: this.sellerGoodsInfo.goods_name,
-          goodsDesc: this.sellerGoodsInfo.goodsDesc,
-          goodsImage: this.sellerGoodsInfo.goodsImageUrl,
-          clude_bill: this.sellerGoodsInfo.includBill,
-          price_unit: this.sellerGoodsInfo.priceUnit,
-          seckill_goods_id: this.sellerGoodsInfo.id,
-          goods_type: this.sellerGoodsInfo.goods_type,
-          diliver_place: this.sellerGoodsInfo.diliverPlace,
-          moq: Number(this.sellerGoodsInfo.moq),
-          mpq: Number(this.sellerGoodsInfo.mpq),
-          stockcount: this.sellerGoodsInfo.goodsStockCount,
-          price_type: this.sellerGoodsInfo.priceType,
-          priceList: this.sellerGoodsInfo.priceList,
-          seckil_price: this.sellerGoodsInfo.goodsPrice,
-          sellerName: this.sellerGoodsInfo.sellerName,
-          sellerHeader: this.sellerGoodsInfo.userImgeUrl,
-          seller_id: this.sellerGoodsInfo.sellerId,
-          tag: this.sellerGoodsInfo.tag
-        };
-        this.init();
-      });
+      axios
+        .request({ ...home.queryDirectGoodsDetail, params: obj })
+        .then(result => {
+          console.log(result);
+          this.sellerGoodsInfo = result.data;
+          if (this.sellerGoodsInfo.priceLevel) {
+            this.sellerGoodsInfo.priceList = ladderPrice(
+              this.sellerGoodsInfo.priceLevel
+            );
+          }
+          if (this.sellerGoodsInfo.sellerGoodsImageUrl) {
+            let arr = this.sellerGoodsInfo.sellerGoodsImageUrl.split("@");
+            this.sellerGoodsImageUrlList = arr.map(item => {
+              return baseURL3 + "/" + item;
+            });
+            this.sellerGoodsImageUrlList.unshift(
+              this.sellerGoodsInfo.goodsImageUrl
+            );
+          }
+          this.bigImgstr = this.sellerGoodsInfo.goodsImageUrl;
+          this.purchaseObj = {
+            goods_id: this.sellerGoodsInfo.goods_id,
+            goods_name: this.sellerGoodsInfo.goods_name,
+            goodsDesc: this.sellerGoodsInfo.goodsDesc,
+            goodsImage: this.sellerGoodsInfo.goodsImageUrl,
+            clude_bill: this.sellerGoodsInfo.includBill,
+            price_unit: this.sellerGoodsInfo.priceUnit,
+            seckill_goods_id: this.sellerGoodsInfo.id,
+            goods_type: this.sellerGoodsInfo.goods_type,
+            diliver_place: this.sellerGoodsInfo.diliverPlace,
+            moq: Number(this.sellerGoodsInfo.moq),
+            mpq: Number(this.sellerGoodsInfo.mpq),
+            stockcount: this.sellerGoodsInfo.goodsStockCount,
+            price_type: this.sellerGoodsInfo.priceType,
+            priceList: this.sellerGoodsInfo.priceList,
+            seckil_price: this.sellerGoodsInfo.goodsPrice,
+            sellerName: this.sellerGoodsInfo.sellerName,
+            sellerHeader: this.sellerGoodsInfo.userImgeUrl,
+            seller_id: this.sellerGoodsInfo.sellerId,
+            tag: this.sellerGoodsInfo.tag
+          };
+          this.init();
+        });
     },
     getDetail() {
       const loading = this.$loading({
@@ -639,8 +710,8 @@ export default {
         this.setshowlogin(true);
         return;
       }
-      if(seller_id==this.UserInforma.id){
-        this.$message.error("不能对自己品牌下的产品加")
+      if (seller_id == this.UserInforma.id) {
+        this.$message.error("不能对自己品牌下的产品加");
         return;
       }
       var obj = {
@@ -654,10 +725,10 @@ export default {
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
           this.$message.success("添加成功");
-          var _this=this;
-            setTimeout(()=>{
-              _this.GetUserInforma();
-            },2000)
+          var _this = this;
+          setTimeout(() => {
+            _this.GetUserInforma();
+          }, 2000);
         });
     },
     addFocus() {
@@ -685,8 +756,8 @@ export default {
         this.setshowlogin(true);
         return;
       }
-      if(seller_id==this.UserInforma.id){
-        this.$message.error("不能对自己发布的商品加购物车进行购买")
+      if (seller_id == this.UserInforma.id) {
+        this.$message.error("不能对自己发布的商品加购物车进行购买");
         return;
       }
       var obj = {
@@ -695,18 +766,17 @@ export default {
         goodsSource: "1",
         goodsName: this.sellerGoodsInfo.goods_name,
         goodsId: this.goodsinfo.id,
-         goodsCount:this.count
+        goodsCount: this.count
       };
       axios
         .request({ ...shoppingCar.insertShoppingCar, params: obj })
         .then(res => {
           if (res) {
             this.$message.success("添加成功");
-            var _this=this;
-            setTimeout(()=>{
+            var _this = this;
+            setTimeout(() => {
               _this.GetUserInforma();
-            },2000)
-            
+            }, 2000);
           }
         });
     },
@@ -715,20 +785,21 @@ export default {
         this.setshowlogin(true);
         return;
       }
-      if(seller_id==this.UserInforma.id){
-        this.$message.error("不能对自己发布的商品进行购买")
+      if (seller_id == this.UserInforma.id) {
+        this.$message.error("不能对自己发布的商品进行购买");
         return;
       }
       this.showPurchase = true;
     },
     specialPrice(seller_id) {
+      console.log("223222")
       if (!this.loginState) {
         //this.$router.push("/Login");
         this.setshowlogin(true);
         return;
       }
-      if(seller_id==this.UserInforma.id){
-        this.$message.error("不能对自己品牌下的产品申请特价")
+      if (seller_id == this.UserInforma.id) {
+        this.$message.error("不能对自己品牌下的产品申请特价");
         return;
       }
       let factorySellerInfo = this.goodsinfo.factorySellerInfo;
@@ -779,8 +850,8 @@ export default {
   },
   computed: {
     ...mapState({
-      UserInforma:state=>state.Login.UserInforma,
-      loginState:state => state.loginState
+      UserInforma: state => state.Login.UserInforma,
+      loginState: state => state.loginState
     })
   },
   filters: {

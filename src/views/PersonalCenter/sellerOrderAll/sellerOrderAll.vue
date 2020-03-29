@@ -213,7 +213,7 @@
                   <div v-if="item.order_status<6">
                     <p class="color" v-if="item.order_status!=1">{{item.order_status | deliverStatesFilter}}</p>
                     <p class="color" v-if="item.order_status==1">
-                      <template v-if="item.real_dilivertime">平台已退货</template>
+                      <template v-if="item.real_dilivertime">平台已退货，可再发</template>
                       <template v-else>未发货</template>
                     </p>
                     <template v-if="!(item.isconfirm==0 || item.isconfirm)">
@@ -434,7 +434,7 @@
                   <div v-if="item.order_status<6">
                     <p class="color" v-if="item.order_status!=1">{{item.order_status | deliverStatesFilter}}</p>
                     <p class="color" v-if="item.order_status==1">
-                      <template v-if="item.real_dilivertime">平台已退货</template>
+                      <template v-if="item.real_dilivertime">平台已退货，可再发</template>
                       <template v-else>未发货</template>
                     </p>
                     <template v-if="!(item.isconfirm==0 || item.isconfirm)">
@@ -651,7 +651,7 @@
                   <div v-if="item.order_status<6">
                     <p class="color" v-if="item.order_status!=1">{{item.order_status | deliverStatesFilter}}</p>
                     <p class="color" v-if="item.order_status==1">
-                      <template v-if="item.real_dilivertime">平台已退货</template>
+                      <template v-if="item.real_dilivertime">平台已退货，可再发</template>
                       <template v-else>未发货</template>
                     </p>
                     <template v-if="!(item.isconfirm==0 || item.isconfirm)">

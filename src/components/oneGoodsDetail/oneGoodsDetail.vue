@@ -46,7 +46,6 @@
             v-if="item.priceType"
           >{{item.priceList[item.priceList.length-1].price | toFixed(item.priceUnit?3:2)}} +</strong>
         </p>
-        
       </div>
       <div class="tit clear">
         <p class="fr">
@@ -57,7 +56,9 @@
           @click="chipSellerGoodsDetal"
           class="goodsName"
           :title="item.goods_name"
-        >{{item.goods_name}}</p>
+        >{{item.goods_name}} 
+        <i  v-if="item.isSelf" style="font-style:normal;font-size:10px;margin-left:5px;border-radius:2px;padding:1px 5px;" class="bgColor">自营</i>
+        </p>
         
       </div>
       <div class="gray desc" :title="item.goodsDesc">{{item.goodsDesc}}</div>
@@ -66,19 +67,19 @@
           <p class="img">
             <img :src="item.userImgeUrl" alt @click.stop="chipShop(item)" />
           </p>
-          <!-- <div class="wrapInfo clear">
+          <div class="wrapInfo clear">
             <div class="wrap" @click="chipShop(item)">
               <img :src="item.userImgeUrl" alt />
               <div :title="item.sellerName">
                 <p style="margin:10px 0;">{{item.sellerName}}</p>
                 <span class="tag deepgreen bgLightGray" v-if="item.tag==1">{{item.tag | tagFilter}}</span>
-                <span class="tag blu bgLightGray" v-if="item.tag==2">{{item.tag | tagFilter}}</span>
-                <span class="tag bgOrange">保</span>
+                <span class="tag blu bgLightGray" v-if="item.tag==2 && item.isAgent">{{item.tag | tagFilter}}</span>
+                <span class="tag bgOrange" v-if="item.deposite" :title="`保证金：￥${item.deposite}`">保</span>
               </div>
             </div>
             <div class="score">
-              <div>入驻时间：{{item.settleTime.split(" ")[0]}}</div>
-              <div class="renzheng">企业资质：已认证</div>
+              <!-- <div>入驻时间：{{item.settleTime.split(" ")[0]}}</div> -->
+              <div class="renzheng" v-if="item.tag!=3">企业资质：已认证</div>
               <div class="scoreitem">
                 <span>产品质量：</span>
                 <span class="color" v-if="item.mapComment.profileA>item.mapComment.profileB">
@@ -140,7 +141,7 @@
                 @click.stop="chipShop(item)"
               >进入店铺</span>
             </p>
-          </div> -->
+          </div> 
         </div>
         <div class="mark">
             <span :class="item.goods_type?'lightBgBlu':'bgColor'">{{item.goods_type?'现货':'订货'}}</span>

@@ -9,7 +9,6 @@
       </div>
       <deliverCar v-if="showDeliverCar"></deliverCar>
     </div>
-     
   </div>
 </template>
 <style lang="less" scoped>

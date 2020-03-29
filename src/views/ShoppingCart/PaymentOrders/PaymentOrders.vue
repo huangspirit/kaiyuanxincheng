@@ -22,8 +22,14 @@
             </div>
           </li>
         </ul>
-      </div>
-        <div>
+        <div style="line-height:50px;height:50px;">
+            <span
+              class="color"
+              v-if="isFF && payTabFlag == 0"
+            >温馨提示：
+            系统检测到您是火狐浏览器，选择支付宝支付时如若失败请去支付宝官网下载安全控件
+            </span>
+          </div>
       </div>
       <div class="pay-price">
         <span class="pay-price-l">*请在完成下单24小时内完成支付，如未完成此订单将自动关闭。需重新购买！</span>
@@ -106,7 +112,7 @@
 </style>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { baseURL } from "@/config";
 import { setInterval, clearInterval } from 'timers';
 export default {
@@ -157,6 +163,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isFF:state=>state.isFF
+    }),
     access_token() {
       return sessionStorage.getItem("access_token");
     },

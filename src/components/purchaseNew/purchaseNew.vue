@@ -1,61 +1,51 @@
 <template>
-
-    <el-dialog
-  title="确认购买数量"
-  :visible.sync="dialogVisible"
-  width="450px"
-  align="center"
- 
-  >
-  <div  class="purchase">
-  <div>
-      <label for="">型号：</label>
-      <span>{{item.goods_name}}</span>
-  </div>
-  <div>
-      <label for="">剩余：</label>
-      <span>{{item.stockcount}}</span>
-  </div>
-  <div>
-      <label for="">单价：</label>
-      <span class="price color">  {{item.price_unit?"$":"￥"}}{{price| toFixed(item.price_unit?3:2)}}</span>
-  </div>
-   <div>
-      <label for="">购买数量：</label>
-       <el-input-number
-            v-model="count"
-            @blur="handleBlur($event)"
-            @change="handleChange($event)"
-            :min="item.stockcount>item.moq?item.moq:item.stockcount"
-            :max="item.stockcount"
-            :step="item.mpq"
-            size="small"
-          ></el-input-number>
-  </div>
-  <div>
-      <label for="">金额：</label>
-      <span class="price"> {{item.price_unit?"$":"￥"}}{{money | toFixed(item.price_unit?3:2)}}</span>
-  </div>
-   <span slot="footer" class="dialog-footer">
-   
-    <el-button   @click="submitPurchase" class="bgColor">去结算</el-button>
-  </span>
-  </div>
-</el-dialog>
-
-  
+  <el-dialog title="确认购买数量" :visible.sync="dialogVisible" width="450px" align="center">
+    <div class="purchase">
+      <div>
+        <label for>型号：</label>
+        <span>{{item.goods_name}}</span>
+      </div>
+      <div>
+        <label for>剩余：</label>
+        <span>{{item.stockcount}}</span>
+      </div>
+      <div>
+        <label for>单价：</label>
+        <span class="price color">{{item.price_unit?"$":"￥"}}{{price| toFixed(item.price_unit?3:2)}}</span>
+      </div>
+      <div>
+        <label for>购买数量：</label>
+        <el-input-number
+          v-model="count"
+          @blur="handleBlur($event)"
+          @change="handleChange($event)"
+          :min="item.stockcount>item.moq?item.moq:item.stockcount"
+          :max="item.stockcount"
+          :step="item.mpq"
+          size="small"
+        ></el-input-number>
+      </div>
+      <div>
+        <label for>金额：</label>
+        <span class="price">{{item.price_unit?"$":"￥"}}{{money | toFixed(item.price_unit?3:2)}}</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="submitPurchase" class="bgColor">去结算</el-button>
+      </span>
+    </div>
+  </el-dialog>
 </template>
 <script>
 import { mapMutations } from "vuex";
 export default {
-     props: {
+  props: {
     mini: {
       type: Boolean,
       default: false
     },
-    showPurchase:{
-        type: Boolean,
-        default: false
+    showPurchase: {
+      type: Boolean,
+      default: false
     },
     item: {
       type: Object,
@@ -94,21 +84,19 @@ export default {
       price: 0,
       //对应的总价
       money: 0,
-      dialogVisible:this.showPurchase,
+      dialogVisible: this.showPurchase
     };
   },
- 
-  watch:{
-      dialogVisible(newval){
-          if(newval==false){
-            this.$emit("closeCallBack")
-          }
-          
+
+  watch: {
+    dialogVisible(newval) {
+      if (newval == false) {
+        this.$emit("closeCallBack");
       }
+    }
   },
   mounted() {
-  
-      console.log(this.item)
+    console.log(this.item);
     this.count = this.item.moq;
     if (this.item.price_type) {
       this.price = parseFloat(this.item.priceList[0].price);
@@ -202,45 +190,80 @@ export default {
         type: 0,
         orderSource: 1
       };
-      this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
-        localStorage.setItem(
-          "buyOneGoodsDetail",
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
+      this.$store.dispatch("MerchantList/BeforeGetOrder", obj2).then(res => {
+        if (res.data) {
+          this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+            localStorage.setItem(
+              "buyOneGoodsDetail",
+              JSON.stringify({
+                data: JSON.stringify(res),
+                obj2: JSON.stringify(obj2)
+              })
+            );
+            this.setBuyOneGoodsDetail(
+              JSON.stringify({
+                data: JSON.stringify(res),
+                obj2: JSON.stringify(obj2)
+              })
+            );
+            this.$router.push({
+              path: "/ShoppingCart/ShoppingSettlement"
+            });
+          });
+        } else {
+          this.$confirm(res.message, "提示", {
+            confirmButtonText: "继续提交新订单",
+            cancelButtonText: "去订单中心支付",
+            distinguishCancelAndClose: true,
+            type: "warning"
           })
-        );
-        this.setBuyOneGoodsDetail(
-          JSON.stringify({
-            data: JSON.stringify(res),
-            obj2: JSON.stringify(obj2)
-          })
-        );
+            .then(() => {
+              this.$store.dispatch("MerchantList/GetOrder", obj2).then(res => {
+                localStorage.setItem(
+                  "buyOneGoodsDetail",
+                  JSON.stringify({
+                    data: JSON.stringify(res),
+                    obj2: JSON.stringify(obj2)
+                  })
+                );
+                this.setBuyOneGoodsDetail(
+                  JSON.stringify({
+                    data: JSON.stringify(res),
+                    obj2: JSON.stringify(obj2)
+                  })
+                );
 
-        this.$router.push({
-          path: "/ShoppingCart/ShoppingSettlement"
-        });
+                this.$router.push({
+                  path: "/ShoppingCart/ShoppingSettlement"
+                });
+              });
+            })
+            .catch(action => {
+              if (action === "cancel") {
+                this.$router.push("/PersonalCenter/BuyerOrderManagement");
+              }
+            });
+        }
       });
     }
   }
 };
 </script>
 <style scoped lang="less">
-.purchase{
-    padding:0 20px;
-    &>div{
-        text-align: left;
-        white-space: nowrap;
-        display: flex;
-        margin-bottom:20px;
-        font-size:16px;
-        .price{
-            font-size:18px;
-            font-weight:bolder; 
-            flex:1;
-           
-        }
+.purchase {
+  padding: 0 20px;
+  & > div {
+    text-align: left;
+    white-space: nowrap;
+    display: flex;
+    margin-bottom: 20px;
+    font-size: 16px;
+    .price {
+      font-size: 18px;
+      font-weight: bolder;
+      flex: 1;
     }
+  }
 }
 // .purchase {
 //   position: absolute;
